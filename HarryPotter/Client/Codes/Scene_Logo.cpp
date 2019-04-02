@@ -36,6 +36,7 @@ HRESULT CScene_Logo::Render_Scene()
 HRESULT CScene_Logo::Ready_GameObject_Prototype()
 {
 	// For.GameObject_BackLogo
+	// Engine Project의 Scene Class의 Add_Object_Prototype함수 호출
 	if (FAILED(Add_Object_Prototype(SCENE_LOGO, L"GameObject_BackLogo", CBack_Logo::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
