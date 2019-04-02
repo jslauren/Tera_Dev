@@ -10,10 +10,10 @@ CObject_Manager::CObject_Manager()
 
 HRESULT CObject_Manager::Reserve_Object_Manager(const _uint & iMaxNumScene)
 {
-	if (nullptr != m_pmapPrototype)
+	if (nullptr != m_pMapPrototype)
 		return E_FAIL;
 
-	m_pmapPrototype = new MAPPROTOTYPE[iMaxNumScene];
+	m_pMapPrototype = new MAPPROTOTYPE[iMaxNumScene];
 
 	m_pMapObject = new MAPOBJECT[iMaxNumScene];
 
@@ -25,31 +25,38 @@ HRESULT CObject_Manager::Reserve_Object_Manager(const _uint & iMaxNumScene)
 HRESULT CObject_Manager::Add_Object_Prototype(const _uint & iSceneIdx, const _tchar * pProtoTag, CGameObject * pInGameObject)
 {
 	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapPrototype ||
+		nullptr == m_pMapPrototype ||
 		nullptr == pInGameObject)
 		return E_FAIL;
 
+	// 원본 객체를 추가하기 전에 해당 객체가 이미 존재하는지 먼저 확인하는 함수를 실행한다.
 	CGameObject*	pGameObject = Find_Object_Prototype(iSceneIdx, pProtoTag);
 
+	// 해당 객체가 존재하면... ㅈ된거라고..? ※ 의문 해소가 필요하다....
 	if (nullptr != pGameObject)
 		return E_FAIL;
 
-	m_pmapPrototype[iSceneIdx].insert(MAPPROTOTYPE::value_type(pProtoTag, pInGameObject));
+	//원본 객체들을 보관하는 컨테이너에 인자로 받은 게임 오브젝트를 꽂아 넣어 줍니다.
+	m_pMapPrototype[iSceneIdx].insert(MAPPROTOTYPE::value_type(pProtoTag, pInGameObject));
 
 	return NOERROR;
 }
 
 HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * pProtoTag, const _uint & iSceneID, const _tchar * pLayerTag)
 {
+	// 먼저 해당 오브젝트가 원본 객체에 존재하는지 검사하고
 	CGameObject*	pPrototype = Find_Object_Prototype(iProtoSceneID, pProtoTag);
 
+	// 없다면.. ㅈ된거쥬..?
 	if (nullptr == pPrototype)
 		return E_FAIL;
 
+	// 있다면 해당 원본객체를 복사 조져버린다. 이때 등장하는게 Clone 되시겠다.
 	CGameObject*	pGameObject = pPrototype->Clone();
 	if (nullptr == pGameObject)
 		return E_FAIL;
 
+	// 인자로 들어온 값이 실사용 객체로 존재하는지 확인하고
 	CLayer*		pLayer = Find_Layer(iSceneID, pLayerTag);
 
 	// 레이어가 없었다면,
@@ -60,6 +67,8 @@ HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * 
 		if (nullptr == pLayer)
 			return E_FAIL;
 
+		// CLayer Class 에 m_ObjectList 리스트에 push_back 하는데, 
+		// 여기서 해당 리스트가 뭐하는 녀석인지 모르겟으니 확인해보자... ※
 		if (FAILED(pLayer->Add_ObjectToLayer(pGameObject)))
 			return E_FAIL;
 
@@ -84,6 +93,8 @@ _int CObject_Manager::Update_Object_Manager(const _float & fTimeDelta)
 	{
 		for (auto& Pair : m_pMapObject[i])
 		{
+			// 실 사용 객체들의 ObjectList에 들어있는 pGameObject들의 Update를 실행하는 구문이다.
+			// 이해가 잘 안가니 물어보자 여기 부분... ※
 			iExitCode = Pair.second->Update_Layer(fTimeDelta);
 
 			if (iExitCode & 0x80000000)
@@ -95,6 +106,8 @@ _int CObject_Manager::Update_Object_Manager(const _float & fTimeDelta)
 
 _int CObject_Manager::LateUpdate_Object_Manager(const _float & fTimeDelta)
 {
+	// 위랑 동일한 기능인데 끝나고 한번 더부르는 거쥬?
+
 	if (nullptr == m_pMapObject)
 		return -1;
 
@@ -116,12 +129,14 @@ _int CObject_Manager::LateUpdate_Object_Manager(const _float & fTimeDelta)
 CGameObject * CObject_Manager::Find_Object_Prototype(const _uint & iSceneIdx, const _tchar * pProtoTag)
 {
 	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapPrototype)
+		nullptr == m_pMapPrototype)
 		return nullptr;
 
-	auto	iter = find_if(m_pmapPrototype[iSceneIdx].begin(), m_pmapPrototype[iSceneIdx].end(), [&](MAPPROTOTYPE::value_type Pair)->bool {if (0 == lstrcmp(pProtoTag, Pair.first)) return true; return false; });
+	// 찾아서 iter에 정보를 넣어주세용.
+	auto	iter = find_if(m_pMapPrototype[iSceneIdx].begin(), m_pMapPrototype[iSceneIdx].end(), [&](MAPPROTOTYPE::value_type Pair)->bool {if (0 == lstrcmp(pProtoTag, Pair.first)) return true; return false; });
 
-	if (iter == m_pmapPrototype[iSceneIdx].end())
+	// 없으면 nullpter을 return 조집니다.
+	if (iter == m_pMapPrototype[iSceneIdx].end())
 		return nullptr;
 
 	return iter->second;
@@ -129,6 +144,8 @@ CGameObject * CObject_Manager::Find_Object_Prototype(const _uint & iSceneIdx, co
 
 CLayer * CObject_Manager::Find_Layer(const _uint & iSceneIdx, const _tchar * pLayerTag)
 {
+	// 실 사용 객체들을 보관하는 컨테이너를 뒤지는 곳이다.
+
 	if (m_iMaxNumScene <= iSceneIdx ||
 		nullptr == m_pMapObject)
 		return nullptr;
@@ -145,12 +162,12 @@ void CObject_Manager::Free()
 {
 	for (size_t i = 0; i < m_iMaxNumScene; i++)
 	{
-		for (auto& Pair : m_pmapPrototype[i])
+		for (auto& Pair : m_pMapPrototype[i])
 			Safe_Release(Pair.second);
 
-		m_pmapPrototype[i].clear();
+		m_pMapPrototype[i].clear();
 	}
-	Safe_Delete_Array(m_pmapPrototype);
+	Safe_Delete_Array(m_pMapPrototype);
 
 	for (size_t i = 0; i < m_iMaxNumScene; i++)
 	{

@@ -43,11 +43,18 @@ HRESULT CManagement::Ready_Management(const _uint& iMaxNumScene)
 
 _int CManagement::Update_Management(const _float & fTimeDelta)
 {
+	// 현재 씬이 Nullptr 이면 ㅈ된거쥬..?
 	if (nullptr == m_pCurrentScene)
 		return -1;
 
+	// 확인용 int 변수 하나 생성해서
 	_int		iExitCode = 0;
 
+	// return 값이 E_FAIL 이면 return 하는 구문
+	// 현재 씬(m_pCurrentScene)이 CScene_Logo라 가정하였을 때,
+	// Engine Project의 Scene 필터의 Scene Class의 Update_Scene 함수를 실행하여아 하지만,
+	// Client Project의 Scene 필터의 Scene_Logo Class가 해당 Scene Class를 상속 받고 있으므로,
+	// Client Project의 Scene 필터의 Scene_Logo Class의 Upadate_Scene 함수를 실행한다.
 	iExitCode = m_pCurrentScene->Update_Scene(fTimeDelta);
 	if (iExitCode & 0x80000000)
 		return -1;
@@ -64,6 +71,7 @@ HRESULT CManagement::Render_Management()
 	if (nullptr == m_pCurrentScene)
 		return E_FAIL;
 
+	// 위의 Update_Management 함수의 접근과 동일하다.
 	if (FAILED(m_pCurrentScene->Render_Scene()))
 		return E_FAIL;
 

@@ -38,9 +38,14 @@ HRESULT CScene::Render_Scene()
 
 HRESULT CScene::Add_Object_Prototype(const _uint & iSceneIdx, const _tchar * pProtoTag, CGameObject * pGameObject)
 {
+	// 현재 선택된 씬이 Scene_Logo라고 가정했을 때, Scene_Logo Class의 Ready_GameObject_Prototype 함수에서
+	// 이 함수를 호출 하게 된다.
+	// 여기서 Back_Logo 는 게임 오브젝트에 해당하는데 헷갈리지 말자. 게임 오브젝트다!!
+	// 그래서 원본객체를 만들어주는 이 함수를 호출하는 것.
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
+	// 현재 선택된 씬의 인자로 받은 게임 오브젝트의 원본객체를 추가한다.
 	if (FAILED(m_pObject_Manager->Add_Object_Prototype(iSceneIdx, pProtoTag, pGameObject)))
 		return E_FAIL;
 
@@ -52,6 +57,7 @@ HRESULT CScene::Add_Object(const _uint & iProtoSceneIdx, const _tchar * pProtoTa
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
+	// 위 Add_Object_Prototype 동등한 기능의 함수이다.
 	if (FAILED(m_pObject_Manager->Add_Object(iProtoSceneIdx, pProtoTag, iSceneIdx, pLayerTag)))
 		return E_FAIL;
 

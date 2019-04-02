@@ -25,7 +25,7 @@ private:
 	_uint	m_iMaxNumScene = 0;
 
 private: // 원본객체들을 보관하는 컨테이너.
-	map<const _tchar*, CGameObject*>*			m_pmapPrototype = nullptr;
+	map<const _tchar*, CGameObject*>*			m_pMapPrototype = nullptr;
 	typedef map<const _tchar*, CGameObject*>	MAPPROTOTYPE;
 private: // 각 씬에서 실 사용할 객체들을 보관하는 컨테이너.
 	map<const _tchar*, CLayer*>*				m_pMapObject = nullptr;
