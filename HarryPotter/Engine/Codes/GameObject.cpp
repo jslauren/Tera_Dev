@@ -6,6 +6,17 @@ CGameObject::CGameObject(LPDIRECT3DDEVICE9 pGraphic_Device)
 	m_pGraphic_Device->AddRef();
 }
 
+CGameObject::CGameObject(const CGameObject & rhs)
+	: m_pGraphic_Device(rhs.m_pGraphic_Device)
+{
+	m_pGraphic_Device->AddRef();
+}
+
+HRESULT CGameObject::Ready_GameObject_Prototype()
+{
+	return NOERROR;
+}
+
 HRESULT CGameObject::Ready_GameObject()
 {
 	return NOERROR;

@@ -47,6 +47,17 @@ HRESULT CScene::Add_Object_Prototype(const _uint & iSceneIdx, const _tchar * pPr
 	return NOERROR;
 }
 
+HRESULT CScene::Add_Object(const _uint & iProtoSceneIdx, const _tchar * pProtoTag, const _uint & iSceneIdx, const _tchar * pLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return E_FAIL;
+
+	if (FAILED(m_pObject_Manager->Add_Object(iProtoSceneIdx, pProtoTag, iSceneIdx, pLayerTag)))
+		return E_FAIL;
+
+	return NOERROR;
+}
+
 void CScene::Free()
 {
 	Safe_Release(m_pObject_Manager);
