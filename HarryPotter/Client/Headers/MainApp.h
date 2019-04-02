@@ -15,13 +15,13 @@ private:
 	explicit CMainApp();
 	virtual ~CMainApp() = default;
 public:
-	HRESULT Ready_MainApp(); // 내 게임의 초기화 과정을 수행한다.
+	HRESULT Ready_MainApp(); // 내 게임의 초기화 과정을 수행한다. == Initialize()다.
 	_int	Update_MainApp(const _float& fTimeDelta);
 	HRESULT Render_MainApp();
 private:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
 private:
-	CManagement*			m_pManagement = nullptr;
+	CManagement*			m_pManagement = nullptr;	// 결국 씬매니저다.
 private: // For. FPS
 	_uint	m_iRenderCnt = 0;
 	_float	m_fTimeAcc = 0.f;

@@ -24,6 +24,7 @@ protected:
 	CObject_Manager*		m_pObject_Manager = nullptr;
 protected:
 	HRESULT Add_Object_Prototype(const _uint& iSceneIdx, const _tchar* pProtoTag, CGameObject* pGameObject);
+	HRESULT Add_Object(const _uint& iProtoSceneIdx, const _tchar* pProtoTag, const _uint& iSceneIdx, const _tchar* pLayerTag);
 public:
 	virtual void Free();
 };

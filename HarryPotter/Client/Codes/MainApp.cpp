@@ -7,16 +7,19 @@
 _USING(Client)
 
 CMainApp::CMainApp()
-	: m_pManagement(CManagement::GetInstance())
+	: m_pManagement(CManagement::GetInstance())	// == (m_pManagemnet = CManagement::GetInstance();)
 {
-	m_pManagement->AddRef();
+	m_pManagement->AddRef();	// 참조 했으니 AddRef 조져준다.
 }
 
-HRESULT CMainApp::Ready_MainApp()
+HRESULT CMainApp::Ready_MainApp()	// Initialize_MainApp
 {
+	// 장치 초기화
 	if (FAILED(Ready_Default_Setting(CGraphic_Device::TYPE_WINMODE, g_iWinCX, g_iWinCY)))
 		return E_FAIL;
 
+	// 씬 셋팅
+	// 어떤 씬을 게임 시작시에 실행 할 지 열거체로 넣어준다.
 	if (FAILED(Ready_Scene(SCENE_LOGO)))
 		return E_FAIL;
 
@@ -25,7 +28,7 @@ HRESULT CMainApp::Ready_MainApp()
 
 _int CMainApp::Update_MainApp(const _float & fTimeDelta)
 {
-	if (nullptr == m_pManagement)
+	if (nullptr == m_pManagement)	// 씬 매니저가 GetInstance() 안되었다면,
 		return -1;
 
 	m_fTimeAcc += fTimeDelta;
@@ -35,6 +38,7 @@ _int CMainApp::Update_MainApp(const _float & fTimeDelta)
 
 HRESULT CMainApp::Render_MainApp()
 {
+	///////// FPS 출력 부분 /////////
 	++m_iRenderCnt;
 
 	if (m_fTimeAcc >= 1.f)
@@ -45,18 +49,21 @@ HRESULT CMainApp::Render_MainApp()
 	}
 
 	SetWindowText(g_hWnd, m_szFPS);
+	//////////////////////////////////
 
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
 
+	//// MainApp 출력 부분 ////
 	m_pGraphic_Device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, D3DXCOLOR(0.f, 0.f, 1.f, 1.f), 1.f, 0);
 	m_pGraphic_Device->BeginScene();
 
-	if (FAILED(m_pManagement->Render_Management()))
+	if (FAILED(m_pManagement->Render_Management()))	// 씬 매니저의 렌더를 돌린다.
 		return E_FAIL;
 
 	m_pGraphic_Device->EndScene();
 	m_pGraphic_Device->Present(nullptr, nullptr, 0, nullptr);
+	//////////////////////////
 
 	return NOERROR;
 }
@@ -70,6 +77,7 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _u
 	if (FAILED(CGraphic_Device::GetInstance()->Ready_Graphic_Device(g_hWnd, eType, iWinCX, iWinCY, &m_pGraphic_Device)))
 		return E_FAIL;
 
+	// For.Scene_Manager Initialize
 	if (FAILED(m_pManagement->Ready_Management(SCENE_END)))
 		return E_FAIL;
 
@@ -78,11 +86,16 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _u
 
 HRESULT CMainApp::Ready_Scene(SCENEID eID)
 {
+	// 이걸 클라에서 하는 이유는,
+	// 엔진은 범용적으로 쓰기 위함이고, 각 클라마다 어떤 씬을 사용할 지 모르기에,
+	// Scene Initialize를 Client에 생성한다.
+
 	if (nullptr == m_pManagement)
 		return E_FAIL;
 
 	CScene*		pScene = nullptr;
 
+	// Ready_MainApp에서 선택한 씬으로 Switch분기를 나눠 해당 씬을 생성한다.
 	switch (eID)
 	{
 	case SCENE_LOGO:
@@ -96,18 +109,25 @@ HRESULT CMainApp::Ready_Scene(SCENEID eID)
 	if (nullptr == pScene)
 		return E_FAIL;
 
+	// (m_pManagement)씬 매니저는 현재 생성된 씬을 가지고 있어야 하므로,
+	// 현재 내가 열거체로 선택하고 생성한 씬을 씬 매니저와 동기화 해준다.
 	if (FAILED(m_pManagement->SetUp_CurrentScene(pScene)))
 		return E_FAIL;
 
 	Safe_Release(pScene);
 
 	return NOERROR;
+
 }
 
 CMainApp * CMainApp::Create()
 {
+	// Create 함수는 항상 이런 패턴으로 만들어 진다. 잘 숙지해 두자.
 	CMainApp* pInstance = new CMainApp();
 
+	// Client.cpp 에서 pMainApp->Create() 해주면 이게 실행되는데,
+	// 객체를 생성하면서 기본 값들을 다 셋팅해 주기 위해,
+	// Ready_MainApp() 구문을 넣어준다.
 	if (FAILED(pInstance->Ready_MainApp()))
 	{
 		_MSGBOX("CMainApp Created Failed");

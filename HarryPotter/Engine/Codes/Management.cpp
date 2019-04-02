@@ -12,17 +12,22 @@ CManagement::CManagement()
 
 HRESULT CManagement::SetUp_CurrentScene(CScene * pScene)
 {
+	// 받아온 씬이 비어있으면.. ㅈ된거쥬..?
 	if (nullptr == pScene)
 		return E_FAIL;
 
+	// 씬 전환 시, 현재 씬이 비어 있지 않았다면, 지워 줘야 겠쥬..?
 	if (nullptr != m_pCurrentScene)
 	{
+		// 0 이외의 값이 리턴되면 잘 안지워 진거쥬.
 		if (0 != Safe_Release(m_pCurrentScene))
 			_MSGBOX("Do not Deleted CurrentScene");
 	}
 
+	// 받아온 씬을 현재 씬으로 셋팅(동기화)한다.
 	m_pCurrentScene = pScene;
 
+	// m_pCurrentScene이 받아온 씬 pScene을 참조했으므로 AddRef 카운트 값을 올려준다.
 	m_pCurrentScene->AddRef();
 
 	return NOERROR;
@@ -67,6 +72,7 @@ HRESULT CManagement::Render_Management()
 
 HRESULT CManagement::Release_Engine()
 {
+	// 객체들을 Release 할 때, 순서에 굉장히 유의하여야 한다.
 	if (0 != CManagement::GetInstance()->DestroyInstance())
 		_MSGBOX("CManagement Release Failed");
 

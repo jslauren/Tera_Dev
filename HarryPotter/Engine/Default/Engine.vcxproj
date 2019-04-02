@@ -27,6 +27,7 @@
     <ClInclude Include="..\Headers\Engine_Typedef.h" />
     <ClInclude Include="..\Headers\GameObject.h" />
     <ClInclude Include="..\Headers\Graphic_Device.h" />
+    <ClInclude Include="..\Headers\Layer.h" />
     <ClInclude Include="..\Headers\Management.h" />
     <ClInclude Include="..\Headers\Object_Manager.h" />
     <ClInclude Include="..\Headers\Scene.h" />
@@ -37,6 +38,7 @@
     <ClCompile Include="..\Codes\Base.cpp" />
     <ClCompile Include="..\Codes\GameObject.cpp" />
     <ClCompile Include="..\Codes\Graphic_Device.cpp" />
+    <ClCompile Include="..\Codes\Layer.cpp" />
     <ClCompile Include="..\Codes\Management.cpp" />
     <ClCompile Include="..\Codes\Object_Manager.cpp" />
     <ClCompile Include="..\Codes\Scene.cpp" />

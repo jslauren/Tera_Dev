@@ -7,6 +7,7 @@
 
 _BEGIN(Engine)
 
+class CLayer;
 class CGameObject;
 class _DLL_EXPORTS CObject_Manager final : public CBase
 {
@@ -17,15 +18,21 @@ private:
 public:
 	HRESULT Reserve_Object_Manager(const _uint& iMaxNumScene);
 	HRESULT Add_Object_Prototype(const _uint& iSceneIdx, const _tchar* pProtoTag, CGameObject* pInGameObject);
+	HRESULT Add_Object(const _uint& iProtoSceneID, const _tchar* pProtoTag, const _uint& iSceneID, const _tchar* pLayerTag);
+	_int	Update_Object_Manager(const _float& fTimeDelta);
+	_int	LateUpdate_Object_Manager(const _float& fTimeDelta);
 private:
 	_uint	m_iMaxNumScene = 0;
 
 private: // 원본객체들을 보관하는 컨테이너.
 	map<const _tchar*, CGameObject*>*			m_pmapPrototype = nullptr;
 	typedef map<const _tchar*, CGameObject*>	MAPPROTOTYPE;
+private: // 각 씬에서 실 사용할 객체들을 보관하는 컨테이너.
+	map<const _tchar*, CLayer*>*				m_pMapObject = nullptr;
+	typedef map<const _tchar*, CLayer*>			MAPOBJECT;
 private:
 	CGameObject* Find_Object_Prototype(const _uint& iSceneIdx, const _tchar* pProtoTag);
-
+	CLayer*		 Find_Layer(const _uint& iSceneIdx, const _tchar* pLayerTag);
 public:
 	virtual void Free();
 };
