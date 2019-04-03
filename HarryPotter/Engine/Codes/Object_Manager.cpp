@@ -133,7 +133,8 @@ CGameObject * CObject_Manager::Find_Object_Prototype(const _uint & iSceneIdx, co
 		return nullptr;
 
 	// 찾아서 iter에 정보를 넣어주세용.
-	auto	iter = find_if(m_pMapPrototype[iSceneIdx].begin(), m_pMapPrototype[iSceneIdx].end(), [&](MAPPROTOTYPE::value_type Pair)->bool {if (0 == lstrcmp(pProtoTag, Pair.first)) return true; return false; });
+	auto	iter = find_if(m_pMapPrototype[iSceneIdx].begin(), m_pMapPrototype[iSceneIdx].end(), CFinder_Tag(pProtoTag));
+	//auto	iter = find_if(m_pMapPrototype[iSceneIdx].begin(), m_pMapPrototype[iSceneIdx].end(), [&](MAPPROTOTYPE::value_type Pair)->bool {if (0 == lstrcmp(pProtoTag, Pair.first)) return true; return false; });
 
 	// 없으면 nullpter을 return 조집니다.
 	if (iter == m_pMapPrototype[iSceneIdx].end())
@@ -150,7 +151,7 @@ CLayer * CObject_Manager::Find_Layer(const _uint & iSceneIdx, const _tchar * pLa
 		nullptr == m_pMapObject)
 		return nullptr;
 
-	auto	iter = find_if(m_pMapObject[iSceneIdx].begin(), m_pMapObject[iSceneIdx].end(), [&](MAPOBJECT::value_type Pair)->bool {if (0 == lstrcmp(pLayerTag, Pair.first)) return true; return false; });
+	auto	iter = find_if(m_pMapObject[iSceneIdx].begin(), m_pMapObject[iSceneIdx].end(), CFinder_Tag(pLayerTag));
 
 	if (iter == m_pMapObject[iSceneIdx].end())
 		return nullptr;

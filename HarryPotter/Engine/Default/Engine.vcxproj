@@ -20,8 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Headers\Base.h" />
+    <ClInclude Include="..\Headers\Component.h" />
     <ClInclude Include="..\Headers\Engine_Defines.h" />
     <ClInclude Include="..\Headers\Engine_Function.h" />
+    <ClInclude Include="..\Headers\Engine_Functor.h" />
     <ClInclude Include="..\Headers\Engine_Macro.h" />
     <ClInclude Include="..\Headers\Engine_Struct.h" />
     <ClInclude Include="..\Headers\Engine_Typedef.h" />
@@ -33,9 +35,11 @@
     <ClInclude Include="..\Headers\Scene.h" />
     <ClInclude Include="..\Headers\Timer.h" />
     <ClInclude Include="..\Headers\Timer_Manager.h" />
+    <ClInclude Include="..\Headers\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Base.cpp" />
+    <ClCompile Include="..\Codes\Component.cpp" />
     <ClCompile Include="..\Codes\GameObject.cpp" />
     <ClCompile Include="..\Codes\Graphic_Device.cpp" />
     <ClCompile Include="..\Codes\Layer.cpp" />
@@ -44,6 +48,7 @@
     <ClCompile Include="..\Codes\Scene.cpp" />
     <ClCompile Include="..\Codes\Timer.cpp" />
     <ClCompile Include="..\Codes\Timer_Manager.cpp" />
+    <ClCompile Include="..\Codes\Transform.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{82531C25-C4EE-4D6A-936E-6D40DBC17E75}</ProjectGuid>

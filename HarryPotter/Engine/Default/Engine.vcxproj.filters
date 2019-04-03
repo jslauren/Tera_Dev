@@ -35,12 +35,23 @@
       <Filter>01. Utility\00. Management</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\GameObject.h">
-      <Filter>01. Utility\00. Management\01. GameObject\Layer\Object</Filter>
+      <Filter>01. Utility\01. GameObject\Layer\Object</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Object_Manager.h">
-      <Filter>01. Utility\00. Management\01. GameObject\Manager</Filter>
+      <Filter>01. Utility\01. GameObject\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Layer.h" />
+    <ClInclude Include="..\Headers\Layer.h">
+      <Filter>01. Utility\01. GameObject\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Engine_Functor.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Transform.h">
+      <Filter>01. Utility\02. Component\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Component.h">
+      <Filter>01. Utility\02. Component\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -73,20 +84,41 @@
     <Filter Include="01. Utility\00. Management">
       <UniqueIdentifier>{ae84c733-4daf-4c7c-b75c-1e9b032e2a66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\00. Management\01. GameObject">
-      <UniqueIdentifier>{7bd087ed-9886-4598-a56d-97dd360bda8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\00. Management\01. GameObject\Manager">
-      <UniqueIdentifier>{75915439-94a0-4e29-8381-979cd785c590}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\00. Management\01. GameObject\Layer">
-      <UniqueIdentifier>{bffd5e57-d6eb-4f96-b0ad-432992637ad8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\00. Management\01. GameObject\Layer\Object">
-      <UniqueIdentifier>{ec822105-dee0-492c-a4f2-e11f330cdeb7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Utility\00. Management\02. Scene">
       <UniqueIdentifier>{08a8d8b2-dfed-4c20-9717-a77b9d0fa7a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\01. GameObject">
+      <UniqueIdentifier>{7bd087ed-9886-4598-a56d-97dd360bda8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\01. GameObject\Manager">
+      <UniqueIdentifier>{75915439-94a0-4e29-8381-979cd785c590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\01. GameObject\Layer">
+      <UniqueIdentifier>{bffd5e57-d6eb-4f96-b0ad-432992637ad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\01. GameObject\Layer\Object">
+      <UniqueIdentifier>{ec822105-dee0-492c-a4f2-e11f330cdeb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component">
+      <UniqueIdentifier>{ca39f31e-8927-47c5-ac65-1d5d678b9922}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component">
+      <UniqueIdentifier>{71917891-08ba-4a14-9662-126bc509c250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Buffer">
+      <UniqueIdentifier>{53081a3f-4999-42e5-a80a-1916b764cfbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Renderer">
+      <UniqueIdentifier>{0bd5568c-bbef-4162-a682-3040683de024}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Texture">
+      <UniqueIdentifier>{760901d7-4dd2-410a-bb98-9eec5eb393ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Transform">
+      <UniqueIdentifier>{b0f6dfdd-5341-4859-9579-e0f5c8fadb1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Manager">
+      <UniqueIdentifier>{8aeb9b86-fd98-49c9-9c2f-01fce8a28517}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,11 +141,19 @@
       <Filter>01. Utility\00. Management</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\GameObject.cpp">
-      <Filter>01. Utility\00. Management\01. GameObject\Layer\Object</Filter>
+      <Filter>01. Utility\01. GameObject\Layer\Object</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Object_Manager.cpp">
-      <Filter>01. Utility\00. Management\01. GameObject\Manager</Filter>
+      <Filter>01. Utility\01. GameObject\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\Layer.cpp" />
+    <ClCompile Include="..\Codes\Layer.cpp">
+      <Filter>01. Utility\01. GameObject\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Transform.cpp">
+      <Filter>01. Utility\02. Component\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Component.cpp">
+      <Filter>01. Utility\02. Component\Component</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
