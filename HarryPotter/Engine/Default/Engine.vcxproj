@@ -36,6 +36,8 @@
     <ClInclude Include="..\Headers\Timer.h" />
     <ClInclude Include="..\Headers\Timer_Manager.h" />
     <ClInclude Include="..\Headers\Transform.h" />
+    <ClInclude Include="..\Headers\TriCol.h" />
+    <ClInclude Include="..\Headers\VIBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Base.cpp" />
@@ -49,6 +51,8 @@
     <ClCompile Include="..\Codes\Timer.cpp" />
     <ClCompile Include="..\Codes\Timer_Manager.cpp" />
     <ClCompile Include="..\Codes\Transform.cpp" />
+    <ClCompile Include="..\Codes\TriCol.cpp" />
+    <ClCompile Include="..\Codes\VIBuffer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{82531C25-C4EE-4D6A-936E-6D40DBC17E75}</ProjectGuid>
