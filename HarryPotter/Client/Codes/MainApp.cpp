@@ -3,6 +3,7 @@
 #include "Graphic_Device.h"
 #include "Scene_Logo.h"
 #include "Management.h"
+#include "Component_Manager.h"
 
 _USING(Client)
 
@@ -16,6 +17,10 @@ HRESULT CMainApp::Ready_MainApp()	// Initialize_MainApp
 {
 	// 장치 초기화
 	if (FAILED(Ready_Default_Setting(CGraphic_Device::TYPE_WINMODE, g_iWinCX, g_iWinCY)))
+		return E_FAIL;
+
+	// 전역씬에서 사용 할 원형컴포넌트들의 생성.
+	if (FAILED(Ready_Component_Prototype()))
 		return E_FAIL;
 
 	// 씬 셋팅
@@ -51,12 +56,15 @@ HRESULT CMainApp::Render_MainApp()
 	SetWindowText(g_hWnd, m_szFPS);
 	//////////////////////////////////
 
-	if (nullptr == m_pGraphic_Device)
+	if (nullptr == m_pGraphic_Device ||
+		nullptr == m_pRenderer)
 		return E_FAIL;
 
 	//// MainApp 출력 부분 ////
 	m_pGraphic_Device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, D3DXCOLOR(0.f, 0.f, 1.f, 1.f), 1.f, 0);
 	m_pGraphic_Device->BeginScene();
+
+	m_pRenderer->Render_RenderGroup();
 
 	if (FAILED(m_pManagement->Render_Management()))	// 씬 매니저의 렌더를 돌린다.
 		return E_FAIL;
@@ -80,6 +88,27 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _u
 	// For.Scene_Manager Initialize
 	if (FAILED(m_pManagement->Ready_Management(SCENE_END)))
 		return E_FAIL;
+
+	// For.Gara
+	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+	return NOERROR;
+}
+
+HRESULT CMainApp::Ready_Component_Prototype()
+{
+	CComponent_Manager*	pComponent_Manager = CComponent_Manager::GetInstance();
+	if (nullptr == pComponent_Manager)
+		return E_FAIL;
+
+	pComponent_Manager->AddRef();
+
+	// For.Component_Renderer
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Renderer", m_pRenderer = CRenderer::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	m_pRenderer->AddRef();
+
+	Safe_Release(pComponent_Manager);
 
 	return NOERROR;
 }
@@ -110,14 +139,13 @@ HRESULT CMainApp::Ready_Scene(SCENEID eID)
 		return E_FAIL;
 
 	// (m_pManagement)씬 매니저는 현재 생성된 씬을 가지고 있어야 하므로,
-	// 현재 내가 열거체로 선택하고 생성한 씬을 씬 매니저와 동기화 해준다.
+	// 현재 내가 열거체로 선택하고 생성한 씬을 씬 매니저와 동기화
 	if (FAILED(m_pManagement->SetUp_CurrentScene(pScene)))
 		return E_FAIL;
 
 	Safe_Release(pScene);
 
 	return NOERROR;
-
 }
 
 CMainApp * CMainApp::Create()
@@ -138,7 +166,8 @@ CMainApp * CMainApp::Create()
 
 void CMainApp::Free()
 {
-	// 내 멤버를 정리한다.
+	// 내 멤버를 정리한다.!!!! 
+	Safe_Release(m_pRenderer);
 	Safe_Release(m_pManagement);
 	Safe_Release(m_pGraphic_Device);
 

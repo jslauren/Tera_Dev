@@ -3,6 +3,7 @@
 // 클라이언트에서 생성할 씬들의 부모가 되는 클래스.
 #include "Base.h"
 #include "Object_Manager.h"
+#include "Component_Manager.h"
 
 _BEGIN(Engine)
 
@@ -22,9 +23,10 @@ public:
 protected:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
 	CObject_Manager*		m_pObject_Manager = nullptr;
+	CComponent_Manager*		m_pComponent_Manager = nullptr;
 protected:
 	HRESULT Add_Object_Prototype(const _uint& iSceneIdx, const _tchar* pProtoTag, CGameObject* pGameObject);
-	HRESULT Add_Object(const _uint& iProtoSceneIdx, const _tchar* pProtoTag, const _uint& iSceneIdx, const _tchar* pLayerTag);
+	HRESULT Add_Object(const _uint& iPorotoSceneIdx, const _tchar* pProtoTag, const _uint& iSceneIdx, const _tchar* pLayerTag);
 public:
 	virtual void Free();
 };

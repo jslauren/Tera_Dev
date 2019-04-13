@@ -9,6 +9,7 @@
 _BEGIN(Engine)
 
 class CScene;
+class CRenderer;
 class _DLL_EXPORTS CManagement final : public CBase
 {
 	_DECLARE_SINGLETON(CManagement)
@@ -23,7 +24,7 @@ public:
 	HRESULT Render_Management();
 	static HRESULT Release_Engine();
 private:
-	CScene*			m_pCurrentScene = nullptr;
+	CScene*		m_pCurrentScene = nullptr;
 public:
 	virtual void Free();
 };

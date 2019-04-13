@@ -22,7 +22,7 @@ HRESULT CLayer::Add_ObjectToLayer(CGameObject * pGameObject)
 
 _int CLayer::Update_Layer(const _float & fTimeDelta)
 {
-	_int	iExitCode = 0;
+	_int		iExitCode = 0;
 
 	for (auto& pGameObject : m_ObjectList)
 	{
@@ -38,7 +38,7 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 
 _int CLayer::LateUpdate_Layer(const _float & fTimeDelta)
 {
-	_int	iExitCode = 0;
+	_int		iExitCode = 0;
 
 	for (auto& pGameObject : m_ObjectList)
 	{
@@ -68,6 +68,6 @@ void CLayer::Free()
 {
 	for (auto& pGameObject : m_ObjectList)
 		Safe_Release(pGameObject);
-	
 	m_ObjectList.clear();
 }
+

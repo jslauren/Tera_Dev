@@ -14,10 +14,10 @@ protected:
 	explicit CBase();
 	virtual ~CBase() = default;
 public:
-	_ulong	AddRef(); // 레퍼런스 카운트를 증가시킨다.
-	_ulong	Release(); // 레퍼런스 카운트를 감소시킨다. + 레퍼런스카운트가 0인경우 삭제한다.
+	_ulong	AddRef();	// 레퍼런스 카운트를 증가시킨다.
+	_ulong	Release();	// 레퍼런스 카운트를 감소시킨다. + 레퍼런스카운트가 0인경우 삭제한다.
 private:
-	_ulong			m_dwRefCnt = 0;
+	_ulong	m_dwRefCnt = 0;
 public:
 	virtual void Free() = 0;
 };

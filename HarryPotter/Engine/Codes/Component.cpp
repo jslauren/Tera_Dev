@@ -6,8 +6,15 @@ CComponent::CComponent(LPDIRECT3DDEVICE9 pGraphic_Device)
 	m_pGraphic_Device->AddRef();
 }
 
+CComponent::CComponent(const CComponent & rhs)
+	: m_pGraphic_Device(rhs.m_pGraphic_Device)
+{
+	m_pGraphic_Device->AddRef();
+}
+
 HRESULT CComponent::Ready_Component()
 {
+
 	return NOERROR;
 }
 

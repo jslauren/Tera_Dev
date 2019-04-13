@@ -1,7 +1,8 @@
 #pragma once
+
 #include "Component.h"
 
-// 객체의 상태를 표현하기 위한 클래스이다.
+// 객체의 상태를 표현하기위한 클래스이다.
 // ex : 위치, 크기, 회전.
 
 _BEGIN(Engine)
@@ -12,12 +13,13 @@ private:
 	explicit CTransform(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CTransform() = default;
 public:
-	HRESULT	Ready_Transform();
+	HRESULT Ready_Transform();
 private:
 	_matrix		m_matWorld;
 public:
 	static CTransform*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual void		Free();
+	virtual CComponent* Clone();
+	virtual void Free();
 };
 
 _END

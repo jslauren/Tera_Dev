@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Defines.h"
 #include "Scene.h"
 
@@ -10,7 +11,6 @@ private:
 	explicit CScene_Logo(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CScene_Logo() = default;
 public:
-	// 이 함수들이 Engine Project의 Scene Class에 있는 함수들이다.
 	virtual HRESULT Ready_Scene();
 	virtual _int	Update_Scene(const _float& fTimeDelta);
 	// 현재 씬의 Update호출 이후 최종적으로 한번 더 호출되는 Update
@@ -18,10 +18,12 @@ public:
 	virtual _int	LateUpdate_Scene(const _float& fTimeDelta);
 	virtual HRESULT Render_Scene();
 private:
+	HRESULT Ready_Component_Prototype();
 	HRESULT Ready_GameObject_Prototype();
+	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
 public:
 	static CScene_Logo* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual void Free();
+	virtual void		Free();
 };
 
 _END

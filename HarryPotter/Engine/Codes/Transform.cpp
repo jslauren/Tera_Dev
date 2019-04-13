@@ -22,6 +22,11 @@ CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
+CComponent * CTransform::Clone()
+{
+	return nullptr;
+}
+
 void CTransform::Free()
 {
 	CComponent::Free();

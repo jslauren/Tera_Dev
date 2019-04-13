@@ -3,6 +3,7 @@
 #include "Timer_Manager.h"
 #include "Object_Manager.h"
 #include "Graphic_Device.h"
+#include "Component_Manager.h"
 
 _IMPLEMENT_SINGLETON(CManagement)
 
@@ -37,6 +38,8 @@ HRESULT CManagement::Ready_Management(const _uint& iMaxNumScene)
 {
 	if (FAILED(CObject_Manager::GetInstance()->Reserve_Object_Manager(iMaxNumScene)))
 		return E_FAIL;
+	if (FAILED(CComponent_Manager::GetInstance()->Reserve_Component_Manager(iMaxNumScene)))
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -48,7 +51,7 @@ _int CManagement::Update_Management(const _float & fTimeDelta)
 		return -1;
 
 	// 확인용 int 변수 하나 생성해서
-	_int		iExitCode = 0;
+	_int	iExitCode = 0;
 
 	// return 값이 E_FAIL 이면 return 하는 구문
 	// 현재 씬(m_pCurrentScene)이 CScene_Logo라 가정하였을 때,
@@ -86,6 +89,9 @@ HRESULT CManagement::Release_Engine()
 
 	if (0 != CObject_Manager::GetInstance()->DestroyInstance())
 		_MSGBOX("CObject_Manager Release Failed");
+
+	if (0 != CComponent_Manager::GetInstance()->DestroyInstance())
+		_MSGBOX("CComponent_Manager Release Failed");
 
 	if (0 != CTimer_Manager::GetInstance()->DestroyInstance())
 		_MSGBOX("CTimer_Manager Release Failed");

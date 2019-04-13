@@ -52,6 +52,18 @@
     <ClInclude Include="..\Headers\Component.h">
       <Filter>01. Utility\02. Component\Component</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\VIBuffer.h">
+      <Filter>01. Utility\02. Component\Component\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Buffer_TriCol.h">
+      <Filter>01. Utility\02. Component\Component\Buffer\Triangle_Color</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Renderer.h">
+      <Filter>01. Utility\02. Component\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Component_Manager.h">
+      <Filter>01. Utility\02. Component\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -120,6 +132,15 @@
     <Filter Include="01. Utility\02. Component\Manager">
       <UniqueIdentifier>{8aeb9b86-fd98-49c9-9c2f-01fce8a28517}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Buffer\Triangle_Color">
+      <UniqueIdentifier>{62e57233-5afd-40d5-a029-0204d92825be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Buffer\Terrain">
+      <UniqueIdentifier>{e3855c97-cb02-4797-bfef-006924314b48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Buffer\Rectangle">
+      <UniqueIdentifier>{d5b02183-5b5a-4931-99eb-53fefab3b5e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Graphic_Device.cpp">
@@ -154,6 +175,18 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Component.cpp">
       <Filter>01. Utility\02. Component\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\VIBuffer.cpp">
+      <Filter>01. Utility\02. Component\Component\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Buffer_TriCol.cpp">
+      <Filter>01. Utility\02. Component\Component\Buffer\Triangle_Color</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Renderer.cpp">
+      <Filter>01. Utility\02. Component\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Component_Manager.cpp">
+      <Filter>01. Utility\02. Component\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
