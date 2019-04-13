@@ -52,12 +52,6 @@
     <ClInclude Include="..\Headers\Component.h">
       <Filter>01. Utility\02. Component\Component</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\VIBuffer.h">
-      <Filter>01. Utility\02. Component\Component\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Headers\TriCol.h">
-      <Filter>01. Utility\02. Component\Component\Buffer\Triangle_Color</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -126,15 +120,6 @@
     <Filter Include="01. Utility\02. Component\Manager">
       <UniqueIdentifier>{8aeb9b86-fd98-49c9-9c2f-01fce8a28517}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\02. Component\Component\Buffer\Rectangle">
-      <UniqueIdentifier>{c5a208ef-aa95-400f-9f42-a1af790822f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\02. Component\Component\Buffer\Terrain">
-      <UniqueIdentifier>{75aadf37-c4a4-44eb-afd6-61f1b8df1e2f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\02. Component\Component\Buffer\Triangle_Color">
-      <UniqueIdentifier>{62603142-27eb-4c3e-b4f9-6e2ae5ffc823}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Graphic_Device.cpp">
@@ -169,12 +154,6 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Component.cpp">
       <Filter>01. Utility\02. Component\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Codes\VIBuffer.cpp">
-      <Filter>01. Utility\02. Component\Component\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Codes\TriCol.cpp">
-      <Filter>01. Utility\02. Component\Component\Buffer\Triangle_Color</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
