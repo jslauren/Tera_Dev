@@ -19,7 +19,7 @@ private:
 public:
 	static CTransform*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CComponent* Clone();
-	virtual void Free();
+	virtual void		Free();
 };
 
 _END

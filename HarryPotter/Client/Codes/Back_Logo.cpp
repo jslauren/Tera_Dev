@@ -23,7 +23,7 @@ HRESULT CBack_Logo::Ready_GameObject_Prototype()
 	return NOERROR;
 }
 
-//실제 씬에서 사용할 객체를 호출하는 함수.
+// 실제 씬에서 사용할 객체를 호출하는 함수.
 // 원본객체 복제 외에도, 추가적인 셋팅이 필요하면 여기서 셋팅하면 된다.
 HRESULT CBack_Logo::Ready_GameObject()
 {
@@ -61,6 +61,8 @@ HRESULT CBack_Logo::Render_GameObject()
 
 HRESULT CBack_Logo::Add_Component()
 {
+	// 사용할 컴포넌트 객체들을 이 함수에서 추가해준다.
+
 	// For.Com_Buffer
 	if (FAILED(CGameObject::Add_Component(SCENE_LOGO, L"Component_Buffer_TriCol", (CComponent**)&m_pBufferCom)))
 		return E_FAIL;
@@ -68,8 +70,6 @@ HRESULT CBack_Logo::Add_Component()
 	// For.Com_Renderer
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
-
-
 
 	return NOERROR;
 }

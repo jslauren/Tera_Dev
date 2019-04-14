@@ -22,6 +22,8 @@ HRESULT CLayer::Add_ObjectToLayer(CGameObject * pGameObject)
 
 _int CLayer::Update_Layer(const _float & fTimeDelta)
 {
+	// 이 함수는 ObjectClass의 실 사용 오브젝트(객체)에 접근하여,
+	// 오브젝트들을 Update 해준다.
 	_int		iExitCode = 0;
 
 	for (auto& pGameObject : m_ObjectList)

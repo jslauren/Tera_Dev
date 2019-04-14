@@ -18,9 +18,12 @@ HRESULT CScene::Ready_Scene()
 
 _int CScene::Update_Scene(const _float & fTimeDelta)
 {
+	// 현재 씬에서 사용 할 오브젝트들의 Update를,
+	// Scene Class의 Update_Scene함수에서 오브젝트 매니저를 통하여 진행한다.
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
+	// 이 때 오브젝트들은 당연히 실 사용 오브젝트(객체) 들이다.
 	return m_pObject_Manager->Update_Object_Manager(fTimeDelta);
 }
 
@@ -39,6 +42,8 @@ HRESULT CScene::Render_Scene()
 
 HRESULT CScene::Add_Object_Prototype(const _uint & iSceneIdx, const _tchar * pProtoTag, CGameObject * pGameObject)
 {
+	// 원본 오브젝트(객체)를 추가해주는 함수.
+
 	// 현재 선택된 씬이 Scene_Logo라고 가정했을 때, Scene_Logo Class의 Ready_GameObject_Prototype 함수에서
 	// 이 함수를 호출 하게 된다.
 	// 여기서 Back_Logo 는 게임 오브젝트에 해당하는데 헷갈리지 말자. 게임 오브젝트다!!

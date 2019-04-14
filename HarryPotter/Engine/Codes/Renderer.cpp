@@ -18,6 +18,11 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eGroup, CGameObject * pGameObject
 		nullptr == pGameObject)
 		return E_FAIL;
 
+	// 클라이언트의 GameObject필터에 해당하는 클래스들에서 요청 한 함수로써,
+	// 해당 오브젝트들을 먼저 그릴껀지, 나중에 그릴껀지, 알파값은 어떤지, UI로 사용할껀지 등의 정보를 포함하여,
+	// 렌더 그룹을 통하여 같은 그룹끼리 일괄적으로 관리하기 위하여 해당 렌더 리스트 컨테이너를 사용한다.
+
+	// 이 렌더 리스트 컨테이너에 추가되는 요소들은 각 그룹에 해당하는 오브젝트들이다.
 	m_RenderList[eGroup].push_back(pGameObject);
 
 	pGameObject->AddRef();
@@ -31,6 +36,7 @@ HRESULT CRenderer::Render_RenderGroup()
 	{
 		for (auto& pGameObject : m_RenderList[i])
 		{
+			// 각 렌더 그룹별로 같은 그룹의 오브젝트들을 출력해준다.
 			if (nullptr != pGameObject)
 				pGameObject->Render_GameObject();
 

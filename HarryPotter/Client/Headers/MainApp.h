@@ -33,8 +33,8 @@ private:
 	HRESULT Ready_Component_Prototype();
 	HRESULT Ready_Scene(SCENEID eID);
 public:
-	static CMainApp* Create();	// 积己 包访等 窃荐.
-	virtual void Free();		// 家戈 包访等 窃荐.
+	static CMainApp*	Create();	// 积己 包访等 窃荐.
+	virtual void		Free();		// 家戈 包访等 窃荐.
 };
 
 _END

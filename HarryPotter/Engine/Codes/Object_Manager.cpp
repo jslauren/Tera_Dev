@@ -10,13 +10,16 @@ CObject_Manager::CObject_Manager()
 
 HRESULT CObject_Manager::Reserve_Object_Manager(const _uint & iMaxNumScene)
 {
-	if (nullptr != m_pmapPrototype ||
-		nullptr != m_pmapObject)
+	// 쉽게 생각하면 Ready_Object_Manager 정도가 아닐까 생각된다.
+
+	if (nullptr != m_pMapObjectPrototype ||
+		nullptr != m_pMapObject)
 		return E_FAIL;
 
-	m_pmapPrototype = new MAPPROTOTYPE[iMaxNumScene];
+	// 씬 마다 오브젝트들을 따로 관리하려는 것 같다. ....※ (확인이 필요하다)
+	m_pMapObjectPrototype = new MAPPROTOTYPE[iMaxNumScene];
 
-	m_pmapObject = new MAPOBJECT[iMaxNumScene];
+	m_pMapObject = new MAPOBJECT[iMaxNumScene];
 
 	m_iMaxNumScene = iMaxNumScene;
 
@@ -26,19 +29,21 @@ HRESULT CObject_Manager::Reserve_Object_Manager(const _uint & iMaxNumScene)
 HRESULT CObject_Manager::Add_Object_Prototype(const _uint & iSceneIdx, const _tchar * pProtoTag, CGameObject * pInGameObject)
 {
 	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapPrototype ||
+		nullptr == m_pMapObjectPrototype ||
 		nullptr == pInGameObject)
 		return E_FAIL;
 
 	// 원본 객체를 추가하기 전에 해당 객체가 이미 존재하는지 먼저 확인하는 함수를 실행한다.
 	CGameObject*	pGameObject = Find_Object_Prototype(iSceneIdx, pProtoTag);
 
-	// 해당 객체가 존재하면... ㅈ된거라고..? ※ 의문 해소가 필요하다....
+	// 해당 객체가 존재하면... ㅈ된거라고..?
+	// 그냥 이미 존재하니깐 실패로 리턴해주는 것 같은데..
+	// 메시지 박스를 띄어주는게 좋지 않을까?
 	if (nullptr != pGameObject)
 		return E_FAIL;
 
 	//원본 객체들을 보관하는 컨테이너에 인자로 받은 게임 오브젝트를 꽂아 넣어 줍니다.
-	m_pmapPrototype[iSceneIdx].insert(MAPPROTOTYPE::value_type(pProtoTag, pInGameObject));
+	m_pMapObjectPrototype[iSceneIdx].insert(MAPPROTOTYPE::value_type(pProtoTag, pInGameObject));
 
 	return NOERROR;
 }
@@ -73,7 +78,7 @@ HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * 
 		if (FAILED(pLayer->Add_ObjectToLayer(pGameObject)))
 			return E_FAIL;
 
-		m_pmapObject[iSceneID].insert(MAPOBJECT::value_type(pLayerTag, pLayer));
+		m_pMapObject[iSceneID].insert(MAPOBJECT::value_type(pLayerTag, pLayer));
 	}
 	else // 있었다면 그냥 추가한다.
 	{
@@ -85,17 +90,19 @@ HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * 
 
 _int CObject_Manager::Update_Object_Manager(const _float & fTimeDelta)
 {
-	if (nullptr == m_pmapObject)
+	if (nullptr == m_pMapObject)
 		return -1;
 
 	_int	iExitCode = 0;
 
 	for (size_t i = 0; i < m_iMaxNumScene; ++i)
 	{
-		for (auto& Pair : m_pmapObject[i])
+		for (auto& Pair : m_pMapObject[i])
 		{
 			// 실 사용 객체들의 ObjectList에 들어있는 pGameObject들의 Update를 실행하는 구문이다.
-			// 이해가 잘 안가니 물어보자 여기 부분... ※
+			// 오브젝트 매니저를 통해 맵 컨테이너에 담겨져 있는 실 사용 오브젝트들의 Update를 해준다.
+			// 이 때, 오브젝트들의 List를 가지고 있는 Layer Class에 접근하여 Update_Layer 함수를 실행한다.
+
 			iExitCode = Pair.second->Update_Layer(fTimeDelta);
 			if (iExitCode & 0x80000000)
 				return iExitCode;
@@ -108,14 +115,14 @@ _int CObject_Manager::LateUpdate_Object_Manager(const _float & fTimeDelta)
 {
 	// 위랑 동일한 기능인데 끝나고 한번 더부르는 거쥬?
 
-	if (nullptr == m_pmapObject)
+	if (nullptr == m_pMapObject)
 		return -1;
 
 	_int	iExitCode = 0;
 
 	for (size_t i = 0; i < m_iMaxNumScene; ++i)
 	{
-		for (auto& Pair : m_pmapObject[i])
+		for (auto& Pair : m_pMapObject[i])
 		{
 			iExitCode = Pair.second->LateUpdate_Layer(fTimeDelta);
 			if (iExitCode & 0x80000000)
@@ -128,15 +135,15 @@ _int CObject_Manager::LateUpdate_Object_Manager(const _float & fTimeDelta)
 CGameObject * CObject_Manager::Find_Object_Prototype(const _uint & iSceneIdx, const _tchar * pProtoTag)
 {
 	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapPrototype)
+		nullptr == m_pMapObjectPrototype)
 		return nullptr;
 
 	// 찾아서 iter에 정보를 넣어주세용.
-	auto	iter = find_if(m_pmapPrototype[iSceneIdx].begin(), m_pmapPrototype[iSceneIdx].end(), CFinder_Tag(pProtoTag));
+	auto	iter = find_if(m_pMapObjectPrototype[iSceneIdx].begin(), m_pMapObjectPrototype[iSceneIdx].end(), CFinder_Tag(pProtoTag));
 	//auto	iter = find_if(m_pMapPrototype[iSceneIdx].begin(), m_pMapPrototype[iSceneIdx].end(), [&](MAPPROTOTYPE::value_type Pair)->bool {if (0 == lstrcmp(pProtoTag, Pair.first)) return true; return false; });
 
 	// 없으면 nullpter을 return 조집니다.
-	if (iter == m_pmapPrototype[iSceneIdx].end())
+	if (iter == m_pMapObjectPrototype[iSceneIdx].end())
 		return nullptr;
 
 	return iter->second;
@@ -147,12 +154,12 @@ CLayer * CObject_Manager::Find_Layer(const _uint & iSceneIdx, const _tchar * pLa
 	// 실 사용 객체들을 보관하는 컨테이너를 뒤지는 곳이다.
 
 	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapObject)
+		nullptr == m_pMapObject)
 		return nullptr;
 
-	auto	iter = find_if(m_pmapObject[iSceneIdx].begin(), m_pmapObject[iSceneIdx].end(), CFinder_Tag(pLayerTag));
+	auto	iter = find_if(m_pMapObject[iSceneIdx].begin(), m_pMapObject[iSceneIdx].end(), CFinder_Tag(pLayerTag));
 
-	if (iter == m_pmapObject[iSceneIdx].end())
+	if (iter == m_pMapObject[iSceneIdx].end())
 		return nullptr;
 
 	return iter->second;
@@ -162,19 +169,19 @@ void CObject_Manager::Free()
 {
 	for (size_t i = 0; i < m_iMaxNumScene; i++)
 	{
-		for (auto& Pair : m_pmapPrototype[i])
+		for (auto& Pair : m_pMapObjectPrototype[i])
 			Safe_Release(Pair.second);
 
-		m_pmapPrototype[i].clear();
+		m_pMapObjectPrototype[i].clear();
 	}
-	Safe_Delete_Array(m_pmapPrototype);
+	Safe_Delete_Array(m_pMapObjectPrototype);
 
 	for (size_t i = 0; i < m_iMaxNumScene; i++)
 	{
-		for (auto& Pair : m_pmapObject[i])
+		for (auto& Pair : m_pMapObject[i])
 			Safe_Release(Pair.second);
 
-		m_pmapObject[i].clear();
+		m_pMapObject[i].clear();
 	}
-	Safe_Delete_Array(m_pmapObject);
+	Safe_Delete_Array(m_pMapObject);
 }

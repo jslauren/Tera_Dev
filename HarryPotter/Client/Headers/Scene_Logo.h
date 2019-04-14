@@ -18,6 +18,7 @@ public:
 	virtual _int	LateUpdate_Scene(const _float& fTimeDelta);
 	virtual HRESULT Render_Scene();
 private:
+	// 이 씬에서 사용할 객체들의 Initialize 작업을 위한 멤버함수 선언이다.
 	HRESULT Ready_Component_Prototype();
 	HRESULT Ready_GameObject_Prototype();
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);

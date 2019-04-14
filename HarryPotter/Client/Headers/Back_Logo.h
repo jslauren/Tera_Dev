@@ -23,11 +23,11 @@ public:
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
 private:
+	// 사용 할 컴포넌트 객체들을 멤버 변수로 가지고 있다.
 	CBuffer_TriCol*	m_pBufferCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
 private:
 	HRESULT			Add_Component();
-
 public:
 	static CBack_Logo*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone();

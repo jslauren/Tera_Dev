@@ -14,7 +14,6 @@ CComponent::CComponent(const CComponent & rhs)
 
 HRESULT CComponent::Ready_Component()
 {
-
 	return NOERROR;
 }
 

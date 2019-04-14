@@ -18,6 +18,9 @@ public:
 	_int	Update_Layer(const _float& fTimeDelta);
 	_int	LateUpdate_Layer(const _float& fTimeDelta);
 private:
+	// 객체들을 모아놓은 오브젝트 리스트 컨테이너.
+	// (실사용 객체, 원본객체) 둘 중에 하나가 아닌 그 둘을 모두 가지고 있는
+	// 오브젝트 클래스를 리스트안에 넣어 가지고 있다.
 	list<CGameObject*>			m_ObjectList;
 	typedef list<CGameObject*>	OBJECTLIST;
 public:
