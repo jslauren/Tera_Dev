@@ -3,6 +3,7 @@
 
 #include "Base.h"
 #include "Buffer_TriCol.h"
+#include "Buffer_RcCol.h"
 #include "Transform.h"
 #include "Renderer.h"
 

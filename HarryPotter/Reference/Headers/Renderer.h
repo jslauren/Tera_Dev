@@ -20,9 +20,9 @@ private:
 	list<CGameObject*>			m_RenderList[RENDER_END];
 	typedef list<CGameObject*>	RENDERLIST;
 public:
-	static CRenderer* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CRenderer*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CComponent* Clone();
-	virtual void Free();
+	virtual void		Free();
 };
 
 _END

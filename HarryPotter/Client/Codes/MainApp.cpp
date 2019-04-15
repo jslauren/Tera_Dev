@@ -19,8 +19,11 @@ HRESULT CMainApp::Ready_MainApp()	// Initialize_MainApp
 	if (FAILED(Ready_Default_Setting(CGraphic_Device::TYPE_WINMODE, g_iWinCX, g_iWinCY)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Render_State()))
+		return E_FAIL;
+
 	// 전역씬에서 사용 할 원형컴포넌트들의 생성.
-	if (FAILED(Ready_Component_Prototype()))
+    	if (FAILED(Ready_Component_Prototype()))
 		return E_FAIL;
 
 	// 씬 셋팅
@@ -89,9 +92,24 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _u
 	if (FAILED(m_pManagement->Ready_Management(SCENE_END)))
 		return E_FAIL;
 
-	// For.Gara
-	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, FALSE);
+	return NOERROR;
+}
 
+HRESULT CMainApp::Ready_Render_State()
+{
+	// For.Turn off Light
+	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, FALSE);
+	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
+
+	// For.Gara
+	_matrix		matView, matProj;
+
+	D3DXMatrixLookAtLH(&matView, &_vec3(0.f, 0.f, -10.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 1.f, 0.f));
+	m_pGraphic_Device->SetTransform(D3DTS_VIEW, &matView);
+
+	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(90.f), (g_iWinCX / (_float)g_iWinCY), 0.1f, 500.f);
+	m_pGraphic_Device->SetTransform(D3DTS_PROJECTION, &matProj);
+	
 	return NOERROR;
 }
 
@@ -102,6 +120,10 @@ HRESULT CMainApp::Ready_Component_Prototype()
 		return E_FAIL;
 
 	pComponent_Manager->AddRef();
+
+	// For.Component_Transform
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Transform", CTransform::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	// For.Component_Renderer
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Renderer", m_pRenderer = CRenderer::Create(m_pGraphic_Device))))

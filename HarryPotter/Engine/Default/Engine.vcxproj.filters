@@ -64,6 +64,9 @@
     <ClInclude Include="..\Headers\Component_Manager.h">
       <Filter>01. Utility\02. Component\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Buffer_RcCol.h">
+      <Filter>01. Utility\02. Component\Component\Buffer\Rectangle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -187,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Component_Manager.cpp">
       <Filter>01. Utility\02. Component\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Buffer_RcCol.cpp">
+      <Filter>01. Utility\02. Component\Component\Buffer\Rectangle</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

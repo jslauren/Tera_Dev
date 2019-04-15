@@ -23,7 +23,11 @@ protected:
 	_uint							m_iVtxSize = 0;
 	_uint							m_iNumVertices = 0;
 	_ulong							m_dwVtxFVF = 0;
-
+	_uint							m_iNumPolygons = 0;
+protected:
+	LPDIRECT3DINDEXBUFFER9			m_pIB = nullptr;
+	_uint							m_iIndexSize = 0;
+	D3DFORMAT						m_Format = D3DFORMAT(0);
 public:
 	virtual CComponent* Clone() = 0;
 	virtual void Free();

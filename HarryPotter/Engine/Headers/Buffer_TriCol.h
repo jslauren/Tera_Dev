@@ -13,8 +13,6 @@ private:
 public:
 	virtual HRESULT Ready_VIBuffer();
 	virtual void	Render_Buffer();
-
-
 public:
 	static CBuffer_TriCol*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CComponent*		Clone();

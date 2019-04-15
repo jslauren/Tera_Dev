@@ -30,6 +30,8 @@ HRESULT CBack_Logo::Ready_GameObject()
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
+	m_pTransformCom->Scaling(2.f, 2.f, 2.f);
+
 	return NOERROR;
 }
 
@@ -54,6 +56,8 @@ HRESULT CBack_Logo::Render_GameObject()
 	if (nullptr == m_pBufferCom)
 		return E_FAIL;
 
+	m_pTransformCom->SetUp_OnGraphicDev();
+
 	m_pBufferCom->Render_Buffer();
 
 	return NOERROR;
@@ -63,8 +67,12 @@ HRESULT CBack_Logo::Add_Component()
 {
 	// 사용할 컴포넌트 객체들을 이 함수에서 추가해준다.
 
+	// For.Com_Transform
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", (CComponent**)&m_pTransformCom)))
+		return E_FAIL;
+
 	// For.Com_Buffer
-	if (FAILED(CGameObject::Add_Component(SCENE_LOGO, L"Component_Buffer_TriCol", (CComponent**)&m_pBufferCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_LOGO, L"Component_Buffer_RcCol", (CComponent**)&m_pBufferCom)))
 		return E_FAIL;
 
 	// For.Com_Renderer
@@ -112,6 +120,7 @@ CGameObject * CBack_Logo::Clone()
 
 void CBack_Logo::Free()
 {
+	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pBufferCom);
 

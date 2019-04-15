@@ -4,7 +4,8 @@
 #include "GameObject.h"
 
 _BEGIN(Engine)
-class CBuffer_TriCol;	// 그리기를 위한 리소스로 정점 버퍼를 추가한다.
+class CTransform;
+class CBuffer_RcCol;	// 그리기를 위한 리소스로 정점 버퍼를 추가한다.
 class CRenderer;		// 백로고를 렌더그룹에 추가하기 위함. && Render함수를 호출할 수 있도록 
 _END
 
@@ -24,7 +25,8 @@ public:
 	virtual HRESULT Render_GameObject();
 private:
 	// 사용 할 컴포넌트 객체들을 멤버 변수로 가지고 있다.
-	CBuffer_TriCol*	m_pBufferCom = nullptr;
+	CTransform*		m_pTransformCom = nullptr;
+	CBuffer_RcCol*	m_pBufferCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
 private:
 	HRESULT			Add_Component();

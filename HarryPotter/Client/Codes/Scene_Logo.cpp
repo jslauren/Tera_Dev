@@ -30,7 +30,6 @@ HRESULT CScene_Logo::Ready_Scene()
 
 _int CScene_Logo::Update_Scene(const _float & fTimeDelta)
 {
-
 	return _int(CScene::Update_Scene(fTimeDelta));
 }
 
@@ -41,7 +40,6 @@ _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 
 HRESULT CScene_Logo::Render_Scene()
 {
-
 	return CScene::Render_Scene();
 }
 
@@ -52,6 +50,10 @@ HRESULT CScene_Logo::Ready_Component_Prototype()
 
 	// For.Component_Buffer_TriCol
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_LOGO, L"Component_Buffer_TriCol", CBuffer_TriCol::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.Component_Buffer_RcCol
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_LOGO, L"Component_Buffer_RcCol", CBuffer_RcCol::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return NOERROR;

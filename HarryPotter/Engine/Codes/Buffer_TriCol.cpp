@@ -24,6 +24,10 @@ HRESULT CBuffer_TriCol::Ready_VIBuffer()
 	m_iVtxSize = sizeof(VTXCOL);
 	m_iNumVertices = 3;
 	m_dwVtxFVF = D3DFVF_XYZ | D3DFVF_DIFFUSE;
+	m_iNumPolygons = 1;
+
+	m_iIndexSize = sizeof(INDEX16);
+	m_Format	 = D3DFMT_INDEX16;
 
 	if (FAILED(CVIBuffer::Ready_VIBuffer()))
 		return E_FAIL;
@@ -58,6 +62,16 @@ HRESULT CBuffer_TriCol::Ready_VIBuffer()
 	// 다 찍었으니 풀어준다.
 	m_pVB->Unlock();
 
+	INDEX16*	pIndices = nullptr;
+
+	m_pIB->Lock(0, 0, (void**)&pIndices, 0);
+
+	pIndices[0]._1 = 0;
+	pIndices[0]._2 = 1;
+	pIndices[0]._3 = 2;
+
+	m_pIB->Unlock();
+
 	return NOERROR;
 }
 
@@ -69,7 +83,8 @@ void CBuffer_TriCol::Render_Buffer()
 	// 정점을 찍어주는 구문 //
 	m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, m_iVtxSize);
 	m_pGraphic_Device->SetFVF(m_dwVtxFVF);
-	m_pGraphic_Device->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 1);
+	// Index를 안써도 되지만 써서 원래는 DrawIndexedPrimitive를 사용해야 함.
+	m_pGraphic_Device->DrawPrimitive(D3DPT_TRIANGLELIST, 0, m_iNumPolygons);
 
 	//////////////////////////
 }
@@ -93,7 +108,5 @@ CComponent * CBuffer_TriCol::Clone()
 
 void CBuffer_TriCol::Free()
 {
-
-
 	CVIBuffer::Free();
 }
