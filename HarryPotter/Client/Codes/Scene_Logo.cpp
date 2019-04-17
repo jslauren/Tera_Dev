@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Scene_Logo.h"
+#include "Scene_Stage.h"
+#include "Management.h"
 
 #include "Back_Logo.h"
 
@@ -35,6 +37,25 @@ _int CScene_Logo::Update_Scene(const _float & fTimeDelta)
 
 _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 {
+	CManagement*	pManagement = CManagement::GetInstance();
+	if (nullptr == pManagement)
+		return -1;
+
+	pManagement->AddRef();
+
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	{
+		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Stage::Create(m_pGraphic_Device))))
+		{
+			Safe_Release(pManagement);
+			return -1;
+		}
+		Safe_Release(pManagement);
+		return 0;
+	}
+
+	Safe_Release(pManagement);
+	
 	return _int(CScene::LateUpdate_Scene(fTimeDelta));
 }
 
@@ -92,6 +113,16 @@ CScene_Logo * CScene_Logo::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 void CScene_Logo::Free()
 {
+	if (nullptr == m_pObject_Manager ||
+		nullptr == m_pComponent_Manager)
+		return;
+
+	if (FAILED(m_pObject_Manager->Clear_Object_Prototype(SCENE_LOGO)))
+		return;
+
+	if (FAILED(m_pComponent_Manager->Clear_Component_Prototype(SCENE_LOGO)))
+		return;
+
 	CScene::Free();
 }
 

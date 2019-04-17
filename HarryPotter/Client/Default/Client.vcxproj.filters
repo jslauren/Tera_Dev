@@ -57,6 +57,9 @@
     <ClInclude Include="..\Headers\Back_Logo.h">
       <Filter>02. GameObject\00. Logo\BackGround</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Scene_Stage.h">
+      <Filter>01. Scene\01. For.Stage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -73,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Back_Logo.cpp">
       <Filter>02. GameObject\00. Logo\BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Scene_Stage.cpp">
+      <Filter>01. Scene\01. For.Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

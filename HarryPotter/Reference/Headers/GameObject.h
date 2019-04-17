@@ -19,10 +19,14 @@ public:
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
 protected:
-	HRESULT Add_Component(const _uint& iSceneIdx, const _tchar* pComponentTag, CComponent** ppOutComponent);
+	HRESULT Add_Component(const _uint& iSceneIdx, const _tchar* pPrototypeTag, const _tchar* pComponentTag, CComponent** ppOutComponent);
 private:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
 	CComponent_Manager*		m_pComponent_Manager = nullptr;
+private:
+	// CGameObject를 상속받은 객체가 가지고 있는 컴포넌트를 모아놓기위한 컨테이너.
+	map<const _tchar*, CComponent*>			m_mapComponents; 
+	typedef map<const _tchar*, CComponent*>	MAPCOMPONENTS;
 public:
 	// 이 클래스를 상속받는 자식 오브젝트 클래스들을,
 	// 프로토 타입 패턴을 사용하여 복사 해주기 위해,

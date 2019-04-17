@@ -104,7 +104,7 @@ HRESULT CMainApp::Ready_Render_State()
 	// For.Gara
 	_matrix		matView, matProj;
 
-	D3DXMatrixLookAtLH(&matView, &_vec3(0.f, 0.f, -10.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 1.f, 0.f));
+	D3DXMatrixLookAtLH(&matView, &_vec3(0.f, 15.f, -15.f), &_vec3(0.f, 0.f, 0.f), &_vec3(0.f, 1.f, 0.f));
 	m_pGraphic_Device->SetTransform(D3DTS_VIEW, &matView);
 
 	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(90.f), (g_iWinCX / (_float)g_iWinCY), 0.1f, 500.f);
@@ -164,8 +164,6 @@ HRESULT CMainApp::Ready_Scene(SCENEID eID)
 	// 현재 내가 열거체로 선택하고 생성한 씬을 씬 매니저와 동기화
 	if (FAILED(m_pManagement->SetUp_CurrentScene(pScene)))
 		return E_FAIL;
-
-	Safe_Release(pScene);
 
 	return NOERROR;
 }

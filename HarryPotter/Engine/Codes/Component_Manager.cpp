@@ -44,6 +44,21 @@ HRESULT CComponent_Manager::Add_Component_Prototype(const _uint & iSceneIdx, con
 	return NOERROR;
 }
 
+HRESULT CComponent_Manager::Clear_Component_Prototype(const _uint & iSceneIdx)
+{
+	if (m_iMaxNumScene <= iSceneIdx ||
+		nullptr == m_pMapComponent)
+		return E_FAIL;
+
+	for (auto& Pair : m_pMapComponent[iSceneIdx])
+	{
+		Safe_Release(Pair.second);
+	}
+	m_pMapComponent[iSceneIdx].clear();
+
+	return NOERROR;
+}
+
 CComponent * CComponent_Manager::Clone_Component(const _uint & iSceneIdx, const _tchar * pComponentTag)
 {
 	// 프로토타입 패턴을 위한 컴포넌트 클론 함수

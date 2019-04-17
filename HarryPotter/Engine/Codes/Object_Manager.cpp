@@ -48,6 +48,28 @@ HRESULT CObject_Manager::Add_Object_Prototype(const _uint & iSceneIdx, const _tc
 	return NOERROR;
 }
 
+HRESULT CObject_Manager::Clear_Object_Prototype(const _uint & iSceneIdx)
+{
+	if (m_iMaxNumScene <= iSceneIdx ||
+		nullptr == m_pMapObjectPrototype ||
+		nullptr == m_pMapObject)
+		return E_FAIL;
+
+	for (auto& Pair : m_pMapObject[iSceneIdx])
+	{
+		Safe_Release(Pair.second);
+	}
+	m_pMapObject[iSceneIdx].clear();
+
+	for (auto& Pair : m_pMapObjectPrototype[iSceneIdx])
+	{
+		Safe_Release(Pair.second);
+	}
+	m_pMapObjectPrototype[iSceneIdx].clear();
+
+	return NOERROR;
+}
+
 HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * pProtoTag, const _uint & iSceneID, const _tchar * pLayerTag)
 {
 	// 먼저 해당 오브젝트가 원본 객체에 존재하는지 검사하고

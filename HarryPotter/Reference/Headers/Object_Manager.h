@@ -17,6 +17,7 @@ private:
 public:
 	HRESULT Reserve_Object_Manager(const _uint& iMaxNumScene);
 	HRESULT Add_Object_Prototype(const _uint& iSceneIdx, const _tchar* pProtoTag, CGameObject* pInGameObject);
+	HRESULT Clear_Object_Prototype(const _uint& iSceneIdx);
 	HRESULT Add_Object(const _uint& iProtoSceneID, const _tchar* pProtoTag, const _uint& iSceneID, const _tchar* pLayerTag);
 	_int	Update_Object_Manager(const _float& fTimeDelta);
 	_int	LateUpdate_Object_Manager(const _float& fTimeDelta);

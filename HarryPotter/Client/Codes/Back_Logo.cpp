@@ -30,13 +30,47 @@ HRESULT CBack_Logo::Ready_GameObject()
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Scaling(2.f, 2.f, 2.f);
+	m_pTransformCom->Set_Scaling(2.f, 2.f, 2.f);
+	//m_pTransformCom->Set_Angle_Y(D3DXToRadian(45.0f));
 
 	return NOERROR;
 }
 
 _int CBack_Logo::Update_GameObject(const _float & fTimeDelta)
 {
+	if (nullptr == m_pTransformCom)
+		return -1;
+
+	//if (GetKeyState('W') & 0x8000)
+	//{
+	//	m_pTransformCom->Go_Straight(5.f, fTimeDelta);
+	//}
+
+	//if (GetKeyState('S') & 0x8000)
+	//{
+	//	m_pTransformCom->Back_Straight(5.f, fTimeDelta);
+	//}
+
+	//if (GetKeyState(VK_UP) & 0x8000)
+	//{
+	//	m_pTransformCom->Rotation_X(D3DXToRadian(90.f), fTimeDelta);
+	//}
+
+	//if (GetKeyState(VK_DOWN) & 0x8000)
+	//{
+	//	m_pTransformCom->Rotation_X(D3DXToRadian(-90.f), fTimeDelta);
+	//}
+
+	//if (GetKeyState(VK_LEFT) & 0x8000)
+	//{
+	//	m_pTransformCom->Rotation_Y(D3DXToRadian(-90.f), fTimeDelta);
+	//}
+
+	//if (GetKeyState(VK_RIGHT) & 0x8000)
+	//{
+	//	m_pTransformCom->Rotation_Y(D3DXToRadian(90.f), fTimeDelta);
+	//}
+
 	return _int();
 }
 
@@ -56,9 +90,10 @@ HRESULT CBack_Logo::Render_GameObject()
 	if (nullptr == m_pBufferCom)
 		return E_FAIL;
 
-	m_pTransformCom->SetUp_OnGraphicDev();
+	//m_pTransformCom->SetUp_OnGraphicDev();
 
-	m_pBufferCom->Render_Buffer();
+	// 행렬 = 행렬 * 행렬
+	m_pBufferCom->Render_Buffer(m_pTransformCom);
 
 	return NOERROR;
 }
@@ -68,15 +103,15 @@ HRESULT CBack_Logo::Add_Component()
 	// 사용할 컴포넌트 객체들을 이 함수에서 추가해준다.
 
 	// For.Com_Transform
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", (CComponent**)&m_pTransformCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
 	// For.Com_Buffer
-	if (FAILED(CGameObject::Add_Component(SCENE_LOGO, L"Component_Buffer_RcCol", (CComponent**)&m_pBufferCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_LOGO, L"Component_Buffer_RcCol", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
 		return E_FAIL;
 
 	// For.Com_Renderer
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", (CComponent**)&m_pRendererCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
 	return NOERROR;

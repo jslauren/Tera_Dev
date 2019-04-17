@@ -23,9 +23,10 @@ HRESULT CTransform::SetUp_OnGraphicDev()
 	m_pGraphic_Device->SetTransform(D3DTS_WORLD, &m_matWorld);
 
 	return NOERROR;
+
 }
 
-HRESULT CTransform::Scaling(const _float & fX, const _float & fY, const _float & fZ)
+HRESULT CTransform::Set_Scaling(const _float & fX, const _float & fY, const _float & fZ)
 {
 	// [이해를 돕기 위한 방법] //
 	//_vec3	 vRight;
@@ -50,6 +51,96 @@ HRESULT CTransform::Scaling(const _float & fX, const _float & fY, const _float &
 
 	vLook = *D3DXVec3Normalize(&vLook, (_vec3*)&m_matWorld.m[2][0]) * fZ;
 	memcpy(&m_matWorld.m[2][0], &vLook, sizeof(_vec3));
+
+	return NOERROR;
+}
+
+HRESULT CTransform::Set_Angle_Axis(_vec3 vState, const _float & fRadian)
+{
+	// 이 함수는 무조건 원점을 기준으로 내가 설정한 fRadian 각만큼 돌린 상태로,
+	// 초기화를 해주겠다 라는 함수이다.
+	// 값이 지속적으로 바뀌지 않고 한번만 지정해 주기 때문에 fTimeDelta값이 필요 없다.
+
+	_matrix		matRotate;
+	D3DXMatrixRotationAxis(&matRotate, &vState, fRadian);
+
+	// 그래서 이렇게 초기값을 1로 가지는 항등행렬 식의 벡터를 선언 해주는데,
+	_vec3		vRight(1.f, 0.f, 0.f), vUp(0.f, 1.f, 0.f), vLook(0.f, 0.f, 1.f);
+
+	// 이렇게 하면 각 벡터의 고유 크기정보는 사라져 버리기 때문에,
+	// D3DXVec3Length함수를 사용하여, 각 벡터를 다시 초기화? 해준다.
+	vRight *= D3DXVec3Length((_vec3*)&m_matWorld.m[STATE_RIGHT][0]);
+	D3DXVec3TransformNormal(&vRight, &vRight, &matRotate);
+
+	vUp *= D3DXVec3Length((_vec3*)&m_matWorld.m[STATE_UP][0]);
+	D3DXVec3TransformNormal(&vUp, &vUp, &matRotate);
+
+	vLook *= D3DXVec3Length((_vec3*)&m_matWorld.m[STATE_LOOK][0]);
+	D3DXVec3TransformNormal(&vLook, &vLook, &matRotate);
+
+	memcpy(&m_matWorld.m[STATE_RIGHT][0], &vRight, sizeof(_vec3));
+	memcpy(&m_matWorld.m[STATE_UP][0], &vUp, sizeof(_vec3));
+	memcpy(&m_matWorld.m[STATE_LOOK][0], &vLook, sizeof(_vec3));
+
+	return NOERROR;
+}
+
+HRESULT CTransform::Move(_int & iDirection, const _float & fSpeedPerSec, const _float & fTimeDelta)
+{
+	// 위치 = 위치 + 현재 바라보고 있는 방향벡터(=vLook) (이 때, 방향과 크기를 1로) * 속도PerSec * fTimeDelta
+	// 월드행렬의 4행에 갱신된 위치정보를 적용시켜준다.(대입해준다)
+
+	_vec3	vPosition, vLook;
+
+	memcpy(&vPosition, &m_matWorld.m[STATE_POSITION][0], sizeof(_vec3));
+	memcpy(&vLook, &m_matWorld.m[STATE_LOOK][0], sizeof(_vec3));
+
+	if(iDirection == 0)
+		vPosition += ((*D3DXVec3Normalize(&vLook, &vLook)) * fSpeedPerSec * fTimeDelta);
+	else if(iDirection == 1)
+		vPosition -= ((*D3DXVec3Normalize(&vLook, &vLook)) * fSpeedPerSec * fTimeDelta);
+
+	memcpy(&m_matWorld.m[STATE_POSITION][0], &vPosition, sizeof(_vec3));
+
+	return NOERROR;
+}
+
+HRESULT CTransform::Rotation_Axis(_vec3 vState, const _float & fRadianPerSec, const _float & fTimeDelta)
+{
+	_matrix		matRotate;
+	D3DXMatrixRotationAxis(&matRotate, &vState, (fRadianPerSec * fTimeDelta));
+
+	// 그래서 이렇게 초기값을 1로 가지는 항등행렬 식의 벡터를 선언 해주는데,
+	_vec3		vRight(1.f, 0.f, 0.f), vUp(0.f, 1.f, 0.f), vLook(0.f, 0.f, 1.f);
+
+	// 이렇게 하면 각 벡터의 고유 크기정보는 사라져 버리기 때문에,
+	// D3DXVec3Length함수를 사용하여, 각 벡터를 다시 초기화? 해준다.
+	vRight *= D3DXVec3Length((_vec3*)&m_matWorld.m[STATE_RIGHT][0]);
+	D3DXVec3TransformNormal(&vRight, &vRight, &matRotate);
+
+	vUp *= D3DXVec3Length((_vec3*)&m_matWorld.m[STATE_UP][0]);
+	D3DXVec3TransformNormal(&vUp, &vUp, &matRotate);
+
+	vLook *= D3DXVec3Length((_vec3*)&m_matWorld.m[STATE_LOOK][0]);
+	D3DXVec3TransformNormal(&vLook, &vLook, &matRotate);
+
+	memcpy(&m_matWorld.m[STATE_RIGHT][0], &vRight, sizeof(_vec3));
+	memcpy(&m_matWorld.m[STATE_UP][0], &vUp, sizeof(_vec3));
+	memcpy(&m_matWorld.m[STATE_LOOK][0], &vLook, sizeof(_vec3));
+
+	return NOERROR;
+}
+
+HRESULT CTransform::Move_Target(const CTransform * pTransform, const _float & fSpeedPerSec, const _float & fTimeDelta)
+{
+	_vec3	vTargetPos	= *pTransform->Get_StateInfo(STATE_POSITION);
+	
+	_vec3	vposition	= *Get_StateInfo(STATE_POSITION);
+	_vec3	vDir		= vTargetPos - vposition;
+
+	vposition += ((*D3DXVec3Normalize(&vDir, &vDir) * fSpeedPerSec * fTimeDelta));
+
+	Set_StateInfo(STATE_POSITION, &vposition);
 
 	return NOERROR;
 }

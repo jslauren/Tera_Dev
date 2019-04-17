@@ -1,4 +1,5 @@
 #include "..\Headers\Buffer_RcCol.h"
+#include "Transform.h"
 
 CBuffer_RcCol::CBuffer_RcCol(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CVIBuffer(pGraphic_Device)
@@ -53,15 +54,19 @@ HRESULT CBuffer_RcCol::Ready_VIBuffer()
 	m_pVB->Lock(0, 0, (void**)&pVertices, 0);
 
 	pVertices[0].vPosition = _vec3(0.5f, 0.5f, 0.f);
+	m_pPositions[0] = pVertices[0].vPosition;
 	pVertices[0].dwColor = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
 
 	pVertices[1].vPosition = _vec3(-0.5f, 0.5f, 0.f);
+	m_pPositions[1] = pVertices[1].vPosition;
 	pVertices[1].dwColor = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
 
 	pVertices[2].vPosition = _vec3(-0.5f, -0.5f, 0.f);
+	m_pPositions[2] = pVertices[2].vPosition;
 	pVertices[2].dwColor = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
 
 	pVertices[3].vPosition = _vec3(0.5f, -0.5f, 0.f);
+	m_pPositions[3] = pVertices[3].vPosition;
 	pVertices[3].dwColor = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
 
 	//※=========[후면 추려내기]========※//
@@ -100,10 +105,26 @@ HRESULT CBuffer_RcCol::Ready_VIBuffer()
 	return NOERROR;
 }
 
-void CBuffer_RcCol::Render_Buffer()
+void CBuffer_RcCol::Render_Buffer(const CTransform* pTransform)
 {
 	if (nullptr == m_pGraphic_Device)
 		return;
+
+	if (nullptr != pTransform)
+	{
+		_matrix		matTransform = *pTransform->Get_WorldMatrixPointer();
+
+		// 정점의 위치에 행렬을 곱해서 정점의 위치를 변환하자.
+		VTXCOL*		pVertices = nullptr;
+
+		m_pVB->Lock(0, 0, (void**)&pVertices, 0);
+
+		for (size_t i = 0; i < m_iNumVertices; ++i)
+		{
+			D3DXVec3TransformCoord(&pVertices[i].vPosition, &m_pPositions[i], &matTransform);
+		}
+		m_pVB->Unlock();
+	}
 
 	// 정점을 찍어주는 구문 //
 	m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, m_iVtxSize);
