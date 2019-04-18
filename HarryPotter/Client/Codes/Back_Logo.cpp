@@ -87,10 +87,11 @@ _int CBack_Logo::LateUpdate_GameObject(const _float & fTimeDelta)
 
 HRESULT CBack_Logo::Render_GameObject()
 {
-	if (nullptr == m_pBufferCom)
+	if (nullptr == m_pBufferCom ||
+		nullptr == m_pTextureCom)
 		return E_FAIL;
 
-	//m_pTransformCom->SetUp_OnGraphicDev();
+	m_pTextureCom->SetUp_OnGraphicDev(0);
 
 	// 행렬 = 행렬 * 행렬
 	m_pBufferCom->Render_Buffer(m_pTransformCom);
@@ -107,11 +108,15 @@ HRESULT CBack_Logo::Add_Component()
 		return E_FAIL;
 
 	// For.Com_Buffer
-	if (FAILED(CGameObject::Add_Component(SCENE_LOGO, L"Component_Buffer_RcCol", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_RcTex", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
 		return E_FAIL;
 
 	// For.Com_Renderer
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
+		return E_FAIL;
+
+	// For.Com_Texture
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Default", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -155,6 +160,7 @@ CGameObject * CBack_Logo::Clone()
 
 void CBack_Logo::Free()
 {
+	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pBufferCom);

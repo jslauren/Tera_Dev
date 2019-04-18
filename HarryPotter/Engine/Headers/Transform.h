@@ -24,7 +24,7 @@ public:	// Setter
 		memcpy((_vec3*)&m_matWorld.m[eState][0], pStateInfo, sizeof(_vec3));
 	}
 public:
-	HRESULT SetUp_OnGraphicDev();
+	HRESULT SetUp_OnGraphicDev(const _uint& iIndex);
 	HRESULT	Set_Scaling(const _float& fX, const _float& fY, const _float& fZ);
 	// vState에 right, up, look 벡터로 어떤 축을 기준으로 돌릴껀지 넣어준다.
 	HRESULT	Set_Angle_Axis(_vec3 vState, const _float& fRadian);

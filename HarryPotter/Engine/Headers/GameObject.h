@@ -13,6 +13,8 @@ protected:
 	explicit CGameObject(const CGameObject& rhs);	// 복사생성자
 	virtual ~CGameObject() = default;
 public:
+	const	CComponent*	Get_Component(const _tchar* pComponentTag);
+public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject();
 	virtual _int	Update_GameObject(const _float& fTimeDelta);

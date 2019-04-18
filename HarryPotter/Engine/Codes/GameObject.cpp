@@ -16,6 +16,11 @@ CGameObject::CGameObject(const CGameObject & rhs)
 	m_pGraphic_Device->AddRef();
 }
 
+const CComponent * CGameObject::Get_Component(const _tchar * pComponentTag)
+{
+	return nullptr;
+}
+
 HRESULT CGameObject::Ready_GameObject_Prototype()
 {
 	return NOERROR;

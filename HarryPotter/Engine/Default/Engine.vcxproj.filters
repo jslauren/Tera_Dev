@@ -65,7 +65,16 @@
       <Filter>01. Utility\02. Component\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Buffer_RcCol.h">
-      <Filter>01. Utility\02. Component\Component\Buffer\Rectangle</Filter>
+      <Filter>01. Utility\02. Component\Component\Buffer\Rectangle_Color</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Buffer_RcTex.h">
+      <Filter>01. Utility\02. Component\Component\Buffer\Rectangle_Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Texture.h">
+      <Filter>01. Utility\02. Component\Component\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Buffer_Terrain.h">
+      <Filter>01. Utility\02. Component\Component\Buffer\Terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -141,8 +150,11 @@
     <Filter Include="01. Utility\02. Component\Component\Buffer\Terrain">
       <UniqueIdentifier>{e3855c97-cb02-4797-bfef-006924314b48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\02. Component\Component\Buffer\Rectangle">
+    <Filter Include="01. Utility\02. Component\Component\Buffer\Rectangle_Color">
       <UniqueIdentifier>{d5b02183-5b5a-4931-99eb-53fefab3b5e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Buffer\Rectangle_Texture">
+      <UniqueIdentifier>{a1f908b8-d62b-469f-a8de-1f153c60d39b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -192,7 +204,16 @@
       <Filter>01. Utility\02. Component\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Buffer_RcCol.cpp">
-      <Filter>01. Utility\02. Component\Component\Buffer\Rectangle</Filter>
+      <Filter>01. Utility\02. Component\Component\Buffer\Rectangle_Color</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Buffer_RcTex.cpp">
+      <Filter>01. Utility\02. Component\Component\Buffer\Rectangle_Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Texture.cpp">
+      <Filter>01. Utility\02. Component\Component\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Buffer_Terrain.cpp">
+      <Filter>01. Utility\02. Component\Component\Buffer\Terrain</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -11,7 +11,7 @@ CTransform::CTransform(const CTransform & rhs)
 {
 }
 
-HRESULT CTransform::SetUp_OnGraphicDev()
+HRESULT CTransform::SetUp_OnGraphicDev(const _uint& iIndex)
 {
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;

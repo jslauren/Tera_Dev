@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\Scene_Stage.h"
+#include "Terrain.h"
 
 _USING(Client)
 
@@ -45,17 +46,25 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
+	// For.Component_Buffer_Terrain
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
 HRESULT CScene_Stage::Ready_GameObject_Prototype()
 {
-	return NOERROR;
+	// For.GameObject_Terrain
+	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Terrain", CTerrain::Create(m_pGraphic_Device))))
+		return E_FAIL;
 }
 
 HRESULT CScene_Stage::Ready_Layer_BackGround(const _tchar * pLayerTag)
 {
-	return NOERROR;
+	// For.Terrain
+	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Terrain", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
 }
 
 CScene_Stage * CScene_Stage::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

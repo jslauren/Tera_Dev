@@ -4,8 +4,11 @@
 #include "Base.h"
 #include "Buffer_TriCol.h"
 #include "Buffer_RcCol.h"
+#include "Buffer_RcTex.h"
+#include "Buffer_Terrain.h"
 #include "Transform.h"
 #include "Renderer.h"
+#include "Texture.h"
 
 // 컴포넌트를 보관한다.
 // 컴포넌트의 종류가 굉장히 다양하다. (정점버퍼, 텍스쳐, 메시, 사운드, 변환, 렌더러)

@@ -28,6 +28,12 @@
     <Filter Include="02. GameObject\00. Logo\BackGround">
       <UniqueIdentifier>{6bd77107-fa38-4059-ac48-41ff00312aa0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. Stage">
+      <UniqueIdentifier>{64782ff4-382c-469c-9413-b9ee9625e749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Stage\Terrain">
+      <UniqueIdentifier>{796c65da-8d49-4085-b7cc-c7ca9144858e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -60,6 +66,9 @@
     <ClInclude Include="..\Headers\Scene_Stage.h">
       <Filter>01. Scene\01. For.Stage</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Terrain.h">
+      <Filter>02. GameObject\01. Stage\Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -79,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Scene_Stage.cpp">
       <Filter>01. Scene\01. For.Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Terrain.cpp">
+      <Filter>02. GameObject\01. Stage\Terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,12 @@
 
 namespace Engine
 {
+	typedef struct tagVertex_Texture
+	{
+		D3DXVECTOR3		vPosition;	// D3DFVF_XYZ
+		D3DXVECTOR2		vTexUV;		// D3DFVF_TEX1
+	}VTXTEX;
+
 	typedef struct tagVertex_Color
 	{
 		D3DXVECTOR3			vPosition; // D3DFVF_XYZ
