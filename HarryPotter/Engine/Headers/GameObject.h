@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Base.h"
 #include "Component_Manager.h"
 
@@ -13,10 +14,14 @@ protected:
 	explicit CGameObject(const CGameObject& rhs);	// 복사생성자
 	virtual ~CGameObject() = default;
 public:
-	const	CComponent*	Get_Component(const _tchar* pComponentTag);
+	const CComponent* Get_Component(const _tchar* pComponentTag);
+public:
+	void Set_Transform(_D3DTRANSFORMSTATETYPE eType, const _matrix* pMatrix) {
+		m_pGraphic_Device->SetTransform(eType, pMatrix);
+	}
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
-	virtual HRESULT Ready_GameObject();
+	virtual HRESULT Ready_GameObject(void* pArg);
 	virtual _int	Update_GameObject(const _float& fTimeDelta);
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
@@ -34,8 +39,8 @@ public:
 	// 프로토 타입 패턴을 사용하여 복사 해주기 위해,
 	// 그 자식 오브젝트들의 부모격인 이 클래스에서 Clone함수를 순수 가상함수로 정의하였다.
 	// (순수 가상함수 정의 시, 모든 자식 클래스들은 해당 함수를 가지고 있어야 한다)
-	virtual CGameObject*	Clone() = 0;
-	virtual void			Free();
+	virtual CGameObject* Clone(void* pArg = nullptr) = 0;
+	virtual void Free();
 };
 
 _END

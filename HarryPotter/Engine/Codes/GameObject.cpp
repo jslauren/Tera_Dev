@@ -26,7 +26,7 @@ HRESULT CGameObject::Ready_GameObject_Prototype()
 	return NOERROR;
 }
 
-HRESULT CGameObject::Ready_GameObject()
+HRESULT CGameObject::Ready_GameObject(void* pArg)
 {
 	return NOERROR;
 }
@@ -46,7 +46,7 @@ HRESULT CGameObject::Render_GameObject()
 	return NOERROR;
 }
 
-HRESULT CGameObject::Add_Component(const _uint & iSceneIdx, const _tchar* pPrototypeTag, const _tchar * pComponentTag, CComponent** ppOutComponent)
+HRESULT CGameObject::Add_Component(const _uint & iSceneIdx, const _tchar * pPrototypeTag, const _tchar* pComponentTag, CComponent** ppOutComponent)
 {
 	// 객체에 적용 될(또는 사용 할) 컴포넌트 들을 이 함수를 통해 추가 해준다.
 	if (nullptr == m_pComponent_Manager)

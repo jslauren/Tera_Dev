@@ -13,15 +13,16 @@ CTexture::CTexture(const CTexture & rhs)
 		pTexture->AddRef();
 }
 
+
 HRESULT CTexture::Ready_Texture(const _tchar * pFileName, const _uint & iNumTexture)
 {
 	m_vecTexture.reserve(iNumTexture);
 
-	for (size_t i = 0; i < iNumTexture; i++)
+	for (size_t i = 0; i < iNumTexture; ++i)
 	{
-		_tchar	szFileName[MAX_PATH] = L"";
+		_tchar		szFileName[MAX_PATH] = L"";
 
-		LPDIRECT3DTEXTURE9	pTexture = nullptr;
+		LPDIRECT3DTEXTURE9		pTexture = nullptr;
 
 		wsprintf(szFileName, pFileName, i);
 
@@ -30,7 +31,7 @@ HRESULT CTexture::Ready_Texture(const _tchar * pFileName, const _uint & iNumText
 
 		m_vecTexture.push_back(pTexture);
 	}
-	
+
 	return NOERROR;
 }
 
@@ -44,7 +45,7 @@ HRESULT CTexture::SetUp_OnGraphicDev(const _uint & iIndex)
 	if (FAILED(m_pGraphic_Device->SetTexture(0, m_vecTexture[iIndex])))
 		return E_FAIL;
 
-	return NOERROR;
+	return E_NOTIMPL;
 }
 
 CTexture * CTexture::Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar * pFileName, const _uint & iNumTexture)

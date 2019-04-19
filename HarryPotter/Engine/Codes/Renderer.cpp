@@ -4,7 +4,6 @@
 CRenderer::CRenderer(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CComponent(pGraphic_Device)
 {
-
 }
 
 HRESULT CRenderer::Ready_Renderer()

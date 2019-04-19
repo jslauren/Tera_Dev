@@ -6,6 +6,7 @@ _USING(Client)
 CBack_Logo::CBack_Logo(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
 {
+
 }
 
 CBack_Logo::CBack_Logo(const CBack_Logo & rhs)
@@ -23,9 +24,9 @@ HRESULT CBack_Logo::Ready_GameObject_Prototype()
 	return NOERROR;
 }
 
-// 실제 씬에서 사용할 객체를 호출하는 함수.
-// 원본객체 복제 외에도, 추가적인 셋팅이 필요하면 여기서 셋팅하면 된다.
-HRESULT CBack_Logo::Ready_GameObject()
+// 실제 씬에서 사용할 객체가 호출하는 함수.
+// 원본객체 복제외에도 추가적인 셋팅이필요하면 여기서 셋팅해라.
+HRESULT CBack_Logo::Ready_GameObject(void* pArg)
 {
 	if (FAILED(Add_Component()))
 		return E_FAIL;
@@ -139,8 +140,7 @@ CBack_Logo * CBack_Logo::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 // 1.멤버함수안에 존재. 
 // 2.멤버함수는 객체로부터 호출(객체.멤버함수(), 객체주소->멤버함수())
 // 3.멤버함수안에 존재하는 this는 멤버함수의 호출을 가능하게한 객체의 주소를 의미한다.
-
-CGameObject * CBack_Logo::Clone()
+CGameObject * CBack_Logo::Clone(void* pArg)
 {
 	// *this 는 원본객체에 해당 함.
 	// 복사 생성자를 호출하면 부모의 복사 생성자도 호출한다.
@@ -149,7 +149,7 @@ CGameObject * CBack_Logo::Clone()
 	// AddRefCnt 때문에 얕은 복사 하면 안된다.
 	CBack_Logo* pInstance = new CBack_Logo(*this);
 
-	if (FAILED(pInstance->Ready_GameObject()))
+	if (FAILED(pInstance->Ready_GameObject(pArg)))
 	{
 		_MSGBOX("CBack_Logo Created Failed");
 		Safe_Release(pInstance);

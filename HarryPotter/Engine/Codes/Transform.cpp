@@ -11,7 +11,7 @@ CTransform::CTransform(const CTransform & rhs)
 {
 }
 
-HRESULT CTransform::SetUp_OnGraphicDev(const _uint& iIndex)
+HRESULT CTransform::SetUp_OnGraphicDev(const _uint & iIndex)
 {
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
@@ -23,7 +23,6 @@ HRESULT CTransform::SetUp_OnGraphicDev(const _uint& iIndex)
 	m_pGraphic_Device->SetTransform(D3DTS_WORLD, &m_matWorld);
 
 	return NOERROR;
-
 }
 
 HRESULT CTransform::Set_Scaling(const _float & fX, const _float & fY, const _float & fZ)
@@ -85,20 +84,25 @@ HRESULT CTransform::Set_Angle_Axis(_vec3 vState, const _float & fRadian)
 	return NOERROR;
 }
 
-HRESULT CTransform::Move(_int & iDirection, const _float & fSpeedPerSec, const _float & fTimeDelta)
+HRESULT CTransform::Move(_int iDirection, const _float & fSpeedPerSec, const _float & fTimeDelta)
 {
 	// 위치 = 위치 + 현재 바라보고 있는 방향벡터(=vLook) (이 때, 방향과 크기를 1로) * 속도PerSec * fTimeDelta
 	// 월드행렬의 4행에 갱신된 위치정보를 적용시켜준다.(대입해준다)
 
-	_vec3	vPosition, vLook;
+	_vec3	vPosition, vLook, vRight;
 
 	memcpy(&vPosition, &m_matWorld.m[STATE_POSITION][0], sizeof(_vec3));
 	memcpy(&vLook, &m_matWorld.m[STATE_LOOK][0], sizeof(_vec3));
+	memcpy(&vRight, &m_matWorld.m[STATE_RIGHT][0], sizeof(_vec3));
 
-	if(iDirection == 0)
+	if (iDirection == 0)
 		vPosition += ((*D3DXVec3Normalize(&vLook, &vLook)) * fSpeedPerSec * fTimeDelta);
-	else if(iDirection == 1)
+	else if (iDirection == 1)
 		vPosition -= ((*D3DXVec3Normalize(&vLook, &vLook)) * fSpeedPerSec * fTimeDelta);
+	else if (iDirection == 2)
+		vPosition -= ((*D3DXVec3Normalize(&vRight, &vRight)) * fSpeedPerSec * fTimeDelta);
+	else if (iDirection == 3)
+		vPosition += ((*D3DXVec3Normalize(&vRight, &vRight)) * fSpeedPerSec * fTimeDelta);
 
 	memcpy(&m_matWorld.m[STATE_POSITION][0], &vPosition, sizeof(_vec3));
 
@@ -133,14 +137,14 @@ HRESULT CTransform::Rotation_Axis(_vec3 vState, const _float & fRadianPerSec, co
 
 HRESULT CTransform::Move_Target(const CTransform * pTransform, const _float & fSpeedPerSec, const _float & fTimeDelta)
 {
-	_vec3	vTargetPos	= *pTransform->Get_StateInfo(STATE_POSITION);
-	
-	_vec3	vposition	= *Get_StateInfo(STATE_POSITION);
-	_vec3	vDir		= vTargetPos - vposition;
+	_vec3		vTargetPos = *pTransform->Get_StateInfo(STATE_POSITION);
 
-	vposition += ((*D3DXVec3Normalize(&vDir, &vDir) * fSpeedPerSec * fTimeDelta));
+	_vec3		vPosition = *Get_StateInfo(STATE_POSITION);
+	_vec3		vDir = vTargetPos - vPosition;
 
-	Set_StateInfo(STATE_POSITION, &vposition);
+	vPosition += *D3DXVec3Normalize(&vDir, &vDir) * fSpeedPerSec * fTimeDelta;
+
+	Set_StateInfo(STATE_POSITION, &vPosition);
 
 	return NOERROR;
 }

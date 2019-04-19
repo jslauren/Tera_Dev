@@ -76,6 +76,12 @@
     <ClInclude Include="..\Headers\Buffer_Terrain.h">
       <Filter>01. Utility\02. Component\Component\Buffer\Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Buffer_ScreenTex.h">
+      <Filter>01. Utility\02. Component\Component\Buffer\Rectangle_Viewport_Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Camera.h">
+      <Filter>01. Utility\03. Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -156,6 +162,12 @@
     <Filter Include="01. Utility\02. Component\Component\Buffer\Rectangle_Texture">
       <UniqueIdentifier>{a1f908b8-d62b-469f-a8de-1f153c60d39b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Buffer\Rectangle_Viewport_Texture">
+      <UniqueIdentifier>{f0001d0a-d2ee-4362-9bd8-9e5c03edc13e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Camera">
+      <UniqueIdentifier>{d0c684d7-6ab0-4d72-9e5b-0bd934b1805f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Graphic_Device.cpp">
@@ -214,6 +226,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Buffer_Terrain.cpp">
       <Filter>01. Utility\02. Component\Component\Buffer\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Buffer_ScreenTex.cpp">
+      <Filter>01. Utility\02. Component\Component\Buffer\Rectangle_Viewport_Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Camera.cpp">
+      <Filter>01. Utility\03. Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

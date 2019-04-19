@@ -12,7 +12,8 @@ private:
 	virtual ~CBuffer_RcCol() = default;
 public:
 	virtual HRESULT Ready_VIBuffer();
-	virtual void	Render_Buffer(const CTransform* pTransform);
+	virtual void	Render_Buffer(const CTransform* pTransform = nullptr);
+
 public:
 	static CBuffer_RcCol*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CComponent*		Clone();

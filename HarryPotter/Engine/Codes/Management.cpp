@@ -44,7 +44,6 @@ HRESULT CManagement::Ready_Management(const _uint& iMaxNumScene)
 	// 오브젝트나 컴포넌트를 현재 존재하는 씬의 갯수만큼 생성해준다.
 	if (FAILED(CObject_Manager::GetInstance()->Reserve_Object_Manager(iMaxNumScene)))
 		return E_FAIL;
-
 	if (FAILED(CComponent_Manager::GetInstance()->Reserve_Component_Manager(iMaxNumScene)))
 		return E_FAIL;
 
@@ -60,7 +59,7 @@ _int CManagement::Update_Management(const _float & fTimeDelta)
 		return -1;
 
 	// 확인용 int 변수 하나 생성해서
-	_int	iExitCode = 0;
+	_int		iExitCode = 0;
 
 	// return 값이 E_FAIL 이면 return 하는 구문
 	// 현재 씬(m_pCurrentScene)이 CScene_Logo라 가정하였을 때,

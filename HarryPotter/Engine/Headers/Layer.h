@@ -24,8 +24,8 @@ private:
 	list<CGameObject*>			m_ObjectList;
 	typedef list<CGameObject*>	OBJECTLIST;
 public:
-	static CLayer*	Create();
-	virtual void	Free();
+	static CLayer* Create();
+	virtual void Free();
 };
 
 _END

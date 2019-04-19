@@ -4,6 +4,7 @@
 CBuffer_Terrain::CBuffer_Terrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CVIBuffer(pGraphic_Device)
 {
+
 }
 
 CBuffer_Terrain::CBuffer_Terrain(const CBuffer_Terrain & rhs)
@@ -21,15 +22,15 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer()
 	m_iNumVerticesX = 100;
 	m_iNumVerticesZ = 100;
 	m_iNumVertices = m_iNumVerticesX * m_iNumVerticesZ;
-
 	m_dwVtxFVF = D3DFVF_XYZ | D3DFVF_TEX1;
-	
+
 	// 사각형 개수 * 2 => 삼각형 2개가 사각형이고 폴리곤은 삼각형 기준이기 때문
 	m_iNumPolygons = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2;
 
 	m_iIndexSize = sizeof(INDEX16);
 	m_Format = D3DFMT_INDEX16;
 
+	// 정점버퍼를 할당한다 + 인덱스버퍼를 할당한다.
 	if (FAILED(CVIBuffer::Ready_VIBuffer()))
 		return E_FAIL;
 
@@ -41,9 +42,9 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer()
 	{
 		for (size_t j = 0; j < m_iNumVerticesX; ++j)
 		{
-			_uint	iIndex = i * m_iNumVerticesX + j;
+			_uint		iIndex = i * m_iNumVerticesX + j;
 
-			pVertices[iIndex].vPosition = _vec3(j * m_fInterval, 0.f, i * m_fInterval);
+			pVertices[iIndex].vPosition = _vec3(j * m_fInterval, 0.0f, i * m_fInterval);
 			m_pPositions[iIndex] = pVertices[iIndex].vPosition;
 			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 		}
@@ -60,9 +61,9 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer()
 
 	for (size_t i = 0; i < m_iNumVerticesZ - 1; i++)
 	{
-		for (size_t j = 0; j < m_iNumVerticesX -1; j++)
+		for (size_t j = 0; j < m_iNumVerticesX - 1; j++)
 		{
-			_uint	iIndex = i * m_iNumVerticesX + j;
+			_uint		iIndex = i * m_iNumVerticesX + j;
 
 			pIndices[iNumPolygons]._1 = iIndex + m_iNumVerticesX;
 			pIndices[iNumPolygons]._2 = iIndex + m_iNumVerticesX + 1;
@@ -80,7 +81,7 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer()
 	return NOERROR;
 }
 
-void CBuffer_Terrain::Render_Buffer(const CTransform * pTransform)
+void CBuffer_Terrain::Render_Buffer(const CTransform* pTransform)
 {
 	if (nullptr == m_pGraphic_Device)
 		return;
@@ -89,6 +90,7 @@ void CBuffer_Terrain::Render_Buffer(const CTransform * pTransform)
 	{
 		_matrix		matTransform = *pTransform->Get_WorldMatrixPointer();
 
+		// 정점의 위치에 행렬을 곱해서 정점의 위치를 변환하자.
 		VTXTEX*		pVertices = nullptr;
 
 		m_pVB->Lock(0, 0, (void**)&pVertices, 0);
@@ -97,6 +99,7 @@ void CBuffer_Terrain::Render_Buffer(const CTransform * pTransform)
 		{
 			D3DXVec3TransformCoord(&pVertices[i].vPosition, &m_pPositions[i], &matTransform);
 		}
+
 		m_pVB->Unlock();
 	}
 

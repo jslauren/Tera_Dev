@@ -4,7 +4,6 @@
 CBuffer_RcCol::CBuffer_RcCol(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CVIBuffer(pGraphic_Device)
 {
-
 }
 
 CBuffer_RcCol::CBuffer_RcCol(const CBuffer_RcCol & rhs)
@@ -16,7 +15,7 @@ HRESULT CBuffer_RcCol::Ready_VIBuffer()
 {
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
-	
+
 	// 부모인 VIBuffer Class의 Ready_VIBuffer함수에서,
 	// CreateVertexBuffer 함수를 실행하는데, 이 때 이 함수의 인자값들을 채워주기 위해,
 	// 각각의 자식에서 맞는 인자값들을 셋팅해 준다.
@@ -34,18 +33,6 @@ HRESULT CBuffer_RcCol::Ready_VIBuffer()
 	// 정점버퍼를 할당한다 + 인덱스버퍼를 할당한다.
 	if (FAILED(CVIBuffer::Ready_VIBuffer()))
 		return E_FAIL;
-
-	// 1. 공간을 걸어 잠근다.
-	// 2. 공간에 접근할 수 있는 포인터를 구해준다.
-
-	/*void*			pVertices = nullptr;
-
-	m_pVB->Lock(0, 0, &pVertices, 0);
-
-	((VTXCOL*)pVertices)[0].vPosition = _vec3();
-	((VTXCOL*)pVertices)[0].dwColor = D3DXCOLOR();
-
-	m_pVB->Unlock();*/
 
 	VTXCOL*		pVertices = nullptr;
 
@@ -86,7 +73,9 @@ HRESULT CBuffer_RcCol::Ready_VIBuffer()
 	// 하지만 나는 D3DCULL_D3DCULL_CW로 해야지 데헷★
 
 	// 다 찍었으니 풀어준다.
+
 	m_pVB->Unlock();
+
 
 	INDEX16*	pIndices = nullptr;
 
@@ -119,10 +108,11 @@ void CBuffer_RcCol::Render_Buffer(const CTransform* pTransform)
 
 		m_pVB->Lock(0, 0, (void**)&pVertices, 0);
 
-		for (size_t i = 0; i < m_iNumVertices; ++i)
+		for (size_t i = 0; i < m_iNumVertices; i++)
 		{
 			D3DXVec3TransformCoord(&pVertices[i].vPosition, &m_pPositions[i], &matTransform);
 		}
+
 		m_pVB->Unlock();
 	}
 
@@ -131,7 +121,6 @@ void CBuffer_RcCol::Render_Buffer(const CTransform* pTransform)
 	m_pGraphic_Device->SetFVF(m_dwVtxFVF);
 	m_pGraphic_Device->SetIndices(m_pIB);
 	m_pGraphic_Device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_iNumVertices, 0, m_iNumPolygons);
-
 	//////////////////////////
 }
 

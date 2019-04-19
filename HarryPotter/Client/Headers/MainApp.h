@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Defines.h"
 #include "Base.h"
 #include "Graphic_Device.h"
@@ -16,7 +15,7 @@ private:
 	explicit CMainApp();
 	virtual ~CMainApp() = default;
 public:
-	HRESULT	Ready_MainApp();	// 내 게임의 초기화 과정을 수행한다.
+	HRESULT Ready_MainApp(); // 내 게임의 초기화 과정을 수행한다.
 	_int	Update_MainApp(const _float& fTimeDelta);
 	HRESULT Render_MainApp();
 private:
@@ -30,12 +29,14 @@ private: // For.FPS
 	_tchar	m_szFPS[128] = L"";
 private:
 	HRESULT Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _uint& iWinCX, const _uint& iWinCY);
-	HRESULT	Ready_Render_State();
+	HRESULT Ready_Render_State();
 	HRESULT Ready_Component_Prototype();
+	HRESULT Ready_GameObject_Prototype();
 	HRESULT Ready_Scene(SCENEID eID);
 public:
 	static CMainApp*	Create();	// 생성 관련된 함수.
 	virtual void		Free();		// 소멸 관련된 함수.
+
 };
 
 _END

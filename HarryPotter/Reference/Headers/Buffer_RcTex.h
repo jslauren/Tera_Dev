@@ -1,4 +1,5 @@
 #pragma once
+
 #include "VIBuffer.h"
 
 _BEGIN(Engine)
@@ -12,10 +13,11 @@ private:
 public:
 	virtual HRESULT Ready_VIBuffer();
 	virtual void	Render_Buffer(const CTransform* pTransform = nullptr);
+
 public:
-	static	CBuffer_RcTex*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual	CComponent*		Clone();
-	virtual	void			Free();
+	static CBuffer_RcTex*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	virtual CComponent*		Clone();
+	virtual void			Free();
 };
 
 _END

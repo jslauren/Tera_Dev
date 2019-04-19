@@ -26,7 +26,6 @@ HRESULT CScene_Logo::Ready_Scene()
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
 		return E_FAIL;
 
-
 	return NOERROR;
 }
 
@@ -43,19 +42,20 @@ _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 
 	pManagement->AddRef();
 
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
 		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Stage::Create(m_pGraphic_Device))))
 		{
 			Safe_Release(pManagement);
 			return -1;
 		}
+
 		Safe_Release(pManagement);
 		return 0;
 	}
 
 	Safe_Release(pManagement);
-	
+
 	return _int(CScene::LateUpdate_Scene(fTimeDelta));
 }
 

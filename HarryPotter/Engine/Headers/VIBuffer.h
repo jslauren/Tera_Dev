@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Component.h"
 
 _BEGIN(Engine)
@@ -18,7 +17,7 @@ protected:
 	virtual ~CVIBuffer() = default;
 public:
 	virtual HRESULT Ready_VIBuffer();
-	virtual void	Render_Buffer();
+	virtual void	Render_Buffer(const CTransform* pTransform = nullptr);
 protected:
 	LPDIRECT3DVERTEXBUFFER9			m_pVB = nullptr;
 	_uint							m_iVtxSize = 0;
@@ -30,10 +29,10 @@ protected:
 	_uint							m_iIndexSize = 0;
 	D3DFORMAT						m_Format = D3DFORMAT(0);
 protected:
-	_vec3*							m_pPositions = nullptr;
+	_vec3*							m_pPositions = nullptr; // 정점들의 최초 위치만 보관하는 배열.
 public:
-	virtual CComponent* Clone() = 0;
-	virtual void Free();
+	virtual CComponent*	Clone() = 0;
+	virtual void		Free();
 };
 
 _END

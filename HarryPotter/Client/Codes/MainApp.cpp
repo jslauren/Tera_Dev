@@ -3,27 +3,30 @@
 #include "Graphic_Device.h"
 #include "Scene_Logo.h"
 #include "Management.h"
+#include "Camera_Dynamic.h"
 #include "Component_Manager.h"
 
 _USING(Client)
 
 CMainApp::CMainApp()
-	: m_pManagement(CManagement::GetInstance())	// == (m_pManagemnet = CManagement::GetInstance();)
+	: m_pManagement(CManagement::GetInstance()) // == (m_pManagemnet = CManagement::GetInstance();)
 {
 	m_pManagement->AddRef();	// 참조 했으니 AddRef 조져준다.
 }
 
 HRESULT CMainApp::Ready_MainApp()	// Initialize_MainApp
 {
-	// 장치 초기화
 	if (FAILED(Ready_Default_Setting(CGraphic_Device::TYPE_WINMODE, g_iWinCX, g_iWinCY)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Render_State()))
 		return E_FAIL;
 
-	// 전역씬에서 사용 할 원형컴포넌트들의 생성.
-    	if (FAILED(Ready_Component_Prototype()))
+	// 전역씬에서 사용할 원형컴포넌트들의 생성.
+	if (FAILED(Ready_Component_Prototype()))
+		return E_FAIL;
+
+	if (FAILED(Ready_GameObject_Prototype()))
 		return E_FAIL;
 
 	// 씬 셋팅
@@ -69,7 +72,7 @@ HRESULT CMainApp::Render_MainApp()
 
 	m_pRenderer->Render_RenderGroup();
 
-	if (FAILED(m_pManagement->Render_Management()))	// 씬 매니저의 렌더를 돌린다.
+	if (FAILED(m_pManagement->Render_Management())) // 씬 매니저의 렌더를 돌린다.
 		return E_FAIL;
 
 	m_pGraphic_Device->EndScene();
@@ -102,14 +105,14 @@ HRESULT CMainApp::Ready_Render_State()
 	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	// For.Gara
-	_matrix		matView, matProj;
+	_matrix			matView, matProj;
 
-	D3DXMatrixLookAtLH(&matView, &_vec3(50.f, 15.f, -15.f), &_vec3(50.f, 0.f, 50.f), &_vec3(0.f, 1.f, 0.f));
+	D3DXMatrixLookAtLH(&matView, &_vec3(50.0f, 15.f, -15.f), &_vec3(50.f, 0.f, 50.f), &_vec3(0.f, 1.f, 0.f));
 	m_pGraphic_Device->SetTransform(D3DTS_VIEW, &matView);
 
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(90.f), (g_iWinCX / (_float)g_iWinCY), 0.1f, 500.f);
+	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(90.0f), g_iWinCX / (_float)g_iWinCY, 0.1f, 500.f);
 	m_pGraphic_Device->SetTransform(D3DTS_PROJECTION, &matProj);
-	
+
 	return NOERROR;
 }
 
@@ -134,11 +137,31 @@ HRESULT CMainApp::Ready_Component_Prototype()
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_RcTex", CBuffer_RcTex::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.Component_Buffer_UI
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI", CBuffer_ScreenTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	// For.Component_Texture_Default
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Default", CTexture::Create(m_pGraphic_Device, L"../Bin/Resources/Textures/Default.jpg"))))
 		return E_FAIL;
 
 	Safe_Release(pComponent_Manager);
+
+	return NOERROR;
+}
+
+HRESULT CMainApp::Ready_GameObject_Prototype()
+{
+	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
+	if (nullptr == pObject_Manager)
+		return E_FAIL;
+	pObject_Manager->AddRef();
+
+	// For.GameObject_Camera_Dynamic
+	if (FAILED(pObject_Manager->Add_Object_Prototype(SCENE_STATIC, L"GameObject_Camera_Dynamic", CCamera_Dynamic::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	Safe_Release(pObject_Manager);
 
 	return NOERROR;
 }

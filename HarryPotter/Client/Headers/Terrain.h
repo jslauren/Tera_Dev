@@ -22,9 +22,9 @@ public:
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
-	virtual HRESULT Ready_GameObject();
-	virtual _int Update_GameObject(const _float& fTimeDelta);
-	virtual _int LateUpdate_GameObject(const _float& fTimeDelta);
+	virtual HRESULT Ready_GameObject(void* pArg);
+	virtual _int	Update_GameObject(const _float& fTimeDelta);
+	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
 private:
 	CTransform*				m_pTransformCom = nullptr;
@@ -32,12 +32,12 @@ private:
 	CRenderer*				m_pRendererCom = nullptr;
 	CTexture*				m_pTextureCom = nullptr;
 private:
-	HRESULT Add_Component();
+	HRESULT					Add_Component();
 
 public:
-	static CTerrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual CGameObject* Clone();
-	virtual void Free();
+	static CTerrain*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	virtual CGameObject*	Clone(void* pArg = nullptr);
+	virtual void			Free();
 };
 
 _END

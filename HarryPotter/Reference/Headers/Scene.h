@@ -26,7 +26,7 @@ protected:
 	CComponent_Manager*		m_pComponent_Manager = nullptr;
 protected:
 	HRESULT Add_Object_Prototype(const _uint& iSceneIdx, const _tchar* pProtoTag, CGameObject* pGameObject);
-	HRESULT Add_Object(const _uint& iPorotoSceneIdx, const _tchar* pProtoTag, const _uint& iSceneIdx, const _tchar* pLayerTag);
+	HRESULT Add_Object(const _uint& iPorotoSceneIdx, const _tchar* pProtoTag, const _uint& iSceneIdx, const _tchar* pLayerTag, void* pArg = nullptr);
 public:
 	virtual void Free();
 };

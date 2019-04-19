@@ -3,7 +3,6 @@
 CVIBuffer::CVIBuffer(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CComponent(pGraphic_Device)
 {
-
 }
 
 CVIBuffer::CVIBuffer(const CVIBuffer & rhs)
@@ -28,20 +27,20 @@ HRESULT CVIBuffer::Ready_VIBuffer()
 		return E_FAIL;
 
 	// 정점을 생성한다
-	if (FAILED(m_pGraphic_Device->CreateVertexBuffer((m_iVtxSize * m_iNumVertices), 0, m_dwVtxFVF, D3DPOOL_MANAGED, &m_pVB, nullptr)))
+	if (FAILED(m_pGraphic_Device->CreateVertexBuffer(m_iVtxSize * m_iNumVertices, 0, m_dwVtxFVF, D3DPOOL_MANAGED, &m_pVB, nullptr)))
 		return E_FAIL;
 
 	m_pPositions = new _vec3[m_iNumVertices];
 	ZeroMemory(m_pPositions, sizeof(_vec3) * m_iNumVertices);
 
-	// 인덱스들을 생성한다(인덱스 버퍼)
-	if (FAILED(m_pGraphic_Device->CreateIndexBuffer((m_iIndexSize * m_iNumPolygons), 0, m_Format, D3DPOOL_MANAGED, &m_pIB, nullptr)))
+	// 인덱스들을 생성한다(인덱스버퍼)
+	if (FAILED(m_pGraphic_Device->CreateIndexBuffer(m_iIndexSize * m_iNumPolygons, 0, m_Format, D3DPOOL_MANAGED, &m_pIB, nullptr)))
 		return E_FAIL;
 
 	return NOERROR;
 }
 
-void CVIBuffer::Render_Buffer()
+void CVIBuffer::Render_Buffer(const CTransform* pTransform)
 {
 
 }

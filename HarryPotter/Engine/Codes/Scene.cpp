@@ -1,6 +1,7 @@
 #include "..\Headers\Scene.h"
 #include "GameObject.h"
 
+
 CScene::CScene(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device(pGraphic_Device)
 	, m_pObject_Manager(CObject_Manager::GetInstance())
@@ -58,13 +59,13 @@ HRESULT CScene::Add_Object_Prototype(const _uint & iSceneIdx, const _tchar * pPr
 	return NOERROR;
 }
 
-HRESULT CScene::Add_Object(const _uint & iPorotoSceneIdx, const _tchar * pProtoTag, const _uint & iSceneIdx, const _tchar * pLayerTag)
+HRESULT CScene::Add_Object(const _uint & iPorotoSceneIdx, const _tchar * pProtoTag, const _uint & iSceneIdx, const _tchar * pLayerTag, void* pArg)
 {
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
 
 	// 위 Add_Object_Prototype 동등한 기능의 함수이다.
-	if (FAILED(m_pObject_Manager->Add_Object(iPorotoSceneIdx, pProtoTag, iSceneIdx, pLayerTag)))
+	if (FAILED(m_pObject_Manager->Add_Object(iPorotoSceneIdx, pProtoTag, iSceneIdx, pLayerTag, pArg)))
 		return E_FAIL;
 
 	return NOERROR;

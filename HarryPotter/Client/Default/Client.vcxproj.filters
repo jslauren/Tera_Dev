@@ -34,6 +34,21 @@
     <Filter Include="02. GameObject\01. Stage\Terrain">
       <UniqueIdentifier>{796c65da-8d49-4085-b7cc-c7ca9144858e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. Stage\UI">
+      <UniqueIdentifier>{42e78082-211c-4195-a8d1-5df54df64307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Public">
+      <UniqueIdentifier>{bb91bba6-5a8b-48de-a87d-334d1b391005}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Public\Camera">
+      <UniqueIdentifier>{f1986720-2e31-4408-ad8b-8a779683f4e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Public\Camera\Dynamic">
+      <UniqueIdentifier>{dc0fa6e6-9dec-491f-84d3-2ea6a5d8df4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Public\Camera\Static">
+      <UniqueIdentifier>{daeddc82-ed6e-43b5-8592-4a0ba04f40ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -69,6 +84,12 @@
     <ClInclude Include="..\Headers\Terrain.h">
       <Filter>02. GameObject\01. Stage\Terrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\UI.h">
+      <Filter>02. GameObject\01. Stage\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Camera_Dynamic.h">
+      <Filter>02. GameObject\99. Public\Camera\Dynamic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -91,6 +112,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Terrain.cpp">
       <Filter>02. GameObject\01. Stage\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UI.cpp">
+      <Filter>02. GameObject\01. Stage\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Camera_Dynamic.cpp">
+      <Filter>02. GameObject\99. Public\Camera\Dynamic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
