@@ -9,4 +9,5 @@ const unsigned int g_iWinCY = 600;
 
 enum SCENEID { SCENE_STATIC, SCENE_LOGO, SCENE_STAGE, SCENE_END };
 
+extern HINSTANCE g_hInst;
 extern HWND g_hWnd;

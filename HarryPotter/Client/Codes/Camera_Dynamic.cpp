@@ -1,16 +1,21 @@
 #include "stdafx.h"
 #include "..\Headers\Camera_Dynamic.h"
+#include "Input_Device.h"
 
 _USING(Client)
 
 CCamera_Dynamic::CCamera_Dynamic(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CCamera(pGraphic_Device)
+	, m_pInput_Device(CInput_Device::GetInstance())
 {
+	m_pInput_Device->AddRef();
 }
 
 CCamera_Dynamic::CCamera_Dynamic(const CCamera_Dynamic & rhs)
 	: CCamera(rhs)
+	, m_pInput_Device(rhs.m_pInput_Device)
 {
+	m_pInput_Device->AddRef();
 }
 
 HRESULT CCamera_Dynamic::Ready_GameObject_Prototype()
@@ -45,25 +50,44 @@ HRESULT CCamera_Dynamic::Ready_GameObject(void* pArg)
 
 _int CCamera_Dynamic::Update_GameObject(const _float & fTimeDelta)
 {
+	if (nullptr == m_pInput_Device)
+		return -1;
+
+
 	if (GetKeyState('W') & 0x8000)
 	{
-		m_pTransformCom->Move(0, 10.f, fTimeDelta);
+		m_pTransformCom->Move(0, 20.f, fTimeDelta);
 	}
 
 	if (GetKeyState('S') & 0x8000)
 	{
-		m_pTransformCom->Move(1, 10.f, fTimeDelta);
+		m_pTransformCom->Move(1, 20.f, fTimeDelta);
 	}
 
 	if (GetKeyState('A') & 0x8000)
 	{
-		m_pTransformCom->Move(2, 10.f, fTimeDelta);
+		m_pTransformCom->Move(2, 20.f, fTimeDelta);
 	}
 
 	if (GetKeyState('D') & 0x8000)
 	{
-		m_pTransformCom->Move(3, 10.f, fTimeDelta);
+		m_pTransformCom->Move(3, 20.f, fTimeDelta);
 	}
+
+	_long		dwMouseMove = 0;
+	m_fSpeed = 5.f;
+
+	if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_Y))
+		m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove)*m_fSpeed, fTimeDelta);
+
+	if(dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_X))
+		m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(dwMouseMove)*m_fSpeed, fTimeDelta);
+
+	POINT	ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
+
+	ClientToScreen(g_hWnd, &ptMouse);
+
+	SetCursorPos(ptMouse.x, ptMouse.y);
 
 	return _int();
 }
@@ -140,6 +164,7 @@ CGameObject * CCamera_Dynamic::Clone(void* pArg)
 
 void CCamera_Dynamic::Free()
 {
+	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pTransformCom);
 
 	CCamera::Free();

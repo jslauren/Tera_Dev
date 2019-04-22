@@ -33,7 +33,7 @@ public:
 	HRESULT	Set_Angle_Axis(_vec3 vState, const _float& fRadian);
 	// iDirection에 0이면 Go, 1이면 Back 이다.
 	HRESULT	Move(_int iDirection, const _float& fSpeedPerSec, const _float& fTimeDelta);
-	HRESULT	Rotation_Axis(_vec3 vState, const _float& fRadianPerSec, const _float& fTimeDelta);
+	HRESULT	Rotation_Axis(_vec3 vAxis, const _float& fRadianPerSec, const _float& fTimeDelta);
 	HRESULT Move_Target(const CTransform* pTransform, const _float& fSpeedPerSec, const _float& fTimeDelta);
 public:
 	HRESULT Ready_Transform();

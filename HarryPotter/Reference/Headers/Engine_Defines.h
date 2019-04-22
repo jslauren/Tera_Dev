@@ -1,11 +1,17 @@
 #pragma once
 
 #pragma warning (disable : 4251)
+#pragma warning (disable : 4005)
+
+#define	DIRECTINPUT_VERSION	0x0800
 
 #include <d3d9.h>
 #include <d3dx9.h>
+#include <dinput.h>
 #pragma comment (lib, "d3d9.lib")
 #pragma comment (lib, "d3dx9.lib")
+#pragma	comment (lib, "dinput8.lib")
+#pragma	comment (lib, "dxguid.lib")
 
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC

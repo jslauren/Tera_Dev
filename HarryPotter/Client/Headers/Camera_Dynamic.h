@@ -5,6 +5,7 @@
 
 _BEGIN(Engine)
 class CTransform;
+class CInput_Device;
 _END
 
 _BEGIN(Client)
@@ -23,10 +24,13 @@ public:
 	virtual HRESULT Render_GameObject();
 private:
 	CTransform*		m_pTransformCom = nullptr;
+	CInput_Device*	m_pInput_Device = nullptr;
 private:
 	HRESULT			Add_Component();
 	HRESULT			SetUp_ViewMatrix();
 	HRESULT			SetUp_ProjectionMatrix();
+private:
+	_float			m_fSpeed = 0.f;
 public:
 	static CCamera_Dynamic*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

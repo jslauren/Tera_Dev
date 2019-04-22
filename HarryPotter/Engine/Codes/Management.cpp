@@ -3,6 +3,7 @@
 #include "Timer_Manager.h"
 #include "Object_Manager.h"
 #include "Graphic_Device.h"
+#include "Input_Device.h"
 #include "Component_Manager.h"
 
 _IMPLEMENT_SINGLETON(CManagement)
@@ -106,6 +107,9 @@ HRESULT CManagement::Release_Engine()
 
 	if (0 != CGraphic_Device::GetInstance()->DestroyInstance())
 		_MSGBOX("CGraphic_Device Release Failed");
+
+	if (0 != CInput_Device::GetInstance()->DestroyInstance())
+		_MSGBOX("CInput_Device Release Failed");
 
 	return NOERROR;
 }

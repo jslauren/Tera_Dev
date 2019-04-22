@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\MainApp.h"
 #include "Graphic_Device.h"
+#include "Input_Device.h"
 #include "Scene_Logo.h"
 #include "Management.h"
 #include "Camera_Dynamic.h"
@@ -41,6 +42,13 @@ _int CMainApp::Update_MainApp(const _float & fTimeDelta)
 {
 	if (nullptr == m_pManagement)	// 씬 매니저가 GetInstance() 안되었다면,
 		return -1;
+
+	// 연결된 키보드, 마우스 장치를 받아오는 구문
+	if (FAILED(CInput_Device::GetInstance()->Investigate_Input_State()))
+	{
+		_MSGBOX("Investigate Failed which Input State");
+		return -1;
+	}
 
 	m_fTimeAcc += fTimeDelta;
 
@@ -90,6 +98,10 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _u
 	// For.Graphic_Device
 	if (FAILED(CGraphic_Device::GetInstance()->Ready_Graphic_Device(g_hWnd, eType, iWinCX, iWinCY, &m_pGraphic_Device)))
 		return E_FAIL;
+	
+	// For.Input_Device
+ 	if (FAILED(CInput_Device::GetInstance()->Ready_Input_Device(g_hInst, g_hWnd)))
+ 		return E_FAIL;
 
 	// For.Scene_Manager Initialize
 	if (FAILED(m_pManagement->Ready_Management(SCENE_END)))

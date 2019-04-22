@@ -82,6 +82,9 @@
     <ClInclude Include="..\Headers\Camera.h">
       <Filter>01. Utility\03. Camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Input_Device.h">
+      <Filter>00. System\00. Device\Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -168,6 +171,9 @@
     <Filter Include="01. Utility\03. Camera">
       <UniqueIdentifier>{d0c684d7-6ab0-4d72-9e5b-0bd934b1805f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00. System\00. Device\Input">
+      <UniqueIdentifier>{7363723f-8ff6-4294-abee-19ad5ba7bba3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Graphic_Device.cpp">
@@ -232,6 +238,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Camera.cpp">
       <Filter>01. Utility\03. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Input_Device.cpp">
+      <Filter>00. System\00. Device\Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
