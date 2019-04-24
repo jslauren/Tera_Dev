@@ -1,5 +1,4 @@
 #pragma once
-
 #include "VIBuffer.h"
 
 _BEGIN(Engine)

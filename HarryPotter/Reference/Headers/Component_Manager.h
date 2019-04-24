@@ -1,14 +1,15 @@
 #pragma once
 // 다양한 컴포넌트 클래스들의 부모가 되는 클래스.
 #include "Base.h"
-#include "Buffer_TriCol.h"
+#include "Texture.h"
+#include "Renderer.h"
+#include "Transform.h"
 #include "Buffer_RcCol.h"
 #include "Buffer_RcTex.h"
+#include "Buffer_TriCol.h"
 #include "Buffer_Terrain.h"
+#include "Buffer_CubeTex.h"
 #include "Buffer_ScreenTex.h"
-#include "Transform.h"
-#include "Renderer.h"
-#include "Texture.h"
 
 // 컴포넌트를 보관한다.
 // 컴포넌트의 종류가 굉장히 다양 (정점버퍼, 텍스쳐, 메시, 사운드, 변환, 렌더러)

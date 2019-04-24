@@ -23,7 +23,7 @@ HRESULT CManagement::SetUp_CurrentScene(CScene * pScene)
 	{
 		// 0 이외의 값이 리턴되면 잘 안지워 진거쥬.
 		if (0 != Safe_Release(m_pCurrentScene))
-			_MSGBOX("Do not Deleted CurrentScene");
+			_MSGBOX("기존씬이 안날라갔어");
 	}
 
 	// 받아온 씬을 현재 씬으로 셋팅(동기화)한다.

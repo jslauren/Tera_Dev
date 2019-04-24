@@ -6,7 +6,6 @@ _USING(Client)
 CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
 {
-
 }
 
 CTerrain::CTerrain(const CTerrain & rhs)
@@ -31,10 +30,6 @@ HRESULT CTerrain::Ready_GameObject(void* pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(2.f, 2.f, 2.f);
-	//m_pTransformCom->Set_Angle_Y(D3DXToRadian(45.0f));
-	//m_pTransformCom->Set_Angle_Y(D3DXToRadian(45.0f));
-
 	return NOERROR;
 }
 
@@ -42,36 +37,6 @@ _int CTerrain::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
-
-	//if (GetKeyState('W') & 0x8000)
-	//{
-	//	m_pTransformCom->Go_Straight(5.f, fTimeDelta);
-	//}
-
-	//if (GetKeyState('S') & 0x8000)
-	//{
-	//	m_pTransformCom->Back_Straight(5.f, fTimeDelta);
-	//}
-
-	//if (GetKeyState(VK_UP) & 0x8000)
-	//{
-	//	m_pTransformCom->Rotation_X(D3DXToRadian(90.f), fTimeDelta);
-	//}
-
-	//if (GetKeyState(VK_DOWN) & 0x8000)
-	//{
-	//	m_pTransformCom->Rotation_X(D3DXToRadian(-90.f), fTimeDelta);
-	//}
-
-	//if (GetKeyState(VK_LEFT) & 0x8000)
-	//{
-	//	m_pTransformCom->Rotation_Y(D3DXToRadian(-90.f), fTimeDelta);
-	//}
-
-	//if (GetKeyState(VK_RIGHT) & 0x8000)
-	//{
-	//	m_pTransformCom->Rotation_Y(D3DXToRadian(90.f), fTimeDelta);
-	//}
 
 	return _int();
 }
@@ -81,7 +46,7 @@ _int CTerrain::LateUpdate_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pRendererCom)
 		return -1;
 
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this)))
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
 		return -1;
 
 	return _int();
@@ -95,8 +60,11 @@ HRESULT CTerrain::Render_GameObject()
 
 	m_pTextureCom->SetUp_OnGraphicDev(0);
 
-	// 행렬 = 행렬 * 행렬
+	SetUp_RenderState();
+
 	m_pBufferCom->Render_Buffer(m_pTransformCom);
+
+	Release_RenderState();
 
 	return NOERROR;
 }
@@ -116,9 +84,28 @@ HRESULT CTerrain::Add_Component()
 		return E_FAIL;
 
 	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Default", L"Com_Texture", (CComponent**)&m_pTextureCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
+	return NOERROR;
+}
+
+HRESULT CTerrain::SetUp_RenderState()
+{
+	CGameObject::Set_SamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+	CGameObject::Set_SamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+
+	return NOERROR;
+}
+
+HRESULT CTerrain::Release_RenderState()
+{
+	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_NONE);
+	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_NONE);
+	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
 
 	return NOERROR;
 }
@@ -136,10 +123,6 @@ CTerrain * CTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
-// this? : 
-// 1.멤버함수안에 존재. 
-// 2.멤버함수는 객체로부터 호출(객체.멤버함수(), 객체주소->멤버함수())
-// 3.멤버함수안에 존재하는 this는 멤버함수의 호출을 가능하게한 객체의 주소를 의미한다.
 CGameObject * CTerrain::Clone(void* pArg)
 {
 	CTerrain* pInstance = new CTerrain(*this);

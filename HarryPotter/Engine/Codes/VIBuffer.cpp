@@ -1,4 +1,5 @@
 #include "..\Headers\VIBuffer.h"
+#include "Transform.h"
 
 CVIBuffer::CVIBuffer(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CComponent(pGraphic_Device)
@@ -42,7 +43,11 @@ HRESULT CVIBuffer::Ready_VIBuffer()
 
 void CVIBuffer::Render_Buffer(const CTransform* pTransform)
 {
+}
 
+_float CVIBuffer::Compute_HeightOnBuffer(const CTransform * pTransform)
+{
+	return _float(0.0f);
 }
 
 void CVIBuffer::Free()

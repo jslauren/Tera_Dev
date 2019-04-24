@@ -85,6 +85,9 @@
     <ClInclude Include="..\Headers\Input_Device.h">
       <Filter>00. System\00. Device\Input</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Buffer_CubeTex.h">
+      <Filter>01. Utility\02. Component\Component\Buffer\Buffer_CubeTex</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -174,6 +177,9 @@
     <Filter Include="00. System\00. Device\Input">
       <UniqueIdentifier>{7363723f-8ff6-4294-abee-19ad5ba7bba3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Buffer\Buffer_CubeTex">
+      <UniqueIdentifier>{eb2fe68f-9556-4eba-8b68-2b962ac94f8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Graphic_Device.cpp">
@@ -241,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Input_Device.cpp">
       <Filter>00. System\00. Device\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Buffer_CubeTex.cpp">
+      <Filter>01. Utility\02. Component\Component\Buffer\Buffer_CubeTex</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

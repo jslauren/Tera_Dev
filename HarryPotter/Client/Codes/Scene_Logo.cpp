@@ -2,7 +2,6 @@
 #include "..\Headers\Scene_Logo.h"
 #include "Scene_Stage.h"
 #include "Management.h"
-
 #include "Back_Logo.h"
 
 _USING(Client)
@@ -36,7 +35,7 @@ _int CScene_Logo::Update_Scene(const _float & fTimeDelta)
 
 _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 {
-	CManagement*	pManagement = CManagement::GetInstance();
+	CManagement*		pManagement = CManagement::GetInstance();
 	if (nullptr == pManagement)
 		return -1;
 
@@ -49,7 +48,6 @@ _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 			Safe_Release(pManagement);
 			return -1;
 		}
-
 		Safe_Release(pManagement);
 		return 0;
 	}

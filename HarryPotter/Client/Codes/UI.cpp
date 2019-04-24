@@ -63,7 +63,6 @@ HRESULT CUI::Render_GameObject()
 
 	m_pTextureCom->SetUp_OnGraphicDev(0);
 
-	// 행렬 = 행렬 * 행렬
 	m_pBufferCom->Render_Buffer(m_pTransformCom);
 
 	return NOERROR;
@@ -90,7 +89,6 @@ HRESULT CUI::Add_Component()
 	return NOERROR;
 }
 
-// 원본객체를 생성한다.
 CUI * CUI::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
 	CUI* pInstance = new CUI(pGraphic_Device);
@@ -103,10 +101,6 @@ CUI * CUI::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
-// this? : 
-// 1.멤버함수안에 존재. 
-// 2.멤버함수는 객체로부터 호출(객체.멤버함수(), 객체주소->멤버함수())
-// 3.멤버함수안에 존재하는 this는 멤버함수의 호출을 가능하게한 객체의 주소를 의미한다.
 CGameObject * CUI::Clone(void* pArg)
 {
 	CUI* pInstance = new CUI(*this);

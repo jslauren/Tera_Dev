@@ -1,5 +1,4 @@
 #pragma once
-
 // 클라이언트에서 생성할 씬들의 부모가 되는 클래스.
 #include "Base.h"
 #include "Object_Manager.h"

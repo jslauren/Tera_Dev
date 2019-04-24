@@ -35,7 +35,6 @@ HRESULT CRenderer::Render_RenderGroup()
 	{
 		for (auto& pGameObject : m_RenderList[i])
 		{
-			// 각 렌더 그룹별로 같은 그룹의 오브젝트들을 출력해준다.
 			if (nullptr != pGameObject)
 				pGameObject->Render_GameObject();
 

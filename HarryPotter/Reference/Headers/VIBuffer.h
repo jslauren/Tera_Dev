@@ -18,6 +18,8 @@ protected:
 public:
 	virtual HRESULT Ready_VIBuffer();
 	virtual void	Render_Buffer(const CTransform* pTransform = nullptr);
+public:
+	virtual _float Compute_HeightOnBuffer(const CTransform* pTransform);
 protected:
 	LPDIRECT3DVERTEXBUFFER9			m_pVB = nullptr;
 	_uint							m_iVtxSize = 0;
@@ -30,9 +32,10 @@ protected:
 	D3DFORMAT						m_Format = D3DFORMAT(0);
 protected:
 	_vec3*							m_pPositions = nullptr; // 정점들의 최초 위치만 보관하는 배열.
+
 public:
-	virtual CComponent*	Clone() = 0;
-	virtual void		Free();
+	virtual CComponent* Clone() = 0;
+	virtual void Free();
 };
 
 _END

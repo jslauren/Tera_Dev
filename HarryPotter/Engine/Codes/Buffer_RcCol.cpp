@@ -76,7 +76,6 @@ HRESULT CBuffer_RcCol::Ready_VIBuffer()
 
 	m_pVB->Unlock();
 
-
 	INDEX16*	pIndices = nullptr;
 
 	m_pIB->Lock(0, 0, (void**)&pIndices, 0);
@@ -122,6 +121,7 @@ void CBuffer_RcCol::Render_Buffer(const CTransform* pTransform)
 	m_pGraphic_Device->SetIndices(m_pIB);
 	m_pGraphic_Device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_iNumVertices, 0, m_iNumPolygons);
 	//////////////////////////
+
 }
 
 CBuffer_RcCol * CBuffer_RcCol::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

@@ -49,6 +49,12 @@
     <Filter Include="02. GameObject\99. Public\Camera\Static">
       <UniqueIdentifier>{daeddc82-ed6e-43b5-8592-4a0ba04f40ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. Stage\Player">
+      <UniqueIdentifier>{44dc1c25-7789-4558-aaa6-e78137e9dda0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Stage\SkyBox">
+      <UniqueIdentifier>{423f293a-6060-418d-bb40-071b0bc11d72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -90,6 +96,12 @@
     <ClInclude Include="..\Headers\Camera_Dynamic.h">
       <Filter>02. GameObject\99. Public\Camera\Dynamic</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Player.h">
+      <Filter>02. GameObject\01. Stage\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\SkyBox.h">
+      <Filter>02. GameObject\01. Stage\SkyBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -118,6 +130,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Camera_Dynamic.cpp">
       <Filter>02. GameObject\99. Public\Camera\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player.cpp">
+      <Filter>02. GameObject\01. Stage\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\SkyBox.cpp">
+      <Filter>02. GameObject\01. Stage\SkyBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

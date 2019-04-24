@@ -11,12 +11,12 @@ _END
 
 _BEGIN(Client)
 
-class CBack_Logo final : public CGameObject
+class CPlayer final : public CGameObject
 {
 private:
-	explicit CBack_Logo(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CBack_Logo(const CBack_Logo& rhs);
-	virtual ~CBack_Logo() = default;
+	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CPlayer(const CPlayer& rhs);
+	virtual ~CPlayer() = default;
 public:
 
 public:
@@ -32,8 +32,9 @@ private:
 	CTexture*		m_pTextureCom = nullptr;
 private:
 	HRESULT			Add_Component();
+	HRESULT			SetUp_HeightOnTerrain();
 public:
-	static CBack_Logo*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CPlayer*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);
 	virtual void			Free();
 };

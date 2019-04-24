@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Headers\Base.h" />
+    <ClInclude Include="..\Headers\Buffer_CubeTex.h" />
     <ClInclude Include="..\Headers\Buffer_RcCol.h" />
     <ClInclude Include="..\Headers\Buffer_RcTex.h" />
     <ClInclude Include="..\Headers\Buffer_ScreenTex.h" />
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Base.cpp" />
+    <ClCompile Include="..\Codes\Buffer_CubeTex.cpp" />
     <ClCompile Include="..\Codes\Buffer_RcCol.cpp" />
     <ClCompile Include="..\Codes\Buffer_RcTex.cpp" />
     <ClCompile Include="..\Codes\Buffer_ScreenTex.cpp" />

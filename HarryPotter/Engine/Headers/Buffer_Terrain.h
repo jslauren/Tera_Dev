@@ -1,5 +1,4 @@
 #pragma once
-
 #include "VIBuffer.h"
 
 _BEGIN(Engine)
@@ -12,15 +11,18 @@ private:
 	virtual ~CBuffer_Terrain() = default;
 public:
 	virtual HRESULT Ready_VIBuffer();
+	virtual HRESULT Ready_VIBuffer(const _tchar* pHeighitMapPath);
 	virtual void	Render_Buffer(const CTransform* pTransform = nullptr);
+	virtual _float	Compute_HeightOnBuffer(const CTransform* pTransform);
 private:
 	_uint			m_iNumVerticesX = 0;
 	_uint			m_iNumVerticesZ = 0;
 	_float			m_fInterval = 0.f;
 public:
-	static CBuffer_Terrain*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual CComponent*		Clone();
-	virtual void			Free();
+	static CBuffer_Terrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CBuffer_Terrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar* pHeighitMapPath);
+	virtual CComponent* Clone();
+	virtual void		Free();
 };
 
 _END

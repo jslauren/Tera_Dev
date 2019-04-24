@@ -6,7 +6,6 @@ _USING(Client)
 CBack_Logo::CBack_Logo(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
 {
-
 }
 
 CBack_Logo::CBack_Logo(const CBack_Logo & rhs)
@@ -32,7 +31,6 @@ HRESULT CBack_Logo::Ready_GameObject(void* pArg)
 		return E_FAIL;
 
 	m_pTransformCom->Set_Scaling(2.f, 2.f, 2.f);
-	//m_pTransformCom->Set_Angle_Y(D3DXToRadian(45.0f));
 
 	return NOERROR;
 }
@@ -119,6 +117,7 @@ HRESULT CBack_Logo::Add_Component()
 	// For.Com_Texture
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Default", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
+
 
 	return NOERROR;
 }

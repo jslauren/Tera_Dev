@@ -5,6 +5,19 @@ CLayer::CLayer()
 {
 }
 
+const CComponent * CLayer::Get_Component(const _tchar * pComponentTag, const _uint & iIndex)
+{
+	if (m_ObjectList.size() <= iIndex)
+		return nullptr;
+
+	auto	iter = m_ObjectList.begin();
+
+	for (size_t i = 0; i < iIndex; ++i)
+		++iter;
+
+	return (*iter)->Get_Component(pComponentTag);
+}
+
 HRESULT CLayer::Ready_Layer()
 {
 	return NOERROR;
@@ -22,8 +35,6 @@ HRESULT CLayer::Add_ObjectToLayer(CGameObject * pGameObject)
 
 _int CLayer::Update_Layer(const _float & fTimeDelta)
 {
-	// 이 함수는 ObjectClass의 실 사용 오브젝트(객체)에 접근하여,
-	// 오브젝트들을 Update 해준다.
 	_int		iExitCode = 0;
 
 	for (auto& pGameObject : m_ObjectList)

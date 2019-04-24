@@ -18,7 +18,28 @@ CGameObject::CGameObject(const CGameObject & rhs)
 
 const CComponent * CGameObject::Get_Component(const _tchar * pComponentTag)
 {
-	return nullptr;
+	CComponent*	pComponent = Find_Component(pComponentTag);
+
+	if (nullptr == pComponent)
+		return nullptr;
+
+	return pComponent;
+}
+
+void CGameObject::Set_SamplerState(_ulong dwSampler, D3DSAMPLERSTATETYPE SamplerState, _ulong dwValue)
+{
+	if (nullptr == m_pGraphic_Device)
+		return;
+
+	m_pGraphic_Device->SetSamplerState(dwSampler, SamplerState, dwValue);
+}
+
+void CGameObject::Set_RenderState(D3DRENDERSTATETYPE eType, _ulong dwValue)
+{
+	if (nullptr == m_pGraphic_Device)
+		return;
+
+	m_pGraphic_Device->SetRenderState(eType, dwValue);
 }
 
 HRESULT CGameObject::Ready_GameObject_Prototype()
@@ -63,6 +84,16 @@ HRESULT CGameObject::Add_Component(const _uint & iSceneIdx, const _tchar * pProt
 	pComponent->AddRef();
 
 	return NOERROR;
+}
+
+CComponent * CGameObject::Find_Component(const _tchar * pComponentTag)
+{
+	auto	iter = find_if(m_mapComponents.begin(), m_mapComponents.end(), CFinder_Tag(pComponentTag));
+
+	if (iter == m_mapComponents.end())
+		return nullptr;
+
+	return iter->second;
 }
 
 void CGameObject::Free()

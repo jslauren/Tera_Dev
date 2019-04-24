@@ -11,20 +11,20 @@ public:
 		tagCameraInfo()
 		{
 		}
+
 		tagCameraInfo(const _vec3& _vEye, const _vec3& _vAt, const _vec3& _vAxisY,
 			_float _fFovY, _float _fAspect, _float _fNear, _float _fFar)
 			: vEye(_vEye), vAt(_vAt), vAxisY(_vAxisY)
 			, fFovY(_fFovY), fAspect(_fAspect), fNear(_fNear), fFar(_fFar) {}
 
-		_vec3	vEye;	// 위치
-		_vec3	vAt;	// 바라보는 점. 
-		_vec3	vAxisY; // 업
+		_vec3		vEye; // 위치
+		_vec3		vAt; // 바라보는 점. 
+		_vec3		vAxisY; // 업
 
-		_float	fFovY;
-		_float	fAspect;
-		_float	fNear;
-		_float	fFar;
-
+		_float		fFovY;
+		_float		fAspect;
+		_float		fNear;
+		_float		fFar;
 	}CAMERAINFO;
 
 protected:

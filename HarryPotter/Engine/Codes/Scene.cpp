@@ -1,7 +1,6 @@
 #include "..\Headers\Scene.h"
 #include "GameObject.h"
 
-
 CScene::CScene(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device(pGraphic_Device)
 	, m_pObject_Manager(CObject_Manager::GetInstance())

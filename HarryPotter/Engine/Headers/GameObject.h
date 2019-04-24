@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Base.h"
 #include "Component_Manager.h"
 
@@ -19,6 +18,9 @@ public:
 	void Set_Transform(_D3DTRANSFORMSTATETYPE eType, const _matrix* pMatrix) {
 		m_pGraphic_Device->SetTransform(eType, pMatrix);
 	}
+
+	void Set_SamplerState(_ulong dwSampler, D3DSAMPLERSTATETYPE SamplerState, _ulong dwValue);
+	void Set_RenderState(D3DRENDERSTATETYPE eType, _ulong dwValue);
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);
@@ -32,15 +34,17 @@ private:
 	CComponent_Manager*		m_pComponent_Manager = nullptr;
 private:
 	// CGameObject를 상속받은 객체가 가지고 있는 컴포넌트를 모아놓기위한 컨테이너.
-	map<const _tchar*, CComponent*>			m_mapComponents; 
+	map<const _tchar*, CComponent*>			m_mapComponents; // CGameObject를 상속받은 객체가 가지고 있는 컴포넌트를 모아놓기위한 컨테이너.
 	typedef map<const _tchar*, CComponent*>	MAPCOMPONENTS;
+private:
+	CComponent* Find_Component(const _tchar* pComponentTag);
 public:
 	// 이 클래스를 상속받는 자식 오브젝트 클래스들을,
 	// 프로토 타입 패턴을 사용하여 복사 해주기 위해,
 	// 그 자식 오브젝트들의 부모격인 이 클래스에서 Clone함수를 순수 가상함수로 정의하였다.
 	// (순수 가상함수 정의 시, 모든 자식 클래스들은 해당 함수를 가지고 있어야 한다)
-	virtual CGameObject* Clone(void* pArg = nullptr) = 0;
-	virtual void Free();
+	virtual CGameObject*	Clone(void* pArg = nullptr) = 0;
+	virtual void			Free();
 };
 
 _END

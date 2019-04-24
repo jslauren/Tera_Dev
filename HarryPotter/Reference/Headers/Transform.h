@@ -38,8 +38,8 @@ public:
 public:
 	HRESULT Ready_Transform();
 private:
-	_matrix				m_matWorld;
-	_matrix				m_matWorldInv;
+	_matrix	m_matWorld;
+	_matrix	m_matWorldInv;
 
 public:
 	static CTransform*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);

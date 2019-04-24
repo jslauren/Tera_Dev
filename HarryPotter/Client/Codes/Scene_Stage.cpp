@@ -3,6 +3,8 @@
 #include "Terrain.h"
 #include "Camera_Dynamic.h"
 #include "UI.h"
+#include "Player.h"
+#include "SkyBox.h"
 
 _USING(Client)
 
@@ -25,6 +27,10 @@ HRESULT CScene_Stage::Ready_Scene()
 	if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
 		return E_FAIL;
 
+	// For.Layer_Player
+	if (FAILED(Ready_Layer_Player(L"Layer_Player")))
+		return E_FAIL;
+
 	// For.Layer_BackGround
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
 		return E_FAIL;
@@ -38,7 +44,6 @@ HRESULT CScene_Stage::Ready_Scene()
 
 _int CScene_Stage::Update_Scene(const _float & fTimeDelta)
 {
-
 	return _int(CScene::Update_Scene(fTimeDelta));
 }
 
@@ -49,7 +54,6 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 
 HRESULT CScene_Stage::Render_Scene()
 {
-
 	return CScene::Render_Scene();
 }
 
@@ -58,8 +62,20 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
+	// For.Component_Texture_SkyBox
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
+		return E_FAIL;
+
+	// For.Component_Texture_Terrain
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass_%d.tga", 2))))
+		return E_FAIL;
+
 	// For.Component_Buffer_Terrain
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device))))
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device, L"../Bin/Resources/Textures/Terrain/Height.bmp"))))
+		return E_FAIL;
+
+	// For.Component_Buffer_CubeBox
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_CubeBox", CBuffer_CubeTex::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return NOERROR;
@@ -67,6 +83,10 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 
 HRESULT CScene_Stage::Ready_GameObject_Prototype()
 {
+	// For.GameObject_SkyBox
+	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_SkyBox", CSkyBox::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	// For.GameObject_Terrain
 	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Terrain", CTerrain::Create(m_pGraphic_Device))))
 		return E_FAIL;
@@ -75,7 +95,18 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_UI", CUI::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_Player
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Player", CPlayer::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
+	return NOERROR;
+}
+
+HRESULT CScene_Stage::Ready_Layer_Player(const _tchar * pLayerTag)
+{
+	// For.Player
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Player", SCENE_STATIC, pLayerTag)))
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -86,7 +117,6 @@ HRESULT CScene_Stage::Ready_Layer_Camera(const _tchar * pLayerTag)
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Camera_Dynamic", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0.f, 7.f, -10.f), _vec3(0.f, 0.f, 0.f), _vec3(0.0f, 1.f, 0.f), D3DXToRadian(60.0f), _float(g_iWinCX) / g_iWinCY, 0.2f, 500.f))))
 		return E_FAIL;
 
-
 	return NOERROR;
 }
 
@@ -94,6 +124,10 @@ HRESULT CScene_Stage::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
 	// For.Terrain
 	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Terrain", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.SkyBox
+	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_SkyBox", SCENE_STAGE, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;

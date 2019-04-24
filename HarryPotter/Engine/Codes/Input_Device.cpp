@@ -24,12 +24,11 @@ HRESULT CInput_Device::Investigate_Input_State()
 {
 	// (=SetUp_Input_State)
 
-	if (nullptr == m_pKeyBoard ||
+	if (nullptr == m_pKeyboard ||
 		nullptr == m_pMouse)
 		return E_FAIL;
 
-	m_pKeyBoard->GetDeviceState(sizeof(m_KeyState), m_KeyState);
-
+	m_pKeyboard->GetDeviceState(sizeof(m_KeyState), m_KeyState);
 	m_pMouse->GetDeviceState(sizeof(m_MouseState), &m_MouseState);
 
 	return NOERROR;
@@ -37,16 +36,16 @@ HRESULT CInput_Device::Investigate_Input_State()
 
 HRESULT CInput_Device::Ready_KeyBoard(HWND hWnd)
 {
-	if (FAILED(m_pSDK->CreateDevice(GUID_SysKeyboard, &m_pKeyBoard, nullptr)))
+	if (FAILED(m_pSDK->CreateDevice(GUID_SysKeyboard, &m_pKeyboard, nullptr)))
 		return E_FAIL;
 
-	if (FAILED(m_pKeyBoard->SetDataFormat(&c_dfDIKeyboard)))
+	if (FAILED(m_pKeyboard->SetDataFormat(&c_dfDIKeyboard)))
 		return E_FAIL;
 
-	if (FAILED(m_pKeyBoard->SetCooperativeLevel(hWnd, DISCL_NONEXCLUSIVE | DISCL_BACKGROUND)))
+	if (FAILED(m_pKeyboard->SetCooperativeLevel(hWnd, DISCL_NONEXCLUSIVE | DISCL_BACKGROUND)))
 		return E_FAIL;
 
-	if (FAILED(m_pKeyBoard->Acquire()))
+	if (FAILED(m_pKeyboard->Acquire()))
 		return E_FAIL;
 
 	return NOERROR;
@@ -71,8 +70,7 @@ HRESULT CInput_Device::Ready_Mouse(HWND hWnd)
 
 void CInput_Device::Free()
 {
-	Safe_Release(m_pKeyBoard);
+	Safe_Release(m_pKeyboard);
 	Safe_Release(m_pMouse);
-
 	Safe_Release(m_pSDK);
 }

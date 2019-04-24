@@ -8,6 +8,20 @@ CObject_Manager::CObject_Manager()
 {
 }
 
+const CComponent * CObject_Manager::Get_Component(const _uint & iSceneIdx, const _tchar * pLayerTag, const _tchar * pComponentTag, const _uint & iIndex)
+{
+	if (m_iMaxNumScene <= iSceneIdx ||
+		nullptr == m_pmapObject)
+		return nullptr;
+
+	CLayer*		pLayer = Find_Layer(iSceneIdx, pLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+
+	return pLayer->Get_Component(pComponentTag, iIndex);
+}
+
 HRESULT CObject_Manager::Reserve_Object_Manager(const _uint & iMaxNumScene)
 {
 	// 쉽게 생각하면 Ready_Object_Manager 정도가 아닐까 생각된다.
@@ -78,6 +92,7 @@ HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * 
 	// 없다면.. ㅈ된거쥬..?
 	if (nullptr == pPrototype)
 		return E_FAIL;
+
 	// 있다면 해당 원본객체를 복사 조져버린다. 이때 등장하는게 Clone 되시겠다.
 	CGameObject*	pGameObject = pPrototype->Clone(pArg);
 	if (nullptr == pGameObject)
@@ -106,6 +121,7 @@ HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * 
 		if (FAILED(pLayer->Add_ObjectToLayer(pGameObject)))
 			return E_FAIL;
 	}
+
 	return NOERROR;
 }
 

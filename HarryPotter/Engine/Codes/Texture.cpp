@@ -13,8 +13,7 @@ CTexture::CTexture(const CTexture & rhs)
 		pTexture->AddRef();
 }
 
-
-HRESULT CTexture::Ready_Texture(const _tchar * pFileName, const _uint & iNumTexture)
+HRESULT CTexture::Ready_Texture(TEXTURETYPE eType, const _tchar * pFileName, const _uint & iNumTexture)
 {
 	m_vecTexture.reserve(iNumTexture);
 
@@ -22,12 +21,21 @@ HRESULT CTexture::Ready_Texture(const _tchar * pFileName, const _uint & iNumText
 	{
 		_tchar		szFileName[MAX_PATH] = L"";
 
-		LPDIRECT3DTEXTURE9		pTexture = nullptr;
+		IDirect3DBaseTexture9*		pTexture = nullptr;
 
 		wsprintf(szFileName, pFileName, i);
 
-		if (FAILED(D3DXCreateTextureFromFile(m_pGraphic_Device, szFileName, &pTexture)))
-			return E_FAIL;
+		if (TYPE_GENERAL == eType)
+		{
+			if (FAILED(D3DXCreateTextureFromFile(m_pGraphic_Device, szFileName, (LPDIRECT3DTEXTURE9*)&pTexture)))
+				return E_FAIL;
+		}
+
+		else if (TYPE_CUBE == eType)
+		{
+			if (FAILED(D3DXCreateCubeTextureFromFile(m_pGraphic_Device, szFileName, (LPDIRECT3DCUBETEXTURE9*)&pTexture)))
+				return E_FAIL;
+		}
 
 		m_vecTexture.push_back(pTexture);
 	}
@@ -48,11 +56,11 @@ HRESULT CTexture::SetUp_OnGraphicDev(const _uint & iIndex)
 	return E_NOTIMPL;
 }
 
-CTexture * CTexture::Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar * pFileName, const _uint & iNumTexture)
+CTexture * CTexture::Create(LPDIRECT3DDEVICE9 pGraphic_Device, TEXTURETYPE eType, const _tchar * pFileName, const _uint & iNumTexture)
 {
 	CTexture* pInstance = new CTexture(pGraphic_Device);
 
-	if (FAILED(pInstance->Ready_Texture(pFileName, iNumTexture)))
+	if (FAILED(pInstance->Ready_Texture(eType, pFileName, iNumTexture)))
 	{
 		_MSGBOX("CTexture Created Failed");
 		Safe_Release(pInstance);

@@ -98,11 +98,11 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _u
 	// For.Graphic_Device
 	if (FAILED(CGraphic_Device::GetInstance()->Ready_Graphic_Device(g_hWnd, eType, iWinCX, iWinCY, &m_pGraphic_Device)))
 		return E_FAIL;
-	
-	// For.Input_Device
- 	if (FAILED(CInput_Device::GetInstance()->Ready_Input_Device(g_hInst, g_hWnd)))
- 		return E_FAIL;
 
+	// For.Input_Device
+	if (FAILED(CInput_Device::GetInstance()->Ready_Input_Device(g_hInst, g_hWnd)))
+		return E_FAIL;
+	
 	// For.Scene_Manager Initialize
 	if (FAILED(m_pManagement->Ready_Management(SCENE_END)))
 		return E_FAIL;
@@ -154,7 +154,7 @@ HRESULT CMainApp::Ready_Component_Prototype()
 		return E_FAIL;
 
 	// For.Component_Texture_Default
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Default", CTexture::Create(m_pGraphic_Device, L"../Bin/Resources/Textures/Default.jpg"))))
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Default", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Default.jpg"))))
 		return E_FAIL;
 
 	Safe_Release(pComponent_Manager);
@@ -164,7 +164,7 @@ HRESULT CMainApp::Ready_Component_Prototype()
 
 HRESULT CMainApp::Ready_GameObject_Prototype()
 {
-	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
+	CObject_Manager*		pObject_Manager = CObject_Manager::GetInstance();
 	if (nullptr == pObject_Manager)
 		return E_FAIL;
 	pObject_Manager->AddRef();
