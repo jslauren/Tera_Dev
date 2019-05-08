@@ -10,6 +10,7 @@ class _DLL_EXPORTS CGraphic_Device final : public CBase
 {
 	_DECLARE_SINGLETON(CGraphic_Device)
 public:
+	// 윈도우 모드를 명시적으로 해주기 위한 열거체 선언.
 	enum WINMODE { TYPE_FULLMODE, TYPE_WINMODE, TYPE_END };
 private:
 	explicit CGraphic_Device();

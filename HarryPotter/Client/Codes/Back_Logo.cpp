@@ -40,36 +40,6 @@ _int CBack_Logo::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
-	//if (GetKeyState('W') & 0x8000)
-	//{
-	//	m_pTransformCom->Go_Straight(5.f, fTimeDelta);
-	//}
-
-	//if (GetKeyState('S') & 0x8000)
-	//{
-	//	m_pTransformCom->Back_Straight(5.f, fTimeDelta);
-	//}
-
-	//if (GetKeyState(VK_UP) & 0x8000)
-	//{
-	//	m_pTransformCom->Rotation_X(D3DXToRadian(90.f), fTimeDelta);
-	//}
-
-	//if (GetKeyState(VK_DOWN) & 0x8000)
-	//{
-	//	m_pTransformCom->Rotation_X(D3DXToRadian(-90.f), fTimeDelta);
-	//}
-
-	//if (GetKeyState(VK_LEFT) & 0x8000)
-	//{
-	//	m_pTransformCom->Rotation_Y(D3DXToRadian(-90.f), fTimeDelta);
-	//}
-
-	//if (GetKeyState(VK_RIGHT) & 0x8000)
-	//{
-	//	m_pTransformCom->Rotation_Y(D3DXToRadian(90.f), fTimeDelta);
-	//}
-
 	return _int();
 }
 
@@ -100,8 +70,6 @@ HRESULT CBack_Logo::Render_GameObject()
 
 HRESULT CBack_Logo::Add_Component()
 {
-	// 사용할 컴포넌트 객체들을 이 함수에서 추가해준다.
-
 	// For.Com_Transform
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
@@ -141,11 +109,6 @@ CBack_Logo * CBack_Logo::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 // 3.멤버함수안에 존재하는 this는 멤버함수의 호출을 가능하게한 객체의 주소를 의미한다.
 CGameObject * CBack_Logo::Clone(void* pArg)
 {
-	// *this 는 원본객체에 해당 함.
-	// 복사 생성자를 호출하면 부모의 복사 생성자도 호출한다.
-	// 장치 객체 때문에 얕은 복사를 하면 문제가 생긴다.
-	// (하지만 포인터는 얕은복사해도 상관이 없다고 한다)
-	// AddRefCnt 때문에 얕은 복사 하면 안된다.
 	CBack_Logo* pInstance = new CBack_Logo(*this);
 
 	if (FAILED(pInstance->Ready_GameObject(pArg)))

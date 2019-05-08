@@ -4,6 +4,7 @@ _IMPLEMENT_SINGLETON(CInput_Device)
 
 CInput_Device::CInput_Device()
 {
+
 }
 
 HRESULT CInput_Device::Ready_Input_Device(HINSTANCE hInst, HWND hWnd)
@@ -20,15 +21,14 @@ HRESULT CInput_Device::Ready_Input_Device(HINSTANCE hInst, HWND hWnd)
 	return NOERROR;
 }
 
-HRESULT CInput_Device::Investigate_Input_State()
+HRESULT CInput_Device::SetUp_Input_State()
 {
-	// (=SetUp_Input_State)
-
 	if (nullptr == m_pKeyboard ||
 		nullptr == m_pMouse)
 		return E_FAIL;
 
 	m_pKeyboard->GetDeviceState(sizeof(m_KeyState), m_KeyState);
+
 	m_pMouse->GetDeviceState(sizeof(m_MouseState), &m_MouseState);
 
 	return NOERROR;
@@ -72,5 +72,6 @@ void CInput_Device::Free()
 {
 	Safe_Release(m_pKeyboard);
 	Safe_Release(m_pMouse);
+
 	Safe_Release(m_pSDK);
 }

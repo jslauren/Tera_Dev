@@ -42,6 +42,11 @@ void CGameObject::Set_RenderState(D3DRENDERSTATETYPE eType, _ulong dwValue)
 	m_pGraphic_Device->SetRenderState(eType, dwValue);
 }
 
+void CGameObject::Set_Material(const D3DMATERIAL9 & Material)
+{
+	m_pGraphic_Device->SetMaterial(&Material);
+}
+
 HRESULT CGameObject::Ready_GameObject_Prototype()
 {
 	return NOERROR;
@@ -67,6 +72,11 @@ HRESULT CGameObject::Render_GameObject()
 	return NOERROR;
 }
 
+_int CGameObject::OnEvent(const _tchar * _pSubject, void * _pMsg)
+{
+	return _int();
+}
+
 HRESULT CGameObject::Add_Component(const _uint & iSceneIdx, const _tchar * pPrototypeTag, const _tchar* pComponentTag, CComponent** ppOutComponent)
 {
 	// 객체에 적용 될(또는 사용 할) 컴포넌트 들을 이 함수를 통해 추가 해준다.
@@ -86,6 +96,29 @@ HRESULT CGameObject::Add_Component(const _uint & iSceneIdx, const _tchar * pProt
 	return NOERROR;
 }
 
+HRESULT CGameObject::Compute_ViewZ(CTransform * pTransform)
+{
+	if (nullptr == m_pGraphic_Device)
+		return E_FAIL;
+
+	_matrix			matView;
+
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &matView);
+
+	D3DXMatrixInverse(&matView, nullptr, &matView);
+
+	_vec3		vDir = (*pTransform->Get_StateInfo(CTransform::STATE_POSITION) - *(_vec3*)&matView.m[3][0]);
+
+	m_fViewZ = D3DXVec3Length(&vDir);
+
+	return NOERROR;
+}
+
+const bool & CGameObject::GetDelete()
+{
+	return m_bDelete;
+}
+
 CComponent * CGameObject::Find_Component(const _tchar * pComponentTag)
 {
 	auto	iter = find_if(m_mapComponents.begin(), m_mapComponents.end(), CFinder_Tag(pComponentTag));
@@ -94,6 +127,16 @@ CComponent * CGameObject::Find_Component(const _tchar * pComponentTag)
 		return nullptr;
 
 	return iter->second;
+}
+
+const CComponent * CGameObject::GetComponent(const _tchar * pComponentTag)
+{
+	const CComponent*	pComponent = Find_Component(pComponentTag);
+
+	if (nullptr == pComponent)
+		return nullptr;
+
+	return pComponent;
 }
 
 void CGameObject::Free()

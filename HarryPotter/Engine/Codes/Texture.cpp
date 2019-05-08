@@ -13,6 +13,7 @@ CTexture::CTexture(const CTexture & rhs)
 		pTexture->AddRef();
 }
 
+
 HRESULT CTexture::Ready_Texture(TEXTURETYPE eType, const _tchar * pFileName, const _uint & iNumTexture)
 {
 	m_vecTexture.reserve(iNumTexture);
@@ -30,7 +31,6 @@ HRESULT CTexture::Ready_Texture(TEXTURETYPE eType, const _tchar * pFileName, con
 			if (FAILED(D3DXCreateTextureFromFile(m_pGraphic_Device, szFileName, (LPDIRECT3DTEXTURE9*)&pTexture)))
 				return E_FAIL;
 		}
-
 		else if (TYPE_CUBE == eType)
 		{
 			if (FAILED(D3DXCreateCubeTextureFromFile(m_pGraphic_Device, szFileName, (LPDIRECT3DCUBETEXTURE9*)&pTexture)))

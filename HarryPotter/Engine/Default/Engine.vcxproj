@@ -35,9 +35,11 @@
     <ClInclude Include="..\Headers\Engine_Macro.h" />
     <ClInclude Include="..\Headers\Engine_Struct.h" />
     <ClInclude Include="..\Headers\Engine_Typedef.h" />
+    <ClInclude Include="..\Headers\EventManager.h" />
     <ClInclude Include="..\Headers\GameObject.h" />
     <ClInclude Include="..\Headers\Graphic_Device.h" />
     <ClInclude Include="..\Headers\Input_Device.h" />
+    <ClInclude Include="..\Headers\KeyManager.h" />
     <ClInclude Include="..\Headers\Layer.h" />
     <ClInclude Include="..\Headers\Management.h" />
     <ClInclude Include="..\Headers\Object_Manager.h" />
@@ -60,9 +62,11 @@
     <ClCompile Include="..\Codes\Camera.cpp" />
     <ClCompile Include="..\Codes\Component.cpp" />
     <ClCompile Include="..\Codes\Component_Manager.cpp" />
+    <ClCompile Include="..\Codes\EventManager.cpp" />
     <ClCompile Include="..\Codes\GameObject.cpp" />
     <ClCompile Include="..\Codes\Graphic_Device.cpp" />
     <ClCompile Include="..\Codes\Input_Device.cpp" />
+    <ClCompile Include="..\Codes\KeyManager.cpp" />
     <ClCompile Include="..\Codes\Layer.cpp" />
     <ClCompile Include="..\Codes\Management.cpp" />
     <ClCompile Include="..\Codes\Object_Manager.cpp" />
@@ -153,6 +157,11 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy	/y	 ..\Headers\*.h			..\..\Reference\Headers\
+xcopy	/y	 ..\Bin\*.lib			..\..\Reference\Librarys\
+xcopy	/y	 ..\Bin\*.dll			..\..\Client\Bin\</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

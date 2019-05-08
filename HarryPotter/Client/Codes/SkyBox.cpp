@@ -51,8 +51,8 @@ _int CSkyBox::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	if (nullptr == pObject_Manager)
 		return -1;
-
 	pObject_Manager->AddRef();
+
 
 	CTransform*	pCameraTransform = (CTransform*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_Camera", L"Com_Transform");
 	if (nullptr == pCameraTransform)
@@ -62,6 +62,7 @@ _int CSkyBox::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	Safe_Release(pObject_Manager);
 
+	// 다른 픽셀들에게 항상 덮여야하기때문에. 
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this)))
 		return -1;
 
@@ -80,7 +81,7 @@ HRESULT CSkyBox::Render_GameObject()
 
 	// 행렬 = 행렬 * 행렬
 	m_pBufferCom->Render_Buffer(m_pTransformCom);
-
+	
 	Release_RenderState();
 
 	return NOERROR;
@@ -109,11 +110,18 @@ HRESULT CSkyBox::Add_Component()
 
 HRESULT CSkyBox::SetUp_RenderState()
 {
+
 	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 
+	// 큐브버퍼의 각면은 바깥방향을 바라보고 있게끔 작업. 
+	// 카메라는 큐브안에 존재. 큐브 각면의 뒷면을 바라보는 효과.
 	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CW);
+	CGameObject::Set_RenderState(D3DRS_LIGHTING, FALSE);
+
+	// 스카이박스의 픽셀 깊이를 깊이버퍼에 저장하지 않는다.
+	// 스카이박스 이후에 그려지는 픽세륻르은 스카이박스 픽셀깊이와 비교할 수 없다. 때문에 무조건 이후그려지는 애들이 덮고 그린다.
 	CGameObject::Set_RenderState(D3DRS_ZWRITEENABLE, FALSE);
 
 	return NOERROR;
@@ -127,6 +135,7 @@ HRESULT CSkyBox::Release_RenderState()
 
 	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	CGameObject::Set_RenderState(D3DRS_ZWRITEENABLE, TRUE);
+	CGameObject::Set_RenderState(D3DRS_LIGHTING, TRUE);
 
 	return NOERROR;
 }

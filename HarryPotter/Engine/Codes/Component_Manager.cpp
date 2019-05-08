@@ -1,12 +1,10 @@
 #include "..\Headers\Component_Manager.h"
 
-
 _IMPLEMENT_SINGLETON(CComponent_Manager)
 
 CComponent_Manager::CComponent_Manager()
 	: m_pmapComponent(nullptr)
 {
-
 }
 
 HRESULT CComponent_Manager::Reserve_Component_Manager(const _uint & iMaxNumScene)
@@ -15,7 +13,6 @@ HRESULT CComponent_Manager::Reserve_Component_Manager(const _uint & iMaxNumScene
 		return E_FAIL;
 
 	m_pmapComponent = new MAPCOMPONENT[iMaxNumScene];
-
 	m_iMaxNumScene = iMaxNumScene;
 
 	return NOERROR;
@@ -50,7 +47,6 @@ HRESULT CComponent_Manager::Clear_Component_Prototype(const _uint & iSceneIdx)
 	}
 	m_pmapComponent[iSceneIdx].clear();
 
-
 	return NOERROR;
 }
 
@@ -67,7 +63,6 @@ CComponent * CComponent_Manager::Clone_Component(const _uint & iSceneIdx, const 
 
 	return pComponent->Clone();
 }
-
 
 CComponent * CComponent_Manager::Find_Component(const _uint & iSceneIdx, const _tchar * pComponentTag)
 {

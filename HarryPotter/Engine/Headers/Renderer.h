@@ -18,6 +18,11 @@ public:
 private:
 	list<CGameObject*>			m_RenderList[RENDER_END];
 	typedef list<CGameObject*>	RENDERLIST;
+private:
+	HRESULT Render_Priority();
+	HRESULT Render_NoneAlpha();
+	HRESULT Render_Alpha();
+	HRESULT Render_UI();
 public:
 	static CRenderer*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CComponent* Clone();

@@ -18,8 +18,10 @@ HRESULT CBuffer_CubeTex::Ready_VIBuffer()
 
 	m_iVtxSize = sizeof(VTXCUBETEX);
 	m_iNumVertices = 8;
+
 	m_dwVtxFVF = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE3(0);
 	m_iNumPolygons = 12;
+
 	m_iIndexSize = sizeof(INDEX16);
 	m_Format = D3DFMT_INDEX16;
 

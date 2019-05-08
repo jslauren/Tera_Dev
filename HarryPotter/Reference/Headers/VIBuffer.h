@@ -1,12 +1,9 @@
 #pragma once
 #include "Component.h"
 
-_BEGIN(Engine)
-
 // 정점을 생성한다.
 
-// 정점을 매니징? 하는 부모 클래스로써 컴포넌트 객체에 해당되며,
-// 자식들로 색 정보를 가지는 삼각형, 사각형, 지형 등을 가지고 있다.
+_BEGIN(Engine)
 
 class CTransform;
 class _DLL_EXPORTS CVIBuffer : public CComponent
@@ -19,7 +16,10 @@ public:
 	virtual HRESULT Ready_VIBuffer();
 	virtual void	Render_Buffer(const CTransform* pTransform = nullptr);
 public:
-	virtual _float Compute_HeightOnBuffer(const CTransform* pTransform);
+	virtual _float	Compute_HeightOnBuffer(const CTransform* pTransform);
+
+	// 불?! or 충돌된 위치?!
+	_bool			Picking(HWND hWnd, CTransform* pTransform, _vec3* pOut);
 protected:
 	LPDIRECT3DVERTEXBUFFER9			m_pVB = nullptr;
 	_uint							m_iVtxSize = 0;
@@ -32,10 +32,10 @@ protected:
 	D3DFORMAT						m_Format = D3DFORMAT(0);
 protected:
 	_vec3*							m_pPositions = nullptr; // 정점들의 최초 위치만 보관하는 배열.
-
+	void*							m_pIndices = nullptr;
 public:
 	virtual CComponent* Clone() = 0;
-	virtual void Free();
+	virtual void		Free();
 };
 
 _END

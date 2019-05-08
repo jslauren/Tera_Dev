@@ -55,6 +55,9 @@
     <Filter Include="02. GameObject\01. Stage\SkyBox">
       <UniqueIdentifier>{423f293a-6060-418d-bb40-071b0bc11d72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. Stage\Monster">
+      <UniqueIdentifier>{0a56f4c6-f20e-4a6b-81bb-ce3f531687bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -102,6 +105,9 @@
     <ClInclude Include="..\Headers\SkyBox.h">
       <Filter>02. GameObject\01. Stage\SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Monster.h">
+      <Filter>02. GameObject\01. Stage\Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -136,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\SkyBox.cpp">
       <Filter>02. GameObject\01. Stage\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Monster.cpp">
+      <Filter>02. GameObject\01. Stage\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -31,17 +31,75 @@ HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eGroup, CGameObject * pGameObject
 
 HRESULT CRenderer::Render_RenderGroup()
 {
-	for (size_t i = 0; i < RENDER_END; i++)
-	{
-		for (auto& pGameObject : m_RenderList[i])
-		{
-			if (nullptr != pGameObject)
-				pGameObject->Render_GameObject();
+	if (FAILED(Render_Priority()))
+		return E_FAIL;
+	if (FAILED(Render_NoneAlpha()))
+		return E_FAIL;
+	if (FAILED(Render_Alpha()))
+		return E_FAIL;
+	if (FAILED(Render_UI()))
+		return E_FAIL;
 
-			Safe_Release(pGameObject);
-		}
-		m_RenderList[i].clear();
+	return NOERROR;
+}
+
+HRESULT CRenderer::Render_Priority()
+{
+	for (auto& pGameObject : m_RenderList[RENDER_PRIORITY])
+	{
+		if (nullptr != pGameObject)
+			pGameObject->Render_GameObject();
+		Safe_Release(pGameObject);
 	}
+	m_RenderList[RENDER_PRIORITY].clear();
+
+	return NOERROR;
+}
+
+HRESULT CRenderer::Render_NoneAlpha()
+{
+	for (auto& pGameObject : m_RenderList[RENDER_NONEALPHA])
+	{
+		if (nullptr != pGameObject)
+			pGameObject->Render_GameObject();
+		Safe_Release(pGameObject);
+	}
+	m_RenderList[RENDER_NONEALPHA].clear();
+
+	return NOERROR;
+}
+
+_bool Compare_Z(CGameObject* pSour, CGameObject* pDest)
+{
+	return pSour->Get_ViewZ() > pDest->Get_ViewZ();
+}
+
+HRESULT CRenderer::Render_Alpha()
+{
+	m_RenderList[RENDER_ALPHA].sort(Compare_Z);
+
+	for (auto& pGameObject : m_RenderList[RENDER_ALPHA])
+	{
+		if (nullptr != pGameObject)
+			pGameObject->Render_GameObject();
+		Safe_Release(pGameObject);
+	}
+
+	m_RenderList[RENDER_ALPHA].clear();
+
+	return NOERROR;
+}
+
+HRESULT CRenderer::Render_UI()
+{
+	for (auto& pGameObject : m_RenderList[RENDER_UI])
+	{
+		if (nullptr != pGameObject)
+			pGameObject->Render_GameObject();
+		Safe_Release(pGameObject);
+	}
+
+	m_RenderList[RENDER_UI].clear();
 
 	return NOERROR;
 }

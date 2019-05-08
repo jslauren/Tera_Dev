@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Base.h"
 
 // 다양한 컴포넌트 클래스들의 부모가 되는 클래스.
@@ -17,8 +16,8 @@ protected:
 public:
 	virtual HRESULT Ready_Component();
 protected:
-	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
-	_bool					m_isClone = false;
+	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;
+	_bool				m_isClone = false;
 public:
 	virtual CComponent* Clone() = 0;
 	virtual void		Free();

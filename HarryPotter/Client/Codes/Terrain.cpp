@@ -30,6 +30,14 @@ HRESULT CTerrain::Ready_GameObject(void* pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
+	ZeroMemory(&m_MtrlInfo, sizeof(D3DMATERIAL9));
+
+	m_MtrlInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	m_MtrlInfo.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
+	m_MtrlInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+
+	CGameObject::Set_Material(m_MtrlInfo);
+
 	return NOERROR;
 }
 
@@ -37,6 +45,11 @@ _int CTerrain::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
+
+	_vec3			vOut;
+
+	if (GetKeyState(VK_LBUTTON) & 0x8000)
+		m_pBufferCom->Picking(g_hWnd, m_pTransformCom, &vOut);
 
 	return _int();
 }
@@ -62,6 +75,7 @@ HRESULT CTerrain::Render_GameObject()
 
 	SetUp_RenderState();
 
+	// 행렬 = 행렬 * 행렬
 	m_pBufferCom->Render_Buffer(m_pTransformCom);
 
 	Release_RenderState();
@@ -97,6 +111,8 @@ HRESULT CTerrain::SetUp_RenderState()
 	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+	CGameObject::Set_RenderState(D3DRS_LIGHTING, TRUE);
+	CGameObject::Set_RenderState(D3DRS_NORMALIZENORMALS, true);
 
 	return NOERROR;
 }
@@ -106,6 +122,7 @@ HRESULT CTerrain::Release_RenderState()
 	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_NONE);
 	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_NONE);
 	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
+	CGameObject::Set_RenderState(D3DRS_LIGHTING, FALSE);
 
 	return NOERROR;
 }
@@ -123,6 +140,10 @@ CTerrain * CTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
+// this? : 
+// 1.멤버함수안에 존재. 
+// 2.멤버함수는 객체로부터 호출(객체.멤버함수(), 객체주소->멤버함수())
+// 3.멤버함수안에 존재하는 this는 멤버함수의 호출을 가능하게한 객체의 주소를 의미한다.
 CGameObject * CTerrain::Clone(void* pArg)
 {
 	CTerrain* pInstance = new CTerrain(*this);

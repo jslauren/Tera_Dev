@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Base.h"
 
 _BEGIN(Engine)
@@ -17,14 +16,14 @@ public:
 	HRESULT Ready_Layer();
 public:
 	HRESULT Add_ObjectToLayer(CGameObject* pGameObject);
-	_int Update_Layer(const _float& fTimeDelta);
-	_int LateUpdate_Layer(const _float& fTimeDelta);
+	_int	Update_Layer(const _float& fTimeDelta);
+	_int	LateUpdate_Layer(const _float& fTimeDelta);
 private:
 	list<CGameObject*>			m_ObjectList;
 	typedef list<CGameObject*>	OBJECTLIST;
 public:
-	static CLayer* Create();
-	virtual void Free();
+	static CLayer*	Create();
+	virtual void	Free();
 };
 
 _END

@@ -16,31 +16,40 @@ private:
 	virtual ~CTransform() = default;
 public: // Getter
 	// 왠만하면 retrun 하는 Getter는 const를 붙여주자.
-	const _matrix* Get_WorldMatrixPointer() const {	return &m_matWorld; }
-	const _vec3* Get_StateInfo(STATE eState) const { return (_vec3*)&m_matWorld.m[eState][0]; }
+	const _matrix*	Get_WorldMatrixPointer() const {	return &m_matWorld; }
+	const _vec3*	Get_StateInfo(STATE eState) const { return (_vec3*)&m_matWorld.m[eState][0]; }
 public: // Setter
-	void Set_StateInfo(STATE eState, const _vec3* pStateInfo) const {
-		memcpy((_vec3*)&m_matWorld.m[eState][0], pStateInfo, sizeof(_vec3));
-	}
+	void			Set_StateInfo(STATE eState, const _vec3* pStateInfo) const { memcpy((_vec3*)&m_matWorld.m[eState][0], pStateInfo, sizeof(_vec3)); }
 public:
-	const _matrix* Compute_InverseWorldMatrixPointer() {
-		return D3DXMatrixInverse(&m_matWorldInv, nullptr, &m_matWorld);
-	}
-public:
-	HRESULT SetUp_OnGraphicDev(const _uint& iIndex);
+	const _matrix*	Compute_InverseWorldMatrixPointer() { return D3DXMatrixInverse(&m_matWorldInv, nullptr, &m_matWorld); }
+
+	HRESULT	SetUp_OnGraphicDev();
 	HRESULT	Set_Scaling(const _float& fX, const _float& fY, const _float& fZ);
+	
 	// vState에 right, up, look 벡터로 어떤 축을 기준으로 돌릴껀지 넣어준다.
 	HRESULT	Set_Angle_Axis(_vec3 vState, const _float& fRadian);
-	// iDirection에 0이면 Go, 1이면 Back 이다.
+
+	// 0, 1, 2, 3 - Up, Down, Left, Right
 	HRESULT	Move(_int iDirection, const _float& fSpeedPerSec, const _float& fTimeDelta);
-	HRESULT	Rotation_Axis(_vec3 vAxis, const _float& fRadianPerSec, const _float& fTimeDelta);
-	HRESULT Move_Target(const CTransform* pTransform, const _float& fSpeedPerSec, const _float& fTimeDelta);
+	HRESULT	Rotation_Axis(const _vec3& vAxis, const _float& fRadianPerSec, const _float& fTimeDelta);
+	HRESULT	Move_Target(const CTransform* pTransform, const _float& fSpeedPerSec, const _float& fTimeDelta);
+	HRESULT	Move_Target(const _vec3* pTargetPos, const _float& fSpeedPerSec, const _float& fTimeDelta, _bool* pFinish);
+
+	//HRESULT	Set_Angle_X(const _float& fRadian);
+	//HRESULT	Set_Angle_Y(const _float& fRadian);
+	//HRESULT	Set_Angle_Z(const _float& fRadian);
+	//HRESULT	Go_Straight(const _float& fSpeedPerSec, const _float& fTimeDelta);
+	//HRESULT	Back_Straight(const _float& fSpeedPerSec, const _float& fTimeDelta);
+	//HRESULT	Move_Right(const _float& fSpeedPerSec, const _float& fTimeDelta);
+	//HRESULT	Move_Left(const _float& fSpeedPerSec, const _float& fTimeDelta);
+	//HRESULT	Rotation_X(const _float& fRadianPerSec, const _float& fTimeDelta);
+	//HRESULT	Rotation_Y(const _float& fRadianPerSec, const _float& fTimeDelta);
+	//HRESULT	Rotation_Z(const _float& fRadianPerSec, const _float& fTimeDelta);
 public:
 	HRESULT Ready_Transform();
 private:
 	_matrix	m_matWorld;
 	_matrix	m_matWorldInv;
-
 public:
 	static CTransform*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CComponent* Clone();

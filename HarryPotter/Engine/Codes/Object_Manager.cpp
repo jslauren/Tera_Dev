@@ -30,11 +30,11 @@ HRESULT CObject_Manager::Reserve_Object_Manager(const _uint & iMaxNumScene)
 		nullptr != m_pmapObject)
 		return E_FAIL;
 
-	// 씬 마다 오브젝트들을 따로 관리하려는 것 같다. ....※ (확인이 필요하다)
+	// 여기는 Engine이고 Client에서 이것들을 사용 할 터인데..
+	// 클라는 제각각이고 고정된 값을 줄 수 없어서
+	// 씬 갯수를 지정하고, 씬별로 오브젝트들을 따로 관리하기위해 요렇게 진행한다.
 	m_pmapPrototype = new MAPPROTOTYPE[iMaxNumScene];
-
 	m_pmapObject = new MAPOBJECT[iMaxNumScene];
-
 	m_iMaxNumScene = iMaxNumScene;
 
 	return NOERROR;
@@ -103,14 +103,13 @@ HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * 
 
 	// 레이어가 없었다면,
 	// 레이어를 만들어서 객체를 추가 후, 레이어를 추가한다.
-	if (nullptr == pLayer)
+	if (nullptr == pLayer) 
 	{
 		pLayer = CLayer::Create();
 		if (nullptr == pLayer)
 			return E_FAIL;
 
-		// CLayer Class 에 m_ObjectList 리스트에 push_back 하는데, 
-		// 여기서 해당 리스트가 뭐하는 녀석인지 모르겟으니 확인해보자... ※
+		// CLayer Class 에 m_ObjectList 리스트에 push_back 한다.
 		if (FAILED(pLayer->Add_ObjectToLayer(pGameObject)))
 			return E_FAIL;
 
@@ -138,7 +137,6 @@ _int CObject_Manager::Update_Object_Manager(const _float & fTimeDelta)
 			// 실 사용 객체들의 ObjectList에 들어있는 pGameObject들의 Update를 실행하는 구문이다.
 			// 오브젝트 매니저를 통해 맵 컨테이너에 담겨져 있는 실 사용 오브젝트들의 Update를 해준다.
 			// 이 때, 오브젝트들의 List를 가지고 있는 Layer Class에 접근하여 Update_Layer 함수를 실행한다.
-
 			iExitCode = Pair.second->Update_Layer(fTimeDelta);
 			if (iExitCode & 0x80000000)
 				return iExitCode;

@@ -1,6 +1,7 @@
 #include "..\Headers\Scene.h"
 #include "GameObject.h"
 
+
 CScene::CScene(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device(pGraphic_Device)
 	, m_pObject_Manager(CObject_Manager::GetInstance())
@@ -20,9 +21,10 @@ _int CScene::Update_Scene(const _float & fTimeDelta)
 {
 	// 현재 씬에서 사용 할 오브젝트들의 Update를,
 	// Scene Class의 Update_Scene함수에서 오브젝트 매니저를 통하여 진행한다.
+
 	if (nullptr == m_pObject_Manager)
 		return E_FAIL;
-
+	
 	// 이 때 오브젝트들은 당연히 실 사용 오브젝트(객체) 들이다.
 	return m_pObject_Manager->Update_Object_Manager(fTimeDelta);
 }

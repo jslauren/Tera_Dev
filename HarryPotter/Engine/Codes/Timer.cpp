@@ -18,7 +18,7 @@ _float CTimer::Compute_TimeDelta()
 {
 	QueryPerformanceCounter(&m_FrameTime);
 
-	// 1초가 지났어.
+	// 1초가 지나버렸다~ 이말이야.
 	if (m_FrameTime.QuadPart - m_LastTime.QuadPart >= m_CpuTick.QuadPart)
 	{
 		QueryPerformanceFrequency(&m_CpuTick);

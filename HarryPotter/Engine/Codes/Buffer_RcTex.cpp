@@ -62,6 +62,8 @@ HRESULT CBuffer_RcTex::Ready_VIBuffer()
 	pIndices[1]._2 = 2;
 	pIndices[1]._3 = 3;
 
+	memcpy(m_pIndices, pIndices, sizeof(INDEX16) * m_iNumPolygons);
+
 	m_pIB->Unlock();
 
 	return NOERROR;

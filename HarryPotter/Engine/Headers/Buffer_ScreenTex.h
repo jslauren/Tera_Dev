@@ -11,12 +11,12 @@ private:
 	virtual ~CBuffer_ScreenTex() = default;
 public:
 	virtual HRESULT Ready_VIBuffer();
-	virtual void Render_Buffer(const CTransform* pTransform = nullptr);
+	virtual void	Render_Buffer(const CTransform* pTransform = nullptr);
 
 public:
-	static CBuffer_ScreenTex* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual CComponent* Clone();
-	virtual void Free();
+	static CBuffer_ScreenTex*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	virtual CComponent*			Clone();
+	virtual void				Free();
 };
 
 _END

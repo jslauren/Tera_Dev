@@ -1,9 +1,9 @@
 #pragma once
+#include "Base.h"
 
 // 타이머들을 여러개 모아놓은 매니져클래스.
 // 타이머를 여러개 만드는 이유 : 
 // 1. 여러개의 메인게임이 존재할 수 있기 때문에. 
-#include "Base.h"
 
 _BEGIN(Engine)
 

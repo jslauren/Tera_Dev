@@ -25,6 +25,7 @@ HRESULT CScene_Logo::Ready_Scene()
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
 		return E_FAIL;
 
+
 	return NOERROR;
 }
 
@@ -35,7 +36,7 @@ _int CScene_Logo::Update_Scene(const _float & fTimeDelta)
 
 _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 {
-	CManagement*		pManagement = CManagement::GetInstance();
+	CManagement*	pManagement = CManagement::GetInstance();
 	if (nullptr == pManagement)
 		return -1;
 

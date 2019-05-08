@@ -4,6 +4,7 @@
 #include "Camera_Dynamic.h"
 #include "UI.h"
 #include "Player.h"
+#include "Monster.h"
 #include "SkyBox.h"
 
 _USING(Client)
@@ -15,6 +16,10 @@ CScene_Stage::CScene_Stage(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CScene_Stage::Ready_Scene()
 {
+	// For.Light Setting
+	if (FAILED(Ready_LightInfo()))
+		return E_FAIL;
+
 	// 로고씬에서 사용할 원형컴포넌트들의 생성.
 	if (FAILED(Ready_Component_Prototype()))
 		return E_FAIL;
@@ -33,6 +38,10 @@ HRESULT CScene_Stage::Ready_Scene()
 
 	// For.Layer_BackGround
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
+		return E_FAIL;
+
+	// For.Layer_Monster
+	if (FAILED(Ready_Layer_Monster(L"Layer_Monster")))
 		return E_FAIL;
 
 	// For.Layer_UI
@@ -57,6 +66,26 @@ HRESULT CScene_Stage::Render_Scene()
 	return CScene::Render_Scene();
 }
 
+HRESULT CScene_Stage::Ready_LightInfo()
+{
+	D3DLIGHT9				LightInfo;
+	ZeroMemory(&LightInfo, sizeof(D3DLIGHT9));
+
+	LightInfo.Type = D3DLIGHT_DIRECTIONAL;
+	LightInfo.Direction = _vec3(1.f, -1.f, 1.f);
+	LightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	LightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	LightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+
+	//((L.Specular * M.Specular) * 스펙큘러의 세기) + (L.Diffuse * M.Diffuse) * 명암 + (L.Ambient * M.Ambient)
+
+	m_pGraphic_Device->SetLight(0, &LightInfo);
+
+	m_pGraphic_Device->LightEnable(0, TRUE);
+
+	return NOERROR;
+}
+
 HRESULT CScene_Stage::Ready_Component_Prototype()
 {
 	if (nullptr == m_pComponent_Manager)
@@ -68,6 +97,14 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 
 	// For.Component_Texture_Terrain
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass_%d.tga", 2))))
+		return E_FAIL;
+
+	// For.Component_Texture_Monster
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Monster", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Monster/Stand/AKIHA_AKI00_00%d.png", 12))))
+		return E_FAIL;
+
+	// For.Component_Texture_Effect
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Effect", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Explosion/Explosion%d.png", 90))))
 		return E_FAIL;
 
 	// For.Component_Buffer_Terrain
@@ -97,6 +134,10 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 
 	// For.GameObject_Player
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Player", CPlayer::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_Monster
+	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Monster", CMonster::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return NOERROR;
@@ -129,6 +170,18 @@ HRESULT CScene_Stage::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	// For.SkyBox
 	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_SkyBox", SCENE_STAGE, pLayerTag)))
 		return E_FAIL;
+
+	return NOERROR;
+}
+
+HRESULT CScene_Stage::Ready_Layer_Monster(const _tchar * pLayerTag)
+{
+	for (size_t i = 0; i < 20; ++i)
+	{
+		// For.Monster
+		if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Monster", SCENE_STAGE, pLayerTag)))
+			return E_FAIL;
+	}
 
 	return NOERROR;
 }

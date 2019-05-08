@@ -29,13 +29,13 @@
       <Filter>00. System\01. Timer\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Scene.h">
-      <Filter>01. Utility\00. Management\02. Scene</Filter>
+      <Filter>01. Utility\00. Management\Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Management.h">
       <Filter>01. Utility\00. Management</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\GameObject.h">
-      <Filter>01. Utility\01. GameObject\Layer\Object</Filter>
+      <Filter>01. Utility\01. GameObject\Object</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Object_Manager.h">
       <Filter>01. Utility\01. GameObject\Manager</Filter>
@@ -80,13 +80,19 @@
       <Filter>01. Utility\02. Component\Component\Buffer\Rectangle_Viewport_Texture</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Camera.h">
-      <Filter>01. Utility\03. Camera</Filter>
+      <Filter>01. Utility\06. Camera</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Input_Device.h">
       <Filter>00. System\00. Device\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Buffer_CubeTex.h">
       <Filter>01. Utility\02. Component\Component\Buffer\Buffer_CubeTex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\EventManager.h">
+      <Filter>01. Utility\04. EventManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\KeyManager.h">
+      <Filter>01. Utility\03. KeyManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,9 +126,6 @@
     <Filter Include="01. Utility\00. Management">
       <UniqueIdentifier>{ae84c733-4daf-4c7c-b75c-1e9b032e2a66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\00. Management\02. Scene">
-      <UniqueIdentifier>{08a8d8b2-dfed-4c20-9717-a77b9d0fa7a7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Utility\01. GameObject">
       <UniqueIdentifier>{7bd087ed-9886-4598-a56d-97dd360bda8b}</UniqueIdentifier>
     </Filter>
@@ -131,9 +134,6 @@
     </Filter>
     <Filter Include="01. Utility\01. GameObject\Layer">
       <UniqueIdentifier>{bffd5e57-d6eb-4f96-b0ad-432992637ad8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\01. GameObject\Layer\Object">
-      <UniqueIdentifier>{ec822105-dee0-492c-a4f2-e11f330cdeb7}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Utility\02. Component">
       <UniqueIdentifier>{ca39f31e-8927-47c5-ac65-1d5d678b9922}</UniqueIdentifier>
@@ -171,14 +171,29 @@
     <Filter Include="01. Utility\02. Component\Component\Buffer\Rectangle_Viewport_Texture">
       <UniqueIdentifier>{f0001d0a-d2ee-4362-9bd8-9e5c03edc13e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\03. Camera">
-      <UniqueIdentifier>{d0c684d7-6ab0-4d72-9e5b-0bd934b1805f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. System\00. Device\Input">
       <UniqueIdentifier>{7363723f-8ff6-4294-abee-19ad5ba7bba3}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Utility\02. Component\Component\Buffer\Buffer_CubeTex">
       <UniqueIdentifier>{eb2fe68f-9556-4eba-8b68-2b962ac94f8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\04. EventManager">
+      <UniqueIdentifier>{f478ee57-1248-4737-b63c-4428cb9e3646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. KeyManager">
+      <UniqueIdentifier>{d1b3267a-a41d-4bd8-8364-bb31f472bbac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\05. Effect">
+      <UniqueIdentifier>{fc6ee0cd-75ca-46d8-9958-339510adffb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\06. Camera">
+      <UniqueIdentifier>{d0c684d7-6ab0-4d72-9e5b-0bd934b1805f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\01. GameObject\Object">
+      <UniqueIdentifier>{ec822105-dee0-492c-a4f2-e11f330cdeb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\00. Management\Scene">
+      <UniqueIdentifier>{08a8d8b2-dfed-4c20-9717-a77b9d0fa7a7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -195,13 +210,13 @@
       <Filter>00. System\01. Timer\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Scene.cpp">
-      <Filter>01. Utility\00. Management\02. Scene</Filter>
+      <Filter>01. Utility\00. Management\Scene</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Management.cpp">
       <Filter>01. Utility\00. Management</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\GameObject.cpp">
-      <Filter>01. Utility\01. GameObject\Layer\Object</Filter>
+      <Filter>01. Utility\01. GameObject\Object</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Object_Manager.cpp">
       <Filter>01. Utility\01. GameObject\Manager</Filter>
@@ -243,13 +258,19 @@
       <Filter>01. Utility\02. Component\Component\Buffer\Rectangle_Viewport_Texture</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Camera.cpp">
-      <Filter>01. Utility\03. Camera</Filter>
+      <Filter>01. Utility\06. Camera</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Input_Device.cpp">
       <Filter>00. System\00. Device\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Buffer_CubeTex.cpp">
       <Filter>01. Utility\02. Component\Component\Buffer\Buffer_CubeTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\EventManager.cpp">
+      <Filter>01. Utility\04. EventManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\KeyManager.cpp">
+      <Filter>01. Utility\03. KeyManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

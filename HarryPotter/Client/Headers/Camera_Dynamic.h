@@ -25,9 +25,9 @@ private:
 	CTransform*		m_pTransformCom = nullptr;
 	CInput_Device*	m_pInput_Device = nullptr;
 private:
-	HRESULT Add_Component();
-	HRESULT SetUp_ViewMatrix();
-	HRESULT SetUp_ProjectionMatrix();
+	HRESULT			Add_Component();
+	HRESULT			SetUp_ViewMatrix();
+	HRESULT			SetUp_ProjectionMatrix();
 public:
 	static CCamera_Dynamic*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

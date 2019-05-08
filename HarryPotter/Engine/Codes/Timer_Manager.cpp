@@ -5,7 +5,6 @@ _IMPLEMENT_SINGLETON(CTimer_Manager)
 
 CTimer_Manager::CTimer_Manager()
 {
-
 }
 
 HRESULT CTimer_Manager::Add_Timer(const _tchar * pTimerTag)

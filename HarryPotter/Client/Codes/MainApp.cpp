@@ -17,6 +17,7 @@ CMainApp::CMainApp()
 
 HRESULT CMainApp::Ready_MainApp()	// Initialize_MainApp
 {
+	// 그래픽카드 초기화, 입력장치 초기화, 매니지먼트 초기화.
 	if (FAILED(Ready_Default_Setting(CGraphic_Device::TYPE_WINMODE, g_iWinCX, g_iWinCY)))
 		return E_FAIL;
 
@@ -44,11 +45,8 @@ _int CMainApp::Update_MainApp(const _float & fTimeDelta)
 		return -1;
 
 	// 연결된 키보드, 마우스 장치를 받아오는 구문
-	if (FAILED(CInput_Device::GetInstance()->Investigate_Input_State()))
-	{
-		_MSGBOX("Investigate Failed which Input State");
+	if (FAILED(CInput_Device::GetInstance()->SetUp_Input_State()))
 		return -1;
-	}
 
 	m_fTimeAcc += fTimeDelta;
 
@@ -58,34 +56,36 @@ _int CMainApp::Update_MainApp(const _float & fTimeDelta)
 HRESULT CMainApp::Render_MainApp()
 {
 	///////// FPS 출력 부분 /////////
-	++m_iRenderCnt;
-
-	if (m_fTimeAcc >= 1.f)
 	{
-		wsprintf(m_szFPS, L"FPS : %d", m_iRenderCnt);
-		m_iRenderCnt = 0;
-		m_fTimeAcc = 0.f;
-	}
+		++m_iRenderCnt;
 
-	SetWindowText(g_hWnd, m_szFPS);
-	//////////////////////////////////
+		if (m_fTimeAcc >= 1.f)
+		{
+			wsprintf(m_szFPS, L"FPS : %d", m_iRenderCnt);
+			m_iRenderCnt = 0;
+			m_fTimeAcc = 0.f;
+		}
+
+		SetWindowText(g_hWnd, m_szFPS);
+	}
 
 	if (nullptr == m_pGraphic_Device ||
 		nullptr == m_pRenderer)
 		return E_FAIL;
 
 	//// MainApp 출력 부분 ////
-	m_pGraphic_Device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, D3DXCOLOR(0.f, 0.f, 1.f, 1.f), 1.f, 0);
-	m_pGraphic_Device->BeginScene();
+	{
+		m_pGraphic_Device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, D3DXCOLOR(0.f, 0.f, 1.f, 1.f), 1.f, 0);
+		m_pGraphic_Device->BeginScene();
 
-	m_pRenderer->Render_RenderGroup();
+		m_pRenderer->Render_RenderGroup();
 
-	if (FAILED(m_pManagement->Render_Management())) // 씬 매니저의 렌더를 돌린다.
-		return E_FAIL;
+		if (FAILED(m_pManagement->Render_Management()))
+			return E_FAIL;
 
-	m_pGraphic_Device->EndScene();
-	m_pGraphic_Device->Present(nullptr, nullptr, 0, nullptr);
-	//////////////////////////
+		m_pGraphic_Device->EndScene();
+		m_pGraphic_Device->Present(nullptr, nullptr, 0, nullptr);
+	}
 
 	return NOERROR;
 }
@@ -102,8 +102,9 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _u
 	// For.Input_Device
 	if (FAILED(CInput_Device::GetInstance()->Ready_Input_Device(g_hInst, g_hWnd)))
 		return E_FAIL;
-	
+
 	// For.Scene_Manager Initialize
+	// 내가 사용하고자하는 Engine.lib 의 초기화.
 	if (FAILED(m_pManagement->Ready_Management(SCENE_END)))
 		return E_FAIL;
 
@@ -112,8 +113,6 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _u
 
 HRESULT CMainApp::Ready_Render_State()
 {
-	// For.Turn off Light
-	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	// For.Gara
@@ -164,7 +163,7 @@ HRESULT CMainApp::Ready_Component_Prototype()
 
 HRESULT CMainApp::Ready_GameObject_Prototype()
 {
-	CObject_Manager*		pObject_Manager = CObject_Manager::GetInstance();
+	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
 	if (nullptr == pObject_Manager)
 		return E_FAIL;
 	pObject_Manager->AddRef();

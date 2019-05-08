@@ -11,12 +11,14 @@ _END
 
 _BEGIN(Client)
 
-class CBack_Logo final : public CGameObject
+class CMonster final : public CGameObject
 {
 private:
-	explicit CBack_Logo(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CBack_Logo(const CBack_Logo& rhs);
-	virtual ~CBack_Logo() = default;
+	explicit CMonster(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CMonster(const CMonster& rhs);
+	virtual ~CMonster() = default;
+public:
+
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);
@@ -29,9 +31,15 @@ private:
 	CRenderer*		m_pRendererCom = nullptr;
 	CTexture*		m_pTextureCom = nullptr;
 private:
+	_float			m_fFrame = 0.f;
+private:
 	HRESULT			Add_Component();
+	HRESULT			SetUp_HeightOnTerrain();
+	HRESULT			SetUp_BillBoard();
+	HRESULT			SetUp_RenderState();
+	HRESULT			Release_RenderState();
 public:
-	static CBack_Logo*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CMonster*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);
 	virtual void			Free();
 };

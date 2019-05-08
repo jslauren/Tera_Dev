@@ -15,6 +15,7 @@ HRESULT CGraphic_Device::Ready_Graphic_Device(HWND hWnd, WINMODE eWinMode, const
 
 	if (FAILED(m_pSDK->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &DeviceCaps)))
 	{
+		_MSGBOX("Device Created Failed !!!");
 		//MessageBox(NULL, L"장치 생성실패", L"System Error", NULL);
 		return E_FAIL;
 	}

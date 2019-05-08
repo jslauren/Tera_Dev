@@ -3,7 +3,6 @@
 CBuffer_TriCol::CBuffer_TriCol(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CVIBuffer(pGraphic_Device)
 {
-
 }
 
 CBuffer_TriCol::CBuffer_TriCol(const CBuffer_TriCol & rhs)
@@ -74,6 +73,7 @@ void CBuffer_TriCol::Render_Buffer(const CTransform* pTransform)
 	m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, m_iVtxSize);
 	m_pGraphic_Device->SetFVF(m_dwVtxFVF);
 	m_pGraphic_Device->DrawPrimitive(D3DPT_TRIANGLELIST, 0, m_iNumPolygons);
+
 }
 
 CBuffer_TriCol * CBuffer_TriCol::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

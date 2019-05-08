@@ -4,8 +4,8 @@
 
 _BEGIN(Engine)
 class CTransform;
-class CBuffer_CubeTex; // 그리기를 위한 리소스로 정점 버퍼를 추가한다.
-class CRenderer; //백로고를 렌더그룹에 추가하기 위해.and Render함수를 호출할 수 있도록 
+class CBuffer_CubeTex;	// 그리기를 위한 리소스로 정점 버퍼를 추가한다.
+class CRenderer;		// 백로고를 렌더그룹에 추가하기 위해.and Render함수를 호출할 수 있도록 
 class CTexture;
 _END
 
@@ -31,10 +31,9 @@ private:
 	CRenderer*			m_pRendererCom = nullptr;
 	CTexture*			m_pTextureCom = nullptr;
 private:
-	HRESULT	Add_Component();
-	HRESULT	SetUp_RenderState();
-	HRESULT	Release_RenderState();
-
+	HRESULT Add_Component();
+	HRESULT SetUp_RenderState();
+	HRESULT Release_RenderState();
 public:
 	static CSkyBox*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

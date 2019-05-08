@@ -28,9 +28,9 @@ HRESULT CCamera_Dynamic::Ready_GameObject(void* pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	CCamera::CAMERAINFO*	pCameraInfo = (CCamera::CAMERAINFO*)pArg;
+	CCamera::CAMERAINFO*		pCameraInfo = (CCamera::CAMERAINFO*)pArg;
 
-	_vec3	vLook, vRight, vUp;
+	_vec3		vLook, vRight, vUp;
 	vLook = pCameraInfo->vAt - pCameraInfo->vEye;
 	D3DXVec3Cross(&vRight, &pCameraInfo->vAxisY, &vLook);
 	D3DXVec3Cross(&vUp, &vLook, &vRight);
@@ -54,41 +54,28 @@ _int CCamera_Dynamic::Update_GameObject(const _float & fTimeDelta)
 		return -1;
 
 	if (GetKeyState('W') & 0x8000)
-	{
-		m_pTransformCom->Move(0, 20.f, fTimeDelta);
-	}
+		m_pTransformCom->Move(0, 10.f, fTimeDelta);
 
 	if (GetKeyState('S') & 0x8000)
-	{
-		m_pTransformCom->Move(1, 20.f, fTimeDelta);
-	}
+		m_pTransformCom->Move(1, 10.f, fTimeDelta);
 
 	if (GetKeyState('A') & 0x8000)
-	{
-		m_pTransformCom->Move(2, 20.f, fTimeDelta);
-	}
+		m_pTransformCom->Move(2, 10.f, fTimeDelta);
 
 	if (GetKeyState('D') & 0x8000)
-	{
-		m_pTransformCom->Move(3, 20.f, fTimeDelta);
-	}
+		m_pTransformCom->Move(3, 10.f, fTimeDelta);
 
 	_long			dwMouseMove = 0;
 
 	if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_Y))
-	{
 		m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 10.f, fTimeDelta);
-	}
 
 	if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_X))
-	{
 		m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(dwMouseMove) * 10.f, fTimeDelta);
-	}
 
 	POINT			ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
 
 	ClientToScreen(g_hWnd, &ptMouse);
-
 	SetCursorPos(ptMouse.x, ptMouse.y);
 
 	return _int();
