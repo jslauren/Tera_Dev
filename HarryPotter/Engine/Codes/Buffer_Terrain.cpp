@@ -152,6 +152,8 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer(const _tchar * pHeighitMapPath)
 
 	m_pVB->Unlock();
 
+	Safe_Delete(pPixel);
+
 	INDEX16*	pIndices = nullptr;
 
 	_uint		iNumPolygons = 0;
