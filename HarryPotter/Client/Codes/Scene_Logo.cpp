@@ -116,7 +116,10 @@ void CScene_Logo::Free()
 		nullptr == m_pComponent_Manager)
 		return;
 
-	if (FAILED(m_pObject_Manager->Clear_Object_Prototype(SCENE_LOGO)))
+	if (FAILED(m_pObject_Manager->Clear_Object(SCENE_LOGO)))
+		return;
+
+	if (FAILED(m_pObject_Manager->Clear_Prototype(SCENE_LOGO)))
 		return;
 
 	if (FAILED(m_pComponent_Manager->Clear_Component_Prototype(SCENE_LOGO)))

@@ -62,28 +62,6 @@ HRESULT CObject_Manager::Add_Object_Prototype(const _uint & iSceneIdx, const _tc
 	return NOERROR;
 }
 
-HRESULT CObject_Manager::Clear_Object_Prototype(const _uint & iSceneIdx)
-{
-	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapPrototype ||
-		nullptr == m_pmapObject)
-		return E_FAIL;
-
-	for (auto& Pair : m_pmapObject[iSceneIdx])
-	{
-		Safe_Release(Pair.second);
-	}
-	m_pmapObject[iSceneIdx].clear();
-
-	for (auto& Pair : m_pmapPrototype[iSceneIdx])
-	{
-		Safe_Release(Pair.second);
-	}
-	m_pmapPrototype[iSceneIdx].clear();
-
-	return NOERROR;
-}
-
 HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * pProtoTag, const _uint & iSceneID, const _tchar * pLayerTag, void* pArg)
 {
 	// 먼저 해당 오브젝트가 원본 객체에 존재하는지 검사하고
@@ -120,6 +98,34 @@ HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * 
 		if (FAILED(pLayer->Add_ObjectToLayer(pGameObject)))
 			return E_FAIL;
 	}
+
+	return NOERROR;
+}
+
+HRESULT CObject_Manager::Clear_Prototype(const _uint & iSceneIdx)
+{
+	if (m_iMaxNumScene <= iSceneIdx ||
+		nullptr == m_pmapPrototype)
+		return E_FAIL;
+
+	for (auto& ProtypePair : m_pmapPrototype[iSceneIdx])
+		Safe_Release(ProtypePair.second);
+
+	m_pmapPrototype[iSceneIdx].clear();
+
+	return NOERROR;
+}
+
+HRESULT CObject_Manager::Clear_Object(const _uint & iSceneIdx)
+{
+	if (m_iMaxNumScene <= iSceneIdx ||
+		nullptr == m_pmapObject)
+		return E_FAIL;
+
+	for (auto& ObjectLayerPair : m_pmapObject[iSceneIdx])
+		Safe_Release(ObjectLayerPair.second);
+
+	m_pmapObject[iSceneIdx].clear();
 
 	return NOERROR;
 }
@@ -166,6 +172,35 @@ _int CObject_Manager::LateUpdate_Object_Manager(const _float & fTimeDelta)
 	}
 
 	return _int(iExitCode);
+}
+
+CLayer * CObject_Manager::FindObjectLayer(const _uint & iSceneIdx, const _tchar * pLayerTag)
+{
+	if (m_iMaxNumScene <= iSceneIdx ||
+		nullptr == m_pmapObject)
+		return nullptr;
+
+	auto	iter = find_if(m_pmapObject[iSceneIdx].begin(), m_pmapObject[iSceneIdx].end(),
+		[&pLayerTag](auto& Pair)->bool {return !lstrcmp(pLayerTag, Pair.first) ? true : false; });
+
+	if (iter == m_pmapObject[iSceneIdx].end())
+		return nullptr;
+
+	return iter->second;
+}
+
+const CComponent * CObject_Manager::GetComponent(const _uint & iSceneIdx, const _tchar * pLayerTag, const _tchar * pComponentTag, const _uint & iIndex)
+{
+	if (m_iMaxNumScene <= iSceneIdx ||
+		nullptr == m_pmapObject)
+		return nullptr;
+
+	CLayer*		pLayer = Find_Layer(iSceneIdx, pLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+
+	return pLayer->Get_Component(pComponentTag, iIndex);
 }
 
 CGameObject * CObject_Manager::Find_Object_Prototype(const _uint & iSceneIdx, const _tchar * pProtoTag)
