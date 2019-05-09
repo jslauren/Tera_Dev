@@ -94,7 +94,7 @@ HRESULT CTerrain::Render_GameObject()
 	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION,&matTmp);
 	pEffect->SetMatrix("g_matProj", &matTmp);
 
-	pEffect->SetVector("g_vLight", &_vec4(1.f, -1.f, 1.f, 0.f));
+	pEffect->SetVector("g_vLight", &_vec4(1.f, -1.f, 0.f, 0.f));
 
 	pEffect->Begin(nullptr, 0);
 	pEffect->BeginPass(0);
