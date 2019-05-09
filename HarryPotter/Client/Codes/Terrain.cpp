@@ -96,6 +96,11 @@ HRESULT CTerrain::Render_GameObject()
 
 	pEffect->SetVector("g_vLight", &_vec4(1.f, -1.f, 0.f, 0.f));
 
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &matTmp);
+	D3DXMatrixInverse(&matTmp, nullptr, &matTmp);
+	_vec3 vCameraPos = matTmp.m[3];
+	pEffect->SetVector("g_vCamera", &(_vec4)vCameraPos);
+
 	pEffect->Begin(nullptr, 0);
 	pEffect->BeginPass(0);
 
