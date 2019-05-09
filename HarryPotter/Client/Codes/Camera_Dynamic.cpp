@@ -108,7 +108,7 @@ HRESULT CCamera_Dynamic::SetUp_ViewMatrix()
 	if (nullptr == m_pTransformCom)
 		return E_FAIL;
 
-	_matrix	matView = *m_pTransformCom->Compute_InverseWorldMatrixPointer();
+	_matrix matView = *m_pTransformCom->Compute_InverseWorldMatrixPointer();
 
 	Set_Transform(D3DTS_VIEW, &matView);
 
@@ -117,7 +117,7 @@ HRESULT CCamera_Dynamic::SetUp_ViewMatrix()
 
 HRESULT CCamera_Dynamic::SetUp_ProjectionMatrix()
 {
-	_matrix		matProj;
+	_matrix matProj;
 
 	D3DXMatrixPerspectiveFovLH(&matProj, m_CameraInfo.fFovY, m_CameraInfo.fAspect, m_CameraInfo.fNear, m_CameraInfo.fFar);
 

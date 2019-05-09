@@ -21,8 +21,8 @@ HRESULT CMainApp::Ready_MainApp()	// Initialize_MainApp
 	if (FAILED(Ready_Default_Setting(CGraphic_Device::TYPE_WINMODE, g_iWinCX, g_iWinCY)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Render_State()))
-		return E_FAIL;
+	//if (FAILED(Ready_Render_State()))
+	//	return E_FAIL;
 
 	// 전역씬에서 사용할 원형컴포넌트들의 생성.
 	if (FAILED(Ready_Component_Prototype()))
@@ -111,21 +111,21 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _u
 	return NOERROR;
 }
 
-HRESULT CMainApp::Ready_Render_State()
-{
-	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-
-	// For.Gara
-	_matrix			matView, matProj;
-
-	D3DXMatrixLookAtLH(&matView, &_vec3(50.0f, 15.f, -15.f), &_vec3(50.f, 0.f, 50.f), &_vec3(0.f, 1.f, 0.f));
-	m_pGraphic_Device->SetTransform(D3DTS_VIEW, &matView);
-
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(90.0f), g_iWinCX / (_float)g_iWinCY, 0.1f, 500.f);
-	m_pGraphic_Device->SetTransform(D3DTS_PROJECTION, &matProj);
-
-	return NOERROR;
-}
+//HRESULT CMainApp::Ready_Render_State()
+//{
+//	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+//
+//	// For.Gara
+//	_matrix			matView, matProj;
+//
+//	D3DXMatrixLookAtLH(&matView, &_vec3(50.0f, 15.f, -15.f), &_vec3(50.f, 0.f, 50.f), &_vec3(0.f, 1.f, 0.f));
+//	m_pGraphic_Device->SetTransform(D3DTS_VIEW, &matView);
+//
+//	D3DXMatrixPerspectiveFovLH(&matProj, D3DXToRadian(90.0f), g_iWinCX / (_float)g_iWinCY, 0.1f, 500.f);
+//	m_pGraphic_Device->SetTransform(D3DTS_PROJECTION, &matProj);
+//
+//	return NOERROR;
+//}
 
 HRESULT CMainApp::Ready_Component_Prototype()
 {
@@ -154,6 +154,10 @@ HRESULT CMainApp::Ready_Component_Prototype()
 
 	// For.Component_Texture_Default
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Default", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Default.jpg"))))
+		return E_FAIL;
+
+	// For.Component_Shader_Default
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Default", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Default.fx"))))
 		return E_FAIL;
 
 	Safe_Release(pComponent_Manager);

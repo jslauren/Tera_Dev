@@ -14,6 +14,7 @@ private:
 public:
 	HRESULT Ready_Texture(TEXTURETYPE eType, const _tchar* pFileName, const _uint& iNumTexture);
 	HRESULT SetUp_OnGraphicDev(const _uint& iIndex);
+	HRESULT SetUp_OnShader(LPD3DXEFFECT pEffect, const char* pConstantName, const _uint& iIndex = 0);
 private:
 	vector<IDirect3DBaseTexture9*>			m_vecTexture;
 	typedef vector<IDirect3DBaseTexture9*>	VECTEXTURE;

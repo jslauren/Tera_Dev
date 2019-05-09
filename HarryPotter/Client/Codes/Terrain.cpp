@@ -68,17 +68,46 @@ _int CTerrain::LateUpdate_GameObject(const _float & fTimeDelta)
 HRESULT CTerrain::Render_GameObject()
 {
 	if (nullptr == m_pBufferCom ||
-		nullptr == m_pTextureCom)
+		nullptr == m_pTextureCom ||
+		nullptr == m_pShaderCom)
 		return E_FAIL;
 
-	m_pTextureCom->SetUp_OnGraphicDev(0);
+	//m_pTextureCom->SetUp_OnGraphicDev(0);
+	//SetUp_RenderState();
 
-	SetUp_RenderState();
+	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
+	if (nullptr == pEffect)
+		return E_FAIL;
+
+	pEffect->AddRef();
+
+	_matrix			matTmp;
+	D3DXMatrixIdentity(&matTmp);
+
+	m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture");
+
+	pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
+
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW,&matTmp);
+	pEffect->SetMatrix("g_matView", &matTmp);
+
+	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION,&matTmp);
+	pEffect->SetMatrix("g_matProj", &matTmp);
+
+	pEffect->SetVector("g_vLight", &_vec4(1.f, -1.f, 1.f, 0.f));
+
+	pEffect->Begin(nullptr, 0);
+	pEffect->BeginPass(0);
 
 	// 행렬 = 행렬 * 행렬
-	m_pBufferCom->Render_Buffer(m_pTransformCom);
+	m_pBufferCom->Render_Buffer();
 
-	Release_RenderState();
+	pEffect->EndPass();
+	pEffect->End();
+
+	Safe_Release(pEffect);
+
+//	Release_RenderState();
 
 	return NOERROR;
 }
@@ -101,31 +130,35 @@ HRESULT CTerrain::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
-	return NOERROR;
-}
-
-HRESULT CTerrain::SetUp_RenderState()
-{
-	CGameObject::Set_SamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
-	CGameObject::Set_SamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
-	CGameObject::Set_RenderState(D3DRS_LIGHTING, TRUE);
-	CGameObject::Set_RenderState(D3DRS_NORMALIZENORMALS, true);
+	// For.Com_Shader
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Default", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
 
 	return NOERROR;
 }
 
-HRESULT CTerrain::Release_RenderState()
-{
-	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_NONE);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_NONE);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
-	CGameObject::Set_RenderState(D3DRS_LIGHTING, FALSE);
-
-	return NOERROR;
-}
+//HRESULT CTerrain::SetUp_RenderState()
+//{
+//	CGameObject::Set_SamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+//	CGameObject::Set_RenderState(D3DRS_LIGHTING, TRUE);
+//	CGameObject::Set_RenderState(D3DRS_NORMALIZENORMALS, true);
+//
+//	return NOERROR;
+//}
+//
+//HRESULT CTerrain::Release_RenderState()
+//{
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_NONE);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_NONE);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
+//	CGameObject::Set_RenderState(D3DRS_LIGHTING, FALSE);
+//
+//	return NOERROR;
+//}
 
 // 원본객체를 생성한다.
 CTerrain * CTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -163,6 +196,7 @@ void CTerrain::Free()
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pBufferCom);
+	Safe_Release(m_pShaderCom);
 
 	CGameObject::Free();
 }

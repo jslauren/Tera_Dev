@@ -58,6 +58,9 @@
     <Filter Include="02. GameObject\01. Stage\Monster">
       <UniqueIdentifier>{0a56f4c6-f20e-4a6b-81bb-ce3f531687bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. ShaderFiles">
+      <UniqueIdentifier>{7716991d-2846-43ac-9795-89b5add47bd3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -159,5 +162,10 @@
     <ResourceCompile Include="Client.rc">
       <Filter>99. Default</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Default.fx">
+      <Filter>03. ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -94,6 +94,9 @@
     <ClInclude Include="..\Headers\KeyManager.h">
       <Filter>01. Utility\03. KeyManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Shader.h">
+      <Filter>01. Utility\02. Component\Component\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -195,6 +198,9 @@
     <Filter Include="01. Utility\00. Management\Scene">
       <UniqueIdentifier>{08a8d8b2-dfed-4c20-9717-a77b9d0fa7a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Shader">
+      <UniqueIdentifier>{dfcecbd4-bcd8-446b-a3fc-bee6eb1b211b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Graphic_Device.cpp">
@@ -271,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\KeyManager.cpp">
       <Filter>01. Utility\03. KeyManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Shader.cpp">
+      <Filter>01. Utility\02. Component\Component\Shader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

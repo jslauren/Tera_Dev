@@ -47,7 +47,7 @@ public:
 protected:
 	HRESULT				Add_Component(const _uint& iSceneIdx, const _tchar* pPrototypeTag, const _tchar* pComponentTag, CComponent** ppOutComponent);
 	HRESULT				Compute_ViewZ(CTransform* pTransform);
-protected:	// Protected로 시마이 하자....
+public:	// Protected로 시마이 하자....
 	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;
 	CComponent_Manager*	m_pComponent_Manager = nullptr;
 private:

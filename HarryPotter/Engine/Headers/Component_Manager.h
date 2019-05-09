@@ -1,8 +1,10 @@
 #pragma once
 #include "Base.h"
+#include "Shader.h"
 #include "Texture.h"
 #include "Renderer.h"
 #include "Transform.h"
+
 #include "Buffer_RcCol.h"
 #include "Buffer_RcTex.h"
 #include "Buffer_TriCol.h"

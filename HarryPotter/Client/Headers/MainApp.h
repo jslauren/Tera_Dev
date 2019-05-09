@@ -29,7 +29,7 @@ private: // For.FPS
 	_tchar	m_szFPS[128] = L"";
 private:
 	HRESULT Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _uint& iWinCX, const _uint& iWinCY);
-	HRESULT Ready_Render_State();
+//	HRESULT Ready_Render_State();
 	HRESULT Ready_Component_Prototype();
 	HRESULT Ready_GameObject_Prototype();
 	HRESULT Ready_Scene(SCENEID eID);

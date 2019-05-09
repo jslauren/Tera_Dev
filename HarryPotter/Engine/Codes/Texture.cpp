@@ -53,7 +53,17 @@ HRESULT CTexture::SetUp_OnGraphicDev(const _uint & iIndex)
 	if (FAILED(m_pGraphic_Device->SetTexture(0, m_vecTexture[iIndex])))
 		return E_FAIL;
 
-	return E_NOTIMPL;
+	return NOERROR;
+}
+
+HRESULT CTexture::SetUp_OnShader(LPD3DXEFFECT pEffect, const char * pConstantName, const _uint & iIndex)
+{
+	if (m_vecTexture.size() <= iIndex)
+		return E_FAIL;
+
+	pEffect->SetTexture(pConstantName, m_vecTexture[iIndex]);
+
+	return NOERROR;
 }
 
 CTexture * CTexture::Create(LPDIRECT3DDEVICE9 pGraphic_Device, TEXTURETYPE eType, const _tchar * pFileName, const _uint & iNumTexture)
