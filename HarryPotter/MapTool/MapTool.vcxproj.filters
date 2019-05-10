@@ -1,81 +1,159 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="00. MainFrame">
+      <UniqueIdentifier>{5c7cb1b3-adac-4e69-91e1-f8948e90cd4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="01. View">
+      <UniqueIdentifier>{81dc0bbc-71d1-4219-9cce-73d1e8938d19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="리소스 파일">
+    <Filter Include="02. Utill">
+      <UniqueIdentifier>{76712d5c-7f03-44cf-b756-55ea0a47d73a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene">
+      <UniqueIdentifier>{3a6023ab-2908-49b0-8763-05a0b5b3dbf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Object">
+      <UniqueIdentifier>{ff006bdd-5456-4bef-af98-628b37a96b33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Camera">
+      <UniqueIdentifier>{bd863beb-3c2a-4198-9a17-98cc4506ac7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Headers">
+      <UniqueIdentifier>{f80b63a9-8e59-45b2-b05a-636e1124eaa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="999. Default">
+      <UniqueIdentifier>{8bfffb59-d874-4557-a817-5a996e9d28d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="999. Default\리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="01. View\00. MainView">
+      <UniqueIdentifier>{339838a1-c9e8-4a08-b19c-25a9ebe20063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. View\01. EditorView">
+      <UniqueIdentifier>{e4fb4828-70f2-45b6-8411-73d65c825711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Utill\00. ViewManager">
+      <UniqueIdentifier>{b54cc597-f26d-43ce-b4f4-80d8e6c1a070}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\00. TerrainScene">
+      <UniqueIdentifier>{13b95149-ad31-4799-8f9a-0a156905887a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\01. PrototypeScene">
+      <UniqueIdentifier>{da358a1c-e022-4c1c-a612-0d80288004e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. View\01. EditorView\Tab_Terrain">
+      <UniqueIdentifier>{2b448624-3e88-432a-9c39-77608f73d2a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. View\01. EditorView\Tab_Proto">
+      <UniqueIdentifier>{6ff2a005-3ffd-4596-90a2-28b2c5e4caaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="MapTool.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="MainFrm.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MapToolDoc.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>00. MainFrame</Filter>
     </ClInclude>
     <ClInclude Include="MapToolView.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>01. View\00. MainView</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool.h">
+      <Filter>999. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="MapToolDoc.h">
+      <Filter>999. Default</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>999. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>999. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>999. Default</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewManager.h">
+      <Filter>02. Utill\00. ViewManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool_Defines.h">
+      <Filter>99. Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTerrain.h">
+      <Filter>03. Scene\00. TerrainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneProto.h">
+      <Filter>03. Scene\01. PrototypeScene</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorView.h">
+      <Filter>01. View\01. EditorView</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainTab.h">
+      <Filter>01. View\01. EditorView\Tab_Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtoTab.h">
+      <Filter>01. View\01. EditorView\Tab_Proto</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MapTool.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="MainFrm.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MapToolDoc.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>00. MainFrame</Filter>
     </ClCompile>
     <ClCompile Include="MapToolView.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>01. View\00. MainView</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>999. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTool.cpp">
+      <Filter>999. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolDoc.cpp">
+      <Filter>999. Default</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewManager.cpp">
+      <Filter>02. Utill\00. ViewManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneTerrain.cpp">
+      <Filter>03. Scene\00. TerrainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneProto.cpp">
+      <Filter>03. Scene\01. PrototypeScene</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorView.cpp">
+      <Filter>01. View\01. EditorView</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainTab.cpp">
+      <Filter>01. View\01. EditorView\Tab_Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtoTab.cpp">
+      <Filter>01. View\01. EditorView\Tab_Proto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MapTool.rc">
-      <Filter>리소스 파일</Filter>
+      <Filter>999. Default\리소스 파일</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\MapTool.rc2">
-      <Filter>리소스 파일</Filter>
+      <Filter>999. Default\리소스 파일</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\MapToolDoc.ico">
-      <Filter>리소스 파일</Filter>
+      <Filter>999. Default\리소스 파일</Filter>
     </Image>
     <Image Include="res\MapTool.ico">
-      <Filter>리소스 파일</Filter>
+      <Filter>999. Default\리소스 파일</Filter>
     </Image>
     <Image Include="res\Toolbar.bmp">
-      <Filter>리소스 파일</Filter>
+      <Filter>999. Default\리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt">
+      <Filter>999. Default</Filter>
+    </Text>
   </ItemGroup>
 </Project>

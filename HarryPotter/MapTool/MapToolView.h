@@ -3,8 +3,15 @@
 //
 
 #pragma once
+#include "Graphic_Device.h"
 
+_BEGIN(Engine)
+class CRenderer;
+class CManagement;
+_END
 
+class CViewManager;
+class CMapToolDoc;
 class CMapToolView : public CView
 {
 protected: // serialization에서만 만들어집니다.
@@ -27,6 +34,19 @@ protected:
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 
+private:
+	HRESULT InitDefaultSetting(CGraphic_Device::WINMODE eType, const _uint& iWinCX, const _uint& iWinCY);
+	HRESULT InitRenderState();
+	HRESULT InitComponentPrototype();
+	HRESULT InitObjectPrototype();
+
+private:
+	LPDIRECT3DDEVICE9			m_pGraphicDevice = nullptr;
+	CManagement*				m_pManagement = nullptr;
+	CRenderer*					m_pRenderer = nullptr;
+	CViewManager*				m_pViewManager = nullptr;
+	//CDataManager*				m_pDataManager = nullptr;
+
 // 구현입니다.
 public:
 	virtual ~CMapToolView();
@@ -40,6 +60,13 @@ protected:
 // 생성된 메시지 맵 함수
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual void OnInitialUpdate();
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };
 
 #ifndef _DEBUG  // MapToolView.cpp의 디버그 버전

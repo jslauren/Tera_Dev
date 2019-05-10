@@ -14,7 +14,7 @@ CManagement::CManagement()
 }
 
 
-HRESULT CManagement::SetUp_CurrentScene(CScene * pScene)
+HRESULT CManagement::SetUp_CurrentScene(CScene * pScene, const _uint& iCurrentSceneIndex)
 {
 	// 받아온 씬이 비어있으면.. ㅈ된거쥬..?
 	if (nullptr == pScene)
@@ -30,6 +30,8 @@ HRESULT CManagement::SetUp_CurrentScene(CScene * pScene)
 
 	// 받아온 씬을 현재 씬으로 셋팅(동기화)한다.
 	m_pCurrentScene = pScene;
+	// 인덱스도 
+	m_iCurrentSceneIndex = iCurrentSceneIndex;
 
 	//// m_pCurrentScene이 받아온 씬 pScene을 참조했으므로 AddRef 카운트 값을 올려준다.
 	// 이거 해주면 안된다네 터진데 빵빵.

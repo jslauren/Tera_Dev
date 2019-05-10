@@ -208,7 +208,7 @@ HRESULT CMainApp::Ready_Scene(SCENEID eID)
 
 	// (m_pManagement)씬 매니저는 현재 생성된 씬을 가지고 있어야 하므로,
 	// 현재 내가 열거체로 선택하고 생성한 씬을 씬 매니저와 동기화
-	if (FAILED(m_pManagement->SetUp_CurrentScene(pScene)))
+	if (FAILED(m_pManagement->SetUp_CurrentScene(pScene, SCENE_LOGO)))
 		return E_FAIL;
 
 	return NOERROR;

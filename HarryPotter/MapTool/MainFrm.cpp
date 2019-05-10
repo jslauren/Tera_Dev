@@ -6,6 +6,7 @@
 #include "MapTool.h"
 
 #include "MainFrm.h"
+#include "ViewManager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -25,10 +26,8 @@ END_MESSAGE_MAP()
 
 static UINT indicators[] =
 {
-	ID_SEPARATOR,           // 상태 줄 표시기
-	ID_INDICATOR_CAPS,
-	ID_INDICATOR_NUM,
-	ID_INDICATOR_SCRL,
+	IDS_INDEX,
+	IDS_MOUSEPT
 };
 
 // CMainFrame 생성/소멸
@@ -58,8 +57,24 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // 만들지 못했습니다.
 	}
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+	
+	m_wndStatusBar.SetPaneInfo(0, IDS_MOUSEPT, SBPS_NORMAL, 200);
+	m_wndStatusBar.SetPaneInfo(1, IDS_INDEX, SBPS_NORMAL, 200);
 
+	m_wndStatusBar.SetPaneText(1, L"MousePos");
+	
 	return 0;
+}
+
+BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
+{
+	m_MainSplitter.CreateStatic(this, 1, 2);
+	m_MainSplitter.CreateView(0, 0, RUNTIME_CLASS(CMapToolView), CSize(800, 600), pContext);
+	m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CEditorView), CSize(400, 600), pContext);
+
+	CViewManager::GetInstance()->m_pMainFrame = this;
+
+	return TRUE;
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
@@ -68,6 +83,12 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 		return FALSE;
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
+
+	cs.style &= ~(WS_THICKFRAME | WS_MAXIMIZE);
+	//cs.cx = 1600;
+	//cs.cy = 900;
+	cs.cx = 1200;
+	cs.cy = 600;
 
 	return TRUE;
 }
@@ -88,12 +109,3 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 
 // CMainFrame 메시지 처리기
-
-
-
-BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
-{
-	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
-
-	return CFrameWnd::OnCreateClient(lpcs, pContext);
-}

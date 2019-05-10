@@ -44,7 +44,7 @@ _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 
 	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
-		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Stage::Create(m_pGraphic_Device))))
+		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Stage::Create(m_pGraphic_Device), SCENE_STAGE)))
 		{
 			Safe_Release(pManagement);
 			return -1;

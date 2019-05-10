@@ -52,3 +52,18 @@
 #endif
 
 
+#include <vector>
+#include <list>
+#include <map>
+#include <algorithm>
+#include <string>
+#include <functional>
+#include <ctime>
+#include <cmath>
+// 상대 경로 변환 시 필요한 헤더
+#include <Shlwapi.h>
+// mfc 이미지 객체 사용 시 필요한 헤더
+#include <atlimage.h>
+using namespace std;
+
+#include "Tool_Defines.h"
