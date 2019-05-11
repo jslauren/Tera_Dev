@@ -18,7 +18,7 @@
 
 
 // CMapToolEZView
-
+HWND g_hWnd;
 IMPLEMENT_DYNCREATE(CMapToolEZView, CView)
 
 BEGIN_MESSAGE_MAP(CMapToolEZView, CView)
@@ -102,3 +102,13 @@ CMapToolEZDoc* CMapToolEZView::GetDocument() const // 디버그되지 않은 버전은 인�
 
 
 // CMapToolEZView 메시지 처리기
+
+
+void CMapToolEZView::OnInitialUpdate()
+{
+	CView::OnInitialUpdate();
+
+	g_hWnd = m_hWnd;
+
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+}

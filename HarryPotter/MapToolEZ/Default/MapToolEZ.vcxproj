@@ -76,7 +76,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Bin/</OutDir>
-    <IncludePath>$(DXSDK_DIR)Include;../../Reference/Headers/;$(IncludePath)</IncludePath>
+    <IncludePath>$(DXSDK_DIR)Include;../../Reference/Headers/;../Default/;$(IncludePath)</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x86;../../Reference/Librarys/;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -190,6 +190,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Headers\MainAppTool.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MapToolEZ.h" />
     <ClInclude Include="MapToolEZDoc.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Tool_Defines.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Codes\MainAppTool.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MapToolEZ.cpp" />
     <ClCompile Include="MapToolEZDoc.cpp" />
@@ -225,4 +227,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="MapToolEZ.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
