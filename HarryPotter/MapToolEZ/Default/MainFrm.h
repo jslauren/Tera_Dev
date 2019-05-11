@@ -3,9 +3,6 @@
 //
 
 #pragma once
-#include "stdafx.h"
-#include "Tool_Defines.h"
-#include "Timer_Manager.h"
 
 class CMainFrame : public CFrameWnd
 {

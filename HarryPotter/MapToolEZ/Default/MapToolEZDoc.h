@@ -1,16 +1,16 @@
 
-// MapTool_Client_VerDoc.h : CMapTool_Client_VerDoc 클래스의 인터페이스
+// MapToolEZDoc.h : CMapToolEZDoc 클래스의 인터페이스
 //
 
 
 #pragma once
 
 
-class CMapTool_Client_VerDoc : public CDocument
+class CMapToolEZDoc : public CDocument
 {
 protected: // serialization에서만 만들어집니다.
-	CMapTool_Client_VerDoc();
-	DECLARE_DYNCREATE(CMapTool_Client_VerDoc)
+	CMapToolEZDoc();
+	DECLARE_DYNCREATE(CMapToolEZDoc)
 
 // 특성입니다.
 public:
@@ -29,7 +29,7 @@ public:
 
 // 구현입니다.
 public:
-	virtual ~CMapTool_Client_VerDoc();
+	virtual ~CMapToolEZDoc();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

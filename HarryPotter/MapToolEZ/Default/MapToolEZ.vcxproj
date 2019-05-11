@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F38015A6-382B-4FC3-A3EC-E941682DBCFC}</ProjectGuid>
-    <RootNamespace>MapTool_Client_Ver</RootNamespace>
+    <ProjectGuid>{C2CE64CE-6AA1-4073-94F4-3CDA62877E87}</ProjectGuid>
+    <RootNamespace>MapToolEZ</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <Keyword>MFCProj</Keyword>
   </PropertyGroup>
@@ -77,7 +77,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../Bin/</OutDir>
     <IncludePath>$(DXSDK_DIR)Include;../../Reference/Headers/;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x86;../../Reference/Librarys;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;../../Reference/Librarys/;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -190,22 +190,20 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Headers\MainAppTool.h" />
     <ClInclude Include="MainFrm.h" />
-    <ClInclude Include="MapTool_Client_Ver.h" />
-    <ClInclude Include="MapTool_Client_VerDoc.h" />
-    <ClInclude Include="MapTool_Client_VerView.h" />
+    <ClInclude Include="MapToolEZ.h" />
+    <ClInclude Include="MapToolEZDoc.h" />
+    <ClInclude Include="MapToolEZView.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Tool_Defines.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Codes\MainAppTool.cpp" />
     <ClCompile Include="MainFrm.cpp" />
-    <ClCompile Include="MapTool_Client_Ver.cpp" />
-    <ClCompile Include="MapTool_Client_VerDoc.cpp" />
-    <ClCompile Include="MapTool_Client_VerView.cpp" />
+    <ClCompile Include="MapToolEZ.cpp" />
+    <ClCompile Include="MapToolEZDoc.cpp" />
+    <ClCompile Include="MapToolEZView.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -214,22 +212,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MapTool_Client_Ver.rc" />
+    <ResourceCompile Include="MapToolEZ.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\MapTool_Client_Ver.rc2" />
+    <None Include="res\MapToolEZ.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MapTool_Client_Ver.ico" />
-    <Image Include="res\MapTool_Client_VerDoc.ico" />
+    <Image Include="res\MapToolEZ.ico" />
+    <Image Include="res\MapToolEZDoc.ico" />
     <Image Include="res\Toolbar.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties RESOURCE_FILE="MapTool_Client_Ver.rc" />
-    </VisualStudio>
-  </ProjectExtensions>
 </Project>

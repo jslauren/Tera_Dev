@@ -164,7 +164,7 @@
 xcopy	/y	 ..\Bin\*.lib			..\..\Reference\Librarys\
 xcopy	/y	 ..\Bin\*.dll			..\..\Client\Bin\
 xcopy	/y	 ..\Bin\*.dll			..\..\MapTool\Bin\
-xcopy	/y	 ..\Bin\*.dll			..\..\MapTool_Client_Ver\Bin\
+xcopy	/y	 ..\Bin\*.dll			..\..\MapToolEZ\Bin\
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

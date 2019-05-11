@@ -2,22 +2,25 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="00. MainFrame">
-      <UniqueIdentifier>{7e8bb5bd-60a1-49de-ad72-761d69df0fe1}</UniqueIdentifier>
+      <UniqueIdentifier>{a723117f-56fd-4566-91b8-a5322691fc6f}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. View">
-      <UniqueIdentifier>{2b47631b-4198-46dd-ab5f-f07451aa5a05}</UniqueIdentifier>
+      <UniqueIdentifier>{0fb5ec24-6c64-499c-abaa-18780e579ce5}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. MainApp">
-      <UniqueIdentifier>{3addb379-6c7c-4b99-9523-be32acaca676}</UniqueIdentifier>
+      <UniqueIdentifier>{e0306fb7-958c-45a4-bdce-b0556a0e286b}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Scene">
-      <UniqueIdentifier>{ffc74201-91ba-442d-949f-03fe7866f2c1}</UniqueIdentifier>
+      <UniqueIdentifier>{71be49a6-65d0-4c28-92fe-e1bb70a88810}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Utility">
+      <UniqueIdentifier>{eed25131-ddd7-4213-a3f5-77d721b4c96d}</UniqueIdentifier>
     </Filter>
     <Filter Include="99. Headers">
-      <UniqueIdentifier>{b97f643f-2e33-4c91-b918-9f4fe04fd3a3}</UniqueIdentifier>
+      <UniqueIdentifier>{dd91bdd1-988f-4427-8e07-7637ef7b5701}</UniqueIdentifier>
     </Filter>
     <Filter Include="999. Default">
-      <UniqueIdentifier>{cd87d956-bfa4-4ffa-9c3c-e166cb51cef4}</UniqueIdentifier>
+      <UniqueIdentifier>{b6d7b28b-55b4-4f07-b3ca-8b10a8e8905c}</UniqueIdentifier>
     </Filter>
     <Filter Include="999. Default\리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
@@ -28,13 +31,13 @@
     <ClInclude Include="MainFrm.h">
       <Filter>00. MainFrame</Filter>
     </ClInclude>
-    <ClInclude Include="MapTool_Client_VerView.h">
+    <ClInclude Include="MapToolEZView.h">
       <Filter>01. View</Filter>
     </ClInclude>
-    <ClInclude Include="MapTool_Client_Ver.h">
+    <ClInclude Include="MapToolEZ.h">
       <Filter>999. Default</Filter>
     </ClInclude>
-    <ClInclude Include="MapTool_Client_VerDoc.h">
+    <ClInclude Include="MapToolEZDoc.h">
       <Filter>999. Default</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
@@ -49,45 +52,39 @@
     <ClInclude Include="Tool_Defines.h">
       <Filter>99. Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\MainAppTool.h">
-      <Filter>02. MainApp</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
       <Filter>00. MainFrame</Filter>
     </ClCompile>
-    <ClCompile Include="MapTool_Client_VerView.cpp">
-      <Filter>01. View</Filter>
-    </ClCompile>
-    <ClCompile Include="MapTool_Client_Ver.cpp">
+    <ClCompile Include="MapToolEZ.cpp">
       <Filter>999. Default</Filter>
     </ClCompile>
-    <ClCompile Include="MapTool_Client_VerDoc.cpp">
+    <ClCompile Include="MapToolEZDoc.cpp">
       <Filter>999. Default</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>999. Default</Filter>
     </ClCompile>
-    <ClCompile Include="..\Codes\MainAppTool.cpp">
-      <Filter>02. MainApp</Filter>
+    <ClCompile Include="MapToolEZView.cpp">
+      <Filter>01. View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MapTool_Client_Ver.rc">
+    <ResourceCompile Include="MapToolEZ.rc">
       <Filter>999. Default\리소스 파일</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\MapTool_Client_Ver.rc2">
+    <None Include="res\MapToolEZ.rc2">
       <Filter>999. Default\리소스 파일</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\MapTool_Client_VerDoc.ico">
+    <Image Include="res\MapToolEZDoc.ico">
       <Filter>999. Default\리소스 파일</Filter>
     </Image>
-    <Image Include="res\MapTool_Client_Ver.ico">
+    <Image Include="res\MapToolEZ.ico">
       <Filter>999. Default\리소스 파일</Filter>
     </Image>
     <Image Include="res\Toolbar.bmp">

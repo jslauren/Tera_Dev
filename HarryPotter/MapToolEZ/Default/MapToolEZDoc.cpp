@@ -1,15 +1,15 @@
 
-// MapTool_Client_VerDoc.cpp : CMapTool_Client_VerDoc 클래스의 구현
+// MapToolEZDoc.cpp : CMapToolEZDoc 클래스의 구현
 //
 
 #include "stdafx.h"
 // SHARED_HANDLERS는 미리 보기, 축소판 그림 및 검색 필터 처리기를 구현하는 ATL 프로젝트에서 정의할 수 있으며
 // 해당 프로젝트와 문서 코드를 공유하도록 해 줍니다.
 #ifndef SHARED_HANDLERS
-#include "MapTool_Client_Ver.h"
+#include "MapToolEZ.h"
 #endif
 
-#include "MapTool_Client_VerDoc.h"
+#include "MapToolEZDoc.h"
 
 #include <propkey.h>
 
@@ -17,27 +17,27 @@
 #define new DEBUG_NEW
 #endif
 
-// CMapTool_Client_VerDoc
+// CMapToolEZDoc
 
-IMPLEMENT_DYNCREATE(CMapTool_Client_VerDoc, CDocument)
+IMPLEMENT_DYNCREATE(CMapToolEZDoc, CDocument)
 
-BEGIN_MESSAGE_MAP(CMapTool_Client_VerDoc, CDocument)
+BEGIN_MESSAGE_MAP(CMapToolEZDoc, CDocument)
 END_MESSAGE_MAP()
 
 
-// CMapTool_Client_VerDoc 생성/소멸
+// CMapToolEZDoc 생성/소멸
 
-CMapTool_Client_VerDoc::CMapTool_Client_VerDoc()
+CMapToolEZDoc::CMapToolEZDoc()
 {
 	// TODO: 여기에 일회성 생성 코드를 추가합니다.
 
 }
 
-CMapTool_Client_VerDoc::~CMapTool_Client_VerDoc()
+CMapToolEZDoc::~CMapToolEZDoc()
 {
 }
 
-BOOL CMapTool_Client_VerDoc::OnNewDocument()
+BOOL CMapToolEZDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
@@ -51,9 +51,9 @@ BOOL CMapTool_Client_VerDoc::OnNewDocument()
 
 
 
-// CMapTool_Client_VerDoc serialization
+// CMapToolEZDoc serialization
 
-void CMapTool_Client_VerDoc::Serialize(CArchive& ar)
+void CMapToolEZDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
@@ -68,7 +68,7 @@ void CMapTool_Client_VerDoc::Serialize(CArchive& ar)
 #ifdef SHARED_HANDLERS
 
 // 축소판 그림을 지원합니다.
-void CMapTool_Client_VerDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
+void CMapToolEZDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 {
 	// 문서의 데이터를 그리려면 이 코드를 수정하십시오.
 	dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
@@ -89,7 +89,7 @@ void CMapTool_Client_VerDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 }
 
 // 검색 처리기를 지원합니다.
-void CMapTool_Client_VerDoc::InitializeSearchContent()
+void CMapToolEZDoc::InitializeSearchContent()
 {
 	CString strSearchContent;
 	// 문서의 데이터에서 검색 콘텐츠를 설정합니다.
@@ -99,7 +99,7 @@ void CMapTool_Client_VerDoc::InitializeSearchContent()
 	SetSearchContent(strSearchContent);
 }
 
-void CMapTool_Client_VerDoc::SetSearchContent(const CString& value)
+void CMapToolEZDoc::SetSearchContent(const CString& value)
 {
 	if (value.IsEmpty())
 	{
@@ -119,19 +119,19 @@ void CMapTool_Client_VerDoc::SetSearchContent(const CString& value)
 
 #endif // SHARED_HANDLERS
 
-// CMapTool_Client_VerDoc 진단
+// CMapToolEZDoc 진단
 
 #ifdef _DEBUG
-void CMapTool_Client_VerDoc::AssertValid() const
+void CMapToolEZDoc::AssertValid() const
 {
 	CDocument::AssertValid();
 }
 
-void CMapTool_Client_VerDoc::Dump(CDumpContext& dc) const
+void CMapToolEZDoc::Dump(CDumpContext& dc) const
 {
 	CDocument::Dump(dc);
 }
 #endif //_DEBUG
 
 
-// CMapTool_Client_VerDoc 명령
+// CMapToolEZDoc 명령

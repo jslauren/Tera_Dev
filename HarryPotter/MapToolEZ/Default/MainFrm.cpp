@@ -3,7 +3,7 @@
 //
 
 #include "stdafx.h"
-#include "MapTool_Client_Ver.h"
+#include "MapToolEZ.h"
 
 #include "MainFrm.h"
 
