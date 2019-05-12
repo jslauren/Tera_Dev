@@ -14,8 +14,10 @@ public:
 	virtual HRESULT Render_Scene() override;
 
 private:
-	//씬에서 사용하는 컴포넌트 프로토타입들을 준비
-	HRESULT ReadyGameObject();
+	HRESULT	Ready_LightInfo();
+	HRESULT	Ready_Component_Prototype();
+	HRESULT Ready_GameObject_Prototype();
+	HRESULT Ready_GameObject();
 
 public:
 	static CSceneStatic* Create(LPDIRECT3DDEVICE9 _pGraphicDevice);

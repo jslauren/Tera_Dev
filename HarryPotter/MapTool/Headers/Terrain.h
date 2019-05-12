@@ -10,8 +10,6 @@ class CShader;
 class CTexture;
 _END
 
-_BEGIN(Client)
-
 class CTerrain final : public CGameObject
 {
 private:
@@ -44,4 +42,3 @@ public:
 	virtual void			Free();		
 };
 
-_END

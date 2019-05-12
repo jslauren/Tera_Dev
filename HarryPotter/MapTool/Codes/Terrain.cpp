@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\Terrain.h"
 
-_USING(Client)
-
 CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
 {

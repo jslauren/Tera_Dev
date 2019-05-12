@@ -12,13 +12,13 @@
 #include "MapToolDoc.h"
 #include "MapToolView.h"
 #include "ViewManager.h"
+#include "Input_Device.h"
 #include "Renderer.h"
 #include "Component_Manager.h"
 #include "Object_Manager.h"
-//
-#include "SceneTerrain.h"
 
 // Object
+#include "Camera_Dynamic.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -143,8 +143,20 @@ HRESULT CMapToolView::InitDefaultSetting(CGraphic_Device::WINMODE eType, const _
 	if (nullptr == m_pManagement)
 		return E_FAIL;
 
+	// For.Graphic_Device
 	if (FAILED(CGraphic_Device::GetInstance()->Ready_Graphic_Device(g_hWnd, eType, iWinCX, iWinCY, &m_pGraphicDevice)))
 		return E_FAIL;
+
+	// For.Input_Device //
+	HINSTANCE hInst;
+	hInst = AfxGetInstanceHandle();
+
+	HWND	hWnd;
+	hWnd = AfxGetApp()->m_pMainWnd->m_hWnd;
+
+	if (FAILED(CInput_Device::GetInstance()->Ready_Input_Device(hInst, hWnd)))
+		return E_FAIL;
+	//////////////////////
 
 	m_pViewManager->m_pGraphic_Device = m_pGraphicDevice;
 
@@ -164,51 +176,43 @@ HRESULT CMapToolView::InitRenderState()
 
 HRESULT CMapToolView::InitComponentPrototype()
 {
-	CComponent_Manager*	pComponentManager = CComponent_Manager::GetInstance();
-	if (nullptr == pComponentManager)
+	CComponent_Manager*	pComponent_Manager = CComponent_Manager::GetInstance();
+	if (nullptr == pComponent_Manager)
 		return E_FAIL;
 
-	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_Transform", CTransform::Create(m_pGraphicDevice))))
+	pComponent_Manager->AddRef();
+
+	// For.Component_Transform
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Transform", CTransform::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	m_pRenderer = CRenderer::Create(m_pGraphicDevice);
-	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_Renderer", m_pRenderer)))
+	// For.Component_Renderer
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Renderer", m_pRenderer = CRenderer::Create(m_pGraphicDevice))))
+		return E_FAIL;
+	m_pRenderer->AddRef();
+
+	// For.Component_Shader_Default
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Default", CShader::Create(m_pGraphicDevice, L"../Bin/ShaderFiles/Shader_Default.fx"))))
 		return E_FAIL;
 
-	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_BufferRctCol", CBuffer_RcCol::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_BufferRctTex", CBuffer_RcTex::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_BufferCubTex", CBuffer_CubeTex::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_Terrain", CBuffer_Terrain::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_Terrain_Tex", CBuffer_Terrain::Create(m_pGraphicDevice))))
-		return E_FAIL;
-
-	//if (FAILED(pComponentManager->Add_Component_Prototype(TOOL_STATIC, L"Component_Texture", CTexture::Create(m_pGraphicDevice, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Cat.jpg"))))
-	//	return E_FAIL;
-
-	//if (FAILED(pComponentManager->Add_Component_Prototype(TOOL_STATIC, L"Component_Texture_Guid", CTexture::Create(m_pGraphicDevice, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/GuidLine.png"))))
-	//	return E_FAIL;
+	Safe_Release(pComponent_Manager);
 
 	return NOERROR;
 }
 
 HRESULT CMapToolView::InitObjectPrototype()
 {
-	//if (FAILED(CObject_Manager::GetInstance()->Add_Object_Prototype(TOOL_STATIC, L"Camera_Tile_45", m_pViewManager->m_pTileCamera = CTileCamera::Create(m_pGraphicDevice))))
-	//	return E_FAIL;
+	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
+	if (nullptr == pObject_Manager)
+		return E_FAIL;
+	
+	pObject_Manager->AddRef();
 
-	//if (FAILED(CObject_Manager::GetInstance()->AddObject_Prototype(TOOL_STATIC, L"Terrain", CPlaneTerrain::Create(m_pGraphicDevice))))
-	//	return E_FAIL;
+	// For.GameObject_Camera_Dynamic
+	if (FAILED(pObject_Manager->Add_Object_Prototype(SCENE_STATIC, L"GameObject_Camera_Dynamic", CCamera_Dynamic::Create(m_pGraphicDevice))))
+		return E_FAIL;
 
-	//if (FAILED(CObject_Manager::GetInstance()->AddObject_Prototype(TOOL_STATIC, L"Cube_Tile", CTileCube::Create(m_pGraphicDevice))))
-	//	return E_FAIL;
+	Safe_Release(pObject_Manager);
 
 	return NOERROR;
 }

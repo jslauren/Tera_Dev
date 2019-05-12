@@ -9,8 +9,6 @@ class CRenderer;		// 백로고를 렌더그룹에 추가하기 위해.and Render함수를 호출할 �
 class CTexture;
 _END
 
-_BEGIN(Client)
-
 class CSkyBox final : public CGameObject
 {
 private:
@@ -39,5 +37,3 @@ public:
 	virtual CGameObject*	Clone(void* pArg = nullptr);
 	virtual void			Free();
 };
-
-_END

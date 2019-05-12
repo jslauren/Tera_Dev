@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "..\Headers\Camera_Dynamic.h"
 #include "Input_Device.h"
-
-_USING(Client)
+#include "ViewManager.h"
 
 CCamera_Dynamic::CCamera_Dynamic(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CCamera(pGraphic_Device)
 	, m_pInput_Device(CInput_Device::GetInstance())
+	, m_pViewManager(CViewManager::GetInstance())
 {
 	m_pInput_Device->AddRef();
 }
@@ -65,19 +65,21 @@ _int CCamera_Dynamic::Update_GameObject(const _float & fTimeDelta)
 	if (GetKeyState('D') & 0x8000)
 		m_pTransformCom->Move(3, 10.f, fTimeDelta);
 
-	_long			dwMouseMove = 0;
+	if (GetKeyState(VK_TAB) & 0x8000)
+	{
+		_long			dwMouseMove = 0;
 
-	if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_Y))
-		m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 10.f, fTimeDelta);
+		if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_Y))
+			m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 0.5f, fTimeDelta);
 
-	if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_X))
-		m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(dwMouseMove) * 10.f, fTimeDelta);
+		if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_X))
+			m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(dwMouseMove) * 0.5f, fTimeDelta);
 
-	POINT			ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
+		//POINT			ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
 
-	ClientToScreen(g_hWnd, &ptMouse);
-	SetCursorPos(ptMouse.x, ptMouse.y);
-
+		//ClientToScreen(g_hWnd, &ptMouse);
+		//SetCursorPos(ptMouse.x, ptMouse.y);
+	}
 	return _int();
 }
 

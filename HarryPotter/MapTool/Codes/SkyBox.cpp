@@ -2,8 +2,6 @@
 #include "..\Headers\SkyBox.h"
 #include "Object_Manager.h"
 
-_USING(Client)
-
 CSkyBox::CSkyBox(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
 {
@@ -110,7 +108,6 @@ HRESULT CSkyBox::Add_Component()
 
 HRESULT CSkyBox::SetUp_RenderState()
 {
-
 	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
