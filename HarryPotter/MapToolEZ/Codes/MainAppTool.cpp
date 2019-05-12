@@ -1,11 +1,16 @@
+#pragma once
 #include "stdafx.h"
-#include "MainAppTool.h"
-#include "Graphic_Device.h"
-#include "Object_Manager.h"
-//#include "Scene_Terrain.h"
+#include "Shader.h"
+#include "Renderer.h"
 #include "Management.h"
-#include "Component_Manager.h"
+#include "MainAppTool.h"
 //#include "Camera_Dynamic.h"
+#include "Object_Manager.h"
+#include "ViewManagerTool.h"
+#include "Component_Manager.h"
+
+// Scene
+#include "Scene_Proto.h"
 
 _USING(MapTool)
 
@@ -17,6 +22,8 @@ CMainAppTool::CMainAppTool()
 
 HRESULT CMainAppTool::Ready_MainApp()
 {
+	m_pViewManager = CViewManagerTool::GetInstance();
+
 	// 그래픽카드 초기화, 입력장치 초기화, 매니지먼트 초기화.
 	if (FAILED(Ready_Default_Setting(CGraphic_Device::TYPE_WINMODE, g_iWinCX, g_iWinCY)))
 		return E_FAIL;
@@ -88,6 +95,35 @@ HRESULT CMainAppTool::Render_MainApp()
 
 HRESULT CMainAppTool::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _uint & iWinCX, const _uint & iWinCY)
 {
+	// 이게 없으면 파란화면이 안떠요 ㅠㅠㅠㅠㅠㅠ 흙규ㅠㅎ ㅠ휴 ㅠㅠㅠ
+	{
+		CMainFrame*		pMainFrm = ((CMainFrame*)AfxGetMainWnd());
+
+		RECT		rcWindow;
+		pMainFrm->GetWindowRect(&rcWindow);	 // 윈도우 창 프레임의 사이즈를 얻어오는 함수
+
+		SetRect(&rcWindow,	// 프레임 크기의 가로와 세로 사이즈를 새로운 렉트에 right, bottom에 저장
+			0,
+			0,
+			rcWindow.right - rcWindow.left,
+			rcWindow.bottom - rcWindow.top);
+
+
+		RECT	rcMainView;
+		GetClientRect(g_hWnd, &rcMainView);	// 순수한 뷰 창의 크기를 얻어오는 함수
+
+		float	fRowFrm = float(rcWindow.right - rcMainView.right);
+		float	fColFrm = float(rcWindow.bottom - rcMainView.bottom);
+
+		// 뷰 창의 좌표들을 0,0 기준으로 출력할 수 있게 창의 위치를 재조정하는 함수
+		pMainFrm->SetWindowPos(NULL,
+			0,
+			0,
+			int(g_iWinCX + fRowFrm),
+			int(g_iWinCY + fColFrm),
+			SWP_NOZORDER);
+	}
+
 	if (nullptr == m_pManagement)
 		return E_FAIL;
 
@@ -111,26 +147,18 @@ HRESULT CMainAppTool::Ready_Component_Prototype()
 
 	pComponent_Manager->AddRef();
 
-	// For.Component_Transform
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Transform", CTransform::Create(m_pGraphic_Device))))
-		return E_FAIL;
+	//// For.Component_Transform
+	//if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Transform", CTransform::Create(m_pGraphic_Device))))
+	//	return E_FAIL;
 
 	// For.Component_Renderer
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Renderer", m_pRenderer = CRenderer::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	m_pRenderer->AddRef();
 
-	// For.Component_Buffer_RcTex
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_RcTex", CBuffer_RcTex::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	// For.Component_Buffer_UI
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI", CBuffer_ScreenTex::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	//// For.Component_Texture_Default
-	//if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Default", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Default.jpg"))))
-	//	return E_FAIL;
+	////// For.Component_Texture_Default
+	////if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Default", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Default.jpg"))))
+	////	return E_FAIL;
 
 	// For.Component_Shader_Default
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Default", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Default.fx"))))
@@ -159,32 +187,8 @@ HRESULT CMainAppTool::Ready_GameObject_Prototype()
 
 HRESULT CMainAppTool::Ready_Scene(SCENEID eID)
 {
-	if (nullptr == m_pManagement)
-		return E_FAIL;
-
-	CScene*		pScene = nullptr;
-
-	switch (eID)
-	{
-	case SCENE_TERRAIN:
-		//pScene = CScene_Logo::Create(m_pGraphic_Device);
-		break;
-
-	case SCENE_MESH:
-		break;
-
-	case SCENE_ANIMATION:
-		break;
-
-	case SCENE_PROTO:
-		//pScene = CScene_Logo::Create(m_pGraphic_Device);
-		break;
-	}
-	if (nullptr == pScene)
-		return E_FAIL;
-
-	if (FAILED(m_pManagement->SetUp_CurrentScene(pScene, SCENE_PROTO)))
-		return E_FAIL;
+	CViewManagerTool::GetInstance()->SetDevice(m_pGraphic_Device);
+	CViewManagerTool::GetInstance()->SetCurScene(eID);
 
 	return NOERROR;
 }
@@ -203,6 +207,8 @@ CMainAppTool * CMainAppTool::Create()
 
 void CMainAppTool::Free()
 {
+	CViewManagerTool::GetInstance()->DestroyInstance();
+	Safe_Release(m_pViewManager);
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pManagement);
 	Safe_Release(m_pGraphic_Device);

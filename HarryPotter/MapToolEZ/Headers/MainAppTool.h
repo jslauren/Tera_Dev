@@ -4,11 +4,14 @@
 #include "Graphic_Device.h"
 
 _BEGIN(Engine)
-class CManagement;
 class CRenderer;
+class CManagement;
 _END
 
+class CViewManagerTool;
+
 _BEGIN(MapTool)
+
 class CMainAppTool : public CBase
 {
 private:
@@ -20,9 +23,9 @@ public:
 	HRESULT Render_MainApp();
 private:
 	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;
-private:
 	CManagement*		m_pManagement = nullptr;
 	CRenderer*			m_pRenderer = nullptr;
+	CViewManagerTool*	m_pViewManager = nullptr;
 private: // For.FPS
 	_uint	m_iRenderCnt = 0;
 	_float	m_fTimeAcc = 0.f;

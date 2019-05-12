@@ -13,9 +13,6 @@
     <Filter Include="03. Scene">
       <UniqueIdentifier>{71be49a6-65d0-4c28-92fe-e1bb70a88810}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Utility">
-      <UniqueIdentifier>{eed25131-ddd7-4213-a3f5-77d721b4c96d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="99. Headers">
       <UniqueIdentifier>{dd91bdd1-988f-4427-8e07-7637ef7b5701}</UniqueIdentifier>
     </Filter>
@@ -26,13 +23,64 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="01. View\00. MainView">
+      <UniqueIdentifier>{1dd1a2bf-856c-4cc3-a469-4acfde5ac3d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. View\01. ModifyView">
+      <UniqueIdentifier>{6dabfe17-feb5-4612-9fc2-961685f2f1a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\00. Terrain">
+      <UniqueIdentifier>{0ee2ab92-82d3-4dde-88c8-cbbac0cc8cc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\01. Mesh">
+      <UniqueIdentifier>{0c54aa8c-795e-44af-8d46-93217b235485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\02. Animation">
+      <UniqueIdentifier>{1b4efc2c-9e60-4807-9e70-003aecd485c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\03. Prototype">
+      <UniqueIdentifier>{281c6e1a-86b1-4692-bdca-1f9b36d2d13f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object">
+      <UniqueIdentifier>{37291ddc-8727-4918-b53d-f928e01a9b78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\00. Terrain">
+      <UniqueIdentifier>{ce37b00a-1da3-4ca1-943f-3240deffb5e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\01. Mesh">
+      <UniqueIdentifier>{79835d77-cc17-4e9d-95c1-99e68c1d898c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\02. Animation">
+      <UniqueIdentifier>{bfda5dee-ca95-4aa5-8afe-6b9a370bf1d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\03. Prototype">
+      <UniqueIdentifier>{c29ada9a-bf54-401e-ad03-330843d36585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Utility">
+      <UniqueIdentifier>{eed25131-ddd7-4213-a3f5-77d721b4c96d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Shader">
+      <UniqueIdentifier>{779ff7d5-d1e8-4100-92c3-3848cc5d1d6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Utility\00. ViewManager">
+      <UniqueIdentifier>{0c15c056-77e3-44ad-b731-4229946f21c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. View\01. ModifyView\00. Tab_Terrain">
+      <UniqueIdentifier>{12b51686-f400-4436-b115-bd919f51b5eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. View\01. ModifyView\01. Tab_Mesh">
+      <UniqueIdentifier>{a453fd43-3ac1-4096-9fcc-a19cf928ee3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. View\01. ModifyView\02. Tab_Animation">
+      <UniqueIdentifier>{a6d3df82-30b3-4205-85b2-ef1a31119a8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. View\01. ModifyView\03. Tab_Prototype">
+      <UniqueIdentifier>{62297277-0005-403a-a878-642ef773362a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainFrm.h">
       <Filter>00. MainFrame</Filter>
-    </ClInclude>
-    <ClInclude Include="MapToolEZView.h">
-      <Filter>01. View</Filter>
     </ClInclude>
     <ClInclude Include="MapToolEZ.h">
       <Filter>999. Default</Filter>
@@ -55,6 +103,21 @@
     <ClInclude Include="..\Headers\MainAppTool.h">
       <Filter>02. MainApp</Filter>
     </ClInclude>
+    <ClInclude Include="MapToolEZView.h">
+      <Filter>01. View\00. MainView</Filter>
+    </ClInclude>
+    <ClInclude Include="ModifyView.h">
+      <Filter>01. View\01. ModifyView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Scene_Proto.h">
+      <Filter>03. Scene\03. Prototype</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewManagerTool.h">
+      <Filter>06. Utility\00. ViewManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtoTypeTab.h">
+      <Filter>01. View\01. ModifyView\03. Tab_Prototype</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -69,11 +132,23 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>999. Default</Filter>
     </ClCompile>
-    <ClCompile Include="MapToolEZView.cpp">
-      <Filter>01. View</Filter>
-    </ClCompile>
     <ClCompile Include="..\Codes\MainAppTool.cpp">
       <Filter>02. MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolEZView.cpp">
+      <Filter>01. View\00. MainView</Filter>
+    </ClCompile>
+    <ClCompile Include="ModifyView.cpp">
+      <Filter>01. View\01. ModifyView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Scene_Proto.cpp">
+      <Filter>03. Scene\03. Prototype</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewManagerTool.cpp">
+      <Filter>06. Utility\00. ViewManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtoTypeTab.cpp">
+      <Filter>01. View\01. ModifyView\03. Tab_Prototype</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

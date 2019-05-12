@@ -3,6 +3,8 @@
 //
 
 #pragma once
+#include "MainAppTool.h"
+#include "Timer_Manager.h"
 
 class CMainFrame : public CFrameWnd
 {
@@ -17,6 +19,7 @@ public:
 // 작업입니다.
 public:
 
+
 // 재정의입니다.
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -29,15 +32,28 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
+public:
+	void				SetStatusBar(int idx, CString _data);
+	HRESULT				MainLoop();
+
 protected:  // 컨트롤 모음이 포함된 멤버입니다.
-	CToolBar          m_wndToolBar;
-	CStatusBar        m_wndStatusBar;
+	CToolBar			m_wndToolBar;
+	CStatusBar			m_wndStatusBar;
+
+private:
+	CSplitterWnd			m_MainSplitter;
+	MapTool::CMainAppTool*	m_pMainAppTool = nullptr;
+	CTimer_Manager*			m_pTimer_Manager = nullptr;
+
+private:
+	_float					fTimeAcc = 0.f;
 
 // 생성된 메시지 맵 함수
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 
+	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 };
 
 

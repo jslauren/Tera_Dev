@@ -21,12 +21,13 @@
 
 using namespace std;
 
-#ifdef _DEBUG 
-#ifndef DBG_NEW 
-#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
-#define new DBG_NEW 
-#endif 
-#endif  // _DEBUG 
+// 이게 있으면 오류가 뻥뻥 터진다니까 ㅡㅡ?
+//#ifdef _DEBUG 
+//#ifndef DBG_NEW 
+//#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
+//#define new DBG_NEW 
+//#endif 
+//#endif  // _DEBUG 
 
 const float g_fRate_60 = 1.f / 60.0f;
 const float g_fRate_100 = 1.f / 100.0f;
