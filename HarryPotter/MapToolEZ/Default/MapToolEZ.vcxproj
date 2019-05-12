@@ -197,6 +197,8 @@
     <ClInclude Include="..\Headers\Scene_Mesh.h" />
     <ClInclude Include="..\Headers\Scene_Proto.h" />
     <ClInclude Include="..\Headers\Scene_Terrain.h" />
+    <ClInclude Include="..\Headers\SkyBox.h" />
+    <ClInclude Include="..\Headers\Terrain.h" />
     <ClInclude Include="..\Headers\ViewManagerTool.h" />
     <ClInclude Include="Camera_Tab.h" />
     <ClInclude Include="Effect_Tab.h" />
@@ -221,6 +223,8 @@
     <ClCompile Include="..\Codes\Scene_Mesh.cpp" />
     <ClCompile Include="..\Codes\Scene_Proto.cpp" />
     <ClCompile Include="..\Codes\Scene_Terrain.cpp" />
+    <ClCompile Include="..\Codes\SkyBox.cpp" />
+    <ClCompile Include="..\Codes\Terrain.cpp" />
     <ClCompile Include="..\Codes\ViewManagerTool.cpp" />
     <ClCompile Include="Camera_Tab.cpp" />
     <ClCompile Include="Effect_Tab.cpp" />

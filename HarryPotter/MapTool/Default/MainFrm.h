@@ -4,7 +4,7 @@
 
 #pragma once
 
-class CMainFrame : public CSplitterWnd
+class CMainFrame : public CFrameWnd
 {
 	
 protected: // serialization에서만 만들어집니다.

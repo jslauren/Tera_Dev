@@ -29,6 +29,7 @@ BEGIN_MESSAGE_MAP(CMapToolEZView, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 	ON_WM_CREATE()
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 // CMapToolEZView 생성/소멸
@@ -172,4 +173,19 @@ int CMapToolEZView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
 
 	return 0;
+}
+
+
+void CMapToolEZView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	m_pViewManager->m_vMousePos = _vec3(float(point.x), float(point.y), 0.f);
+
+	_tchar mouse[128] = L"";
+	wsprintf(mouse, L"Mouse : %d, %d ", point.x, point.y);
+
+	m_pViewManager->m_pMainFrame->SetStatusBar(1, mouse);
+
+	//Invalidate(FALSE);
+	CView::OnMouseMove(nFlags, point);
 }

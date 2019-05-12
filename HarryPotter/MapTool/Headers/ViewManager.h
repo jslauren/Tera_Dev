@@ -15,7 +15,7 @@ private:
 	virtual ~CViewManager() = default;
 
 public:
-	HRESULT	SetCurScene(TOOLID _eID);
+	HRESULT	SetCurScene(SCENEID _eID);
 
 public:
 	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;
@@ -28,7 +28,7 @@ public:
 	CScene*				m_pCurScene = nullptr;
 
 public:
-	_vec3				m_vMousePos = _vec3(g_iToolWinCX * 0.5f, g_iToolWinCY * 0.5f, 0);
+	_vec3				m_vMousePos = _vec3(g_iWinCX * 0.5f, g_iWinCY * 0.5f, 0);
 
 private:
 	CManagement*		m_pManagement = nullptr;

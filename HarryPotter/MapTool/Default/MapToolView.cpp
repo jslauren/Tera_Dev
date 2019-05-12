@@ -20,20 +20,12 @@
 
 // Object
 
-
-//_BEGIN(Engine)
-//class CRenderer;
-//class CManagement;
-//_END
-
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-
 // CMapToolView
-HWND g_ToolhWnd;
+HWND g_hWnd;
 IMPLEMENT_DYNCREATE(CMapToolView, CView)
 
 BEGIN_MESSAGE_MAP(CMapToolView, CView)
@@ -144,19 +136,19 @@ HRESULT CMapToolView::InitDefaultSetting(CGraphic_Device::WINMODE eType, const _
 	pMainFrm->SetWindowPos(NULL,
 		0,
 		0,
-		int(g_iToolWinCX + fRowFrm),
-		int(g_iToolWinCY + fColFrm),
+		int(g_iWinCX + fRowFrm),
+		int(g_iWinCY + fColFrm),
 		SWP_NOZORDER);
 
 	if (nullptr == m_pManagement)
 		return E_FAIL;
 
-	if (FAILED(CGraphic_Device::GetInstance()->Ready_Graphic_Device(g_ToolhWnd, eType, iWinCX, iWinCY, &m_pGraphicDevice)))
+	if (FAILED(CGraphic_Device::GetInstance()->Ready_Graphic_Device(g_hWnd, eType, iWinCX, iWinCY, &m_pGraphicDevice)))
 		return E_FAIL;
 
 	m_pViewManager->m_pGraphic_Device = m_pGraphicDevice;
 
-	if (FAILED(m_pManagement->Ready_Management(TOOL_END)))
+	if (FAILED(m_pManagement->Ready_Management(SCENE_END)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -176,26 +168,26 @@ HRESULT CMapToolView::InitComponentPrototype()
 	if (nullptr == pComponentManager)
 		return E_FAIL;
 
-	if (FAILED(pComponentManager->Add_Component_Prototype(TOOL_STATIC, L"Component_Transform", CTransform::Create(m_pGraphicDevice))))
+	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_Transform", CTransform::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 	m_pRenderer = CRenderer::Create(m_pGraphicDevice);
-	if (FAILED(pComponentManager->Add_Component_Prototype(TOOL_STATIC, L"Component_Renderer", m_pRenderer)))
+	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_Renderer", m_pRenderer)))
 		return E_FAIL;
 
-	if (FAILED(pComponentManager->Add_Component_Prototype(TOOL_STATIC, L"Component_BufferRctCol", CBuffer_RcCol::Create(m_pGraphicDevice))))
+	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_BufferRctCol", CBuffer_RcCol::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	if (FAILED(pComponentManager->Add_Component_Prototype(TOOL_STATIC, L"Component_BufferRctTex", CBuffer_RcTex::Create(m_pGraphicDevice))))
+	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_BufferRctTex", CBuffer_RcTex::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	if (FAILED(pComponentManager->Add_Component_Prototype(TOOL_STATIC, L"Component_BufferCubTex", CBuffer_CubeTex::Create(m_pGraphicDevice))))
+	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_BufferCubTex", CBuffer_CubeTex::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	if (FAILED(pComponentManager->Add_Component_Prototype(TOOL_STATIC, L"Component_Terrain", CBuffer_Terrain::Create(m_pGraphicDevice))))
+	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_Terrain", CBuffer_Terrain::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
-	if (FAILED(pComponentManager->Add_Component_Prototype(TOOL_STATIC, L"Component_Terrain_Tex", CBuffer_Terrain::Create(m_pGraphicDevice))))
+	if (FAILED(pComponentManager->Add_Component_Prototype(SCENE_STATIC, L"Component_Terrain_Tex", CBuffer_Terrain::Create(m_pGraphicDevice))))
 		return E_FAIL;
 
 	//if (FAILED(pComponentManager->Add_Component_Prototype(TOOL_STATIC, L"Component_Texture", CTexture::Create(m_pGraphicDevice, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Cat.jpg"))))
@@ -252,14 +244,14 @@ void CMapToolView::OnInitialUpdate()
 	m_pViewManager = CViewManager::GetInstance();
 //	m_pDataManager = CDataManager::GetInstance();
 
-	g_ToolhWnd = m_hWnd;
+	g_hWnd = m_hWnd;
 
 	{
 		m_pManagement = CManagement::GetInstance();
 		m_pManagement->AddRef();
 	}
 
-	if (FAILED(InitDefaultSetting(CGraphic_Device::TYPE_WINMODE, g_iToolWinCX, g_iToolWinCY)))
+	if (FAILED(InitDefaultSetting(CGraphic_Device::TYPE_WINMODE, g_iWinCX, g_iWinCY)))
 		return;
 
 	if (FAILED(InitRenderState()))

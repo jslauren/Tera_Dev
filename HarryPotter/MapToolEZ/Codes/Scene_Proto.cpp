@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "..\Headers\Scene_Proto.h"
+#include "Terrain.h"
+#include "SkyBox.h"
+#include "Camera_Dynamic.h"
 
 _USING(MapTool)
 
@@ -25,6 +28,8 @@ HRESULT CScene_Proto::Ready_Scene()
 	//// For.Layer_Camera
 	//if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
 	//	return E_FAIL;
+
+	return NOERROR;
 }
 
 _int CScene_Proto::Update_Scene(const _float & fTimeDelta)
@@ -67,30 +72,30 @@ HRESULT CScene_Proto::Ready_Component_Prototype()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
-	//// For.Component_Texture_SkyBox
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_PROTO, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
-	//	return E_FAIL;
+	// For.Component_Texture_SkyBox
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_PROTO, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
+		return E_FAIL;
 
-	//// For.Component_Texture_Terrain
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_PROTO, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass_%d.tga", 2))))
-	//	return E_FAIL;
+	// For.Component_Texture_Terrain
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_PROTO, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass_%d.tga", 2))))
+		return E_FAIL;
 
-	//// For.Component_Buffer_Terrain
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_PROTO, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device, L"../Bin/Resources/Textures/Terrain/Height.bmp"))))
-	//	return E_FAIL;
+	// For.Component_Buffer_Terrain
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_PROTO, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device, L"../Bin/Resources/Textures/Terrain/Height.bmp"))))
+		return E_FAIL;
 
 	return NOERROR;
 }
 
 HRESULT CScene_Proto::Ready_GameObject_Prototype()
 {
-	//// For.GameObject_SkyBox
-	//if (FAILED(Add_Object_Prototype(SCENE_PROTO, L"GameObject_SkyBox", CSkyBox::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+	// For.GameObject_SkyBox
+	if (FAILED(Add_Object_Prototype(SCENE_PROTO, L"GameObject_SkyBox", CSkyBox::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
-	//// For.GameObject_Terrain
-	//if (FAILED(Add_Object_Prototype(SCENE_PROTO, L"GameObject_Terrain", CTerrain::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+	// For.GameObject_Terrain
+	if (FAILED(Add_Object_Prototype(SCENE_PROTO, L"GameObject_Terrain", CTerrain::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	return NOERROR;
 }

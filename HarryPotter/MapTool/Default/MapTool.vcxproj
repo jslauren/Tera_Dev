@@ -75,9 +75,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>./Bin/</OutDir>
-    <IncludePath>$(DXSDK_DIR)Include;../Reference/Headers/;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x86;../Reference/Librarys;$(LibraryPath)</LibraryPath>
+    <OutDir>../Bin/</OutDir>
+    <IncludePath>$(DXSDK_DIR)Include;../../Reference/Headers/;../Default/;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;../../Reference/Librarys;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -95,6 +95,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../Headers/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -189,30 +190,53 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Headers\Camera_Dynamic.h" />
+    <ClInclude Include="..\Headers\FileInfo.h" />
+    <ClInclude Include="..\Headers\SceneCamera.h" />
+    <ClInclude Include="..\Headers\SceneEffect.h" />
+    <ClInclude Include="..\Headers\SceneMesh.h" />
+    <ClInclude Include="..\Headers\SceneProto.h" />
+    <ClInclude Include="..\Headers\SceneStatic.h" />
+    <ClInclude Include="..\Headers\SceneTerrain.h" />
+    <ClInclude Include="..\Headers\SkyBox.h" />
+    <ClInclude Include="..\Headers\Terrain.h" />
+    <ClInclude Include="..\Headers\ViewManager.h" />
+    <ClInclude Include="CameraTab.h" />
     <ClInclude Include="EditorView.h" />
+    <ClInclude Include="EffectTab.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MapTool.h" />
     <ClInclude Include="MapToolDoc.h" />
     <ClInclude Include="MapToolView.h" />
+    <ClInclude Include="MeshTab.h" />
     <ClInclude Include="ProtoTab.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="SceneProto.h" />
-    <ClInclude Include="SceneTerrain.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TerrainTab.h" />
     <ClInclude Include="Tool_Defines.h" />
-    <ClInclude Include="ViewManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Codes\Camera_Dynamic.cpp" />
+    <ClCompile Include="..\Codes\FileInfo.cpp" />
+    <ClCompile Include="..\Codes\SceneCamera.cpp" />
+    <ClCompile Include="..\Codes\SceneEffect.cpp" />
+    <ClCompile Include="..\Codes\SceneMesh.cpp" />
+    <ClCompile Include="..\Codes\SceneProto.cpp" />
+    <ClCompile Include="..\Codes\SceneStatic.cpp" />
+    <ClCompile Include="..\Codes\SceneTerrain.cpp" />
+    <ClCompile Include="..\Codes\SkyBox.cpp" />
+    <ClCompile Include="..\Codes\Terrain.cpp" />
+    <ClCompile Include="..\Codes\ViewManager.cpp" />
+    <ClCompile Include="CameraTab.cpp" />
     <ClCompile Include="EditorView.cpp" />
+    <ClCompile Include="EffectTab.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="MapToolDoc.cpp" />
     <ClCompile Include="MapToolView.cpp" />
+    <ClCompile Include="MeshTab.cpp" />
     <ClCompile Include="ProtoTab.cpp" />
-    <ClCompile Include="SceneProto.cpp" />
-    <ClCompile Include="SceneTerrain.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -220,7 +244,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TerrainTab.cpp" />
-    <ClCompile Include="ViewManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MapTool.rc" />

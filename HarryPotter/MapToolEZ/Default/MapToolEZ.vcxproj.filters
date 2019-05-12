@@ -92,6 +92,12 @@
     <Filter Include="04. Tool_Object\99. Public\Camera\Dynamic">
       <UniqueIdentifier>{869ca1cd-6b0e-4650-8668-9188e401a4ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Tool_Object\05. Prototype\SkyBox">
+      <UniqueIdentifier>{76e85117-68ca-4eb1-a72b-046e27b45eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\05. Prototype\Terrain">
+      <UniqueIdentifier>{e336854c-76d3-4059-bd8f-3f64ee42e6f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainFrm.h">
@@ -160,6 +166,12 @@
     <ClInclude Include="..\Headers\Camera_Dynamic.h">
       <Filter>04. Tool_Object\99. Public\Camera\Dynamic</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\SkyBox.h">
+      <Filter>04. Tool_Object\05. Prototype\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Terrain.h">
+      <Filter>04. Tool_Object\05. Prototype\Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -218,6 +230,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Camera_Dynamic.cpp">
       <Filter>04. Tool_Object\99. Public\Camera\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\SkyBox.cpp">
+      <Filter>04. Tool_Object\05. Prototype\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Terrain.cpp">
+      <Filter>04. Tool_Object\05. Prototype\Terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -59,6 +59,7 @@ public:
 
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // MapToolEZView.cpp의 디버그 버전

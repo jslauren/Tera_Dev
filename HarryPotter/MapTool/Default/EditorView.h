@@ -2,6 +2,9 @@
 #include "afxcmn.h"
 #include "EditorView.h"
 #include "TerrainTab.h"
+#include "MeshTab.h"
+#include "CameraTab.h"
+#include "EffectTab.h"
 #include "ProtoTab.h"
 
 // CEditorView Æû ºäÀÔ´Ï´Ù.
@@ -33,6 +36,9 @@ protected:
 public:
 	CTabCtrl		m_Tab;
 	CTerrainTab		m_Tab_Terrain;
+	CMeshTab		m_Tab_Mesh;
+	CCameraTab		m_Tab_Camera;
+	CEffectTab		m_Tab_Effect;
 	CProtoTab		m_Tab_Proto;
 
 	CViewManager*	m_pViewManager;

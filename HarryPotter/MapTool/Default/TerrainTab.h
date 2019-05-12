@@ -23,7 +23,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CSceneTerrain* m_pScene = nullptr;
-
+	CSceneTerrain*	m_pScene = nullptr;
 
 };

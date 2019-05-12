@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "ViewManager.h"
+#include "SceneStatic.h"
 #include "SceneTerrain.h"
+#include "SceneMesh.h"
+#include "SceneCamera.h"
+#include "SceneEffect.h"
 #include "SceneProto.h"
 
 _IMPLEMENT_SINGLETON(CViewManager)
@@ -10,7 +14,7 @@ CViewManager::CViewManager()
 {
 }
 
-HRESULT CViewManager::SetCurScene(TOOLID _eID)
+HRESULT CViewManager::SetCurScene(SCENEID _eID)
 {
 	if (nullptr == m_pManagement)
 		return E_FAIL;
@@ -19,14 +23,24 @@ HRESULT CViewManager::SetCurScene(TOOLID _eID)
 
 	switch (_eID)
 	{
-	case TOOL_TERRAIN:
-		pScene = CSceneTerrain::Create(m_pGraphic_Device);
-		m_pEditorView->m_Tab_Terrain.m_pScene = (CSceneTerrain*)pScene;
+	case SCENE_STATIC:
+		pScene = CSceneStatic::Create(m_pGraphic_Device);
+		//m_pEditorView->m_Tab_Terrain.m_pScene = (CSceneStatic*)pScene;
 		break;
 
-	case TOOL_PROTO:
-		pScene = CSceneProto::Create(m_pGraphic_Device);
-		m_pEditorView->m_Tab_Proto.m_pScene = (CSceneProto*)pScene;
+	case SCENE_TERRAIN:
+		break;
+
+	case SCENE_MESH:
+		break;
+
+	case SCENE_CAMERA:
+		break;
+
+	case SCENE_EFFECT:
+		break;
+
+	case SCENE_PROTO:
 		break;
 	}
 
