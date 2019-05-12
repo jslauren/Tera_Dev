@@ -83,6 +83,15 @@
     <Filter Include="04. Tool_Object\05. Prototype">
       <UniqueIdentifier>{c29ada9a-bf54-401e-ad03-330843d36585}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Tool_Object\99. Public">
+      <UniqueIdentifier>{667f01b4-f1f0-4baa-8834-d00b5c3120f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\99. Public\Camera">
+      <UniqueIdentifier>{e3ac913a-b8df-4da8-9a01-33125bfb0970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\99. Public\Camera\Dynamic">
+      <UniqueIdentifier>{869ca1cd-6b0e-4650-8668-9188e401a4ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainFrm.h">
@@ -148,6 +157,9 @@
     <ClInclude Include="..\Headers\Scene_Effect.h">
       <Filter>03. Scene\04. Effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Camera_Dynamic.h">
+      <Filter>04. Tool_Object\99. Public\Camera\Dynamic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -203,6 +215,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Scene_Effect.cpp">
       <Filter>03. Scene\04. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Camera_Dynamic.cpp">
+      <Filter>04. Tool_Object\99. Public\Camera\Dynamic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

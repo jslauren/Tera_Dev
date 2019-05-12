@@ -5,7 +5,7 @@
 #include "MapToolEZ.h"
 #include "Terrain_Tab.h"
 #include "afxdialogex.h"
-
+#include "Scene_Terrain.h"
 
 // CTerrain_Tab 대화 상자입니다.
 

@@ -1,5 +1,6 @@
 #pragma once
-#include "afxwin.h"
+#include "afxcmn.h"
+#include "Tool_Defines.h"
 
 // CProtoType_Tab 대화 상자입니다.
 

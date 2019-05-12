@@ -39,3 +39,4 @@ const unsigned int g_iWinCY = 600;
 enum SCENEID { SCENE_STATIC, SCENE_TERRAIN, SCENE_MESH, SCENE_CAMERA, SCENE_EFFECT, SCENE_PROTO, SCENE_END };
 
 extern HWND g_hWnd;
+//extern HINSTANCE g_hInst;

@@ -3,6 +3,7 @@
 
 // CEffect_Tab 대화 상자입니다.
 
+class CScene_Effect;
 class CEffect_Tab : public CDialogEx
 {
 	DECLARE_DYNAMIC(CEffect_Tab)
@@ -20,4 +21,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
+
+public:
+	CScene_Effect* m_pScene = nullptr;
 };

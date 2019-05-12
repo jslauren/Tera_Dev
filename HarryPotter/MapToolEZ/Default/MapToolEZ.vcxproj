@@ -190,6 +190,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Headers\Camera_Dynamic.h" />
     <ClInclude Include="..\Headers\MainAppTool.h" />
     <ClInclude Include="..\Headers\Scene_Camera.h" />
     <ClInclude Include="..\Headers\Scene_Effect.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Tool_Defines.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Codes\Camera_Dynamic.cpp" />
     <ClCompile Include="..\Codes\MainAppTool.cpp" />
     <ClCompile Include="..\Codes\Scene_Camera.cpp" />
     <ClCompile Include="..\Codes\Scene_Effect.cpp" />

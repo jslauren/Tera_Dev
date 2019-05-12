@@ -5,6 +5,7 @@
 #include "MapToolEZ.h"
 #include "Camera_Tab.h"
 #include "afxdialogex.h"
+#include "Scene_Camera.h"
 
 
 // CCamera_Tab 대화 상자입니다.

@@ -4,6 +4,8 @@
 #include "Renderer.h"
 #include "Management.h"
 #include "MainAppTool.h"
+#include "Input_Device.h"
+#include "Graphic_Device.h"
 //#include "Camera_Dynamic.h"
 #include "Object_Manager.h"
 #include "ViewManagerTool.h"
@@ -97,38 +99,35 @@ HRESULT CMainAppTool::Render_MainApp()
 
 HRESULT CMainAppTool::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _uint & iWinCX, const _uint & iWinCY)
 {
-	//CWnd *pWnd = CViewManagerTool::GetInstance()->m_pMainFrame;
-	//HWND g_hWnd = pWnd->m_hWnd;
+	{
+		//CMainFrame*		pMainFrm = ((CMainFrame*)AfxGetMainWnd());
 
-	//{
-	//	//CMainFrame*		pMainFrm = ((CMainFrame*)AfxGetMainWnd());
+		CMainFrame*		pMainFrm = CViewManagerTool::GetInstance()->m_pMainFrame;
 
-	//	CMainFrame*		pMainFrm = CViewManagerTool::GetInstance()->m_pMainFrame;
+		RECT		rcWindow;
+		pMainFrm->GetWindowRect(&rcWindow);	 // 윈도우 창 프레임의 사이즈를 얻어오는 함수
 
-	//	RECT		rcWindow;
-	//	pMainFrm->GetWindowRect(&rcWindow);	 // 윈도우 창 프레임의 사이즈를 얻어오는 함수
-
-	//	SetRect(&rcWindow,	// 프레임 크기의 가로와 세로 사이즈를 새로운 렉트에 right, bottom에 저장
-	//		0,
-	//		0,
-	//		rcWindow.right - rcWindow.left,
-	//		rcWindow.bottom - rcWindow.top);
+		SetRect(&rcWindow,	// 프레임 크기의 가로와 세로 사이즈를 새로운 렉트에 right, bottom에 저장
+			0,
+			0,
+			rcWindow.right - rcWindow.left,
+			rcWindow.bottom - rcWindow.top);
 
 
-	//	RECT	rcMainView;
-	//	GetClientRect(g_hWnd, &rcMainView);	// 순수한 뷰 창의 크기를 얻어오는 함수
+		RECT	rcMainView;
+		GetClientRect(g_hWnd, &rcMainView);	// 순수한 뷰 창의 크기를 얻어오는 함수
 
-	//	float	fRowFrm = float(rcWindow.right - rcMainView.right);
-	//	float	fColFrm = float(rcWindow.bottom - rcMainView.bottom);
+		float	fRowFrm = float(rcWindow.right - rcMainView.right);
+		float	fColFrm = float(rcWindow.bottom - rcMainView.bottom);
 
-	//	// 뷰 창의 좌표들을 0,0 기준으로 출력할 수 있게 창의 위치를 재조정하는 함수
-	//	pMainFrm->SetWindowPos(NULL,
-	//		0,
-	//		0,
-	//		int(g_iWinCX + fRowFrm),
-	//		int(g_iWinCY + fColFrm),
-	//		SWP_NOZORDER);
-	//}
+		// 뷰 창의 좌표들을 0,0 기준으로 출력할 수 있게 창의 위치를 재조정하는 함수
+		pMainFrm->SetWindowPos(NULL,
+			0,
+			0,
+			int(g_iWinCX + fRowFrm),
+			int(g_iWinCY + fColFrm),
+			SWP_NOZORDER);
+	}
 
 	if (nullptr == m_pManagement)
 		return E_FAIL;
@@ -136,6 +135,17 @@ HRESULT CMainAppTool::Ready_Default_Setting(CGraphic_Device::WINMODE eType, cons
 	// For.Graphic_Device
 	if (FAILED(CGraphic_Device::GetInstance()->Ready_Graphic_Device(g_hWnd, eType, iWinCX, iWinCY, &m_pGraphic_Device)))
 		return E_FAIL;
+
+	// For.Input_Device //
+	HINSTANCE hInst;
+	hInst = AfxGetInstanceHandle();
+
+	HWND	hWnd;
+	hWnd = AfxGetMainWnd()->m_hWnd;
+
+	if (FAILED(CInput_Device::GetInstance()->Ready_Input_Device(hInst, hWnd)))
+		return E_FAIL;
+	////////////////////
 
 	// For.Scene_Manager Initialize
 	// 내가 사용하고자하는 Engine.lib 의 초기화.

@@ -5,6 +5,7 @@
 #include "MapToolEZ.h"
 #include "Effect_Tab.h"
 #include "afxdialogex.h"
+#include "Scene_Effect.h"
 
 
 // CEffect_Tab 대화 상자입니다.

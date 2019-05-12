@@ -5,7 +5,7 @@
 #include "MapToolEZ.h"
 #include "Mesh_Tab.h"
 #include "afxdialogex.h"
-
+#include "Scene_Mesh.h"
 
 // CMesh_Tab 대화 상자입니다.
 
