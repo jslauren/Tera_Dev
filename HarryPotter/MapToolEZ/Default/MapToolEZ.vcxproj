@@ -191,35 +191,51 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Headers\MainAppTool.h" />
+    <ClInclude Include="..\Headers\Scene_Camera.h" />
+    <ClInclude Include="..\Headers\Scene_Effect.h" />
+    <ClInclude Include="..\Headers\Scene_Mesh.h" />
     <ClInclude Include="..\Headers\Scene_Proto.h" />
+    <ClInclude Include="..\Headers\Scene_Terrain.h" />
+    <ClInclude Include="..\Headers\ViewManagerTool.h" />
+    <ClInclude Include="Camera_Tab.h" />
+    <ClInclude Include="Effect_Tab.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MapToolEZ.h" />
     <ClInclude Include="MapToolEZDoc.h" />
     <ClInclude Include="MapToolEZView.h" />
+    <ClInclude Include="Mesh_Tab.h" />
     <ClInclude Include="ModifyView.h" />
-    <ClInclude Include="ProtoTypeTab.h" />
+    <ClInclude Include="ProtoType_Tab.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Terrain_Tab.h" />
     <ClInclude Include="Tool_Defines.h" />
-    <ClInclude Include="ViewManagerTool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\MainAppTool.cpp" />
+    <ClCompile Include="..\Codes\Scene_Camera.cpp" />
+    <ClCompile Include="..\Codes\Scene_Effect.cpp" />
+    <ClCompile Include="..\Codes\Scene_Mesh.cpp" />
     <ClCompile Include="..\Codes\Scene_Proto.cpp" />
+    <ClCompile Include="..\Codes\Scene_Terrain.cpp" />
+    <ClCompile Include="..\Codes\ViewManagerTool.cpp" />
+    <ClCompile Include="Camera_Tab.cpp" />
+    <ClCompile Include="Effect_Tab.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MapToolEZ.cpp" />
     <ClCompile Include="MapToolEZDoc.cpp" />
     <ClCompile Include="MapToolEZView.cpp" />
+    <ClCompile Include="Mesh_Tab.cpp" />
     <ClCompile Include="ModifyView.cpp" />
-    <ClCompile Include="ProtoTypeTab.cpp" />
+    <ClCompile Include="ProtoType_Tab.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ViewManagerTool.cpp" />
+    <ClCompile Include="Terrain_Tab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MapToolEZ.rc" />

@@ -14,13 +14,13 @@
 
 // CMainFrame
 
-IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
+IMPLEMENT_DYNCREATE(CMainFrame, CSplitterWnd)
 
 const int  iMaxUserToolbars = 10;
 const UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
 const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 
-BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
+BEGIN_MESSAGE_MAP(CMainFrame, CSplitterWnd)
 	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
@@ -48,7 +48,7 @@ void CMainFrame::SetStatusBar(int idx, CString _data)
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
+	if (CSplitterWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
 	if (!m_wndStatusBar.Create(this))
@@ -79,7 +79,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CFrameWnd::PreCreateWindow(cs) )
+	if( !CSplitterWnd::PreCreateWindow(cs) )
 		return FALSE;
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
@@ -98,12 +98,12 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
 {
-	CFrameWnd::AssertValid();
+	CSplitterWnd::AssertValid();
 }
 
 void CMainFrame::Dump(CDumpContext& dc) const
 {
-	CFrameWnd::Dump(dc);
+	CSplitterWnd::Dump(dc);
 }
 #endif //_DEBUG
 

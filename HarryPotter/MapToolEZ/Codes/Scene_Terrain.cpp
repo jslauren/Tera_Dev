@@ -1,14 +1,14 @@
 #include "stdafx.h"
-#include "..\Headers\Scene_Proto.h"
+#include "..\Headers\Scene_Terrain.h"
 
 _USING(MapTool)
 
-CScene_Proto::CScene_Proto(LPDIRECT3DDEVICE9 pGraphic_Device)
+CScene_Terrain::CScene_Terrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CScene(pGraphic_Device)
 {
 }
 
-HRESULT CScene_Proto::Ready_Scene()
+HRESULT CScene_Terrain::Ready_Scene()
 {
 	// For.Light Setting
 	if (FAILED(Ready_LightInfo()))
@@ -27,22 +27,22 @@ HRESULT CScene_Proto::Ready_Scene()
 	//	return E_FAIL;
 }
 
-_int CScene_Proto::Update_Scene(const _float & fTimeDelta)
+_int CScene_Terrain::Update_Scene(const _float & fTimeDelta)
 {
 	return _int(CScene::Update_Scene(fTimeDelta));
 }
 
-_int CScene_Proto::LateUpdate_Scene(const _float & fTimeDelta)
+_int CScene_Terrain::LateUpdate_Scene(const _float & fTimeDelta)
 {
 	return _int(CScene::LateUpdate_Scene(fTimeDelta));
 }
 
-HRESULT CScene_Proto::Render_Scene()
+HRESULT CScene_Terrain::Render_Scene()
 {
 	return CScene::Render_Scene();
 }
 
-HRESULT CScene_Proto::Ready_LightInfo()
+HRESULT CScene_Terrain::Ready_LightInfo()
 {
 	D3DLIGHT9				LightInfo;
 	ZeroMemory(&LightInfo, sizeof(D3DLIGHT9));
@@ -62,7 +62,7 @@ HRESULT CScene_Proto::Ready_LightInfo()
 	return NOERROR;
 }
 
-HRESULT CScene_Proto::Ready_Component_Prototype()
+HRESULT CScene_Terrain::Ready_Component_Prototype()
 {
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
@@ -78,11 +78,9 @@ HRESULT CScene_Proto::Ready_Component_Prototype()
 	//// For.Component_Buffer_Terrain
 	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_PROTO, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device, L"../Bin/Resources/Textures/Terrain/Height.bmp"))))
 	//	return E_FAIL;
-
-	return NOERROR;
 }
 
-HRESULT CScene_Proto::Ready_GameObject_Prototype()
+HRESULT CScene_Terrain::Ready_GameObject_Prototype()
 {
 	//// For.GameObject_SkyBox
 	//if (FAILED(Add_Object_Prototype(SCENE_PROTO, L"GameObject_SkyBox", CSkyBox::Create(m_pGraphic_Device))))
@@ -95,7 +93,7 @@ HRESULT CScene_Proto::Ready_GameObject_Prototype()
 	return NOERROR;
 }
 
-HRESULT CScene_Proto::Ready_Layer_Camera(const _tchar * pLayerTag)
+HRESULT CScene_Terrain::Ready_Layer_Camera(const _tchar * pLayerTag)
 {
 	//// For.Camera
 	//if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Camera_Dynamic", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0.f, 7.f, -10.f), _vec3(0.f, 0.f, 0.f), _vec3(0.0f, 1.f, 0.f), D3DXToRadian(60.0f), _float(g_iWinCX) / g_iWinCY, 0.2f, 500.f))))
@@ -104,20 +102,19 @@ HRESULT CScene_Proto::Ready_Layer_Camera(const _tchar * pLayerTag)
 	return NOERROR;
 }
 
-
-CScene_Proto * CScene_Proto::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CScene_Terrain * CScene_Terrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-	CScene_Proto* pInstance = new CScene_Proto(pGraphic_Device);
+	CScene_Terrain* pInstance = new CScene_Terrain(pGraphic_Device);
 
 	if (FAILED(pInstance->Ready_Scene()))
 	{
-		_MSGBOX("CScene_Proto Created Failed");
+		_MSGBOX("CScene_Terrain Created Failed");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-void CScene_Proto::Free()
+void CScene_Terrain::Free()
 {
 	CScene::Free();
 }

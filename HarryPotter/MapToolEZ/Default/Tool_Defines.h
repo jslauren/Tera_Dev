@@ -36,6 +36,6 @@ const float g_fRate_Immediate = 0.0f;
 const unsigned int g_iWinCX = 800;
 const unsigned int g_iWinCY = 600;
 
-enum SCENEID { SCENE_STATIC, SCENE_TERRAIN, SCENE_MESH, SCENE_ANIMATION, SCENE_PROTO, SCENE_END };
+enum SCENEID { SCENE_STATIC, SCENE_TERRAIN, SCENE_MESH, SCENE_CAMERA, SCENE_EFFECT, SCENE_PROTO, SCENE_END };
 
 extern HWND g_hWnd;

@@ -29,53 +29,59 @@
     <Filter Include="01. View\01. ModifyView">
       <UniqueIdentifier>{6dabfe17-feb5-4612-9fc2-961685f2f1a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Scene\00. Terrain">
-      <UniqueIdentifier>{0ee2ab92-82d3-4dde-88c8-cbbac0cc8cc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Scene\01. Mesh">
-      <UniqueIdentifier>{0c54aa8c-795e-44af-8d46-93217b235485}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Scene\02. Animation">
-      <UniqueIdentifier>{1b4efc2c-9e60-4807-9e70-003aecd485c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Scene\03. Prototype">
-      <UniqueIdentifier>{281c6e1a-86b1-4692-bdca-1f9b36d2d13f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Tool_Object">
       <UniqueIdentifier>{37291ddc-8727-4918-b53d-f928e01a9b78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Tool_Object\00. Terrain">
-      <UniqueIdentifier>{ce37b00a-1da3-4ca1-943f-3240deffb5e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Tool_Object\01. Mesh">
-      <UniqueIdentifier>{79835d77-cc17-4e9d-95c1-99e68c1d898c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Tool_Object\02. Animation">
-      <UniqueIdentifier>{bfda5dee-ca95-4aa5-8afe-6b9a370bf1d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Tool_Object\03. Prototype">
-      <UniqueIdentifier>{c29ada9a-bf54-401e-ad03-330843d36585}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06. Utility">
+    <Filter Include="05. Utility">
       <UniqueIdentifier>{eed25131-ddd7-4213-a3f5-77d721b4c96d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Shader">
-      <UniqueIdentifier>{779ff7d5-d1e8-4100-92c3-3848cc5d1d6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06. Utility\00. ViewManager">
+    <Filter Include="05. Utility\00. ViewManager">
       <UniqueIdentifier>{0c15c056-77e3-44ad-b731-4229946f21c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. View\01. ModifyView\00. Tab_Terrain">
+    <Filter Include="01. View\01. ModifyView\01. Tab_Terrain">
       <UniqueIdentifier>{12b51686-f400-4436-b115-bd919f51b5eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. View\01. ModifyView\01. Tab_Mesh">
+    <Filter Include="01. View\01. ModifyView\02. Tab_Mesh">
       <UniqueIdentifier>{a453fd43-3ac1-4096-9fcc-a19cf928ee3e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. View\01. ModifyView\02. Tab_Animation">
+    <Filter Include="01. View\01. ModifyView\03. Tab_Camera">
       <UniqueIdentifier>{a6d3df82-30b3-4205-85b2-ef1a31119a8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. View\01. ModifyView\03. Tab_Prototype">
+    <Filter Include="01. View\01. ModifyView\04. Tab_Effect">
+      <UniqueIdentifier>{f05ae9b9-5af8-4166-851a-47b317ba8c0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. View\01. ModifyView\05. Tab_Prototype">
       <UniqueIdentifier>{62297277-0005-403a-a878-642ef773362a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\01. Terrain">
+      <UniqueIdentifier>{0ee2ab92-82d3-4dde-88c8-cbbac0cc8cc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\02. Mesh">
+      <UniqueIdentifier>{0c54aa8c-795e-44af-8d46-93217b235485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\03. Camera">
+      <UniqueIdentifier>{1b4efc2c-9e60-4807-9e70-003aecd485c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\04. Effect">
+      <UniqueIdentifier>{eaebb257-22f4-4e9f-83de-bac48c20b772}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Scene\05. Prototype">
+      <UniqueIdentifier>{281c6e1a-86b1-4692-bdca-1f9b36d2d13f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\01. Terrain">
+      <UniqueIdentifier>{ce37b00a-1da3-4ca1-943f-3240deffb5e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\02. Mesh">
+      <UniqueIdentifier>{79835d77-cc17-4e9d-95c1-99e68c1d898c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\03. Camera">
+      <UniqueIdentifier>{bfda5dee-ca95-4aa5-8afe-6b9a370bf1d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\04. Effect">
+      <UniqueIdentifier>{6545eb5a-3b47-487f-8ba2-bce3646f76af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Tool_Object\05. Prototype">
+      <UniqueIdentifier>{c29ada9a-bf54-401e-ad03-330843d36585}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -110,13 +116,37 @@
       <Filter>01. View\01. ModifyView</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Scene_Proto.h">
-      <Filter>03. Scene\03. Prototype</Filter>
+      <Filter>03. Scene\05. Prototype</Filter>
     </ClInclude>
-    <ClInclude Include="ViewManagerTool.h">
-      <Filter>06. Utility\00. ViewManager</Filter>
+    <ClInclude Include="ProtoType_Tab.h">
+      <Filter>01. View\01. ModifyView\05. Tab_Prototype</Filter>
     </ClInclude>
-    <ClInclude Include="ProtoTypeTab.h">
-      <Filter>01. View\01. ModifyView\03. Tab_Prototype</Filter>
+    <ClInclude Include="..\Headers\ViewManagerTool.h">
+      <Filter>05. Utility\00. ViewManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain_Tab.h">
+      <Filter>01. View\01. ModifyView\01. Tab_Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh_Tab.h">
+      <Filter>01. View\01. ModifyView\02. Tab_Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera_Tab.h">
+      <Filter>01. View\01. ModifyView\03. Tab_Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect_Tab.h">
+      <Filter>01. View\01. ModifyView\04. Tab_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Scene_Terrain.h">
+      <Filter>03. Scene\01. Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Scene_Mesh.h">
+      <Filter>03. Scene\02. Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Scene_Camera.h">
+      <Filter>03. Scene\03. Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Scene_Effect.h">
+      <Filter>03. Scene\04. Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -142,13 +172,37 @@
       <Filter>01. View\01. ModifyView</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Scene_Proto.cpp">
-      <Filter>03. Scene\03. Prototype</Filter>
+      <Filter>03. Scene\05. Prototype</Filter>
     </ClCompile>
-    <ClCompile Include="ViewManagerTool.cpp">
-      <Filter>06. Utility\00. ViewManager</Filter>
+    <ClCompile Include="ProtoType_Tab.cpp">
+      <Filter>01. View\01. ModifyView\05. Tab_Prototype</Filter>
     </ClCompile>
-    <ClCompile Include="ProtoTypeTab.cpp">
-      <Filter>01. View\01. ModifyView\03. Tab_Prototype</Filter>
+    <ClCompile Include="..\Codes\ViewManagerTool.cpp">
+      <Filter>05. Utility\00. ViewManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain_Tab.cpp">
+      <Filter>01. View\01. ModifyView\01. Tab_Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh_Tab.cpp">
+      <Filter>01. View\01. ModifyView\02. Tab_Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera_Tab.cpp">
+      <Filter>01. View\01. ModifyView\03. Tab_Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect_Tab.cpp">
+      <Filter>01. View\01. ModifyView\04. Tab_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Scene_Terrain.cpp">
+      <Filter>03. Scene\01. Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Scene_Mesh.cpp">
+      <Filter>03. Scene\02. Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Scene_Camera.cpp">
+      <Filter>03. Scene\03. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Scene_Effect.cpp">
+      <Filter>03. Scene\04. Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

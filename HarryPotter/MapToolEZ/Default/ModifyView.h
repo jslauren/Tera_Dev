@@ -1,7 +1,11 @@
 #pragma once
 #include "afxcmn.h"
 #include "ModifyView.h"
-#include "ProtoTypeTab.h"
+#include "Terrain_Tab.h"
+#include "Mesh_Tab.h"
+#include "Camera_Tab.h"
+#include "Effect_Tab.h"
+#include "ProtoType_Tab.h"
 
 // CModifyView Æû ºäÀÔ´Ï´Ù.
 class CViewManagerTool;
@@ -30,7 +34,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CTabCtrl		m_Tab;
-	CProtoTypeTab	m_Tab_Proto;
+	CTerrain_Tab	m_Tab_Terrain;
+	CMesh_Tab		m_Tab_Mesh;
+	CCamera_Tab		m_Tab_Camera;
+	CEffect_Tab		m_Tab_Effect;
+	CProtoType_Tab	m_Tab_Proto;
 
 	CViewManagerTool*	m_pViewManager;
 

@@ -53,26 +53,26 @@ _int CMainAppTool::Update_MainApp(const _float & fTimeDelta)
 	if (nullptr == m_pManagement)	// 씬 매니저가 GetInstance() 안되었다면,
 		return -1;
 
-	m_fTimeAcc += fTimeDelta;
+	//m_fTimeAcc += fTimeDelta;
 
 	return m_pManagement->Update_Management(fTimeDelta);
 }
 
 HRESULT CMainAppTool::Render_MainApp()
 {
-	///////// FPS 출력 부분 /////////
-	{
-		++m_iRenderCnt;
+	/////////// FPS 출력 부분 /////////
+	//{
+	//	++m_iRenderCnt;
 
-		if (m_fTimeAcc >= 1.f)
-		{
-			wsprintf(m_szFPS, L"FPS : %d", m_iRenderCnt);
-			m_iRenderCnt = 0;
-			m_fTimeAcc = 0.f;
-		}
+	//	if (m_fTimeAcc >= 1.f)
+	//	{
+	//		wsprintf(m_szFPS, L"FPS : %d", m_iRenderCnt);
+	//		m_iRenderCnt = 0;
+	//		m_fTimeAcc = 0.f;
+	//	}
 
-		SetWindowText(g_hWnd, m_szFPS);
-	}
+	//	SetWindowText(g_hWnd, m_szFPS);
+	//}
 
 	if (nullptr == m_pGraphic_Device ||
 		nullptr == m_pRenderer)

@@ -31,7 +31,7 @@ protected:
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 
 public:
-	HRESULT				MainLoop();
+	HRESULT					MainLoop();
 
 private:
 	MapTool::CMainAppTool*	m_pMainAppTool = nullptr;

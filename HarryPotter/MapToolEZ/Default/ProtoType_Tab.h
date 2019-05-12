@@ -1,16 +1,16 @@
 #pragma once
 #include "afxwin.h"
 
-// CProtoTypeTab 대화 상자입니다.
+// CProtoType_Tab 대화 상자입니다.
 
 class CScene_Proto;
-class CProtoTypeTab : public CDialogEx
+class CProtoType_Tab : public CDialogEx
 {
-	DECLARE_DYNAMIC(CProtoTypeTab)
+	DECLARE_DYNAMIC(CProtoType_Tab)
 
 public:
-	CProtoTypeTab(CWnd* pParent = NULL);   // 표준 생성자입니다.
-	virtual ~CProtoTypeTab();
+	CProtoType_Tab(CWnd* pParent = NULL);   // 표준 생성자입니다.
+	virtual ~CProtoType_Tab();
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
