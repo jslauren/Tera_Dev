@@ -8,7 +8,6 @@
 #define IDS_MOUSEPT                     102
 #define IDR_MAINFRAME                   128
 #define IDR_MapToolEZTYPE               130
-#define IDD_DIALOG1                     311
 #define IDD_PROTOTAB                    311
 #define IDD_MODIFYVIEW                  314
 #define IDC_TAB1                        1000

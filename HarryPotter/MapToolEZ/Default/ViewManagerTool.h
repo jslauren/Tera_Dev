@@ -5,6 +5,7 @@
 #include "ModifyView.h"
 #include "Management.h"
 #include "Graphic_Device.h"
+#include "MainAppTool.h"
 
 class CViewManagerTool final : public CBase
 {
@@ -24,9 +25,10 @@ public:
 	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;
 
 public:
-	CMainFrame*			m_pMainFrame = nullptr;
-	CMapToolEZView*		m_pMapToolEZView = nullptr;
-	CModifyView*		m_pModifyView = nullptr;
+	CMainFrame*				m_pMainFrame = nullptr;
+	CMapToolEZView*			m_pMapToolEZView = nullptr;
+	CModifyView*			m_pModifyView = nullptr;
+	MapTool::CMainAppTool*	m_pMainAppTool = nullptr;
 
 	CScene*				m_pCurScene = nullptr;
 

@@ -38,6 +38,8 @@ HRESULT CMainAppTool::Ready_MainApp()
 	if (FAILED(Ready_GameObject_Prototype()))
 		return E_FAIL;
 
+	m_pViewManager->m_pMainAppTool = this;
+
 	// 씬 셋팅
 	// 어떤 씬을 게임 시작시에 실행 할 지 열거체로 넣어준다.
 	if (FAILED(Ready_Scene(SCENE_PROTO)))
@@ -95,34 +97,38 @@ HRESULT CMainAppTool::Render_MainApp()
 
 HRESULT CMainAppTool::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _uint & iWinCX, const _uint & iWinCY)
 {
-	// 이게 없으면 파란화면이 안떠요 ㅠㅠㅠㅠㅠㅠ 흙규ㅠㅎ ㅠ휴 ㅠㅠㅠ
-	{
-		CMainFrame*		pMainFrm = ((CMainFrame*)AfxGetMainWnd());
+	//CWnd *pWnd = CViewManagerTool::GetInstance()->m_pMainFrame;
+	//HWND g_hWnd = pWnd->m_hWnd;
 
-		RECT		rcWindow;
-		pMainFrm->GetWindowRect(&rcWindow);	 // 윈도우 창 프레임의 사이즈를 얻어오는 함수
+	//{
+	//	//CMainFrame*		pMainFrm = ((CMainFrame*)AfxGetMainWnd());
 
-		SetRect(&rcWindow,	// 프레임 크기의 가로와 세로 사이즈를 새로운 렉트에 right, bottom에 저장
-			0,
-			0,
-			rcWindow.right - rcWindow.left,
-			rcWindow.bottom - rcWindow.top);
+	//	CMainFrame*		pMainFrm = CViewManagerTool::GetInstance()->m_pMainFrame;
+
+	//	RECT		rcWindow;
+	//	pMainFrm->GetWindowRect(&rcWindow);	 // 윈도우 창 프레임의 사이즈를 얻어오는 함수
+
+	//	SetRect(&rcWindow,	// 프레임 크기의 가로와 세로 사이즈를 새로운 렉트에 right, bottom에 저장
+	//		0,
+	//		0,
+	//		rcWindow.right - rcWindow.left,
+	//		rcWindow.bottom - rcWindow.top);
 
 
-		RECT	rcMainView;
-		GetClientRect(g_hWnd, &rcMainView);	// 순수한 뷰 창의 크기를 얻어오는 함수
+	//	RECT	rcMainView;
+	//	GetClientRect(g_hWnd, &rcMainView);	// 순수한 뷰 창의 크기를 얻어오는 함수
 
-		float	fRowFrm = float(rcWindow.right - rcMainView.right);
-		float	fColFrm = float(rcWindow.bottom - rcMainView.bottom);
+	//	float	fRowFrm = float(rcWindow.right - rcMainView.right);
+	//	float	fColFrm = float(rcWindow.bottom - rcMainView.bottom);
 
-		// 뷰 창의 좌표들을 0,0 기준으로 출력할 수 있게 창의 위치를 재조정하는 함수
-		pMainFrm->SetWindowPos(NULL,
-			0,
-			0,
-			int(g_iWinCX + fRowFrm),
-			int(g_iWinCY + fColFrm),
-			SWP_NOZORDER);
-	}
+	//	// 뷰 창의 좌표들을 0,0 기준으로 출력할 수 있게 창의 위치를 재조정하는 함수
+	//	pMainFrm->SetWindowPos(NULL,
+	//		0,
+	//		0,
+	//		int(g_iWinCX + fRowFrm),
+	//		int(g_iWinCY + fColFrm),
+	//		SWP_NOZORDER);
+	//}
 
 	if (nullptr == m_pManagement)
 		return E_FAIL;

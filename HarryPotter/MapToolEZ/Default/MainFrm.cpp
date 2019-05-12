@@ -6,8 +6,7 @@
 #include "MapToolEZ.h"
 
 #include "MainFrm.h"
-#include "MapToolEZView.h"
-#include "ModifyView.h"
+#include "ViewManagerTool.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -136,7 +135,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	m_MainSplitter.CreateView(0, 0, RUNTIME_CLASS(CMapToolEZView), CSize(800, 600), pContext);
 	m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CModifyView), CSize(400, 600), pContext);
 
-	//CViewManager::GetInstance()->m_pMainFrame = this;
+	CViewManagerTool::GetInstance()->m_pMainFrame = this;
 
 	return TRUE;
 }
