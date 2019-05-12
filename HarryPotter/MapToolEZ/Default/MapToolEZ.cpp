@@ -11,6 +11,8 @@
 #include "MapToolEZDoc.h"
 #include "MapToolEZView.h"
 
+#include "ViewManagerTool.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -187,8 +189,8 @@ BOOL CMapToolEZApp::OnIdle(LONG lCount)
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 
 	//CMainFrame*		pMainFrm = ((CMainFrame*)AfxGetMainWnd());
-
-	((CMainFrame*)AfxGetMainWnd())->MainLoop();
+	
+	CViewManagerTool::GetInstance()->m_pMapToolEZView->MainLoop();
 
 	return CWinAppEx::OnIdle(lCount);
 }

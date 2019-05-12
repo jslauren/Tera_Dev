@@ -3,6 +3,8 @@
 //
 
 #pragma once
+#include "MainAppTool.h"
+#include "Timer_Manager.h"
 
 class CMapToolEZDoc;
 class CMapToolEZView : public CView
@@ -22,10 +24,22 @@ public:
 public:
 	virtual void OnDraw(CDC* pDC);  // 이 뷰를 그리기 위해 재정의되었습니다.
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+
+public:
+	HRESULT				MainLoop();
+
+private:
+	MapTool::CMainAppTool*	m_pMainAppTool = nullptr;
+	CTimer_Manager*			m_pTimer_Manager = nullptr;
+	CViewManagerTool*		m_pViewManager = nullptr;
+
+private:
+	_float					fTimeAcc = 0.f;
 
 // 구현입니다.
 public:
@@ -42,6 +56,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual void OnInitialUpdate();
+
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+
 };
 
 #ifndef _DEBUG  // MapToolEZView.cpp의 디버그 버전

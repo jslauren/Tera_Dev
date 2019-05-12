@@ -35,13 +35,10 @@ static UINT indicators[] =
 CMainFrame::CMainFrame()
 {
 	// TODO: 여기에 멤버 초기화 코드를 추가합니다.
-	m_pTimer_Manager = CTimer_Manager::GetInstance();
 }
 
 CMainFrame::~CMainFrame()
 {
-	Safe_Release(m_pTimer_Manager);
-	Safe_Release(m_pMainAppTool);
 }
 
 void CMainFrame::SetStatusBar(int idx, CString _data)
@@ -53,26 +50,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
-
-	// m_pMainAppTool 생성 구문 //
-	m_pMainAppTool = MapTool::CMainAppTool::Create();
-	if (nullptr == m_pMainAppTool)
-		return -1;
-	//////////////////////////////
-
-	// Timer 생성 구문 //
-	CTimer_Manager* pTimer_Manager = CTimer_Manager::GetInstance();
-	
-	// 이거 하니까 릭 남음.
-	// pTimer_Manager->AddRef();
-
-	if (FAILED(pTimer_Manager->Add_Timer(L"Timer_Default")))
-		return FALSE;
-	if (FAILED(pTimer_Manager->Add_Timer(L"Timer_60")))
-		return FALSE;
-	/////////////////////
-
-
 
 	if (!m_wndStatusBar.Create(this))
 	{
@@ -88,29 +65,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 
 	return 0;
-}
-
-HRESULT CMainFrame::MainLoop()
-{
-	_float	fTimeDelta_Default = m_pTimer_Manager->Compute_TimeDelta(L"Timer_Default");
-
-	fTimeAcc += fTimeDelta_Default;
-
-	// For.Rate60
-	if (fTimeAcc >= g_fRate_60)
-	{
-		_float	fTimeDelta_60 = m_pTimer_Manager->Compute_TimeDelta(L"Timer_60");
-
-		if (FAILED(m_pMainAppTool->Update_MainApp(fTimeDelta_60) & 0x80000000))
-			return E_FAIL;
-
-		if (FAILED(m_pMainAppTool->Render_MainApp()))
-			return E_FAIL;
-
-		fTimeAcc = 0.f;
-	}
-
-	return NOERROR;
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
