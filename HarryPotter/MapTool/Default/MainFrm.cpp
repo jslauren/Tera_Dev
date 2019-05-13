@@ -69,8 +69,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 {
 	m_MainSplitter.CreateStatic(this, 1, 2);
-	m_MainSplitter.CreateView(0, 0, RUNTIME_CLASS(CMapToolView), CSize(800, 600), pContext);
-	m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CEditorView), CSize(400, 600), pContext);
+	m_MainSplitter.CreateView(0, 0, RUNTIME_CLASS(CMapToolView), CSize(1300, 900), pContext);
+	m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CEditorView), CSize(300, 900), pContext);
+	//m_MainSplitter.CreateView(0, 0, RUNTIME_CLASS(CMapToolView), CSize(800, 600), pContext);
+	//m_MainSplitter.CreateView(0, 1, RUNTIME_CLASS(CEditorView), CSize(400, 600), pContext);
 
 	CViewManager::GetInstance()->m_pMainFrame = this;
 
@@ -85,10 +87,10 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	//  Window 클래스 또는 스타일을 수정합니다.
 
 	cs.style &= ~(WS_THICKFRAME | WS_MAXIMIZE);
-	//cs.cx = 1600;
-	//cs.cy = 900;
-	cs.cx = 1200;
-	cs.cy = 600;
+	cs.cx = 1600;
+	cs.cy = 900;
+	//cs.cx = 1200;
+	//cs.cy = 600;
 
 	return TRUE;
 }
