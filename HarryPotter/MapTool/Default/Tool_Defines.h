@@ -57,7 +57,6 @@ typedef struct tagTexturePath
 	}
 }IMGPATH;
 
-
 //#pragma once
 //const unsigned int g_iToolWinCX = 800;
 //const unsigned int g_iToolWinCY = 600;

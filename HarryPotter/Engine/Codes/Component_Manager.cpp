@@ -34,6 +34,48 @@ HRESULT CComponent_Manager::Add_Component_Prototype(const _uint & iSceneIdx, con
 
 	return NOERROR;
 }
+//
+//HRESULT CComponent_Manager::Reset_Component_Prototype(const _uint & iSceneIdx, const _tchar * pComponentTag, CComponent * pInComponent)
+//{
+//	if (m_iMaxNumScene <= iSceneIdx ||
+//		nullptr == m_pmapComponent ||
+//		nullptr == pInComponent)
+//		return E_FAIL;
+//
+//
+//	auto	iter = find_if(m_pmapComponent[iSceneIdx].begin(), m_pmapComponent[iSceneIdx].end(), CFinder_Tag(pComponentTag));
+//
+//	if (iter == m_pmapComponent[iSceneIdx].end())
+//		return E_FAIL;
+//
+//	Safe_Release((*iter).second);
+//	m_pmapComponent[iSceneIdx].erase(iter);
+//
+//	//CComponent*	pComponent = Find_Component(iSceneIdx, pComponentTag);
+//
+//	//if (nullptr == pComponent)
+//	//	return E_FAIL;
+//
+//	//for (auto iter = m_pmapComponent[iSceneIdx].begin(); iter != m_pmapComponent[iSceneIdx].end(); )
+//	//{
+//	//	if ((*iter).second == pComponent)
+//	//	{
+//	//		Safe_Release((*iter).second);
+//	//		iter = m_pmapComponent[iSceneIdx].erase(iter);
+//	//		break;
+//	//	}
+//	//	else
+//	//		++iter;
+//	//}
+//
+//	if (FAILED(Add_Component_Prototype(iSceneIdx, pComponentTag, pInComponent)))
+//		return E_FAIL;
+//
+//	if (FAILED(Clone_Component(iSceneIdx, pComponentTag)))
+//		return E_FAIL;
+//
+//	return NOERROR;
+//}
 
 HRESULT CComponent_Manager::Clear_Component_Prototype(const _uint & iSceneIdx)
 {

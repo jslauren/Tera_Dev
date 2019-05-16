@@ -98,11 +98,17 @@
     <Filter Include="05. Camera\Dynamic">
       <UniqueIdentifier>{f4504de5-5017-4247-8c3f-80cf761e27f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Object\05. Prototype\Terrain">
+    <Filter Include="04. Object\00. Static\SkyBox">
+      <UniqueIdentifier>{39c169da-1e78-40c8-8aa6-8607ce578077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Object\00. Static\Terrain">
       <UniqueIdentifier>{5bad483f-0c70-410f-8afd-e73f0ffb7b3d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Object\05. Prototype\SkyBox">
-      <UniqueIdentifier>{39c169da-1e78-40c8-8aa6-8607ce578077}</UniqueIdentifier>
+    <Filter Include="02. Utill\03. EventManager">
+      <UniqueIdentifier>{44aceecc-da60-4413-8a36-2504288ce30d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. ETC">
+      <UniqueIdentifier>{bf7925dd-b5e5-494b-a393-dd3942373707}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -176,10 +182,13 @@
       <Filter>05. Camera\Dynamic</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\SkyBox.h">
-      <Filter>04. Object\05. Prototype\SkyBox</Filter>
+      <Filter>04. Object\00. Static\SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Terrain.h">
-      <Filter>04. Object\05. Prototype\Terrain</Filter>
+      <Filter>04. Object\00. Static\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManagerTool.h">
+      <Filter>02. Utill\03. EventManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -244,10 +253,13 @@
       <Filter>05. Camera\Dynamic</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Terrain.cpp">
-      <Filter>04. Object\05. Prototype\Terrain</Filter>
+      <Filter>04. Object\00. Static\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\SkyBox.cpp">
-      <Filter>04. Object\05. Prototype\SkyBox</Filter>
+      <Filter>04. Object\00. Static\SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManagerTool.cpp">
+      <Filter>02. Utill\03. EventManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

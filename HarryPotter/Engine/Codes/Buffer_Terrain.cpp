@@ -23,6 +23,7 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer()
 	m_fInterval = 1.f;
 	m_iNumVerticesX = 100;
 	m_iNumVerticesZ = 100;
+
 	m_iNumVertices = m_iNumVerticesX * m_iNumVerticesZ;
 
 	m_dwVtxFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1;
@@ -47,7 +48,7 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer()
 
 			pVertices[iIndex].vPosition = _vec3(j * m_fInterval, 0.0f, i * m_fInterval);
 			m_pPositions[iIndex] = pVertices[iIndex].vPosition;
-			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f) * 100.f, i / (m_iNumVerticesZ - 1.f) * 100.f);
+			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f) * m_fDetail, i / (m_iNumVerticesZ - 1.f) * m_fDetail);
 		}
 	}
 
@@ -146,7 +147,7 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer(const _tchar * pHeighitMapPath)
 			pVertices[iIndex].vPosition = _vec3(j * m_fInterval, (pPixel[iIndex] & 0x000000ff) / vHeight, i * m_fInterval);
 			pVertices[iIndex].vNormal = _vec3(0.f, 0.f, 0.f);
 			m_pPositions[iIndex] = pVertices[iIndex].vPosition;
-			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f) * 100.f, i / (m_iNumVerticesZ - 1.f) * 100.f);
+			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f) * m_fDetail, i / (m_iNumVerticesZ - 1.f) * m_fDetail);
 		}
 	}
 

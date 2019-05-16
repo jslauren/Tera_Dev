@@ -11,7 +11,8 @@ private:
 	explicit CLayer();
 	virtual ~CLayer() = default;
 public:
-	const CComponent* Get_Component(const _tchar* pComponentTag, const _uint& iIndex);
+	const list<CGameObject*>&	Get_ObjectList() { return m_ObjectList; }
+	const CComponent*	Get_Component(const _tchar* pComponentTag, const _uint& iIndex);
 public:
 	HRESULT Ready_Layer();
 public:

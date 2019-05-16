@@ -25,13 +25,15 @@
 #include <algorithm>
 
 using namespace std;
-
+#ifdef _TOOL
+#else
 #ifdef _DEBUG 
 #ifndef DBG_NEW 
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
 #define new DBG_NEW 
 #endif 
 #endif  // _DEBUG 
+#endif // _TOOL
 
 // 내가 제작한 헤더파일
 #include "Engine_Typedef.h"

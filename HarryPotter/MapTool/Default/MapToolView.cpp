@@ -16,6 +16,8 @@
 #include "Renderer.h"
 #include "Component_Manager.h"
 #include "Object_Manager.h"
+#include "EventManagerTool.h"
+#include "EventManager.h"
 
 // Object
 #include "Camera_Dynamic.h"
@@ -50,6 +52,8 @@ CMapToolView::CMapToolView()
 
 CMapToolView::~CMapToolView()
 {
+	CEventManager::GetInstance()->DestroyInstance();
+	CEventManagerTool::GetInstance()->DestroyInstance();
 	CViewManager::GetInstance()->DestroyInstance();
 	//Safe_Release(m_pDataManager);
 	Safe_Release(m_pViewManager);
@@ -159,6 +163,8 @@ HRESULT CMapToolView::InitDefaultSetting(CGraphic_Device::WINMODE eType, const _
 	//////////////////////
 
 	m_pViewManager->m_pGraphic_Device = m_pGraphicDevice;
+	
+	CEventManagerTool::GetInstance()->m_pGraphic_Device = m_pGraphicDevice;
 
 	if (FAILED(m_pManagement->Ready_Management(SCENE_END)))
 		return E_FAIL;
@@ -190,10 +196,6 @@ HRESULT CMapToolView::InitComponentPrototype()
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Renderer", m_pRenderer = CRenderer::Create(m_pGraphicDevice))))
 		return E_FAIL;
 	m_pRenderer->AddRef();
-
-	// For.Component_Shader_Default
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Default", CShader::Create(m_pGraphicDevice, L"../Bin/ShaderFiles/Shader_Default.fx"))))
-		return E_FAIL;
 
 	Safe_Release(pComponent_Manager);
 

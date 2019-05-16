@@ -132,7 +132,7 @@ HRESULT CSkyBox::Release_RenderState()
 
 	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 	CGameObject::Set_RenderState(D3DRS_ZWRITEENABLE, TRUE);
-	CGameObject::Set_RenderState(D3DRS_LIGHTING, TRUE);
+	//CGameObject::Set_RenderState(D3DRS_LIGHTING, TRUE);
 
 	return NOERROR;
 }

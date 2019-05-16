@@ -3,18 +3,19 @@
 #include "Camera_Dynamic.h"
 #include "SkyBox.h"
 #include "Input_device.h"
+#include "Terrain.h"
+#include "EventManager.h"
 
 CSceneStatic::CSceneStatic(LPDIRECT3DDEVICE9 _pGraphic_Device)
 	: CScene(_pGraphic_Device)
+	, m_pEventManager(CEventManagerTool::GetInstance())
 {
+	m_pEventManager->AddRef();
+	//m_pEventManager->m_pGraphic_Device = _pGraphic_Device;
 }
 
 HRESULT CSceneStatic::Ready_Scene()
 {
-	//// For.Light Setting
-	//if (FAILED(Ready_LightInfo()))
-	//	return E_FAIL;
-
 	if (FAILED(Ready_Component_Prototype()))
 		return E_FAIL;
 
@@ -46,45 +47,26 @@ HRESULT CSceneStatic::Render_Scene()
 	return CScene::Render_Scene();
 }
 
-HRESULT CSceneStatic::Ready_LightInfo()
-{
-	//D3DLIGHT9				LightInfo;
-	//ZeroMemory(&LightInfo, sizeof(D3DLIGHT9));
-
-	//LightInfo.Type = D3DLIGHT_DIRECTIONAL;
-	//LightInfo.Direction = _vec3(1.f, -1.f, 1.f);
-	//LightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	//LightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	//LightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-
-	////((L.Specular * M.Specular) * 스펙큘러의 세기) + (L.Diffuse * M.Diffuse) * 명암 + (L.Ambient * M.Ambient)
-
-	//m_pGraphic_Device->SetLight(0, &LightInfo);
-
-	//m_pGraphic_Device->LightEnable(0, TRUE);
-
-	return NOERROR;
-}
-
 HRESULT CSceneStatic::Ready_Component_Prototype()
 {
 	if (nullptr == m_pComponent_Manager)
+		return E_FAIL;
+
+	// For.Component_Buffer_CubeBox
+	// SkyBox를 위한 버퍼
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_CubeBox", CBuffer_CubeTex::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	// For.Component_Texture_SkyBox
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
 		return E_FAIL;
 
-	//// For.Component_Texture_Terrain
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass_%d.tga", 2))))
-	//	return E_FAIL;
+	// For.Component_Buffer_Terrain
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device/*, L"../Bin/Resources/Textures/Terrain/Height.bmp"*/))))
+		return E_FAIL;
 
-	//// For.Component_Buffer_Terrain
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device, L"../Bin/Resources/Textures/Terrain/Height.bmp"))))
-	//	return E_FAIL;
-
-	// For.Component_Buffer_CubeBox
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_CubeBox", CBuffer_CubeTex::Create(m_pGraphic_Device))))
+	// For.Component_Texture_Terrain
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass_%d.tga", 2))))
 		return E_FAIL;
 
 	return NOERROR;
@@ -94,6 +76,10 @@ HRESULT CSceneStatic::Ready_GameObject_Prototype()
 {
 	// For.GameObject_SkyBox
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_SkyBox", CSkyBox::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_Terrain
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Terrain", CTerrain::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return NOERROR;
@@ -107,6 +93,10 @@ HRESULT CSceneStatic::Ready_GameObject()
 
 	// For.Camera
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Camera_Dynamic", SCENE_STATIC, L"Layer_Camera", &CCamera::CAMERAINFO(_vec3(0.f, 7.f, -10.f), _vec3(0.f, 0.f, 0.f), _vec3(0.0f, 1.f, 0.f), D3DXToRadian(60.0f), _float(g_iWinCX) / g_iWinCY, 0.2f, 500.f))))
+		return E_FAIL;
+
+	// For.Terrain
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Terrain", SCENE_STATIC, L"Layer_BackGround")))
 		return E_FAIL;
 
 	return NOERROR;
@@ -127,6 +117,8 @@ CSceneStatic * CSceneStatic::Create(LPDIRECT3DDEVICE9 _pGraphicDevice)
 
 void CSceneStatic::Free()
 {
+	Safe_Release(m_pEventManager);
+
 	if (nullptr == m_pObject_Manager)
 		return;
 

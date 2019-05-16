@@ -1,5 +1,6 @@
 #pragma once
 #include "SCene.h"
+#include "EventManagerTool.h"
 
 class CSceneStatic final : public CScene
 {
@@ -14,10 +15,12 @@ public:
 	virtual HRESULT Render_Scene() override;
 
 private:
-	HRESULT	Ready_LightInfo();
 	HRESULT	Ready_Component_Prototype();
 	HRESULT Ready_GameObject_Prototype();
 	HRESULT Ready_GameObject();
+
+private:
+	CEventManagerTool*	m_pEventManager = nullptr;
 
 public:
 	static CSceneStatic* Create(LPDIRECT3DDEVICE9 _pGraphicDevice);

@@ -189,19 +189,19 @@ CLayer * CObject_Manager::FindObjectLayer(const _uint & iSceneIdx, const _tchar 
 	return iter->second;
 }
 
-const CComponent * CObject_Manager::GetComponent(const _uint & iSceneIdx, const _tchar * pLayerTag, const _tchar * pComponentTag, const _uint & iIndex)
-{
-	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapObject)
-		return nullptr;
-
-	CLayer*		pLayer = Find_Layer(iSceneIdx, pLayerTag);
-
-	if (nullptr == pLayer)
-		return nullptr;
-
-	return pLayer->Get_Component(pComponentTag, iIndex);
-}
+//const CComponent * CObject_Manager::GetComponent(const _uint & iSceneIdx, const _tchar * pLayerTag, const _tchar * pComponentTag, const _uint & iIndex)
+//{
+//	if (m_iMaxNumScene <= iSceneIdx ||
+//		nullptr == m_pmapObject)
+//		return nullptr;
+//
+//	CLayer*		pLayer = Find_Layer(iSceneIdx, pLayerTag);
+//
+//	if (nullptr == pLayer)
+//		return nullptr;
+//
+//	return pLayer->Get_Component(pComponentTag, iIndex);
+//}
 
 CGameObject * CObject_Manager::Find_Object_Prototype(const _uint & iSceneIdx, const _tchar * pProtoTag)
 {

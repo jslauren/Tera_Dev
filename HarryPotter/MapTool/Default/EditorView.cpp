@@ -4,13 +4,12 @@
 #include "stdafx.h"
 #include "MapTool.h"
 #include "EditorView.h"
-
+#include "ViewManager.h"
 
 // CEditorView
 
 IMPLEMENT_DYNCREATE(CEditorView, CFormView)
 
-#include "ViewManager.h"
 
 CEditorView::CEditorView()
 	: CFormView(IDD_EDITORVIEW)
