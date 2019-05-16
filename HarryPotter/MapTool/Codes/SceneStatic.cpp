@@ -96,7 +96,7 @@ HRESULT CSceneStatic::Ready_GameObject()
 		return E_FAIL;
 
 	// For.Terrain
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Terrain", SCENE_STATIC, L"Layer_BackGround")))
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Terrain", SCENE_STATIC, L"Layer_Terrain")))
 		return E_FAIL;
 
 	return NOERROR;

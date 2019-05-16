@@ -24,6 +24,9 @@ public:
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
 
+public:	// Getter
+	CTransform*		GetTransformCom() { return m_pTransformCom; }
+
 public:
 	void	Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval, _float _fDetail);
 private:
