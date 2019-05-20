@@ -58,6 +58,29 @@ public:
 	CSpinButtonCtrl RotaionY_Btn;
 	CSpinButtonCtrl RotaionZ_Btn;
 
+public:
+	afx_msg void OnBnClickedTerrain_Apply();
+	afx_msg void OnSpin_Trans_PosX(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSpin_Trans_PosY(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSpin_Trans_PosZ(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSpin_Trans_RotX(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSpin_Trans_RotY(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSpin_Trans_RotZ(NMHDR *pNMHDR, LRESULT *pResult);
+
+public:
+	void InitTreeCtrl();
+
+	afx_msg void OnTree_Terrain_Texture(NMHDR *pNMHDR, LRESULT *pResult);
+
+	CStatic m_Terrain_Texture;
+	CTreeCtrl m_Tree_Terrain_Texture;
+
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
+private:
+	map<CString, CImage*>		m_mapPngImage;
+	CString						strImagName;
+
 private:
 	// Terrain_Vertex_Variable
 	_int	m_iNumVtxX = 0;
@@ -73,16 +96,9 @@ private:
 	_float	m_fRotY = 0.f;
 	_float	m_fRotZ = 0.f;
 
-public:
-	afx_msg void OnBnClickedTerrain_Apply();
-	afx_msg void OnSpin_Trans_PosX(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnSpin_Trans_PosY(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnSpin_Trans_PosZ(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnSpin_Trans_RotX(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnSpin_Trans_RotY(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnSpin_Trans_RotZ(NMHDR *pNMHDR, LRESULT *pResult);
-
 private:
 	void Rotation_Axis(const _vec3 & vAxis, const _float & fRadianPerSec);
+	void ImageProcess(HTREEITEM	_hSelected);
+	void ImageSizing(CImage* pImage);
 
 };

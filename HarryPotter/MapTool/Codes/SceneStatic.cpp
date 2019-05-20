@@ -65,9 +65,9 @@ HRESULT CSceneStatic::Ready_Component_Prototype()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device/*, L"../Bin/Resources/Textures/Terrain/Height.bmp"*/))))
 		return E_FAIL;
 
-	// For.Component_Texture_Terrain
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass_%d.tga", 2))))
-		return E_FAIL;
+	//// For.Component_Texture_Terrain
+	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass/Grass_0.tga"/*L"../Bin/Resources/Textures/Terrain/Grass/Grass_%d.tga", 2*/))))
+	//	return E_FAIL;
 
 	return NOERROR;
 }

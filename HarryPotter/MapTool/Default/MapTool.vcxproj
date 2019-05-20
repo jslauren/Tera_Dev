@@ -192,6 +192,7 @@
   <ItemGroup>
     <ClInclude Include="..\Headers\Camera_Dynamic.h" />
     <ClInclude Include="..\Headers\FileInfo.h" />
+    <ClInclude Include="..\Headers\FileManager.h" />
     <ClInclude Include="..\Headers\SceneCamera.h" />
     <ClInclude Include="..\Headers\SceneEffect.h" />
     <ClInclude Include="..\Headers\SceneMesh.h" />
@@ -220,6 +221,7 @@
   <ItemGroup>
     <ClCompile Include="..\Codes\Camera_Dynamic.cpp" />
     <ClCompile Include="..\Codes\FileInfo.cpp" />
+    <ClCompile Include="..\Codes\FileManager.cpp" />
     <ClCompile Include="..\Codes\SceneCamera.cpp" />
     <ClCompile Include="..\Codes\SceneEffect.cpp" />
     <ClCompile Include="..\Codes\SceneMesh.cpp" />

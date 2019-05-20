@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Terrain.h"
 #include "EventManager.h"
+#include "Layer.h"
 
 CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
@@ -84,6 +85,11 @@ HRESULT CTerrain::Add_Component()
 
 	// For.Com_Renderer
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
+		return E_FAIL;
+
+	// 터레인 이미지 변경을 위해 씬에서 납치해옴 //
+	// For.Component_Texture_Terrain
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass/Grass_%d.tga", 2))))
 		return E_FAIL;
 
 	// For.Com_Texture
@@ -372,6 +378,7 @@ void CTerrain::Render_Buffer()
 	m_pGraphic_Device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_iNumVertices, 0, m_iNumPolygons);
 
 }
+
 void CTerrain::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval, _float _fDetail)
 {
 	if (false == m_isClone)
@@ -386,6 +393,14 @@ void CTerrain::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval
 	Ready_Terrain_Buffer(_iNumVtxX, _iNumVtxZ, _fInterval, _fDetail);
 
 }
+
+void CTerrain::Reset_Texture(_tchar* pFilePath)
+{
+	
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, pFilePath))))
+		return;
+}
+
 void CTerrain::ComputeNormal(_vec3 * pVtx0, _vec3 * pVtx1, _vec3 * pVtx2, _vec3 * pOut)
 {
 	_vec3 u = *pVtx1 - *pVtx0;

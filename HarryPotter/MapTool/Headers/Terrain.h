@@ -29,6 +29,7 @@ public:	// Getter
 
 public:
 	void	Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval, _float _fDetail);
+	void	Reset_Texture(_tchar* pFilePath);
 private:
 	CTransform*			m_pTransformCom = nullptr;
 //	CBuffer_Terrain*	m_pBufferCom = nullptr;
@@ -67,6 +68,7 @@ private:
 	D3DFORMAT						m_Format = D3DFORMAT(0);
 	_vec3*							m_pPositions = nullptr; // 정점들의 최초 위치만 보관하는 배열.
 	void*							m_pIndices = nullptr;
+
 public:
 	static CTerrain*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

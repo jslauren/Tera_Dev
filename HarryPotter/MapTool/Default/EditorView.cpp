@@ -78,15 +78,15 @@ void CEditorView::OnInitialUpdate()
 
 	m_Tab_Camera.Create(IDD_CAMERATAB, &m_Tab);
 	m_Tab_Camera.MoveWindow(0, 25, rect.Width(), rect.Height());
-	m_Tab_Camera.ShowWindow(SW_SHOW);
+	m_Tab_Camera.ShowWindow(SW_HIDE);
 
 	m_Tab_Effect.Create(IDD_EFFECTTAB, &m_Tab);
 	m_Tab_Effect.MoveWindow(0, 25, rect.Width(), rect.Height());
-	m_Tab_Effect.ShowWindow(SW_SHOW);
+	m_Tab_Effect.ShowWindow(SW_HIDE);
 
 	m_Tab_Proto.Create(IDD_PROTOTAB, &m_Tab);
 	m_Tab_Proto.MoveWindow(0, 25, rect.Width(), rect.Height());
-	m_Tab_Proto.ShowWindow(SW_SHOW);
+	m_Tab_Proto.ShowWindow(SW_HIDE);
 
 	m_Tab.SetCurSel(0);
 	m_pViewManager->SetCurScene(SCENE_STATIC);

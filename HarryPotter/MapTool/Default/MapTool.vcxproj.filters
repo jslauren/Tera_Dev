@@ -110,6 +110,9 @@
     <Filter Include="98. ETC">
       <UniqueIdentifier>{bf7925dd-b5e5-494b-a393-dd3942373707}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. Utill\04. FileManager">
+      <UniqueIdentifier>{da625f30-fa87-4a86-85c6-9d659b3f30ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainFrm.h">
@@ -190,6 +193,9 @@
     <ClInclude Include="EventManagerTool.h">
       <Filter>02. Utill\03. EventManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\FileManager.h">
+      <Filter>02. Utill\04. FileManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -260,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="EventManagerTool.cpp">
       <Filter>02. Utill\03. EventManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\FileManager.cpp">
+      <Filter>02. Utill\04. FileManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
