@@ -75,6 +75,7 @@ BEGIN_MESSAGE_MAP(CTerrainTab, CDialogEx)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN9, &CTerrainTab::OnSpin_Trans_RotY)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN10, &CTerrainTab::OnSpin_Trans_RotZ)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &CTerrainTab::OnTree_Terrain_Texture)
+	ON_NOTIFY(NM_DBLCLK, IDC_TREE1, &CTerrainTab::OnNMDblclkTreeTerrainTexture)
 END_MESSAGE_MAP()
 
 
@@ -407,6 +408,8 @@ void CTerrainTab::ImageProcess(HTREEITEM _hSelected)
 	strImagName = PathFindFileName(szFullPath);						// 경로를 기준으로 파일의 이름을 얻어오는 함수
 	PathRemoveExtension((LPWSTR)strImagName.operator LPCWSTR());	// 확장자명을 잘라내는 함수
 
+	ZeroMemory(szFullPathForTexture, sizeof(szFullPathForTexture));
+	StrCpyW(szFullPathForTexture, szFullPath);
 	// 해당 이미지가 있는지 확인 후,
 	auto iter = m_mapPngImage.find(strImagName);
 
@@ -453,7 +456,7 @@ void CTerrainTab::ImageSizing(CImage* pImage)
 		pMdc.CreateCompatibleDC(screen);
 		CBitmap bmp;
 
-		int   iSizeX = 100, iSizeY = 100;
+		int   iSizeX = 170, iSizeY = 170;
 		bmp.CreateCompatibleBitmap(screen, iSizeX, iSizeY);
 
 		CBitmap* pob = pMdc.SelectObject(&bmp);
@@ -483,4 +486,15 @@ BOOL CTerrainTab::PreTranslateMessage(MSG* pMsg)
 		return TRUE;
 
 	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+
+void CTerrainTab::OnNMDblclkTreeTerrainTexture(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
+	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->Reset_Texture(szFullPathForTexture);
+
+	*pResult = 0;
 }

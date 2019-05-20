@@ -113,6 +113,12 @@
     <Filter Include="02. Utill\04. FileManager">
       <UniqueIdentifier>{da625f30-fa87-4a86-85c6-9d659b3f30ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Object\00. Static\Terrain\Buffer_Terrain">
+      <UniqueIdentifier>{d2056be2-f25f-452a-9c27-c48cf1f7256b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Object\00. Static\Texture">
+      <UniqueIdentifier>{2c3ec4aa-1b9a-4f65-b231-a55705ba7674}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainFrm.h">
@@ -196,6 +202,12 @@
     <ClInclude Include="..\Headers\FileManager.h">
       <Filter>02. Utill\04. FileManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Buffer_Terrain_Tool.h">
+      <Filter>04. Object\00. Static\Terrain\Buffer_Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Texture_Tool.h">
+      <Filter>04. Object\00. Static\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -269,6 +281,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\FileManager.cpp">
       <Filter>02. Utill\04. FileManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Buffer_Terrain_Tool.cpp">
+      <Filter>04. Object\00. Static\Terrain\Buffer_Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Texture_Tool.cpp">
+      <Filter>04. Object\00. Static\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

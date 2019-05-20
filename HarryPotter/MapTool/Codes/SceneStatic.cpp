@@ -5,6 +5,8 @@
 #include "Input_device.h"
 #include "Terrain.h"
 #include "EventManager.h"
+#include "Buffer_Terrain_Tool.h"
+#include "Texture_Tool.h"
 
 CSceneStatic::CSceneStatic(LPDIRECT3DDEVICE9 _pGraphic_Device)
 	: CScene(_pGraphic_Device)
@@ -62,12 +64,12 @@ HRESULT CSceneStatic::Ready_Component_Prototype()
 		return E_FAIL;
 
 	// For.Component_Buffer_Terrain
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device/*, L"../Bin/Resources/Textures/Terrain/Height.bmp"*/))))
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_Terrain", CBuffer_Terrain_Tool::Create(m_pGraphic_Device/*, L"../Bin/Resources/Textures/Terrain/Height.bmp"*/))))
 		return E_FAIL;
 
-	//// For.Component_Texture_Terrain
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass/Grass_0.tga"/*L"../Bin/Resources/Textures/Terrain/Grass/Grass_%d.tga", 2*/))))
-	//	return E_FAIL;
+	// For.Component_Texture_Terrain
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Terrain", CTexture_Tool::Create(m_pGraphic_Device, CTexture_Tool::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass/Grass_0.tga"))))
+		return E_FAIL;
 
 	return NOERROR;
 }

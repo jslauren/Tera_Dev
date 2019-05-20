@@ -29,12 +29,13 @@ public:
 
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
+	CStatic m_Terrain_Texture;
+	CTreeCtrl m_Tree_Terrain_Texture;
 
 	CButton Terrain_RenderST_Solild;
 	CButton Terrain_RenderCood_Axis;
-
-	afx_msg void OnBnClickedWireFrame();
-	afx_msg void OnBnClickedSolid();
 
 	CEdit Vertex_X_Count;
 	CEdit Vertex_Z_Count;
@@ -59,6 +60,9 @@ public:
 	CSpinButtonCtrl RotaionZ_Btn;
 
 public:
+	afx_msg void OnBnClickedWireFrame();
+	afx_msg void OnBnClickedSolid();
+
 	afx_msg void OnBnClickedTerrain_Apply();
 	afx_msg void OnSpin_Trans_PosX(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSpin_Trans_PosY(NMHDR *pNMHDR, LRESULT *pResult);
@@ -67,19 +71,8 @@ public:
 	afx_msg void OnSpin_Trans_RotY(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSpin_Trans_RotZ(NMHDR *pNMHDR, LRESULT *pResult);
 
-public:
-	void InitTreeCtrl();
-
 	afx_msg void OnTree_Terrain_Texture(NMHDR *pNMHDR, LRESULT *pResult);
-
-	CStatic m_Terrain_Texture;
-	CTreeCtrl m_Tree_Terrain_Texture;
-
-	virtual BOOL PreTranslateMessage(MSG* pMsg);
-
-private:
-	map<CString, CImage*>		m_mapPngImage;
-	CString						strImagName;
+	afx_msg void OnNMDblclkTreeTerrainTexture(NMHDR *pNMHDR, LRESULT *pResult);
 
 private:
 	// Terrain_Vertex_Variable
@@ -96,7 +89,12 @@ private:
 	_float	m_fRotY = 0.f;
 	_float	m_fRotZ = 0.f;
 
+	// Terrain_TreeControl_Texture
+	map<CString, CImage*>		m_mapPngImage;
+	CString						strImagName;
+	TCHAR						szFullPathForTexture[MAX_PATH] = L"";
 private:
+	void InitTreeCtrl();
 	void Rotation_Axis(const _vec3 & vAxis, const _float & fRadianPerSec);
 	void ImageProcess(HTREEITEM	_hSelected);
 	void ImageSizing(CImage* pImage);

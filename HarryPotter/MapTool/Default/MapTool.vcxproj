@@ -190,6 +190,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Headers\Buffer_Terrain_Tool.h" />
     <ClInclude Include="..\Headers\Camera_Dynamic.h" />
     <ClInclude Include="..\Headers\FileInfo.h" />
     <ClInclude Include="..\Headers\FileManager.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="..\Headers\SceneTerrain.h" />
     <ClInclude Include="..\Headers\SkyBox.h" />
     <ClInclude Include="..\Headers\Terrain.h" />
+    <ClInclude Include="..\Headers\Texture_Tool.h" />
     <ClInclude Include="..\Headers\ViewManager.h" />
     <ClInclude Include="CameraTab.h" />
     <ClInclude Include="EditorView.h" />
@@ -219,6 +221,7 @@
     <ClInclude Include="Tool_Defines.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Codes\Buffer_Terrain_Tool.cpp" />
     <ClCompile Include="..\Codes\Camera_Dynamic.cpp" />
     <ClCompile Include="..\Codes\FileInfo.cpp" />
     <ClCompile Include="..\Codes\FileManager.cpp" />
@@ -230,6 +233,7 @@
     <ClCompile Include="..\Codes\SceneTerrain.cpp" />
     <ClCompile Include="..\Codes\SkyBox.cpp" />
     <ClCompile Include="..\Codes\Terrain.cpp" />
+    <ClCompile Include="..\Codes\Texture_Tool.cpp" />
     <ClCompile Include="..\Codes\ViewManager.cpp" />
     <ClCompile Include="CameraTab.cpp" />
     <ClCompile Include="EditorView.cpp" />
