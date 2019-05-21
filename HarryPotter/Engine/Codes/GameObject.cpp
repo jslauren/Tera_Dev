@@ -26,6 +26,15 @@ const CComponent * CGameObject::Get_Component(const _tchar * pComponentTag)
 	return pComponent;
 }
 
+_matrix CGameObject::Get_Transform(_D3DTRANSFORMSTATETYPE eType) const
+{
+	_matrix			matTransform;
+
+	m_pGraphic_Device->GetTransform(eType, &matTransform);
+
+	return matTransform;
+}
+
 void CGameObject::Set_SamplerState(_ulong dwSampler, D3DSAMPLERSTATETYPE SamplerState, _ulong dwValue)
 {
 	if (nullptr == m_pGraphic_Device)
@@ -127,16 +136,6 @@ CComponent * CGameObject::Find_Component(const _tchar * pComponentTag)
 		return nullptr;
 
 	return iter->second;
-}
-
-const CComponent * CGameObject::GetComponent(const _tchar * pComponentTag)
-{
-	const CComponent*	pComponent = Find_Component(pComponentTag);
-
-	if (nullptr == pComponent)
-		return nullptr;
-
-	return pComponent;
 }
 
 void CGameObject::Free()

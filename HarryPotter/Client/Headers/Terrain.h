@@ -6,8 +6,8 @@ _BEGIN(Engine)
 class CTransform;
 class CBuffer_Terrain; // 그리기를 위한 리소스로 정점 버퍼를 추가한다.
 class CRenderer; //백로고를 렌더그룹에 추가하기 위해.and Render함수를 호출할 수 있도록 
-class CShader;
 class CTexture;
+class CShader;
 _END
 
 _BEGIN(Client)
@@ -31,11 +31,16 @@ private:
 	CBuffer_Terrain*	m_pBufferCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
 	CTexture*			m_pTextureCom = nullptr;
+	CTexture*			m_pFilterCom = nullptr;
+	CTexture*			m_pBrushCom = nullptr;
 	CShader*			m_pShaderCom = nullptr;
+private:
+	LPDIRECT3DTEXTURE9	m_pFilterTexture = nullptr;
 private:
 	D3DMATERIAL9		m_MtrlInfo;
 private:
 	HRESULT Add_Component();
+	HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 	//HRESULT SetUp_RenderState();
 	//HRESULT Release_RenderState();
 public:

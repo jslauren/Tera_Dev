@@ -19,7 +19,7 @@ private:
 private:
 	_uint			m_iNumVerticesX = 0;
 	_uint			m_iNumVerticesZ = 0;
-	_float			m_fInterval = 0.f;
+	_float			m_fInterval = 1.f;
 	_float			m_fDetail = 1.f;
 public:
 	static CBuffer_Terrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

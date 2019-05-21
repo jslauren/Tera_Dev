@@ -170,6 +170,7 @@ HRESULT CMainApp::Ready_GameObject_Prototype()
 	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
 	if (nullptr == pObject_Manager)
 		return E_FAIL;
+
 	pObject_Manager->AddRef();
 
 	// For.GameObject_Camera_Dynamic

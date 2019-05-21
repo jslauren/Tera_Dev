@@ -2,6 +2,31 @@
 
 namespace Engine
 {
+	typedef struct tagMeshTexture
+	{
+		enum TYPE { TYPE_DIFFUSE, TYPE_NORMAL, TYPE_SPECULAR, TYPE_END };
+
+		LPDIRECT3DTEXTURE9		pTextures[TYPE_END];
+
+	}MESHTEXTURE;
+
+	typedef struct tagD3DXMeshContainer_Derived : public D3DXMESHCONTAINER
+	{
+		LPD3DXMESH			pOriginalMesh;
+		MESHTEXTURE*		pMeshTexture;
+		unsigned long		dwNumBones;
+		D3DXMATRIX*			pRenderingMatrices = nullptr;
+		D3DXMATRIX*			pOffsetMatrices = nullptr;
+		D3DXMATRIX**		ppCombinedTransformationMatrices = nullptr;
+
+	}D3DXMESHCONTAINER_DERIVED;
+
+	typedef struct tagD3DXFrame_Derived : public D3DXFRAME
+	{
+		//  ³ª`s TransformationMatrix * ºÎ¸ð`s CombinedTransformationMatrix
+		D3DXMATRIX			CombinedTransformationMatrix;
+	}D3DXFRAME_DERIVED;
+
 	typedef struct tagVertex_Cube_Texture
 	{
 		D3DXVECTOR3			vPosition; // D3DFVF_XYZ

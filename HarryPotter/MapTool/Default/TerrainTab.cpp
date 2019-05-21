@@ -13,6 +13,7 @@
 #include "Layer.h"
 #include "Terrain.h"
 #include "FileManager.h"
+#include "ViewManager.h"
 
 // CTerrainTab 대화 상자입니다.
 
@@ -98,6 +99,8 @@ BOOL CTerrainTab::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
+	m_pScene = CViewManager::GetInstance()->m_pCurScene;
+
 	Terrain_RenderST_Solild.SetCheck(TRUE);
 	Terrain_RenderCood_Axis.SetCheck(TRUE);
 	
@@ -124,13 +127,13 @@ BOOL CTerrainTab::OnInitDialog()
 	PositionZ_Btn.SetRange(-1000, 1000);
 	PositionZ_Btn.SetPos(0);
 
-	RotaionX_Btn.SetRange(-0, 360);
+	RotaionX_Btn.SetRange(0, 360);
 	RotaionX_Btn.SetPos(0);
 
-	RotaionY_Btn.SetRange(-0, 360);
+	RotaionY_Btn.SetRange(0, 360);
 	RotaionY_Btn.SetPos(0);
 
-	RotaionZ_Btn.SetRange(-0, 360);
+	RotaionZ_Btn.SetRange(0, 360);
 	RotaionZ_Btn.SetPos(0);
 
 	InitTreeCtrl();
@@ -143,14 +146,20 @@ BOOL CTerrainTab::OnInitDialog()
 void CTerrainTab::OnBnClickedWireFrame()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CEventManagerTool::GetInstance()->m_bIsWireFrame = true;
+
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
+	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->SetFillMode(true);
+	
 }
 
 
 void CTerrainTab::OnBnClickedSolid()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CEventManagerTool::GetInstance()->m_bIsWireFrame = false;
+
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
+	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->SetFillMode(false);
+
 }
 
 void CTerrainTab::OnBnClickedTerrain_Apply()
@@ -301,7 +310,6 @@ void CTerrainTab::Rotation_Axis(const _vec3 & vAxis, const _float & fRadianPerSe
 
 void CTerrainTab::InitTreeCtrl()
 {
-
 	HTREEITEM hItem = m_Tree_Terrain_Texture.InsertItem(_T("../Bin/Resources/Textures/Terrain"));
 	//HTREEITEM hItem = m_Tree_Terrain_Texture.InsertItem(_T("../Bin/Resources/Textures/Terrain/"));
 

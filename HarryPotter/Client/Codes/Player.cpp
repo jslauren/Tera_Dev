@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Player.h"
 #include "Object_Manager.h"
+#include "Light_Manager.h"
 
 _USING(Client)
 
@@ -35,8 +36,6 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	m_pTransformCom->Set_Scaling(1.f, 1.f, 1.f);
 
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.2, 0.f, 0.2));
-	//m_pTransformCom->Set_Angle_Y(D3DXToRadian(45.0f));
-	//m_pTransformCom->Set_Angle_Y(D3DXToRadian(45.0f));
 
 	return NOERROR;
 }
@@ -112,18 +111,46 @@ _int CPlayer::LateUpdate_GameObject(const _float & fTimeDelta)
 
 HRESULT CPlayer::Render_GameObject()
 {
-	if (nullptr == m_pBufferCom ||
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pTransformCom ||
+		nullptr == m_pMeshCom ||
 		nullptr == m_pTextureCom)
 		return E_FAIL;
 
-	m_pTextureCom->SetUp_OnGraphicDev(0);
+	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
+	if (nullptr == pEffect)
+		return E_FAIL;
 
-	SetUp_RenderState();
+	pEffect->AddRef();
 
-	// 행렬 = 행렬 * 행렬
-	m_pBufferCom->Render_Buffer(m_pTransformCom);
+	if (FAILED(SetUp_ConstantTable(pEffect)))
+		return E_FAIL;
 
-	Release_RenderState();
+	pEffect->Begin(nullptr, 0);
+	
+	for (size_t i = 0; i < m_pMeshCom->Get_NumMeshContainer(); ++i)
+	{
+		if (FAILED(m_pMeshCom->Update_SkinnedMesh(i)))
+			break;
+
+		for (size_t j = 0; j < m_pMeshCom->Get_NumSubSet(i); ++j)
+		{
+			if (FAILED(m_pMeshCom->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+				return E_FAIL;
+
+			pEffect->CommitChanges();
+
+			pEffect->BeginPass(0);
+
+			m_pMeshCom->Render_Mesh(i, j);
+
+			pEffect->EndPass();
+		}
+	}
+	
+	pEffect->End();
+
+	Safe_Release(pEffect);
 
 	return NOERROR;
 }
@@ -134,8 +161,8 @@ HRESULT CPlayer::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
-	// For.Com_Buffer
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_RcTex", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
+	// For.Com_Mesh
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Mesh_Player", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
 		return E_FAIL;
 
 	// For.Com_Renderer
@@ -146,6 +173,9 @@ HRESULT CPlayer::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Default", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
+	// For.Com_Shader
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -171,19 +201,57 @@ HRESULT CPlayer::SetUp_HeightOnTerrain()
 	return NOERROR;
 }
 
-HRESULT CPlayer::SetUp_RenderState()
+HRESULT CPlayer::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 {
-	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	if (nullptr == pEffect)
+		return E_FAIL;
+
+	pEffect->AddRef();
+
+	pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
+	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
+	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
+
+	CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
+	if (nullptr == pLight_Manager)
+		return E_FAIL;
+
+	pLight_Manager->AddRef();
+
+	const D3DLIGHT9* pLightInfo = pLight_Manager->Get_LightInfo(0);
+	if (nullptr == pLightInfo)
+		return E_FAIL;
+
+	pEffect->SetVector("g_vLightDir", &_vec4(pLightInfo->Direction, 0.f));
+	pEffect->SetVector("g_vLightDiffuse", (_vec4*)&pLightInfo->Diffuse);
+	pEffect->SetVector("g_vLightAmbient", (_vec4*)&pLightInfo->Ambient);
+	pEffect->SetVector("g_vLightSpecular", (_vec4*)&pLightInfo->Specular);
+
+	Safe_Release(pLight_Manager);
+
+	_matrix		matView = CGameObject::Get_Transform(D3DTS_VIEW);
+	D3DXMatrixInverse(&matView, nullptr, &matView);
+
+	pEffect->SetVector("g_vCamPosition", (_vec4*)&matView.m[3][0]);
+
+	Safe_Release(pEffect);
 
 	return NOERROR;
 }
 
-HRESULT CPlayer::Release_RenderState()
-{
-	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
-	return NOERROR;
-}
+//HRESULT CPlayer::SetUp_RenderState()
+//{
+//	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+//
+//	return NOERROR;
+//}
+//
+//HRESULT CPlayer::Release_RenderState()
+//{
+//	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+//
+//	return NOERROR;
+//}
 
 // 원본객체를 생성한다.
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -220,7 +288,8 @@ void CPlayer::Free()
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
-	Safe_Release(m_pBufferCom);
+	Safe_Release(m_pMeshCom);
+	Safe_Release(m_pShaderCom);
 
 	CGameObject::Free();
 }

@@ -17,11 +17,13 @@ protected:
 	virtual ~CGameObject() = default;
 
 public:
+	LPDIRECT3DDEVICE9 Get_Graphic_Device() const { return m_pGraphic_Device; }
 	const CComponent*	Get_Component(const _tchar* pComponentTag);
 	_float				Get_ViewZ() const { return m_fViewZ; }
+	_matrix				Get_Transform(_D3DTRANSFORMSTATETYPE eType) const;
+
 public:
-	void Set_Transform(_D3DTRANSFORMSTATETYPE eType, const _matrix* pMatrix) { 
-						m_pGraphic_Device->SetTransform(eType, pMatrix); }
+	void Set_Transform(_D3DTRANSFORMSTATETYPE eType, const _matrix* pMatrix) { m_pGraphic_Device->SetTransform(eType, pMatrix); }
 	void Set_SamplerState(_ulong dwSampler, D3DSAMPLERSTATETYPE SamplerState, _ulong dwValue);
 	void Set_RenderState(D3DRENDERSTATETYPE eType, _ulong dwValue);
 	void Set_Material(const D3DMATERIAL9& Material);
@@ -37,30 +39,29 @@ public:
 	//해당 이벤트에서 등록을 취소하고싶은 경우 음수를 반환하면 된다. 
 	//객체가 삭제되어야 할때는 무조건 음수 반환을 하여 등록을 취소하여 객체가 제대로 삭제된다.(레퍼런스 카운터 때문에)
 	//절대 이벤트함수 안에서는 다른 이벤트를 발생시키면 안된다.(무한 루프 가능성)
-	virtual _int OnEvent(const _tchar* _pSubject, void* _pMsg);
+	virtual _int	OnEvent(const _tchar* _pSubject, void* _pMsg);
 public:
 	//오브젝트 매니져가 객체의 삭제 판단을 하기 위해 필요한 함수
-	const bool& GetDelete();
-public:
-	CComponent*			Find_Component(const _tchar* pComponentTag);
-	const CComponent*	GetComponent(const _tchar* pComponentTag);
+	const bool&		GetDelete();
 protected:
-	HRESULT				Add_Component(const _uint& iSceneIdx, const _tchar* pPrototypeTag, const _tchar* pComponentTag, CComponent** ppOutComponent);
-	HRESULT				Compute_ViewZ(CTransform* pTransform);
+	HRESULT	Add_Component(const _uint& iSceneIdx, const _tchar* pPrototypeTag, const _tchar* pComponentTag, CComponent** ppOutComponent);
+	HRESULT	Compute_ViewZ(CTransform* pTransform);
 protected:	// Protected로 시마이 하자....
 	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;
 	CComponent_Manager*	m_pComponent_Manager = nullptr;
-private:
-	// CGameObject를 상속받은 객체가 가지고 있는 컴포넌트를 모아놓기위한 컨테이너.
-	map<const _tchar*, CComponent*>			m_mapComponents;
-	typedef map<const _tchar*, CComponent*>	MAPCOMPONENTS;
 protected:
 	// 해당 변수가 트루일 경우 클론이다.
 	_bool	m_isClone = false;
 	// 해당 변수가 트루가 될경우 오브젝트 매니져에서 객체를 삭제한다.
 	_bool	m_bDelete = false;
-private:
+
 	_float	m_fViewZ = 0.f;
+private:
+	// CGameObject를 상속받은 객체가 가지고 있는 컴포넌트를 모아놓기위한 컨테이너.
+	map<const _tchar*, CComponent*>			m_mapComponents;
+	typedef map<const _tchar*, CComponent*>	MAPCOMPONENTS;
+private:
+	CComponent*			Find_Component(const _tchar* pComponentTag);
 public:
 	// 이 클래스를 상속받는 자식 오브젝트 클래스들을,
 	// 프로토 타입 패턴을 사용하여 복사 해주기 위해,

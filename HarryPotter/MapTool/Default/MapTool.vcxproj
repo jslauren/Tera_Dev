@@ -111,6 +111,12 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>2.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -159,6 +165,12 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>2.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -201,6 +213,7 @@
     <ClInclude Include="..\Headers\SceneStatic.h" />
     <ClInclude Include="..\Headers\SceneTerrain.h" />
     <ClInclude Include="..\Headers\SkyBox.h" />
+    <ClInclude Include="..\Headers\StaticObject.h" />
     <ClInclude Include="..\Headers\Terrain.h" />
     <ClInclude Include="..\Headers\Texture_Tool.h" />
     <ClInclude Include="..\Headers\ViewManager.h" />
@@ -232,6 +245,7 @@
     <ClCompile Include="..\Codes\SceneStatic.cpp" />
     <ClCompile Include="..\Codes\SceneTerrain.cpp" />
     <ClCompile Include="..\Codes\SkyBox.cpp" />
+    <ClCompile Include="..\Codes\StaticObject.cpp" />
     <ClCompile Include="..\Codes\Terrain.cpp" />
     <ClCompile Include="..\Codes\Texture_Tool.cpp" />
     <ClCompile Include="..\Codes\ViewManager.cpp" />
@@ -263,6 +277,12 @@
     <Image Include="res\MapTool.ico" />
     <Image Include="res\MapToolDoc.ico" />
     <Image Include="res\Toolbar.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Default.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Mesh.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Sky.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

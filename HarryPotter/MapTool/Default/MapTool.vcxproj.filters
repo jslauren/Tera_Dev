@@ -16,9 +16,6 @@
     <Filter Include="04. Object">
       <UniqueIdentifier>{ff006bdd-5456-4bef-af98-628b37a96b33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Camera">
-      <UniqueIdentifier>{bd863beb-3c2a-4198-9a17-98cc4506ac7d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="99. Headers">
       <UniqueIdentifier>{f80b63a9-8e59-45b2-b05a-636e1124eaa2}</UniqueIdentifier>
     </Filter>
@@ -95,9 +92,6 @@
     <Filter Include="04. Object\05. Prototype">
       <UniqueIdentifier>{94ba2e99-320e-47eb-ad10-ca78eb62e156}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Camera\Dynamic">
-      <UniqueIdentifier>{f4504de5-5017-4247-8c3f-80cf761e27f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Object\00. Static\SkyBox">
       <UniqueIdentifier>{39c169da-1e78-40c8-8aa6-8607ce578077}</UniqueIdentifier>
     </Filter>
@@ -116,8 +110,23 @@
     <Filter Include="04. Object\00. Static\Terrain\Buffer_Terrain">
       <UniqueIdentifier>{d2056be2-f25f-452a-9c27-c48cf1f7256b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Object\00. Static\Texture">
+    <Filter Include="97. ShaderFiles">
+      <UniqueIdentifier>{2e460c71-da0f-42de-a238-ebc8563095a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Camera">
+      <UniqueIdentifier>{bd863beb-3c2a-4198-9a17-98cc4506ac7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Camera\Dynamic">
+      <UniqueIdentifier>{f4504de5-5017-4247-8c3f-80cf761e27f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component">
+      <UniqueIdentifier>{e90d825a-d326-4139-a58a-1835b693577a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\Texture">
       <UniqueIdentifier>{2c3ec4aa-1b9a-4f65-b231-a55705ba7674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Object\00. Static\StaticObject">
+      <UniqueIdentifier>{94ac379d-8730-46fb-8321-5cdac205c10f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -188,7 +197,7 @@
       <Filter>02. Utill\02. FileInfo</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Camera_Dynamic.h">
-      <Filter>05. Camera\Dynamic</Filter>
+      <Filter>06. Camera\Dynamic</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\SkyBox.h">
       <Filter>04. Object\00. Static\SkyBox</Filter>
@@ -206,7 +215,10 @@
       <Filter>04. Object\00. Static\Terrain\Buffer_Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Texture_Tool.h">
-      <Filter>04. Object\00. Static\Texture</Filter>
+      <Filter>05. Component\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\StaticObject.h">
+      <Filter>04. Object\00. Static\StaticObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -268,7 +280,7 @@
       <Filter>02. Utill\02. FileInfo</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Camera_Dynamic.cpp">
-      <Filter>05. Camera\Dynamic</Filter>
+      <Filter>06. Camera\Dynamic</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Terrain.cpp">
       <Filter>04. Object\00. Static\Terrain</Filter>
@@ -286,7 +298,10 @@
       <Filter>04. Object\00. Static\Terrain\Buffer_Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Texture_Tool.cpp">
-      <Filter>04. Object\00. Static\Texture</Filter>
+      <Filter>05. Component\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\StaticObject.cpp">
+      <Filter>04. Object\00. Static\StaticObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -314,5 +329,19 @@
     <Text Include="ReadMe.txt">
       <Filter>999. Default</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Sky.fx">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Default.fx">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Mesh.fx">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

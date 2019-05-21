@@ -167,5 +167,14 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Default.fx">
       <Filter>03. ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Mesh.fx">
+      <Filter>03. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Sky.fx">
+      <Filter>03. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx">
+      <Filter>03. ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

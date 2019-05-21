@@ -102,20 +102,6 @@ HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * 
 	return NOERROR;
 }
 
-HRESULT CObject_Manager::Clear_Prototype(const _uint & iSceneIdx)
-{
-	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapPrototype)
-		return E_FAIL;
-
-	for (auto& ProtypePair : m_pmapPrototype[iSceneIdx])
-		Safe_Release(ProtypePair.second);
-
-	m_pmapPrototype[iSceneIdx].clear();
-
-	return NOERROR;
-}
-
 HRESULT CObject_Manager::Clear_Object(const _uint & iSceneIdx)
 {
 	if (m_iMaxNumScene <= iSceneIdx ||
@@ -126,6 +112,20 @@ HRESULT CObject_Manager::Clear_Object(const _uint & iSceneIdx)
 		Safe_Release(ObjectLayerPair.second);
 
 	m_pmapObject[iSceneIdx].clear();
+
+	return NOERROR;
+}
+
+HRESULT CObject_Manager::Clear_Prototype(const _uint & iSceneIdx)
+{
+	if (m_iMaxNumScene <= iSceneIdx ||
+		nullptr == m_pmapPrototype)
+		return E_FAIL;
+
+	for (auto& ProtypePair : m_pmapPrototype[iSceneIdx])
+		Safe_Release(ProtypePair.second);
+
+	m_pmapPrototype[iSceneIdx].clear();
 
 	return NOERROR;
 }
@@ -188,20 +188,6 @@ CLayer * CObject_Manager::FindObjectLayer(const _uint & iSceneIdx, const _tchar 
 
 	return iter->second;
 }
-
-//const CComponent * CObject_Manager::GetComponent(const _uint & iSceneIdx, const _tchar * pLayerTag, const _tchar * pComponentTag, const _uint & iIndex)
-//{
-//	if (m_iMaxNumScene <= iSceneIdx ||
-//		nullptr == m_pmapObject)
-//		return nullptr;
-//
-//	CLayer*		pLayer = Find_Layer(iSceneIdx, pLayerTag);
-//
-//	if (nullptr == pLayer)
-//		return nullptr;
-//
-//	return pLayer->Get_Component(pComponentTag, iIndex);
-//}
 
 CGameObject * CObject_Manager::Find_Object_Prototype(const _uint & iSceneIdx, const _tchar * pProtoTag)
 {

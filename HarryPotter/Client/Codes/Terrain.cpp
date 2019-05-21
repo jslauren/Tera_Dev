@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\Terrain.h"
+#include "Light_Manager.h"
 
 _USING(Client)
 
@@ -38,6 +39,28 @@ HRESULT CTerrain::Ready_GameObject(void* pArg)
 
 	CGameObject::Set_Material(m_MtrlInfo);
 
+	if (FAILED(D3DXCreateTexture(Get_Graphic_Device(), 129, 129, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &m_pFilterTexture)))
+		return E_FAIL;
+
+	D3DLOCKED_RECT		LockRect;
+
+	m_pFilterTexture->LockRect(0, &LockRect, nullptr, 0);
+
+	for (size_t i = 0; i < 129; ++i)
+	{
+		for (size_t j = 0; j < 129; ++j)
+		{
+			_uint	iIndex = i * 129 + j;
+
+			if (i < 64)
+				((_ulong*)LockRect.pBits)[iIndex] = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+		}
+	}
+
+	m_pFilterTexture->UnlockRect(0);
+
+	D3DXSaveTextureToFile(L"../Bin/Test.bmp", D3DXIFF_BMP, m_pFilterTexture, nullptr);
+
 	return NOERROR;
 }
 
@@ -67,39 +90,21 @@ _int CTerrain::LateUpdate_GameObject(const _float & fTimeDelta)
 
 HRESULT CTerrain::Render_GameObject()
 {
-	if (nullptr == m_pBufferCom ||
-		nullptr == m_pTextureCom ||
-		nullptr == m_pShaderCom)
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pTransformCom ||
+		nullptr == m_pBufferCom ||
+		nullptr == m_pTextureCom)
 		return E_FAIL;
 
-	//m_pTextureCom->SetUp_OnGraphicDev(0);
-	//SetUp_RenderState();
-
 	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
+
 	if (nullptr == pEffect)
 		return E_FAIL;
 
 	pEffect->AddRef();
 
-	_matrix			matTmp;
-	D3DXMatrixIdentity(&matTmp);
-
-	m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture");
-
-	pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
-
-	m_pGraphic_Device->GetTransform(D3DTS_VIEW,&matTmp);
-	pEffect->SetMatrix("g_matView", &matTmp);
-
-	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION,&matTmp);
-	pEffect->SetMatrix("g_matProj", &matTmp);
-
-	pEffect->SetVector("g_vLight", &_vec4(1.f, -1.f, 0.f, 0.f));
-
-	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &matTmp);
-	D3DXMatrixInverse(&matTmp, nullptr, &matTmp);
-	_vec3 vCameraPos = matTmp.m[3];
-	pEffect->SetVector("g_vCamera", &(_vec4)vCameraPos);
+	if (SetUp_ConstantTable(pEffect))
+		return E_FAIL;
 
 	pEffect->Begin(nullptr, 0);
 	pEffect->BeginPass(0);
@@ -111,8 +116,6 @@ HRESULT CTerrain::Render_GameObject()
 	pEffect->End();
 
 	Safe_Release(pEffect);
-
-//	Release_RenderState();
 
 	return NOERROR;
 }
@@ -135,9 +138,65 @@ HRESULT CTerrain::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
-	// For.Com_Shader
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Default", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+	// For.Com_Filter
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Filter", L"Com_Filter", (CComponent**)&m_pFilterCom)))
 		return E_FAIL;
+
+	// For.Com_Brush
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Brush", L"Com_Brush", (CComponent**)&m_pBrushCom)))
+		return E_FAIL;
+
+	// For.Com_Shader
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Terrain", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
+
+	return NOERROR;
+}
+
+HRESULT CTerrain::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
+{
+	if (nullptr == pEffect)
+		return E_FAIL;
+
+	pEffect->AddRef();
+
+	pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
+	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
+	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
+
+	CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
+	if (nullptr == pLight_Manager)
+		return E_FAIL;
+
+	pLight_Manager->AddRef();
+
+	const D3DLIGHT9* pLightInfo = pLight_Manager->Get_LightInfo(0);
+	if (nullptr == pLightInfo)
+		return E_FAIL;
+
+	pEffect->SetVector("g_vLightDir", &_vec4(pLightInfo->Direction, 0.f));
+	pEffect->SetVector("g_vLightDiffuse", (_vec4*)&pLightInfo->Diffuse);
+	pEffect->SetVector("g_vLightAmbient", (_vec4*)&pLightInfo->Ambient);
+	pEffect->SetVector("g_vLightSpecular", (_vec4*)&pLightInfo->Specular);
+
+	Safe_Release(pLight_Manager);
+
+	m_pTextureCom->SetUp_OnShader(pEffect, "g_SourTexture", 0);
+	m_pTextureCom->SetUp_OnShader(pEffect, "g_DestTexture", 1);
+	m_pBrushCom->SetUp_OnShader(pEffect, "g_BrushTexture", 0);
+
+	// m_pFilterCom->SetUp_OnShader(pEffect, "g_FilterTexture", 0);
+	pEffect->SetTexture("g_FilterTexture", m_pFilterTexture);
+
+	_matrix		matView = CGameObject::Get_Transform(D3DTS_VIEW);
+	D3DXMatrixInverse(&matView, nullptr, &matView);
+
+	pEffect->SetVector("g_vCamPosition", (_vec4*)&matView.m[3][0]);
+
+	pEffect->SetVector("g_vBrushPos", &_vec4(20.0f, 0.0f, 10.f, 1.f));
+	pEffect->SetFloat("g_fRange", 2.0f);
+
+	Safe_Release(pEffect);
 
 	return NOERROR;
 }
@@ -197,11 +256,14 @@ CGameObject * CTerrain::Clone(void* pArg)
 
 void CTerrain::Free()
 {
+	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pBufferCom);
-	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pFilterCom);
+	Safe_Release(m_pBrushCom);
+	Safe_Release(m_pFilterTexture);
 
 	CGameObject::Free();
 }

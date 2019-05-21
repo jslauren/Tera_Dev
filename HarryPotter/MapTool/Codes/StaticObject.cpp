@@ -1,35 +1,27 @@
 #include "stdafx.h"
-#include "..\Headers\Monster.h"
+#include "..\Headers\StaticObject.h"
 #include "Object_Manager.h"
 #include "Light_Manager.h"
 
-_USING(Client)
-
-CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphic_Device)
+CStaticObject::CStaticObject(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
-	, m_fFrame(0.f)
 {
 }
 
-CMonster::CMonster(const CMonster & rhs)
+CStaticObject::CStaticObject(const CStaticObject & rhs)
 	: CGameObject(rhs)
-	, m_fFrame(rhs.m_fFrame)
 {
 }
 
-// 원본객체에 필요한 데이터를 셋팅한다.
-HRESULT CMonster::Ready_GameObject_Prototype()
+HRESULT CStaticObject::Ready_GameObject_Prototype()
 {
-	// 파일입출력을 통해 객체의 정보를 셋팅한다.
 	if (FAILED(CGameObject::Ready_GameObject_Prototype()))
 		return E_FAIL;
 
 	return NOERROR;
 }
 
-// 실제 씬에서 사용할 객체가 호출하는 함수.
-// 원본객체 복제외에도 추가적인 셋팅이필요하면 여기서 셋팅해라.
-HRESULT CMonster::Ready_GameObject(void* pArg)
+HRESULT CStaticObject::Ready_GameObject(void * pArg)
 {
 	if (FAILED(Add_Component()))
 		return E_FAIL;
@@ -41,7 +33,7 @@ HRESULT CMonster::Ready_GameObject(void* pArg)
 	return NOERROR;
 }
 
-_int CMonster::Update_GameObject(const _float & fTimeDelta)
+_int CStaticObject::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
@@ -49,7 +41,7 @@ _int CMonster::Update_GameObject(const _float & fTimeDelta)
 	return _int();
 }
 
-_int CMonster::LateUpdate_GameObject(const _float & fTimeDelta)
+_int CStaticObject::LateUpdate_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pRendererCom)
 		return -1;
@@ -65,12 +57,11 @@ _int CMonster::LateUpdate_GameObject(const _float & fTimeDelta)
 	return _int();
 }
 
-HRESULT CMonster::Render_GameObject()
+HRESULT CStaticObject::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pTransformCom ||
-		nullptr == m_pMeshCom ||
-		nullptr == m_pTextureCom)
+		nullptr == m_pMeshCom)
 		return E_FAIL;
 
 	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
@@ -118,32 +109,28 @@ HRESULT CMonster::Render_GameObject()
 	return NOERROR;
 }
 
-HRESULT CMonster::Add_Component()
+HRESULT CStaticObject::Add_Component()
 {
 	// For.Com_Transform
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
 	// For.Com_Mesh
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Mesh_TombStone", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Static_Object", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
 		return E_FAIL;
 
 	// For.Com_Renderer
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
-	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Effect", L"Com_Texture", (CComponent**)&m_pTextureCom)))
+	// For.Com_Shader
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
-	// For.Com_Shader
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
-		return E_FAIL;
-	
 	return NOERROR;
 }
 
-HRESULT CMonster::SetUp_HeightOnTerrain()
+HRESULT CStaticObject::SetUp_HeightOnTerrain()
 {
 	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
 
@@ -151,7 +138,7 @@ HRESULT CMonster::SetUp_HeightOnTerrain()
 		return E_FAIL;
 	pObject_Manager->AddRef();
 
-	CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Buffer", 0);
+	CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STATIC, L"Layer_BackGround", L"Com_Buffer", 0);
 	if (nullptr == pBufferCom)
 		return E_FAIL;
 
@@ -164,32 +151,7 @@ HRESULT CMonster::SetUp_HeightOnTerrain()
 	return NOERROR;
 }
 
-HRESULT CMonster::SetUp_BillBoard()
-{
-	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
-
-	if (nullptr == pObject_Manager)
-		return E_FAIL;
-	pObject_Manager->AddRef();
-
-	CTransform* pCamTransformCom = (CTransform*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_Camera", L"Com_Transform", 0);
-	if (nullptr == pCamTransformCom)
-		return E_FAIL;
-
-	// 카메라의 월드행렬 == 뷰스페이스 변환행렬 역행렬
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_RIGHT
-		, pCamTransformCom->Get_StateInfo(CTransform::STATE_RIGHT));
-	//m_pTransformCom->Set_StateInfo(CTransform::STATE_UP
-	//	, pCamTransformCom->Get_StateInfo(CTransform::STATE_UP));
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_LOOK
-		, pCamTransformCom->Get_StateInfo(CTransform::STATE_LOOK));
-
-	Safe_Release(pObject_Manager);
-
-	return NOERROR;
-}
-
-HRESULT CMonster::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
+HRESULT CStaticObject::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 {
 	if (nullptr == pEffect)
 		return E_FAIL;
@@ -227,40 +189,34 @@ HRESULT CMonster::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	return NOERROR;
 }
 
-
-// 원본객체를 생성한다.
-CMonster * CMonster::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CStaticObject * CStaticObject::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-	CMonster* pInstance = new CMonster(pGraphic_Device);
+	CStaticObject* pInstance = new CStaticObject(pGraphic_Device);
 
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
-		_MSGBOX("CMonster Created Failed");
+		_MSGBOX("CStaticObject Created Failed");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-// this? : 
-// 1.멤버함수안에 존재. 
-// 2.멤버함수는 객체로부터 호출(객체.멤버함수(), 객체주소->멤버함수())
-// 3.멤버함수안에 존재하는 this는 멤버함수의 호출을 가능하게한 객체의 주소를 의미한다.
-CGameObject * CMonster::Clone(void* pArg)
+CGameObject * CStaticObject::Clone(void * pArg)
 {
-	CMonster* pInstance = new CMonster(*this);
+	CStaticObject* pInstance = new CStaticObject(*this);
 
 	if (FAILED(pInstance->Ready_GameObject(pArg)))
 	{
-		_MSGBOX("CMonster Created Failed");
+		_MSGBOX("CStaticObject Created Failed");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CMonster::Free()
+void CStaticObject::Free()
 {
-	Safe_Release(m_pTextureCom);
+	//Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pMeshCom);

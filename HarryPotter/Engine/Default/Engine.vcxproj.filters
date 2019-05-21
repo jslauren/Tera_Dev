@@ -80,7 +80,7 @@
       <Filter>01. Utility\02. Component\Component\Buffer\Rectangle_Viewport_Texture</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Camera.h">
-      <Filter>01. Utility\06. Camera</Filter>
+      <Filter>01. Utility\03. Camera</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Input_Device.h">
       <Filter>00. System\00. Device\Input</Filter>
@@ -89,13 +89,28 @@
       <Filter>01. Utility\02. Component\Component\Buffer\Buffer_CubeTex</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\EventManager.h">
-      <Filter>01. Utility\04. EventManager</Filter>
+      <Filter>01. Utility\09. EventManager</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\KeyManager.h">
-      <Filter>01. Utility\03. KeyManager</Filter>
+      <Filter>01. Utility\10. KeyManager</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Shader.h">
       <Filter>01. Utility\02. Component\Component\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Light.h">
+      <Filter>01. Utility\04. Light\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Light_Manager.h">
+      <Filter>01. Utility\04. Light\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Mesh_Static.h">
+      <Filter>01. Utility\02. Component\Component\Mesh\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Mesh_Dynamic.h">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\HierarchyLoader.h">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Loader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -180,18 +195,6 @@
     <Filter Include="01. Utility\02. Component\Component\Buffer\Buffer_CubeTex">
       <UniqueIdentifier>{eb2fe68f-9556-4eba-8b68-2b962ac94f8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\04. EventManager">
-      <UniqueIdentifier>{f478ee57-1248-4737-b63c-4428cb9e3646}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\03. KeyManager">
-      <UniqueIdentifier>{d1b3267a-a41d-4bd8-8364-bb31f472bbac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\05. Effect">
-      <UniqueIdentifier>{fc6ee0cd-75ca-46d8-9958-339510adffb0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\06. Camera">
-      <UniqueIdentifier>{d0c684d7-6ab0-4d72-9e5b-0bd934b1805f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Utility\01. GameObject\Object">
       <UniqueIdentifier>{ec822105-dee0-492c-a4f2-e11f330cdeb7}</UniqueIdentifier>
     </Filter>
@@ -200,6 +203,36 @@
     </Filter>
     <Filter Include="01. Utility\02. Component\Component\Shader">
       <UniqueIdentifier>{dfcecbd4-bcd8-446b-a3fc-bee6eb1b211b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\10. KeyManager">
+      <UniqueIdentifier>{d1b3267a-a41d-4bd8-8364-bb31f472bbac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\03. Camera">
+      <UniqueIdentifier>{d0c684d7-6ab0-4d72-9e5b-0bd934b1805f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\09. EventManager">
+      <UniqueIdentifier>{f478ee57-1248-4737-b63c-4428cb9e3646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\04. Light">
+      <UniqueIdentifier>{5a5d65b7-b11b-41ab-8db2-ae44f81425e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\04. Light\Light">
+      <UniqueIdentifier>{2ffd615e-b211-4e92-aafa-53e58e56c2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\04. Light\Manager">
+      <UniqueIdentifier>{ccf6eeec-d17e-4625-83b8-2f0c23f766ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh">
+      <UniqueIdentifier>{715c7d8d-2c69-4bf2-bd60-19b2c8fa605f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic">
+      <UniqueIdentifier>{a72b03a1-ad3b-4056-89b2-42f223ce63a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh\Static">
+      <UniqueIdentifier>{cba29199-9bc1-4829-ad97-026fabbb6d04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic\Loader">
+      <UniqueIdentifier>{23ae61ce-4a43-4ddd-ac3d-264dd45a41ac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -264,7 +297,7 @@
       <Filter>01. Utility\02. Component\Component\Buffer\Rectangle_Viewport_Texture</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Camera.cpp">
-      <Filter>01. Utility\06. Camera</Filter>
+      <Filter>01. Utility\03. Camera</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Input_Device.cpp">
       <Filter>00. System\00. Device\Input</Filter>
@@ -273,13 +306,28 @@
       <Filter>01. Utility\02. Component\Component\Buffer\Buffer_CubeTex</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\EventManager.cpp">
-      <Filter>01. Utility\04. EventManager</Filter>
+      <Filter>01. Utility\09. EventManager</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\KeyManager.cpp">
-      <Filter>01. Utility\03. KeyManager</Filter>
+      <Filter>01. Utility\10. KeyManager</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Shader.cpp">
       <Filter>01. Utility\02. Component\Component\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Light.cpp">
+      <Filter>01. Utility\04. Light\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Light_Manager.cpp">
+      <Filter>01. Utility\04. Light\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Mesh_Static.cpp">
+      <Filter>01. Utility\02. Component\Component\Mesh\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Mesh_Dynamic.cpp">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\HierarchyLoader.cpp">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Loader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

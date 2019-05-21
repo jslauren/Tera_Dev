@@ -41,7 +41,8 @@ HRESULT CBuffer_Terrain_Tool::Ready_VIBuffer()
 
 			pVertices[iIndex].vPosition = _vec3(j * m_fInterval, 0.0f, i * m_fInterval);
 			m_pPositions[iIndex] = pVertices[iIndex].vPosition;
-			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f) * m_fDetail, i / (m_iNumVerticesZ - 1.f) * m_fDetail);
+			// 쉐이더로 Detail 값을 조절할꺼라 굳이 m_fDetail이 필요 없다.
+			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f)/* * m_fDetail*/, i / (m_iNumVerticesZ - 1.f)/* * m_fDetail*/);
 		}
 	}
 
@@ -140,7 +141,7 @@ HRESULT CBuffer_Terrain_Tool::Ready_VIBuffer(const _tchar * pHeighitMapPath)
 			pVertices[iIndex].vPosition = _vec3(j * m_fInterval, (pPixel[iIndex] & 0x000000ff) / vHeight, i * m_fInterval);
 			pVertices[iIndex].vNormal = _vec3(0.f, 0.f, 0.f);
 			m_pPositions[iIndex] = pVertices[iIndex].vPosition;
-			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f) * m_fDetail, i / (m_iNumVerticesZ - 1.f) * m_fDetail);
+			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f)/* * m_fDetail*/, i / (m_iNumVerticesZ - 1.f)/* * m_fDetail*/);
 		}
 	}
 
@@ -272,12 +273,16 @@ _float CBuffer_Terrain_Tool::Compute_HeightOnBuffer(const CTransform * pTransfor
 
 }
 
-HRESULT CBuffer_Terrain_Tool::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval, _float _fDetail)
+HRESULT CBuffer_Terrain_Tool::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval/*, _float _fDetail*/)
 {
+	// 왜지? 하면 터짐...
 	Safe_Delete_Array(m_pPositions);
 	Safe_Delete_Array(m_pIndices);
+
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);
+
+	CVIBuffer::Free();
 
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;
@@ -311,7 +316,7 @@ HRESULT CBuffer_Terrain_Tool::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _f
 
 			pVertices[iIndex].vPosition = _vec3(j * m_fInterval, 0.0f, i * m_fInterval);
 			m_pPositions[iIndex] = pVertices[iIndex].vPosition;
-			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f) * _fDetail, i / (m_iNumVerticesZ - 1.f) * _fDetail);
+			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f)/* * _fDetail*/, i / (m_iNumVerticesZ - 1.f)/* * _fDetail*/);
 		}
 	}
 

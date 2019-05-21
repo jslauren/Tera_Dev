@@ -1,24 +1,20 @@
 #pragma once
-#include "Defines.h"
+#include "Tool_Defines.h"
 #include "GameObject.h"
 
 _BEGIN(Engine)
 class CTransform;
-class CMesh_Dynamic; // 그리기를 위한 리소스로 정점 버퍼를 추가한다.
-class CRenderer; //백로고를 렌더그룹에 추가하기 위해.and Render함수를 호출할 수 있도록 
-class CTexture;
+class CMesh_Static; 
+class CRenderer;
+//class CTexture;
 _END
 
-_BEGIN(Client)
-
-class CPlayer final : public CGameObject
+class CStaticObject final : public CGameObject
 {
 private:
-	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CPlayer(const CPlayer& rhs);
-	virtual ~CPlayer() = default;
-public:
-
+	explicit CStaticObject(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CStaticObject(const CStaticObject& rhs);
+	virtual ~CStaticObject() = default;
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);
@@ -27,22 +23,19 @@ public:
 	virtual HRESULT Render_GameObject();
 private:
 	CTransform*		m_pTransformCom = nullptr;
-	CMesh_Dynamic*	m_pMeshCom = nullptr;
+	CMesh_Static*	m_pMeshCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
-	CTexture*		m_pTextureCom = nullptr;
+//	CTexture*		m_pTextureCom = nullptr;
 	CShader*		m_pShaderCom = nullptr;
-private:
-	_bool			m_isMove = false;
-	_vec3			m_vTargetPos;
 private:
 	HRESULT Add_Component();
 	HRESULT SetUp_HeightOnTerrain();
 	HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 
 public:
-	static CPlayer*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CStaticObject*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);
 	virtual void			Free();
+
 };
 
-_END

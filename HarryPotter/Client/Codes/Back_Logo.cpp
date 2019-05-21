@@ -57,13 +57,36 @@ _int CBack_Logo::LateUpdate_GameObject(const _float & fTimeDelta)
 HRESULT CBack_Logo::Render_GameObject()
 {
 	if (nullptr == m_pBufferCom ||
-		nullptr == m_pTextureCom)
+		nullptr == m_pTextureCom ||
+		nullptr == m_pShaderCom)
 		return E_FAIL;
 
-	m_pTextureCom->SetUp_OnGraphicDev(0);
+	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
+	if (nullptr == pEffect)
+		return E_FAIL;
+
+	pEffect->AddRef();
+
+	_matrix			matTmp;
+	D3DXMatrixIdentity(&matTmp);
+
+	m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture");
+
+	pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
+	pEffect->SetMatrix("g_matView", &matTmp);
+	pEffect->SetMatrix("g_matProj", &matTmp);
+
+	pEffect->Begin(nullptr, 0);
+	pEffect->BeginPass(0);
 
 	// 행렬 = 행렬 * 행렬
-	m_pBufferCom->Render_Buffer(m_pTransformCom);
+	m_pBufferCom->Render_Buffer();
+
+	pEffect->EndPass();
+
+	pEffect->End();
+
+	Safe_Release(pEffect);
 
 	return NOERROR;
 }
@@ -86,6 +109,9 @@ HRESULT CBack_Logo::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Default", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
+	// For.Com_Shader
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Default", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -126,6 +152,7 @@ void CBack_Logo::Free()
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pBufferCom);
+	Safe_Release(m_pShaderCom);
 
 	CGameObject::Free();
 }

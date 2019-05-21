@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Monster.h"
 #include "SkyBox.h"
+#include "Light_Manager.h"
 
 _USING(Client)
 
@@ -68,6 +69,12 @@ HRESULT CScene_Stage::Render_Scene()
 
 HRESULT CScene_Stage::Ready_LightInfo()
 {
+	CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
+	if (nullptr == pLight_Manager)
+		return E_FAIL;
+
+	pLight_Manager->AddRef();
+
 	D3DLIGHT9				LightInfo;
 	ZeroMemory(&LightInfo, sizeof(D3DLIGHT9));
 
@@ -77,11 +84,14 @@ HRESULT CScene_Stage::Ready_LightInfo()
 	LightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	LightInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 
-	//((L.Specular * M.Specular) * ½ºÆåÅ§·¯ÀÇ ¼¼±â) + (L.Diffuse * M.Diffuse) * ¸í¾Ï + (L.Ambient * M.Ambient)
+	if (FAILED(pLight_Manager->Add_Light(m_pGraphic_Device, &LightInfo)))
+		return E_FAIL;
 
-	m_pGraphic_Device->SetLight(0, &LightInfo);
+	Safe_Release(pLight_Manager);
 
-	m_pGraphic_Device->LightEnable(0, TRUE);
+	////((L.Specular * M.Specular) * ½ºÆåÅ§·¯ÀÇ ¼¼±â) + (L.Diffuse * M.Diffuse) * ¸í¾Ï + (L.Ambient * M.Ambient)
+	//m_pGraphic_Device->SetLight(0, &LightInfo);
+	//m_pGraphic_Device->LightEnable(0, TRUE);
 
 	return NOERROR;
 }
@@ -91,12 +101,32 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
+	// For.Component_Shader_Terrain
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Shader_Terrain", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Terrain.fx"))))
+		return E_FAIL;
+
+	// For.Component_Shader_Sky 
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Shader_Sky", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Sky.fx"))))
+		return E_FAIL;
+
+	// For.Component_Shader_Mesh
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Shader_Mesh", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Mesh.fx"))))
+		return E_FAIL;
+
 	// For.Component_Texture_SkyBox
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
 		return E_FAIL;
 
 	// For.Component_Texture_Terrain
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass_%d.tga", 2))))
+		return E_FAIL;
+
+	// For.Component_Texture_Filter
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Filter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Filter.bmp", 1))))
+		return E_FAIL;
+
+	// For.Component_Texture_Brush
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Brush", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Brush.png", 1))))
 		return E_FAIL;
 
 	// For.Component_Texture_Monster
@@ -113,6 +143,18 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 
 	// For.Component_Buffer_CubeBox
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_CubeBox", CBuffer_CubeTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.Component_Mesh_TombStone
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_TombStone", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/TombStone/", L"TombStone.x"))))
+		return E_FAIL;
+
+	// For.Component_Mesh_Tiger
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Tiger", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Tiger/", L"Tiger.x"))))
+		return E_FAIL;
+
+	// For.Component_Mesh_Player
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Player", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Sylva/", L"Sylva.x"))))
 		return E_FAIL;
 
 	return NOERROR;

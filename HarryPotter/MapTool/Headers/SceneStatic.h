@@ -14,13 +14,18 @@ public:
 	virtual _int	LateUpdate_Scene(const _float& fTimeDelta = 1.f) override;
 	virtual HRESULT Render_Scene() override;
 
+public:
+	HRESULT	Add_Static_Object(const _tchar* pLayerTag);
+	HRESULT	Add_Static_Object_Component_Prototype(const _tchar * pFilePath, const _tchar * pFileName);
+
 private:
+	HRESULT Ready_LightInfo();
 	HRESULT	Ready_Component_Prototype();
 	HRESULT Ready_GameObject_Prototype();
 	HRESULT Ready_GameObject();
 
 private:
-	CEventManagerTool*	m_pEventManager = nullptr;
+	CEventManagerTool*		m_pEventManager = nullptr;
 
 public:
 	static CSceneStatic* Create(LPDIRECT3DDEVICE9 _pGraphicDevice);

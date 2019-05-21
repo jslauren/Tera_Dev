@@ -6,6 +6,7 @@
 #include "Graphic_Device.h"
 #include "Input_Device.h"
 #include "Component_Manager.h"
+#include "Light_Manager.h"
 
 _IMPLEMENT_SINGLETON(CManagement)
 
@@ -109,6 +110,9 @@ HRESULT CManagement::Release_Engine()
 
 	if (0 != CTimer_Manager::GetInstance()->DestroyInstance())
 		_MSGBOX("CTimer_Manager Release Failed");
+
+	if (0 != CLight_Manager::GetInstance()->DestroyInstance())
+		_MSGBOX("CLight_Manager Release Failed");
 
 	if (0 != CGraphic_Device::GetInstance()->DestroyInstance())
 		_MSGBOX("CGraphic_Device Release Failed");

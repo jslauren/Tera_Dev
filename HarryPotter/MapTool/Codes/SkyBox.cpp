@@ -49,8 +49,8 @@ _int CSkyBox::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	if (nullptr == pObject_Manager)
 		return -1;
-	pObject_Manager->AddRef();
 
+	pObject_Manager->AddRef();
 
 	CTransform*	pCameraTransform = (CTransform*)pObject_Manager->Get_Component(SCENE_STATIC, L"Layer_Camera", L"Com_Transform");
 	if (nullptr == pCameraTransform)
@@ -69,18 +69,32 @@ _int CSkyBox::LateUpdate_GameObject(const _float & fTimeDelta)
 
 HRESULT CSkyBox::Render_GameObject()
 {
-	if (nullptr == m_pBufferCom ||
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pTransformCom ||
+		nullptr == m_pBufferCom ||
 		nullptr == m_pTextureCom)
 		return E_FAIL;
 
-	m_pTextureCom->SetUp_OnGraphicDev(2);
+	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
 
-	SetUp_RenderState();
+	if (nullptr == pEffect)
+		return E_FAIL;
+
+	pEffect->AddRef();
+
+	if (SetUp_ConstantTable(pEffect))
+		return E_FAIL;
+
+	pEffect->Begin(nullptr, 0);
+	pEffect->BeginPass(0);
 
 	// 행렬 = 행렬 * 행렬
-	m_pBufferCom->Render_Buffer(m_pTransformCom);
-	
-	Release_RenderState();
+	m_pBufferCom->Render_Buffer();
+
+	pEffect->EndPass();
+	pEffect->End();
+
+	Safe_Release(pEffect);
 
 	return NOERROR;
 }
@@ -103,39 +117,61 @@ HRESULT CSkyBox::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_SkyBox", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
+	// For.Com_Shader
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Sky", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
-HRESULT CSkyBox::SetUp_RenderState()
+HRESULT CSkyBox::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 {
-	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+	if (nullptr == pEffect)
+		return E_FAIL;
 
-	// 큐브버퍼의 각면은 바깥방향을 바라보고 있게끔 작업. 
-	// 카메라는 큐브안에 존재. 큐브 각면의 뒷면을 바라보는 효과.
-	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CW);
-	CGameObject::Set_RenderState(D3DRS_LIGHTING, FALSE);
+	pEffect->AddRef();
 
-	// 스카이박스의 픽셀 깊이를 깊이버퍼에 저장하지 않는다.
-	// 스카이박스 이후에 그려지는 픽세륻르은 스카이박스 픽셀깊이와 비교할 수 없다. 때문에 무조건 이후그려지는 애들이 덮고 그린다.
-	CGameObject::Set_RenderState(D3DRS_ZWRITEENABLE, FALSE);
+	pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
+	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
+	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
 
-	return NOERROR;
-}
+	m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture", 2);
 
-HRESULT CSkyBox::Release_RenderState()
-{
-	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_NONE);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_NONE);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
-
-	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	CGameObject::Set_RenderState(D3DRS_ZWRITEENABLE, TRUE);
-	//CGameObject::Set_RenderState(D3DRS_LIGHTING, TRUE);
+	Safe_Release(pEffect);
 
 	return NOERROR;
 }
+
+//HRESULT CSkyBox::SetUp_RenderState()
+//{
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+//
+//	// 큐브버퍼의 각면은 바깥방향을 바라보고 있게끔 작업. 
+//	// 카메라는 큐브안에 존재. 큐브 각면의 뒷면을 바라보는 효과.
+//	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CW);
+//	CGameObject::Set_RenderState(D3DRS_LIGHTING, FALSE);
+//
+//	// 스카이박스의 픽셀 깊이를 깊이버퍼에 저장하지 않는다.
+//	// 스카이박스 이후에 그려지는 픽세륻르은 스카이박스 픽셀깊이와 비교할 수 없다. 때문에 무조건 이후그려지는 애들이 덮고 그린다.
+//	CGameObject::Set_RenderState(D3DRS_ZWRITEENABLE, FALSE);
+//
+//	return NOERROR;
+//}
+//
+//HRESULT CSkyBox::Release_RenderState()
+//{
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_NONE);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_NONE);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
+//
+//	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+//	CGameObject::Set_RenderState(D3DRS_ZWRITEENABLE, TRUE);
+//	//CGameObject::Set_RenderState(D3DRS_LIGHTING, TRUE);
+//
+//	return NOERROR;
+//}
 
 // 원본객체를 생성한다.
 CSkyBox * CSkyBox::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -173,6 +209,7 @@ void CSkyBox::Free()
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pBufferCom);
+	Safe_Release(m_pShaderCom);
 
 	CGameObject::Free();
 }

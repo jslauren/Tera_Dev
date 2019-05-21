@@ -4,7 +4,8 @@
 #include "Texture.h"
 #include "Renderer.h"
 #include "Transform.h"
-
+#include "Mesh_Static.h"
+#include "Mesh_Dynamic.h"
 #include "Buffer_RcCol.h"
 #include "Buffer_RcTex.h"
 #include "Buffer_TriCol.h"

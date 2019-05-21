@@ -3,9 +3,10 @@
 #include "Tool_Defines.h"
 #include "afxwin.h"
 #include "EventManagerTool.h"
+#include "Scene.h"
 
 // CTerrainTab 대화 상자입니다.
-class CSceneTerrain;
+
 class CTerrainTab : public CDialogEx
 {
 	DECLARE_DYNAMIC(CTerrainTab)
@@ -25,7 +26,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	CSceneTerrain*	m_pScene = nullptr;
+	CScene*	m_pScene = nullptr;
 
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();

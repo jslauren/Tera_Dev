@@ -2,6 +2,7 @@
 #include "..\Headers\Terrain.h"
 #include "EventManager.h"
 #include "Layer.h"
+#include "Light_Manager.h"
 
 CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
@@ -32,6 +33,14 @@ HRESULT CTerrain::Ready_GameObject(void* pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
+	ZeroMemory(&m_MtrlInfo, sizeof(D3DMATERIAL9));
+
+	m_MtrlInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	m_MtrlInfo.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
+	m_MtrlInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+
+	CGameObject::Set_Material(m_MtrlInfo);
+
 	return NOERROR;
 }
 
@@ -56,18 +65,42 @@ _int CTerrain::LateUpdate_GameObject(const _float & fTimeDelta)
 
 HRESULT CTerrain::Render_GameObject()
 {
-	if (nullptr == m_pTextureCom)
+	if (nullptr == m_pShaderCom ||
+		nullptr == m_pTransformCom ||
+		nullptr == m_pBufferCom ||
+		nullptr == m_pTextureCom)
 		return E_FAIL;
 
-	m_pTextureCom->SetUp_OnGraphicDev(0);
+	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
 
-	SetUp_RenderState();
+	if (nullptr == pEffect)
+		return E_FAIL;
 
-	m_pBufferCom->Render_Buffer(m_pTransformCom);
+	pEffect->AddRef();
 
-	Release_RenderState();
+	if (SetUp_ConstantTable(pEffect))
+		return E_FAIL;
+
+	pEffect->Begin(nullptr, 0);
+	pEffect->BeginPass(m_iPassNum);
+
+	// 행렬 = 행렬 * 행렬
+	m_pBufferCom->Render_Buffer();
+
+	pEffect->EndPass();
+	pEffect->End();
+
+	Safe_Release(pEffect);
 
 	return NOERROR;
+}
+
+void CTerrain::SetFillMode(_bool bIsWireFrame)
+{
+	if (true == bIsWireFrame)
+		m_iPassNum = 1;
+	else
+		m_iPassNum = 0;
 }
 
 HRESULT CTerrain::Add_Component()
@@ -88,43 +121,107 @@ HRESULT CTerrain::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
+	// For.Com_Shader
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Terrain", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
-HRESULT CTerrain::SetUp_RenderState()
+HRESULT CTerrain::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 {
-	if(CEventManagerTool::GetInstance()->m_bIsWireFrame == true)
-		CGameObject::Set_RenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	if (nullptr == pEffect)
+		return E_FAIL;
 
-	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-	CGameObject::Set_RenderState(D3DRS_LIGHTING, FALSE);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+	pEffect->AddRef();
+
+	pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
+	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
+	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
+	
+	pEffect->SetVector("g_fDetail", &m_vDetail);
+
+	CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
+	if (nullptr == pLight_Manager)
+		return E_FAIL;
+
+	pLight_Manager->AddRef();
+
+	const D3DLIGHT9* pLightInfo = pLight_Manager->Get_LightInfo(0);
+	if (nullptr == pLightInfo)
+		return E_FAIL;
+
+	pEffect->SetVector("g_vLightDir", &_vec4(pLightInfo->Direction, 0.f));
+	pEffect->SetVector("g_vLightDiffuse", (_vec4*)&pLightInfo->Diffuse);
+	pEffect->SetVector("g_vLightAmbient", (_vec4*)&pLightInfo->Ambient);
+	pEffect->SetVector("g_vLightSpecular", (_vec4*)&pLightInfo->Specular);
+
+	Safe_Release(pLight_Manager);
+
+	m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture", 0);
+
+	_matrix		matView = CGameObject::Get_Transform(D3DTS_VIEW);
+	D3DXMatrixInverse(&matView, nullptr, &matView);
+
+	pEffect->SetVector("g_vCamPosition", (_vec4*)&matView.m[3][0]);
+
+	Safe_Release(pEffect);
 
 	return NOERROR;
 }
 
-HRESULT CTerrain::Release_RenderState()
-{
-	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_NONE);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_NONE);
-	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
-
-	CGameObject::Set_RenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	return NOERROR;
-}
+//HRESULT CTerrain::SetUp_RenderState()
+//{
+//	if(CEventManagerTool::GetInstance()->m_bIsWireFrame == true)
+//		CGameObject::Set_RenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+//
+//	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+//	CGameObject::Set_RenderState(D3DRS_LIGHTING, FALSE);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+//
+//	return NOERROR;
+//}
+//
+//HRESULT CTerrain::Release_RenderState()
+//{
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_NONE);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_NONE);
+//	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
+//
+//	CGameObject::Set_RenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+//	return NOERROR;
+//}
 
 HRESULT CTerrain::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval, _float _fDetail)
 {
 	if (nullptr == m_pBufferCom)
 		return E_FAIL;
 	
-	if (FAILED(m_pBufferCom->Reset_Terrain(_iNumVtxX, _iNumVtxZ, _fInterval, _fDetail)))
+	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
+
+	if (nullptr == pEffect)
+		return E_FAIL;
+
+	pEffect->AddRef();
+
+	m_vDetail.x = 1;
+	m_vDetail.y = 1;
+	m_vDetail.z = 1;
+	m_vDetail.w = 1;
+
+	m_vDetail *= _fDetail;
+
+	pEffect->SetVector("g_fDetail", &m_vDetail);
+
+	Safe_Release(pEffect);
+
+	if (FAILED(m_pBufferCom->Reset_Terrain(_iNumVtxX, _iNumVtxZ, _fInterval/*, _fDetail*/)))
 		return E_FAIL;
 
 	return NOERROR;
-
+	
 }
 
 HRESULT CTerrain::Reset_Texture(_tchar* pFilePath)
@@ -135,24 +232,6 @@ HRESULT CTerrain::Reset_Texture(_tchar* pFilePath)
 	m_pTextureCom->Reset_Texture(CTexture_Tool::TYPE_GENERAL, pFilePath, 1);
 	
 	return NOERROR;
-}
-
-void CTerrain::DrawAxis()
-{
-	//D3DXVECTOR3 p[3];
-	//p[0].x = 0; p[0].y = 0; p[0].z = 0.0f;
-	//p[1].x = 0.1; p[1].y = 1; p[1].z = 0.0f;
-	//p[2].x = 2; p[2].y = 0; p[2].z = 0.0f;
-
-	//ID3DXLine *Line;
-	//D3DXCreateLine(m_pGraphic_Device, &Line);
-	//Line->SetWidth(2.f);
-	//Line->SetAntialias(true);
-	//Line->Begin();
-	//Line->DrawTransform(p, 3, m_pTransformCom->Get_WorldMatrixPointer(), D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
-	////Line->Draw( p, 3, D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f) );    // 이런식으로도 그리기 가능
-	//Line->End();
-	//Line->Release();
 }
 
 // 원본객체를 생성한다.
@@ -183,6 +262,7 @@ CGameObject * CTerrain::Clone(void* pArg)
 
 void CTerrain::Free()
 {
+	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
