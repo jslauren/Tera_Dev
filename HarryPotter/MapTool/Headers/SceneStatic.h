@@ -16,7 +16,7 @@ public:
 
 public:
 	HRESULT	Add_Static_Object(const _tchar* pLayerTag);
-	HRESULT	Add_Static_Object_Component_Prototype(const _tchar * pFilePath, const _tchar * pFileName);
+	HRESULT	Add_Static_Object_Component_Prototype(const _tchar * pComponentPrototypeTag, const _tchar * pFilePath, const _tchar * pFileName);
 
 private:
 	HRESULT Ready_LightInfo();

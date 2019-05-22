@@ -1,5 +1,6 @@
 #include "..\Headers\Mesh_Dynamic.h"
 #include "HierarchyLoader.h"
+#include "AnimationCtrl.h"
 
 CMesh_Dynamic::CMesh_Dynamic(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CComponent(pGraphic_Device)
@@ -11,10 +12,11 @@ CMesh_Dynamic::CMesh_Dynamic(const CMesh_Dynamic & rhs)
 	, m_pLoader(rhs.m_pLoader)
 	, m_pRootFrame(rhs.m_pRootFrame)
 	, m_MeshContainers(rhs.m_MeshContainers)
+	, m_matPivot(rhs.m_matPivot)
+	, m_pAniCtrl(rhs.m_pAniCtrl)
 {
-
+	Safe_AddRef(m_pAniCtrl);
 	Safe_AddRef(m_pLoader);
-
 }
 
 HRESULT CMesh_Dynamic::Ready_Mesh_Dynamic(const _tchar * pFilePath, const _tchar * pFileName)
@@ -28,12 +30,20 @@ HRESULT CMesh_Dynamic::Ready_Mesh_Dynamic(const _tchar * pFilePath, const _tchar
 	if (nullptr == m_pLoader)
 		return E_FAIL;
 
-	if (FAILED(D3DXLoadMeshHierarchyFromX(szFullPath, 0, m_pGraphic_Device, m_pLoader, nullptr, &m_pRootFrame, nullptr)))
+	LPD3DXANIMATIONCONTROLLER			pAniCtrl = nullptr;
+
+	if (FAILED(D3DXLoadMeshHierarchyFromX(szFullPath, D3DXMESH_MANAGED, m_pGraphic_Device, m_pLoader, nullptr, &m_pRootFrame, &pAniCtrl)))
 		return E_FAIL;
 
-	_matrix		matRoot;
+	m_pAniCtrl = CAnimationCtrl::Create(pAniCtrl);
+	if (nullptr == m_pAniCtrl)
+		return E_FAIL;
 
-	if (FAILED(Update_CombinedTransformationMatrix(m_pRootFrame, D3DXMatrixIdentity(&matRoot))))
+	Safe_Release(pAniCtrl);
+	
+	D3DXMatrixIdentity(&m_matPivot);
+
+	if (FAILED(Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot)))
 		return E_FAIL;
 
 	if (FAILED(SetUp_CombinedMatrixPointer(m_pRootFrame)))
@@ -79,6 +89,38 @@ HRESULT CMesh_Dynamic::SetTexture_OnShader(LPD3DXEFFECT pEffect, _uint iMeshCont
 	return NOERROR;
 }
 
+HRESULT CMesh_Dynamic::SetUp_AnimationSet(_uint iIndex)
+{
+	if (nullptr == m_pAniCtrl)
+		return E_FAIL;
+
+	m_pAniCtrl->SetUp_AnimationSet(iIndex);
+
+	return NOERROR;
+}
+
+HRESULT CMesh_Dynamic::SetUp_AnimationSet(const char * pName)
+{
+	if (nullptr == m_pAniCtrl)
+		return E_FAIL;
+
+	m_pAniCtrl->SetUp_AnimationSet(pName);
+
+	return NOERROR;
+}
+
+HRESULT CMesh_Dynamic::Play_Animation(const _float & fTimeDelta)
+{
+	if (nullptr == m_pAniCtrl)
+		return E_FAIL;
+
+	m_pAniCtrl->Play_Animation(fTimeDelta);
+
+	Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot);
+
+	return NOERROR;
+}
+
 
 HRESULT CMesh_Dynamic::Update_CombinedTransformationMatrix(D3DXFRAME * pFrame, const D3DXMATRIX* pParentMatrix)
 {
@@ -111,7 +153,7 @@ HRESULT CMesh_Dynamic::SetUp_CombinedMatrixPointer(D3DXFRAME* pFrame)
 		{
 			D3DXFRAME_DERIVED* pFindFrame = (D3DXFRAME_DERIVED*)D3DXFrameFind(m_pRootFrame, pMeshContainer->pSkinInfo->GetBoneName(i));
 
-			pMeshContainer->ppCombinedTransformationMatrices[i] = &pFindFrame->CombinedTransformationMatrix;
+			pMeshContainer->ppCombinedTransformationMatrices[i] = &(pFindFrame->CombinedTransformationMatrix);
 		}
 	}
 
@@ -143,7 +185,15 @@ CComponent * CMesh_Dynamic::Clone()
 
 void CMesh_Dynamic::Free()
 {
+	if (false == m_isClone)
+	{
+		m_pLoader->DestroyFrame(m_pRootFrame);
+	}
+
 	Safe_Release(m_pLoader);
+	Safe_Release(m_pAniCtrl);
+
+	m_MeshContainers.clear();
 
 	CComponent::Free();
 }

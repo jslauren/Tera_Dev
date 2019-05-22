@@ -21,6 +21,12 @@ public:
 	virtual _int	Update_GameObject(const _float& fTimeDelta);
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
+public:	// Setter
+	void			SetState(_vec3 vPos, _vec3 vScale);
+public:	// Getter
+	_vec3			GetPosition(void) { return m_vPosition; }
+public:
+	HRESULT			Add_Component_Tool(const _tchar* pComponentPrototypeTag);
 private:
 	CTransform*		m_pTransformCom = nullptr;
 	CMesh_Static*	m_pMeshCom = nullptr;
@@ -28,10 +34,11 @@ private:
 //	CTexture*		m_pTextureCom = nullptr;
 	CShader*		m_pShaderCom = nullptr;
 private:
-	HRESULT Add_Component();
-	HRESULT SetUp_HeightOnTerrain();
-	HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
-
+	HRESULT			Add_Component();
+	HRESULT			SetUp_HeightOnTerrain();
+	HRESULT			SetUp_ConstantTable(LPD3DXEFFECT pEffect);
+private:
+	_vec3			m_vPosition;
 public:
 	static CStaticObject*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

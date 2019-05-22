@@ -44,10 +44,22 @@ public:
 	afx_msg void OnBnClickedSelected();
 
 	CTreeCtrl Tree_Mesh_Object;
+	CTreeCtrl Tree_Mesh_StaticObj;
 
 private:
-	void InitTreeCtrl_Object();
+	HTREEITEM SelectedItem = nullptr;
+	CString	  strLayerTag;
+	CString	  strComponentPrototypeTag;
+	CString	  strObjectName;
+	CString	  strXfileName;
+	TCHAR	  szFullPathForAdd[MAX_PATH] = L"";
+private:
+	void	  InitTreeCtrl_Object();
+	HRESULT   Add_StaticObject();
 
 public:
 	afx_msg void OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnTree_Mesh_StaticObj(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMDblclkTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult);
+
 };

@@ -16,9 +16,9 @@ public:
 private:
 	void			ComputeNormal(_vec3* pVtx0, _vec3* pVtx1, _vec3* pVtx2, _vec3* pOut);
 private:
-	_uint			m_iNumVerticesX = 0;
-	_uint			m_iNumVerticesZ = 0;
-	_float			m_fInterval = 0.f;
+	_uint			m_iNumVerticesX = 10;
+	_uint			m_iNumVerticesZ = 10;
+	_float			m_fInterval = 1.f;
 	_float			m_fDetail = 1.f;
 public:
 	static CBuffer_Terrain_Tool* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

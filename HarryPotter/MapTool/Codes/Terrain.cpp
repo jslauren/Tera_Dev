@@ -49,6 +49,14 @@ _int CTerrain::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
+	if (GetKeyState(VK_LBUTTON) & 0x8000)
+	{
+		_vec3	vOut;
+
+		m_pBufferCom->Picking(g_hWnd, m_pTransformCom, &vOut);
+
+	}
+
 	return _int();
 }
 

@@ -2,6 +2,7 @@
 #include "..\Headers\StaticObject.h"
 #include "Object_Manager.h"
 #include "Light_Manager.h"
+#include "Buffer_Terrain_Tool.h"
 
 CStaticObject::CStaticObject(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
@@ -26,9 +27,7 @@ HRESULT CStaticObject::Ready_GameObject(void * pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(1.f, 1.f, 1.f);
-
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(rand() % 10 + 5, 0.f, rand() % 10 + 5));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.f, 0.f, 0.f));
 
 	return NOERROR;
 }
@@ -109,14 +108,29 @@ HRESULT CStaticObject::Render_GameObject()
 	return NOERROR;
 }
 
+void CStaticObject::SetState(_vec3 vPos, _vec3 vScale)
+{
+	m_vPosition = vPos;
+
+	m_pTransformCom->Set_Scaling(vPos.x, vPos.y, vPos.z);
+
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &vScale);
+
+}
+
+HRESULT CStaticObject::Add_Component_Tool(const _tchar * pComponentPrototypeTag)
+{
+	// For.Com_Mesh_Tool
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, pComponentPrototypeTag, L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+		return E_FAIL;
+
+	return NOERROR;
+}
+
 HRESULT CStaticObject::Add_Component()
 {
 	// For.Com_Transform
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
-		return E_FAIL;
-
-	// For.Com_Mesh
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Static_Object", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
 		return E_FAIL;
 
 	// For.Com_Renderer
@@ -138,7 +152,7 @@ HRESULT CStaticObject::SetUp_HeightOnTerrain()
 		return E_FAIL;
 	pObject_Manager->AddRef();
 
-	CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STATIC, L"Layer_BackGround", L"Com_Buffer", 0);
+	CBuffer_Terrain_Tool* pBufferCom = (CBuffer_Terrain_Tool*)pObject_Manager->Get_Component(SCENE_STATIC, L"Layer_Terrain", L"Com_Buffer", 0);
 	if (nullptr == pBufferCom)
 		return E_FAIL;
 

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Headers\AnimationCtrl.h" />
     <ClInclude Include="..\Headers\Base.h" />
     <ClInclude Include="..\Headers\Buffer_CubeTex.h" />
     <ClInclude Include="..\Headers\Buffer_RcCol.h" />
@@ -58,6 +59,7 @@
     <ClInclude Include="..\Headers\VIBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Codes\AnimationCtrl.cpp" />
     <ClCompile Include="..\Codes\Base.cpp" />
     <ClCompile Include="..\Codes\Buffer_CubeTex.cpp" />
     <ClCompile Include="..\Codes\Buffer_RcCol.cpp" />

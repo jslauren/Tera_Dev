@@ -336,7 +336,7 @@ void CTerrainTab::OnTree_Terrain_Texture(NMHDR *pNMHDR, LRESULT *pResult)
 
 	UpdateData(TRUE);
 
-	TCHAR		 szFullPath[MAX_PATH] = L"";
+	//TCHAR		 szFullPath[MAX_PATH] = L"";
 
 	// 현재 트리 컨트롤에서 선택된 아이템을 불러온다.
 	HTREEITEM	hSelected = pNMTreeView->itemNew.hItem;

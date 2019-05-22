@@ -52,6 +52,12 @@ _int CCamera_Dynamic::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pInput_Device)
 		return -1;
+	
+	if (GetKeyState('1') & 0x8000)
+		m_fCameraSpeed = 5.f;
+
+	if (GetKeyState('2') & 0x8000)
+		m_fCameraSpeed = 0.5f;
 
 	if (GetKeyState('W') & 0x8000)
 		m_pTransformCom->Move(0, m_fCameraSpeed, fTimeDelta);

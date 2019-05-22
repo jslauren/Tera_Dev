@@ -112,6 +112,9 @@
     <ClInclude Include="..\Headers\HierarchyLoader.h">
       <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Loader</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\AnimationCtrl.h">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -234,6 +237,9 @@
     <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic\Loader">
       <UniqueIdentifier>{23ae61ce-4a43-4ddd-ac3d-264dd45a41ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic\Animation">
+      <UniqueIdentifier>{626fda2f-0cd6-4ef9-bb6e-03dc3f2101f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Graphic_Device.cpp">
@@ -328,6 +334,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\HierarchyLoader.cpp">
       <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\AnimationCtrl.cpp">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Animation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

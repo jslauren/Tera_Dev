@@ -29,7 +29,7 @@ private:
 	HRESULT			SetUp_ViewMatrix();
 	HRESULT			SetUp_ProjectionMatrix();
 private:
-	_float			m_fCameraSpeed = 5.f;
+	_float			m_fCameraSpeed = 0.5f;
 public:
 	static CCamera_Dynamic*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

@@ -255,7 +255,7 @@ _float CBuffer_Terrain_Tool::Compute_HeightOnBuffer(const CTransform * pTransfor
 {
 	_vec3		vPosition = *pTransform->Get_StateInfo(CTransform::STATE_POSITION);
 
-	// 내마우스.y / 타일사이즈y * 타읽의 가로 갯수 + 내마우스.ㅌ / 타일사이즈ㅌ
+	// 내마우스.y / 타일사이즈.y * 타일의 가로 갯수 + 내마우스.x / 타일사이즈.x
 	_uint		iIndex = _uint(vPosition.z / m_fInterval) * (m_iNumVerticesX)+_uint(vPosition.x / m_fInterval);
 
 	_uint		iIndices[4] = { iIndex + m_iNumVerticesX, iIndex + m_iNumVerticesX + 1, iIndex + 1, iIndex };
@@ -275,6 +275,9 @@ _float CBuffer_Terrain_Tool::Compute_HeightOnBuffer(const CTransform * pTransfor
 
 HRESULT CBuffer_Terrain_Tool::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval/*, _float _fDetail*/)
 {
+	if (nullptr == m_pGraphic_Device)
+		return E_FAIL;
+
 	// 왜지? 하면 터짐...
 	Safe_Delete_Array(m_pPositions);
 	Safe_Delete_Array(m_pIndices);
@@ -282,10 +285,7 @@ HRESULT CBuffer_Terrain_Tool::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _f
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);
 
-	CVIBuffer::Free();
-
-	if (nullptr == m_pGraphic_Device)
-		return E_FAIL;
+	//Free();
 
 	m_iVtxSize = sizeof(VTXNORTEX);
 	m_fInterval = _fInterval;

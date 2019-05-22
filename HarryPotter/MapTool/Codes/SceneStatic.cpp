@@ -62,10 +62,10 @@ HRESULT CSceneStatic::Add_Static_Object(const _tchar * pLayerTag)
 		return E_FAIL;
 }
 
-HRESULT CSceneStatic::Add_Static_Object_Component_Prototype(const _tchar * pFilePath, const _tchar * pFileName)
+HRESULT CSceneStatic::Add_Static_Object_Component_Prototype(const _tchar * pComponentPrototypeTag, const _tchar * pFilePath, const _tchar * pFileName)
 {
 	// For.Component_Static_Object
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Static_Object", CMesh_Static::Create(m_pGraphic_Device, pFilePath, pFileName))))
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, pComponentPrototypeTag, CMesh_Static::Create(m_pGraphic_Device, pFilePath, pFileName))))
 		return E_FAIL;
 }
 
@@ -133,7 +133,7 @@ HRESULT CSceneStatic::Ready_Component_Prototype()
 		return E_FAIL;
 
 	// For.Component_Buffer_Terrain
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device))))
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_Terrain", CBuffer_Terrain_Tool::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return NOERROR;

@@ -8,6 +8,8 @@
 #include "SceneMesh.h"
 #include "SceneStatic.h"
 #include "ViewManager.h"
+#include "Layer.h"
+#include "StaticObject.h"
 
 // CMeshTab 대화 상자입니다.
 
@@ -31,6 +33,7 @@ void CMeshTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RADIO5, Mesh_ObjectType_Static);
 	DDX_Control(pDX, IDC_RADIO7, Mesh_NaviVtxMove_Together);
 	DDX_Control(pDX, IDC_TREE1, Tree_Mesh_Object);
+	DDX_Control(pDX, IDC_TREE3, Tree_Mesh_StaticObj);
 }
 
 
@@ -44,6 +47,8 @@ BEGIN_MESSAGE_MAP(CMeshTab, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO7, &CMeshTab::OnBnClickedTogether)
 	ON_BN_CLICKED(IDC_RADIO8, &CMeshTab::OnBnClickedSelected)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &CMeshTab::OnTree_Mesh_Object)
+	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE3, &CMeshTab::OnTree_Mesh_StaticObj)
+	ON_NOTIFY(NM_DBLCLK, IDC_TREE1, &CMeshTab::OnNMDblclkTreeMeshObject)
 END_MESSAGE_MAP()
 
 BOOL CMeshTab::OnInitDialog()
@@ -52,16 +57,10 @@ BOOL CMeshTab::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 
-	m_pScene = CViewManager::GetInstance()->m_pCurScene;
-
-	//dynamic_cast<CSceneStatic*>(m_pScene);
-
 	Mesh_RenderST_Solild.SetCheck(TRUE);
 	Mesh_MouseSelType_Object.SetCheck(TRUE);
 	Mesh_ObjectType_Static.SetCheck(TRUE);
 	Mesh_NaviVtxMove_Together.SetCheck(TRUE);
-
-
 
 	InitTreeCtrl_Object();
 
@@ -90,6 +89,9 @@ BOOL CMeshTab::PreTranslateMessage(MSG* pMsg)
 void CMeshTab::OnBnClickedSolid()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	//CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_");
+	//dynamic_cast<CStaticObject*>(pLayer->Get_ObjectList().back())->SetState();
 }
 
 
@@ -153,6 +155,72 @@ void CMeshTab::InitTreeCtrl_Object()
 	Tree_Mesh_Object.EnsureVisible(hItem);
 }
 
+HRESULT CMeshTab::Add_StaticObject()
+{
+	m_pScene = CViewManager::GetInstance()->m_pCurScene;
+
+	TCHAR		szFullPath[MAX_PATH] = L"";
+	CString		pathSelected = L"";
+	HTREEITEM	hParentItem = SelectedItem;
+
+	lstrcpy((LPWSTR)pathSelected.operator LPCWSTR(), L"");
+
+	while (TRUE)
+	{
+		if (pathSelected != L"")
+		{
+			if (Tree_Mesh_Object.GetItemText(hParentItem).Right(1) == "/")
+			{
+				pathSelected.Delete(0, 1);
+				pathSelected = Tree_Mesh_Object.GetItemText(hParentItem) + pathSelected;
+			}
+			else
+				pathSelected = Tree_Mesh_Object.GetItemText(hParentItem) + pathSelected;
+		}
+		else
+		{
+			pathSelected = Tree_Mesh_Object.GetItemText(hParentItem);
+			strObjectName = strLayerTag = pathSelected;
+			lstrcpy((LPWSTR)strXfileName.operator LPCWSTR(), strLayerTag);
+			pathSelected = L"/";
+		}
+
+		hParentItem = Tree_Mesh_Object.GetParentItem(hParentItem);
+		
+		if (hParentItem == NULL)
+			break;
+
+		if (pathSelected != L"/")
+			pathSelected = _T("/") + pathSelected;
+	}
+
+	//ZeroMemory(szFullPath, sizeof(szFullPath));
+	StrCpyW(szFullPath, pathSelected);
+
+	PathRemoveExtension((LPWSTR)strLayerTag.operator LPCWSTR());	// 확장자명을 잘라내는 함수
+
+	// Component의 PrototypeTag를 만들어 준다.
+	strComponentPrototypeTag = _T("Component_Mesh_Static_") + strLayerTag;
+
+	// LayerTag를 만들어 준다.
+	strLayerTag = _T("Layer_") + strLayerTag;
+
+
+	// Add_Component_Prototype에 해당한다. (원본객체)
+z	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object_Component_Prototype(strComponentPrototypeTag, szFullPath, strXfileName)))
+		return E_FAIL;
+
+	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object(strLayerTag)))
+		return E_FAIL;
+
+	// Add_Component에 해당한다. (실 사용 객체)
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
+	dynamic_cast<CStaticObject*>(pLayer->Get_ObjectList().back())->Add_Component_Tool(strComponentPrototypeTag);
+
+
+	return NOERROR;
+}
+
 void CMeshTab::OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
@@ -160,10 +228,12 @@ void CMeshTab::OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult)
 
 	UpdateData(TRUE);
 
-	TCHAR		 szFullPath[MAX_PATH] = L"";
+	//TCHAR		 szFullPath[MAX_PATH] = L"";
 
 	// 현재 트리 컨트롤에서 선택된 아이템을 불러온다.
 	HTREEITEM	hSelected = pNMTreeView->itemNew.hItem;
+
+	SelectedItem = hSelected;
 
 	// 자세히는 잘 모르겠는데... 처음 선택된 놈만 처리되게 되어있다.
 	// 이 때문에 밑에서 else문으로 따로 추가 처리해준다.
@@ -205,6 +275,31 @@ void CMeshTab::OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult)
 	//	HTREEITEM hParentItem = hSelected;
 	//}
 	UpdateData(FALSE);
+
+
+	*pResult = 0;
+}
+
+void CMeshTab::OnNMDblclkTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	HTREEITEM	Root = nullptr;
+
+	if (NULL == Tree_Mesh_StaticObj.GetRootItem())
+		Root = Tree_Mesh_StaticObj.InsertItem(TEXT("Static_Mesh"), 0, 0, TVI_ROOT, TVI_LAST);
+
+	if(NOERROR == Add_StaticObject())
+		Tree_Mesh_StaticObj.InsertItem(strObjectName, 0, 0, Root, TVI_LAST);
+
+	*pResult = 0;
+}
+
+void CMeshTab::OnTree_Mesh_StaticObj(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
 
 
 	*pResult = 0;
