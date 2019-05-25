@@ -25,6 +25,7 @@ public:	// Setter
 	void			SetState(_vec3 vPos, _vec3 vScale);
 public:	// Getter
 	_vec3			GetPosition(void) { return m_vPosition; }
+	CTransform*		GetTransformCom() { return m_pTransformCom; }
 public:
 	HRESULT			Add_Component_Tool(const _tchar* pComponentPrototypeTag);
 private:

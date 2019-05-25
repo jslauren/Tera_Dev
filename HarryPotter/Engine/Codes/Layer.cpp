@@ -81,6 +81,7 @@ void CLayer::Free()
 {
 	for (auto& pGameObject : m_ObjectList)
 		Safe_Release(pGameObject);
+
 	m_ObjectList.clear();
 }
 

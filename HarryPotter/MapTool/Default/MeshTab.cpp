@@ -17,6 +17,15 @@ IMPLEMENT_DYNAMIC(CMeshTab, CDialogEx)
 
 CMeshTab::CMeshTab(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_MESHTAB, pParent)
+	, m_fScalingX(1)
+	, m_fScalingY(1)
+	, m_fScalingZ(1)
+	, m_fRotX(0)
+	, m_fRotY(0)
+	, m_fRotZ(0)
+	, m_fPosX(0)
+	, m_fPosY(0)
+	, m_fPosZ(0)
 {
 
 }
@@ -34,8 +43,43 @@ void CMeshTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_RADIO7, Mesh_NaviVtxMove_Together);
 	DDX_Control(pDX, IDC_TREE1, Tree_Mesh_Object);
 	DDX_Control(pDX, IDC_TREE3, Tree_Mesh_StaticObj);
+	DDX_Control(pDX, IDC_EDIT5, Obj_X_Scaling);
+	DDX_Control(pDX, IDC_EDIT6, Obj_Y_Scaling);
+	DDX_Control(pDX, IDC_EDIT7, Obj_Z_Scaling);
+	DDX_Control(pDX, IDC_EDIT8, Obj_X_Rotation);
+	DDX_Control(pDX, IDC_EDIT9, Obj_Y_Rotation);
+	DDX_Control(pDX, IDC_EDIT10, Obj_Z_Rotation);
+	DDX_Control(pDX, IDC_EDIT11, Obj_X_Position);
+	DDX_Control(pDX, IDC_EDIT12, Obj_Y_Position);
+	DDX_Control(pDX, IDC_EDIT13, Obj_Z_Position);
+	DDX_Control(pDX, IDC_SPIN5, Obj_X_Scaling_Btn);
+	DDX_Control(pDX, IDC_SPIN6, Obj_Y_Scaling_Btn);
+	DDX_Control(pDX, IDC_SPIN7, Obj_Z_Scaling_Btn);
+	DDX_Control(pDX, IDC_SPIN8, Obj_X_Rotation_Btn);
+	DDX_Control(pDX, IDC_SPIN9, Obj_Y_Rotation_Btn);
+	DDX_Control(pDX, IDC_SPIN10, Obj_Z_Rotation_Btn);
+	DDX_Control(pDX, IDC_SPIN11, Obj_X_Position_Btn);
+	DDX_Control(pDX, IDC_SPIN12, Obj_Y_Position_Btn);
+	DDX_Control(pDX, IDC_SPIN13, Obj_Z_Position_Btn);
+	DDX_Text(pDX, IDC_EDIT5, m_fScalingX);
+	DDV_MinMaxFloat(pDX, m_fScalingX, 1, 100);
+	DDX_Text(pDX, IDC_EDIT6, m_fScalingY);
+	DDV_MinMaxFloat(pDX, m_fScalingY, 1, 100);
+	DDX_Text(pDX, IDC_EDIT7, m_fScalingZ);
+	DDV_MinMaxFloat(pDX, m_fScalingZ, 1, 100);
+	DDX_Text(pDX, IDC_EDIT8, m_fRotX);
+	DDV_MinMaxFloat(pDX, m_fRotX, 0, 360);
+	DDX_Text(pDX, IDC_EDIT9, m_fRotY);
+	DDV_MinMaxFloat(pDX, m_fRotY, 0, 360);
+	DDX_Text(pDX, IDC_EDIT10, m_fRotZ);
+	DDV_MinMaxFloat(pDX, m_fRotZ, 0, 360);
+	DDX_Text(pDX, IDC_EDIT11, m_fPosX);
+	DDV_MinMaxFloat(pDX, m_fPosX, -10000, 10000);
+	DDX_Text(pDX, IDC_EDIT12, m_fPosY);
+	DDV_MinMaxFloat(pDX, m_fPosY, -10000, 10000);
+	DDX_Text(pDX, IDC_EDIT13, m_fPosZ);
+	DDV_MinMaxFloat(pDX, m_fPosZ, -10000, 10000);
 }
-
 
 BEGIN_MESSAGE_MAP(CMeshTab, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO1, &CMeshTab::OnBnClickedSolid)
@@ -49,6 +93,16 @@ BEGIN_MESSAGE_MAP(CMeshTab, CDialogEx)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &CMeshTab::OnTree_Mesh_Object)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE3, &CMeshTab::OnTree_Mesh_StaticObj)
 	ON_NOTIFY(NM_DBLCLK, IDC_TREE1, &CMeshTab::OnNMDblclkTreeMeshObject)
+	ON_NOTIFY(NM_DBLCLK, IDC_TREE3, &CMeshTab::OnNMDblclkTreeStaticObj)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN5, &CMeshTab::OnSpin_Scaling_X)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN6, &CMeshTab::OnSpin_Scaling_Y)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN7, &CMeshTab::OnSpin_Scaling_Z)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN8, &CMeshTab::OnSpin_Rotate_X)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN9, &CMeshTab::OnSpin_Rotate_Y)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN10, &CMeshTab::OnSpin_Rotate_Z)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN11, &CMeshTab::OnSpin_Position_X)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN12, &CMeshTab::OnSpin_Position_Y)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN13, &CMeshTab::OnSpin_Position_Z)
 END_MESSAGE_MAP()
 
 BOOL CMeshTab::OnInitDialog()
@@ -61,6 +115,38 @@ BOOL CMeshTab::OnInitDialog()
 	Mesh_MouseSelType_Object.SetCheck(TRUE);
 	Mesh_ObjectType_Static.SetCheck(TRUE);
 	Mesh_NaviVtxMove_Together.SetCheck(TRUE);
+
+	//Obj_X_Scaling_Btn.SetRange(0, 360);
+	// SetPos로 EditBox의 초기 텍스트 값을 지정하고 싶다면,
+	// Spin_Control의 속성 값에 Auto_Buddy값과 Set_Buddy_Integer값을 True로 바꾸고,
+	// 리소스 뷰 다이얼로그에서 Ctrl+D를 눌러서,
+	// Edit Box와 Spin Control이 연속된 숫자를 가지게 셋팅하면 된다.
+	Obj_X_Scaling_Btn.SetPos(1.f);
+	Obj_X_Scaling_Btn.SetRange(100.f, 1.f);
+
+	Obj_Y_Scaling_Btn.SetPos(1.f);
+	Obj_Y_Scaling_Btn.SetRange(100.f, 1.f);
+
+	Obj_Z_Scaling_Btn.SetPos(1.f);
+	Obj_Z_Scaling_Btn.SetRange(100.f, 1.f);
+
+	Obj_X_Rotation_Btn.SetPos(0.f);
+	Obj_X_Rotation_Btn.SetRange(360.f, 0.f);
+
+	Obj_Y_Rotation_Btn.SetPos(0.f);
+	Obj_Y_Rotation_Btn.SetRange(360.f, 0.f);
+
+	Obj_Z_Rotation_Btn.SetPos(0.f);
+	Obj_Z_Rotation_Btn.SetRange(360.f, 0.f);
+
+	Obj_X_Position_Btn.SetPos(0.f);
+	Obj_X_Position_Btn.SetRange(10000.f, -10000.f);
+
+	Obj_Y_Position_Btn.SetPos(0.f);
+	Obj_Y_Position_Btn.SetRange(10000.f, -10000.f);
+
+	Obj_Z_Position_Btn.SetPos(0.f);
+	Obj_Z_Position_Btn.SetRange(10000.f, -10000.f);
 
 	InitTreeCtrl_Object();
 
@@ -159,7 +245,7 @@ HRESULT CMeshTab::Add_StaticObject()
 
 	TCHAR		szFullPath[MAX_PATH] = L"";
 	CString		pathSelected = L"";
-	HTREEITEM	hParentItem = SelectedItem;
+	HTREEITEM	hParentItem = SelectedObjectItem;
 
 	//lstrcpy((LPWSTR)pathSelected.operator LPCWSTR(), L"");
 
@@ -235,12 +321,10 @@ void CMeshTab::OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult)
 
 	UpdateData(TRUE);
 
-	//TCHAR		 szFullPath[MAX_PATH] = L"";
-
 	// 현재 트리 컨트롤에서 선택된 아이템을 불러온다.
 	HTREEITEM	hSelected = pNMTreeView->itemNew.hItem;
 
-	SelectedItem = hSelected;
+	SelectedObjectItem = hSelected;
 
 	// 자세히는 잘 모르겠는데... 처음 선택된 놈만 처리되게 되어있다.
 	// 이 때문에 밑에서 else문으로 따로 추가 처리해준다.
@@ -284,7 +368,6 @@ void CMeshTab::OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult)
 void CMeshTab::OnNMDblclkTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 	
 	HTREEITEM	hChild1 = nullptr, hChild2 = nullptr;
 	CString		ItemName = L"";
@@ -348,6 +431,411 @@ void CMeshTab::OnTree_Mesh_StaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	
+	// 현재 트리 컨트롤에서 선택된 아이템을 불러온다.
+	HTREEITEM	hSelected = pNMTreeView->itemNew.hItem;
+
+	SelectedStaticObject = hSelected;
+
+	*pResult = 0;
+}
+
+void CMeshTab::OnNMDblclkTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	bDblClkTreeStaticObj = true;
+
+	// Static_Object Tree에서 현재 선택된 아이템의 부모 아이템을 가져오는 구문.
+	// 이걸 해주는 이유는 현재 트리에 아이템이 "오브젝트명 [n]" 이렇게 되는데,
+	// 자르기 귀찮아서 그냥 부모의 아이템을 가져오려 하기 때문이다.
+	HTREEITEM hSelectedParentItem = Tree_Mesh_StaticObj.GetParentItem(SelectedStaticObject);
+
+	// 부모 아이템 그러니까 딱 오브젝트 이름만있고 인덱스가 붙어있지 않은 순수한 텍스트를 가져온다.
+	CString ParentItemName = Tree_Mesh_StaticObj.GetItemText(hSelectedParentItem);
+
+	// 이건 현재 선택된 Static Object의 인덱스가 몇번째인지 잘라오는 구문이다.
+	CString strItemIdx = Tree_Mesh_StaticObj.GetItemText(SelectedStaticObject);
+	strItemIdx.TrimRight(L"]");
+
+	_int	  iItemIdx = _ttoi(strItemIdx.Right(1));
+
+	ParentItemName = _T("Layer_") + ParentItemName;
+
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, ParentItemName);
+	list<CGameObject*> ObjList = pLayer->Get_ObjectList();
+
+	_int iObjListIdx = 0;
+	auto iter = ObjList.begin();
+
+	for (size_t i = 0; i < iItemIdx; ++i)
+	{
+		if (i == (iItemIdx - 1))
+		{
+			pSelectedObj = *iter;
+			break;
+		}
+		else
+			++iter;
+	}
+
+	UpdateData(TRUE);
+
+	_vec3	vRight = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_StateInfo(CTransform::STATE_RIGHT);
+	_vec3	vUp = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_StateInfo(CTransform::STATE_UP);
+	_vec3	vLook = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_StateInfo(CTransform::STATE_LOOK);
+
+	m_fScalingX = D3DXVec3Length(&vRight);
+	m_fScalingY = D3DXVec3Length(&vUp);
+	m_fScalingZ = D3DXVec3Length(&vLook);
+
+	_vec3 vRotRadValue = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_RotRadValue();
+	
+	m_fRotX = D3DXToDegree(vRotRadValue.x);
+	m_fRotY = D3DXToDegree(vRotRadValue.y);
+	m_fRotZ = D3DXToDegree(vRotRadValue.z);
+
+	_vec3 vPosition = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_StateInfo(CTransform::STATE_POSITION);
+
+	m_fPosX = vPosition.x;
+	m_fPosY = vPosition.y;
+	m_fPosZ = vPosition.z;
+
+	UpdateData(FALSE);
+
+	*pResult = 0;
+}
+
+
+void CMeshTab::OnSpin_Scaling_X(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (bDblClkTreeStaticObj == true)
+	{
+		UpdateData(TRUE);
+
+		if (pNMUpDown->iDelta < 0)
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fScalingX += 1.f;
+			else
+				m_fScalingX += 0.1f;
+		}
+		else
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fScalingX -= 1.f;
+			else
+				m_fScalingX -= 0.1f;
+		}
+
+		if (m_fScalingX <= 1.f)
+			m_fScalingX = 1.f;
+
+		UpdateData(FALSE);
+
+		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Scaling(m_fScalingX, m_fScalingY, m_fScalingZ);
+	}
+
+	*pResult = 0;
+}
+
+
+void CMeshTab::OnSpin_Scaling_Y(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (bDblClkTreeStaticObj == true)
+	{
+		UpdateData(TRUE);
+
+		if (pNMUpDown->iDelta < 0)
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fScalingY += 1.f;
+			else
+				m_fScalingY += 0.1f;
+		}
+		else
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fScalingY -= 1.f;
+			else
+				m_fScalingY -= 0.1f;
+		}
+
+		UpdateData(FALSE);
+
+		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Scaling(m_fScalingX, m_fScalingY, m_fScalingZ);
+	}
+
+	*pResult = 0;
+}
+
+
+void CMeshTab::OnSpin_Scaling_Z(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (bDblClkTreeStaticObj == true)
+	{
+		UpdateData(TRUE);
+
+		if (pNMUpDown->iDelta < 0)
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fScalingX += 1.f;
+			else
+				m_fScalingX += 0.1f;
+		}
+		else
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fScalingX -= 1.f;
+			else
+				m_fScalingX -= 0.1f;
+		}
+
+		UpdateData(FALSE);
+
+		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Scaling(m_fScalingX, m_fScalingY, m_fScalingZ);
+	}
+	
+	*pResult = 0;
+}
+
+
+void CMeshTab::OnSpin_Rotate_X(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (bDblClkTreeStaticObj == true)
+	{
+		UpdateData(TRUE);
+
+		if (pNMUpDown->iDelta < 0)
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fRotX += 10.f;
+			else
+				m_fRotX += 0.1f;
+		}
+		else
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fRotX -= 10.f;
+			else
+				m_fRotX -= 0.1f;
+		}
+
+		if (m_fRotX <= 1.f)
+			m_fRotX = 1.f;
+
+		if (m_fRotX >= 360.f)
+			m_fRotX = 360.f;
+
+		UpdateData(FALSE);
+
+		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Rotation_YawPitchRoll(D3DXToRadian(m_fRotX), D3DXToRadian(m_fRotY), D3DXToRadian(m_fRotZ));
+	}
+
+	*pResult = 0;
+}
+
+
+void CMeshTab::OnSpin_Rotate_Y(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (bDblClkTreeStaticObj == true)
+	{
+		UpdateData(TRUE);
+
+		if (pNMUpDown->iDelta < 0)
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fRotY += 10.f;
+			else
+				m_fRotY += 0.1f;
+		}
+		else
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fRotY -= 10.f;
+			else
+				m_fRotY -= 0.1f;
+		}
+
+		if (m_fRotY <= 1.f)
+			m_fRotY = 1.f;
+
+		if (m_fRotY >= 360.f)
+			m_fRotY = 360.f;
+
+		UpdateData(FALSE);
+
+		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Rotation_YawPitchRoll(D3DXToRadian(m_fRotX), D3DXToRadian(m_fRotY), D3DXToRadian(m_fRotZ));
+	}
+
+	*pResult = 0;
+}
+
+
+void CMeshTab::OnSpin_Rotate_Z(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (bDblClkTreeStaticObj == true)
+	{
+		UpdateData(TRUE);
+
+		if (pNMUpDown->iDelta < 0)
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fRotZ += 10.f;
+			else
+				m_fRotZ += 0.1f;
+		}
+		else
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fRotZ -= 10.f;
+			else
+				m_fRotZ -= 0.1f;
+		}
+
+		if (m_fRotZ <= 1.f)
+			m_fRotZ = 1.f;
+
+		if (m_fRotZ >= 360.f)
+			m_fRotZ = 360.f;
+
+		UpdateData(FALSE);
+
+		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Rotation_YawPitchRoll(D3DXToRadian(m_fRotX), D3DXToRadian(m_fRotY), D3DXToRadian(m_fRotZ));
+	}
+
+	*pResult = 0;
+}
+
+
+void CMeshTab::OnSpin_Position_X(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (bDblClkTreeStaticObj == true)
+	{
+		UpdateData(TRUE);
+
+		if (pNMUpDown->iDelta < 0)
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fPosX += 1.f;
+			else
+				m_fPosX += 0.1f;
+		}
+		else
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fPosX -= 1.f;
+			else
+				m_fPosX -= 0.1f;
+		}
+
+		if (m_fPosX <= -10000.f)
+			m_fPosX = -10000.f;
+
+		if (m_fPosX >= 10000.f)
+			m_fPosX = 10000.f;
+
+		UpdateData(FALSE);
+
+		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_fPosX, m_fPosY, m_fPosZ));
+	}
+
+	*pResult = 0;
+}
+
+void CMeshTab::OnSpin_Position_Y(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (bDblClkTreeStaticObj == true)
+	{
+		UpdateData(TRUE);
+
+		if (pNMUpDown->iDelta < 0)
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fPosY += 1.f;
+			else
+				m_fPosY += 0.1f;
+		}
+		else
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fPosY -= 1.f;
+			else
+				m_fPosY -= 0.1f;
+		}
+
+		if (m_fPosY <= -10000.f)
+			m_fPosY = -10000.f;
+
+		if (m_fPosY >= 10000.f)
+			m_fPosY = 10000.f;
+
+		UpdateData(FALSE);
+
+		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_fPosX, m_fPosY, m_fPosZ));
+	}
+
+	*pResult = 0;
+}
+
+
+void CMeshTab::OnSpin_Position_Z(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (bDblClkTreeStaticObj == true)
+	{
+		UpdateData(TRUE);
+
+		if (pNMUpDown->iDelta < 0)
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fPosZ += 1.f;
+			else
+				m_fPosZ += 0.1f;
+		}
+		else
+		{
+			if (GetKeyState('Z') & 0x8000)
+				m_fPosZ -= 1.f;
+			else
+				m_fPosZ -= 0.1f;
+		}
+
+		if (m_fPosZ <= -10000.f)
+			m_fPosZ = -10000.f;
+
+		if (m_fPosZ >= 10000.f)
+			m_fPosZ = 10000.f;
+
+		UpdateData(FALSE);
+
+		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_fPosX, m_fPosY, m_fPosZ));
+	}
 
 	*pResult = 0;
 }

@@ -75,6 +75,15 @@ public:
 	afx_msg void OnTree_Terrain_Texture(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkTreeTerrainTexture(NMHDR *pNMHDR, LRESULT *pResult);
 
+public:
+	// Terrain_Transform_Variable
+	float m_fPosX;
+	float m_fPosY;
+	float m_fPosZ;
+	float m_fRotX;
+	float m_fRotY;
+	float m_fRotZ;
+
 private:
 	// Terrain_Vertex_Variable
 	_int	m_iNumVtxX = 0;
@@ -82,22 +91,14 @@ private:
 	_float	m_fInterval = 0;
 	_float	m_fDetail = 0;
 
-	// Terrain_Transform_Variable
-	_int	m_iPosX = 0;
-	_int	m_iPosY = 0;
-	_int	m_iPosZ = 0;
-	_float	m_fRotX = 0.f;
-	_float	m_fRotY = 0.f;
-	_float	m_fRotZ = 0.f;
-
 	// Terrain_TreeControl_Texture
 	map<CString, CImage*>		m_mapPngImage;
 	CString						strImagName;
 	TCHAR						szFullPathForTexture[MAX_PATH] = L"";
 private:
 	void InitTreeCtrl();
-	void Rotation_Axis(const _vec3 & vAxis, const _float & fRadianPerSec);
 	void ImageProcess(HTREEITEM	_hSelected);
 	void ImageSizing(CImage* pImage);
+
 
 };

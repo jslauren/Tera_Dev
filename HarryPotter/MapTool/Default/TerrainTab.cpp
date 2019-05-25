@@ -21,6 +21,12 @@ IMPLEMENT_DYNAMIC(CTerrainTab, CDialogEx)
 
 CTerrainTab::CTerrainTab(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_TERRAINTAB, pParent)
+	, m_fPosX(0)
+	, m_fPosY(0)
+	, m_fPosZ(0)
+	, m_fRotX(0)
+	, m_fRotY(0)
+	, m_fRotZ(0)
 {
 }
 
@@ -62,6 +68,19 @@ void CTerrainTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SPIN10, RotaionZ_Btn);
 	DDX_Control(pDX, IDC_TREE1, m_Tree_Terrain_Texture);
 	DDX_Control(pDX, IDC_PICTURE1, m_Terrain_Texture);
+	DDX_Text(pDX, IDC_EDIT5, m_fPosX);
+	DDV_MinMaxFloat(pDX, m_fPosX, -10000, 10000);
+	DDX_Text(pDX, IDC_EDIT6, m_fPosY);
+	DDV_MinMaxFloat(pDX, m_fPosY, -10000, 10000);
+	DDX_Text(pDX, IDC_EDIT7, m_fPosZ);
+	DDV_MinMaxFloat(pDX, m_fPosZ, -10000, 10000);
+	DDX_Text(pDX, IDC_EDIT8, m_fRotX);
+	DDV_MinMaxFloat(pDX, m_fRotX, 0, 360);
+	DDX_Text(pDX, IDC_EDIT9, m_fRotY);
+	DDV_MinMaxFloat(pDX, m_fRotY, 0, 360);
+	DDX_Text(pDX, IDC_EDIT10, m_fRotZ);
+	DDV_MinMaxFloat(pDX, m_fRotZ, 0, 360);
+
 }
 
 
@@ -106,35 +125,35 @@ BOOL CTerrainTab::OnInitDialog()
 	
 	CStringW	strNumVtxX;
 
-	Vertex_X_Count_Btn.SetRange(0, 360);
-	Vertex_X_Count_Btn.SetPos(0);
+	Vertex_X_Count_Btn.SetPos(100.f);
+	Vertex_X_Count_Btn.SetRange(0.f, 1000.f);
 
-	Vertex_Z_Count_Btn.SetRange(0, 360);
-	Vertex_Z_Count_Btn.SetPos(0);
+	Vertex_Z_Count_Btn.SetPos(100.f);
+	Vertex_Z_Count_Btn.SetRange(0.f, 1000.f);
 
-	Vertex_Interval_Btn.SetRange(0, 360);
-	Vertex_Interval_Btn.SetPos(0);
+	Vertex_Interval_Btn.SetPos(1.f);
+	Vertex_Interval_Btn.SetRange(0.f, 1000.f);
 
-	Vertex_Detail_Btn.SetRange(0, 360);
-	Vertex_Detail_Btn.SetPos(0);
+	Vertex_Detail_Btn.SetPos(1.f);
+	Vertex_Detail_Btn.SetRange(0.f, 100.f);
 
-	PositionX_Btn.SetRange(-1000, 1000);
-	PositionX_Btn.SetPos(0);
+	PositionX_Btn.SetPos(0.f);
+	PositionX_Btn.SetRange(1000.f, -1000.f);
 
-	PositionY_Btn.SetRange(-1000, 1000);
-	PositionY_Btn.SetPos(0);
+	PositionY_Btn.SetPos(0.f);
+	PositionY_Btn.SetRange(1000.f, -1000.f);
 
-	PositionZ_Btn.SetRange(-1000, 1000);
-	PositionZ_Btn.SetPos(0);
+	PositionZ_Btn.SetPos(0.f);
+	PositionZ_Btn.SetRange(1000.f, -1000.f);
 
-	RotaionX_Btn.SetRange(0, 360);
-	RotaionX_Btn.SetPos(0);
+	RotaionX_Btn.SetPos(0.f);
+	RotaionX_Btn.SetRange(360.f, 0.f);
 
-	RotaionY_Btn.SetRange(0, 360);
-	RotaionY_Btn.SetPos(0);
+	RotaionY_Btn.SetPos(0.f);
+	RotaionY_Btn.SetRange(360.f, 0.f);
 
-	RotaionZ_Btn.SetRange(0, 360);
-	RotaionZ_Btn.SetPos(0);
+	RotaionZ_Btn.SetPos(0.f);
+	RotaionZ_Btn.SetRange(360.f, 0.f);
 
 	InitTreeCtrl();
 
@@ -190,122 +209,212 @@ void CTerrainTab::OnSpin_Trans_PosX(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	*pResult = 0;
 
-	CStringW	strValue;
+	UpdateData(TRUE);
 
-	PositionX.GetWindowTextW(strValue);
-	m_iPosX = _ttoi(strValue);
+	if (pNMUpDown->iDelta < 0)
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fPosX += 1.f;
+		else
+			m_fPosX += 0.1f;
+	}
+	else
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fPosX -= 1.f;
+		else
+			m_fPosX -= 0.1f;
+	}
+
+	if (m_fPosX <= -10000.f)
+		m_fPosX = -10000.f;
+
+	if (m_fPosX >= 10000.f)
+		m_fPosX = 10000.f;
+
+	UpdateData(FALSE);
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
-	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_iPosX, m_iPosY, m_iPosZ));
+	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_fPosX, m_fPosY, m_fPosZ));
 
+	*pResult = 0;
 }
 
 void CTerrainTab::OnSpin_Trans_PosY(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	*pResult = 0;
 
-	CStringW	strValue;
+	UpdateData(TRUE);
 
-	PositionY.GetWindowTextW(strValue);
-	m_iPosY = _ttoi(strValue);
+	if (pNMUpDown->iDelta < 0)
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fPosY += 1.f;
+		else
+			m_fPosY += 0.1f;
+	}
+	else
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fPosY -= 1.f;
+		else
+			m_fPosY -= 0.1f;
+	}
+
+	if (m_fPosY <= -10000.f)
+		m_fPosY = -10000.f;
+
+	if (m_fPosY >= 10000.f)
+		m_fPosY = 10000.f;
+
+	UpdateData(FALSE);
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
-	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_iPosX, m_iPosY, m_iPosZ));
+	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_fPosX, m_fPosY, m_fPosZ));
 
+	*pResult = 0;
 }
 
 void CTerrainTab::OnSpin_Trans_PosZ(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	*pResult = 0;
 
-	CStringW	strValue;
+	UpdateData(TRUE);
 
-	PositionZ.GetWindowTextW(strValue);
-	m_iPosZ = _ttoi(strValue);
+	if (pNMUpDown->iDelta < 0)
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fPosZ += 1.f;
+		else
+			m_fPosZ += 0.1f;
+	}
+	else
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fPosZ -= 1.f;
+		else
+			m_fPosZ -= 0.1f;
+	}
+
+	if (m_fPosZ <= -10000.f)
+		m_fPosZ = -10000.f;
+
+	if (m_fPosZ >= 10000.f)
+		m_fPosZ = 10000.f;
+
+	UpdateData(FALSE);
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
-	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_iPosX, m_iPosY, m_iPosZ));
+	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_fPosX, m_fPosY, m_fPosZ));
 
+	*pResult = 0;
 }
 
 void CTerrainTab::OnSpin_Trans_RotX(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	*pResult = 0;
 
-	CStringW	strValue;
+	UpdateData(TRUE);
 
-	RotationX.GetWindowTextW(strValue);
-	m_fRotX = _ttof(strValue) + 1;
+	if (pNMUpDown->iDelta < 0)
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fRotX += 10.f;
+		else
+			m_fRotX += 0.1f;
+	}
+	else
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fRotX -= 10.f;
+		else
+			m_fRotX -= 0.1f;
+	}
+
+	if (m_fRotX <= 1.f)
+		m_fRotX = 1.f;
+
+	if (m_fRotX >= 360.f)
+		m_fRotX = 360.f;
+
+	UpdateData(FALSE);
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
-	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Rotation_Axis(_vec3(1.f, 0.f, 0.f), D3DXToRadian(m_fRotX), 0.1f);
-	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_Angle_Axis(_vec3(1.f, 0.f, 0.f), D3DXToRadian(m_fRotX));
+	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_Rotation_YawPitchRoll(D3DXToRadian(m_fRotX), D3DXToRadian(m_fRotY), D3DXToRadian(m_fRotZ));
 
+	*pResult = 0;
 }
 
 void CTerrainTab::OnSpin_Trans_RotY(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	if (pNMUpDown->iDelta < 0)
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fRotY += 10.f;
+		else
+			m_fRotY += 0.1f;
+	}
+	else
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fRotY -= 10.f;
+		else
+			m_fRotY -= 0.1f;
+	}
+
+	if (m_fRotY <= 1.f)
+		m_fRotY = 1.f;
+
+	if (m_fRotY >= 360.f)
+		m_fRotY = 360.f;
+
+	UpdateData(FALSE);
+
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
+	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_Rotation_YawPitchRoll(D3DXToRadian(m_fRotX), D3DXToRadian(m_fRotY), D3DXToRadian(m_fRotZ));
+
 	*pResult = 0;
-
-	CStringW	strValue;
-
-	RotationY.GetWindowTextW(strValue);
-	m_fRotY = _ttoi(strValue) + 1;
-
-	Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(m_fRotY));
 }
 
 void CTerrainTab::OnSpin_Trans_RotZ(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	*pResult = 0;
 
-	CStringW	strValue;
+	if (pNMUpDown->iDelta < 0)
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fRotZ += 10.f;
+		else
+			m_fRotZ += 0.1f;
+	}
+	else
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fRotZ -= 10.f;
+		else
+			m_fRotZ -= 0.1f;
+	}
 
-	RotationZ.GetWindowTextW(strValue);
-	m_fRotZ = _ttoi(strValue) + 1;
+	if (m_fRotZ <= 1.f)
+		m_fRotZ = 1.f;
 
-	Rotation_Axis(_vec3(0.f, 0.f, 1.f), D3DXToRadian(m_fRotZ));
-}
+	if (m_fRotZ >= 360.f)
+		m_fRotZ = 360.f;
 
-void CTerrainTab::Rotation_Axis(const _vec3 & vAxis, const _float & fRadianPerSec)
-{
+	UpdateData(FALSE);
+
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
+	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_Rotation_YawPitchRoll(D3DXToRadian(m_fRotX), D3DXToRadian(m_fRotY), D3DXToRadian(m_fRotZ));
 
-	_matrix matWorld = *(dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Get_WorldMatrixPointer());
-
-	D3DXMatrixRotationAxis(&matWorld, &vAxis, fRadianPerSec);
-
-	_vec3	vRight(1.f, 0.f, 0.f), vUp(0.f, 1.f, 0.f), vLook(0.f, 0.f, 1.f);
-
-	vRight *= D3DXVec3Length((_vec3*)&matWorld.m[Engine::CTransform::STATE_RIGHT][0]);
-	D3DXVec3TransformNormal(&vRight, &vRight, &matWorld);
-
-	vUp *= D3DXVec3Length((_vec3*)&matWorld.m[Engine::CTransform::STATE_UP][0]);
-	D3DXVec3TransformNormal(&vUp, &vUp, &matWorld);
-
-	vLook *= D3DXVec3Length((_vec3*)&matWorld.m[Engine::CTransform::STATE_LOOK][0]);
-	D3DXVec3TransformNormal(&vLook, &vLook, &matWorld);
-
-	memcpy(&matWorld.m[0][0], &vRight, sizeof(_vec3));
-	memcpy(&matWorld.m[1][0], &vUp, sizeof(_vec3));
-	memcpy(&matWorld.m[2][0], &vLook, sizeof(_vec3));
-
-	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_StateInfo(Engine::CTransform::STATE_RIGHT, &vRight);
-	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_StateInfo(Engine::CTransform::STATE_UP, &vUp);
-	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->GetTransformCom()->Set_StateInfo(Engine::CTransform::STATE_LOOK, &vLook);
-
+	*pResult = 0;
 }
 
 void CTerrainTab::InitTreeCtrl()

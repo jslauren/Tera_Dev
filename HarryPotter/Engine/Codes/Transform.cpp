@@ -54,6 +54,17 @@ HRESULT CTransform::Set_Scaling(const _float & fX, const _float & fY, const _flo
 	return NOERROR;
 }
 
+HRESULT CTransform::Set_Rotation_YawPitchRoll(_float fRadianY, _float fRadianX, _float fRadianZ)
+{
+	m_vRotRadValue.x = fRadianX;
+	m_vRotRadValue.y = fRadianY;
+	m_vRotRadValue.z = fRadianZ;
+
+	D3DXMatrixRotationYawPitchRoll(&m_matWorld, fRadianY, fRadianX, fRadianZ);
+
+	return NOERROR;
+}
+
 HRESULT CTransform::Set_Angle_Axis(_vec3 vState, const _float & fRadian)
 {
 	// 이 함수는 무조건 원점을 기준으로 내가 설정한 fRadian 각만큼 돌린 상태로,
