@@ -56,7 +56,7 @@ HRESULT CSceneStatic::Render_Scene()
 }
 
 HRESULT CSceneStatic::Add_Static_Object(const _tchar * pLayerTag)
-{
+ {
 	// For.Static_Mesh
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Static", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;

@@ -56,8 +56,15 @@ HRESULT CObject_Manager::Add_Object_Prototype(const _uint & iSceneIdx, const _tc
 	if (nullptr != pGameObject)
 		return E_FAIL;
 
+	// 이걸 이렇게 해주는 이유는,
+	// 받아온 _tchar 포인터의 pProtoTag가 리터럴 상수로 하면 (L"" 이런거)는 문제가 없는데,
+	// 걍 변수로 때려박아 버리면 문제가 생긴다. 변수 안에 있는 포인터가 가르키는 값이 변할때마다 ㅈ되버린다. 이른바 얕은복사와 비슷한 상황.
+	// 그래서 이렇게 동적배열을 지정해줘서 넣어준다.
+	_tchar* dynamicArray = new _tchar[lstrlen(pProtoTag) + 1];
+	lstrcpy(dynamicArray, pProtoTag);
+
 	//원본 객체들을 보관하는 컨테이너에 인자로 받은 게임 오브젝트를 꽂아 넣어 줍니다.
-	m_pmapPrototype[iSceneIdx].insert(MAPPROTOTYPE::value_type(pProtoTag, pInGameObject));
+	m_pmapPrototype[iSceneIdx].insert(MAPPROTOTYPE::value_type(dynamicArray, pInGameObject));
 
 	return NOERROR;
 }
@@ -91,7 +98,10 @@ HRESULT CObject_Manager::Add_Object(const _uint & iProtoSceneID, const _tchar * 
 		if (FAILED(pLayer->Add_ObjectToLayer(pGameObject)))
 			return E_FAIL;
 
-		m_pmapObject[iSceneID].insert(MAPOBJECT::value_type(pLayerTag, pLayer));
+		_tchar* dynamicArray = new _tchar[lstrlen(pLayerTag) + 1];
+		lstrcpy(dynamicArray, pLayerTag);
+
+		m_pmapObject[iSceneID].insert(MAPOBJECT::value_type(dynamicArray, pLayer));
 	}
 	else // 있었다면 그냥 추가한다.
 	{
@@ -227,7 +237,11 @@ void CObject_Manager::Free()
 	for (size_t i = 0; i < m_iMaxNumScene; i++)
 	{
 		for (auto& Pair : m_pmapPrototype[i])
+		{
+			_tchar* pTempArray = const_cast<_tchar*>(Pair.first);
+			Safe_Delete_Array(pTempArray);
 			Safe_Release(Pair.second);
+		}
 
 		m_pmapPrototype[i].clear();
 	}
@@ -236,7 +250,11 @@ void CObject_Manager::Free()
 	for (size_t i = 0; i < m_iMaxNumScene; i++)
 	{
 		for (auto& Pair : m_pmapObject[i])
+		{
+			_tchar* pTempArray = const_cast<_tchar*>(Pair.first);
+			Safe_Delete_Array(pTempArray);
 			Safe_Release(Pair.second);
+		}
 
 		m_pmapObject[i].clear();
 	}

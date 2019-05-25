@@ -7,6 +7,7 @@ _USING(Client)
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
+	, m_pKeyManager(CKeyManager::GetInstance())
 {
 }
 
@@ -33,9 +34,14 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(1.f, 1.f, 1.f);
-
+	m_pTransformCom->Set_Scaling(0.01f, 0.01f, 0.01f);
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.2, 0.f, 0.2));
+	m_pMeshCom->SetUp_AnimationSet(10);
+
+	m_pMeshCom->ChangePivot(_vec3(1.f, 0.f, 0.f), -90);
+	m_pMeshCom->ChangePivot(_vec3(0.f, 1.f, 0.f), 180);
+	//m_pMeshCom->ChangePivot(_vec3(1.f, 0.f, 0.f), 0);
+
 
 	return NOERROR;
 }
@@ -45,42 +51,75 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
-	if (GetKeyState(VK_UP) & 0x8000)
-		m_pTransformCom->Move(0, 5.f, fTimeDelta);
-
-	if (GetKeyState(VK_DOWN) & 0x8000)
-		m_pTransformCom->Move(1, 5.f, fTimeDelta);
-
-	if (GetKeyState(VK_LEFT) & 0x8000)
-		m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(-90.f), fTimeDelta);
-
-	if (GetKeyState(VK_RIGHT) & 0x8000)
-		m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(90.f), fTimeDelta);
-
-	if (GetKeyState(VK_LBUTTON) & 0x8000)
+	if (GetKeyState('W') & 0x8000)
 	{
-		CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
-
-		if (nullptr == pObject_Manager)
-			return E_FAIL;
-		pObject_Manager->AddRef();
-
-		CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Buffer", 0);
-		if (nullptr == pBufferCom)
-			return E_FAIL;
-
-		CTransform* pTransformCom = (CTransform*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Transform", 0);
-		if (nullptr == pTransformCom)
-			return E_FAIL;
-
-		if (true == pBufferCom->Picking(g_hWnd, pTransformCom, &m_vTargetPos))
-		{
-			m_isMove = true;
-			/*m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &vOut);*/
-		}
-
-		Safe_Release(pObject_Manager);
+		m_pTransformCom->Move(0, 5.f, fTimeDelta);
+		m_pMeshCom->SetUp_AnimationSet(8);
 	}
+	else if (GetKeyState('S') & 0x8000)
+	{
+		m_pTransformCom->Move(1, 5.f, fTimeDelta);
+		m_pMeshCom->SetUp_AnimationSet(5);
+	}
+	else if (GetKeyState('A') & 0x8000)
+	{
+		m_pTransformCom->Move(2, 5.f, fTimeDelta);
+		m_pMeshCom->SetUp_AnimationSet(7);
+	}
+	else if (GetKeyState('D') & 0x8000)
+	{
+		m_pTransformCom->Move(3, 5.f, fTimeDelta);
+		m_pMeshCom->SetUp_AnimationSet(6);
+	}
+	else
+	{
+		m_pMeshCom->SetUp_AnimationSet(10);
+	}
+
+	CKeyManager::GetInstance()->UpdateKey();
+
+
+	//if (GetKeyState(VK_UP) & 0x8000)
+	//{
+	//	m_pTransformCom->Move(0, 5.f, fTimeDelta);
+	//	m_pMeshCom->SetUp_AnimationSet(9);
+	//}
+	//else
+	//	m_pMeshCom->SetUp_AnimationSet(54);
+
+	//if (GetKeyState(VK_DOWN) & 0x8000)
+	//	m_pTransformCom->Move(1, 5.f, fTimeDelta);
+
+	//if (GetKeyState(VK_LEFT) & 0x8000)
+	//	m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(-90.f), fTimeDelta);
+
+	//if (GetKeyState(VK_RIGHT) & 0x8000)
+	//	m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(90.f), fTimeDelta);
+
+	//if (GetKeyState(VK_LBUTTON) & 0x8000)
+	//{
+	//	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
+
+	//	if (nullptr == pObject_Manager)
+	//		return E_FAIL;
+	//	pObject_Manager->AddRef();
+
+	//	CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Buffer", 0);
+	//	if (nullptr == pBufferCom)
+	//		return E_FAIL;
+
+	//	CTransform* pTransformCom = (CTransform*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Transform", 0);
+	//	if (nullptr == pTransformCom)
+	//		return E_FAIL;
+
+	//	if (true == pBufferCom->Picking(g_hWnd, pTransformCom, &m_vTargetPos))
+	//	{
+	//		m_isMove = true;
+	//		/*m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &vOut);*/
+	//	}
+
+	//	Safe_Release(pObject_Manager);
+	//}
 
 	if (true == m_isMove)
 	{
@@ -91,6 +130,8 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 		if (true == isFinish)
 			m_isMove = false;
 	}
+
+	m_pMeshCom->Play_Animation(fTimeDelta);
 
 	if (FAILED(SetUp_HeightOnTerrain()))
 		return -1;
@@ -285,6 +326,7 @@ CGameObject * CPlayer::Clone(void* pArg)
 
 void CPlayer::Free()
 {
+	Safe_Release(m_pKeyManager);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);

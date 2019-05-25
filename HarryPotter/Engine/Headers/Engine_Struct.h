@@ -19,7 +19,7 @@ namespace Engine
 		D3DXMATRIX*			pOffsetMatrices = nullptr;
 		D3DXMATRIX**		ppCombinedTransformationMatrices = nullptr;
 
-	}D3DXMESHCONTAINER_DERIVED;
+	}D3DXMESHCONTAINER_DERIVED, *PD3DXMESHCONTAINER_DERIVED;
 
 	typedef struct tagD3DXFrame_Derived : public D3DXFRAME
 	{

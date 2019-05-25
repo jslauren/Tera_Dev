@@ -14,6 +14,7 @@ private:
 public:
 	_uint	Get_NumMeshContainer() { return m_MeshContainers.size(); }
 	_uint	Get_NumSubSet(_uint iMeshContainerID) { return m_MeshContainers[iMeshContainerID]->NumMaterials; }
+	const D3DXFRAME_DERIVED* Get_FrameDesc(const char* pFrameName) { return (D3DXFRAME_DERIVED*)D3DXFrameFind(m_pRootFrame, pFrameName); }
 public:
 	HRESULT Ready_Mesh_Dynamic(const _tchar* pFilePath, const _tchar* pFileName);
 	HRESULT Render_Mesh(_uint iMeshContainerID, _uint iSubSetID);
@@ -22,6 +23,8 @@ public:
 	HRESULT SetUp_AnimationSet(_uint iIndex);
 	HRESULT SetUp_AnimationSet(const char* pName);
 	HRESULT Play_Animation(const _float& fTimeDelta);
+public:
+	HRESULT ChangePivot(_vec3 vState, _float fDegree);
 private:
 	CHierarchyLoader*		m_pLoader = nullptr;
 	D3DXFRAME*				m_pRootFrame = nullptr;

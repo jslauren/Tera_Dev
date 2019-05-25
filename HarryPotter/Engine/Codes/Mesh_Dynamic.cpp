@@ -13,9 +13,8 @@ CMesh_Dynamic::CMesh_Dynamic(const CMesh_Dynamic & rhs)
 	, m_pRootFrame(rhs.m_pRootFrame)
 	, m_MeshContainers(rhs.m_MeshContainers)
 	, m_matPivot(rhs.m_matPivot)
-	, m_pAniCtrl(rhs.m_pAniCtrl)
+	, m_pAniCtrl(CAnimationCtrl::Create(*rhs.m_pAniCtrl))
 {
-	Safe_AddRef(m_pAniCtrl);
 	Safe_AddRef(m_pLoader);
 }
 
@@ -36,11 +35,12 @@ HRESULT CMesh_Dynamic::Ready_Mesh_Dynamic(const _tchar * pFilePath, const _tchar
 		return E_FAIL;
 
 	m_pAniCtrl = CAnimationCtrl::Create(pAniCtrl);
-	if (nullptr == m_pAniCtrl)
+ 	if (nullptr == m_pAniCtrl)
 		return E_FAIL;
 
 	Safe_Release(pAniCtrl);
-	
+
+	//D3DXMatrixRotationX(&m_matPivot, D3DXToRadian(180.0f));
 	D3DXMatrixIdentity(&m_matPivot);
 
 	if (FAILED(Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot)))
@@ -117,6 +117,18 @@ HRESULT CMesh_Dynamic::Play_Animation(const _float & fTimeDelta)
 	m_pAniCtrl->Play_Animation(fTimeDelta);
 
 	Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot);
+
+	return NOERROR;
+}
+
+HRESULT CMesh_Dynamic::ChangePivot(_vec3 vState, _float fDegree)
+{
+	_matrix matPivot;
+	D3DXMatrixIdentity(&matPivot);
+
+	D3DXMatrixRotationAxis(&matPivot, &vState, D3DXToRadian(fDegree));
+
+	m_matPivot *= matPivot;
 
 	return NOERROR;
 }

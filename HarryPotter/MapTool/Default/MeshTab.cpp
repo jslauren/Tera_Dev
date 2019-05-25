@@ -90,8 +90,6 @@ void CMeshTab::OnBnClickedSolid()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	//CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_");
-	//dynamic_cast<CStaticObject*>(pLayer->Get_ObjectList().back())->SetState();
 }
 
 
@@ -163,7 +161,7 @@ HRESULT CMeshTab::Add_StaticObject()
 	CString		pathSelected = L"";
 	HTREEITEM	hParentItem = SelectedItem;
 
-	lstrcpy((LPWSTR)pathSelected.operator LPCWSTR(), L"");
+	//lstrcpy((LPWSTR)pathSelected.operator LPCWSTR(), L"");
 
 	while (TRUE)
 	{
@@ -180,8 +178,10 @@ HRESULT CMeshTab::Add_StaticObject()
 		else
 		{
 			pathSelected = Tree_Mesh_Object.GetItemText(hParentItem);
-			strObjectName = strLayerTag = pathSelected;
-			lstrcpy((LPWSTR)strXfileName.operator LPCWSTR(), strLayerTag);
+			strLayerTag = pathSelected;
+			
+			strXfileName += strLayerTag;
+			//lstrcpy((LPWSTR)strXfileName.operator LPCWSTR(), strLayerTag);
 			pathSelected = L"/";
 		}
 
@@ -197,7 +197,11 @@ HRESULT CMeshTab::Add_StaticObject()
 	//ZeroMemory(szFullPath, sizeof(szFullPath));
 	StrCpyW(szFullPath, pathSelected);
 
-	PathRemoveExtension((LPWSTR)strLayerTag.operator LPCWSTR());	// 확장자명을 잘라내는 함수
+	//PathRemoveExtension((LPWSTR)strLayerTag.operator LPCWSTR());	// 확장자명을 잘라내는 함수
+	strLayerTag.TrimRight(L".X");
+	strLayerTag.TrimRight(L".x");
+
+	strObjectName = strLayerTag;
 
 	// Component의 PrototypeTag를 만들어 준다.
 	strComponentPrototypeTag = _T("Component_Mesh_Static_") + strLayerTag;
@@ -207,8 +211,10 @@ HRESULT CMeshTab::Add_StaticObject()
 
 
 	// Add_Component_Prototype에 해당한다. (원본객체)
-z	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object_Component_Prototype(strComponentPrototypeTag, szFullPath, strXfileName)))
+	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object_Component_Prototype(strComponentPrototypeTag, szFullPath, strXfileName)))
 		return E_FAIL;
+
+	strXfileName = _T("");
 
 	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object(strLayerTag)))
 		return E_FAIL;
@@ -217,6 +223,7 @@ z	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object_Component_
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
 	dynamic_cast<CStaticObject*>(pLayer->Get_ObjectList().back())->Add_Component_Tool(strComponentPrototypeTag);
 
+	strComponentPrototypeTag = _T("");
 
 	return NOERROR;
 }
@@ -263,19 +270,13 @@ void CMeshTab::OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult)
 			if (finder.IsDots())
 				continue;
 
-			//if (finder.IsDirectory())
 			Tree_Mesh_Object.InsertItem(finder.GetFileName(), hSelected);
 		}
 		Tree_Mesh_Object.SetItemData(hSelected, 1);
 		Tree_Mesh_Object.EnsureVisible(hSelected);
 	}
-	//else // 똑같은 아이템을 다시 눌렀을 시.
-	//{
-	//	CString	pathSelected;
-	//	HTREEITEM hParentItem = hSelected;
-	//}
-	UpdateData(FALSE);
 
+	UpdateData(FALSE);
 
 	*pResult = 0;
 }
@@ -283,14 +284,61 @@ void CMeshTab::OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult)
 void CMeshTab::OnNMDblclkTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-
-	HTREEITEM	Root = nullptr;
+	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+	
+	HTREEITEM	hChild1 = nullptr, hChild2 = nullptr;
+	CString		ItemName = L"";
 
 	if (NULL == Tree_Mesh_StaticObj.GetRootItem())
 		Root = Tree_Mesh_StaticObj.InsertItem(TEXT("Static_Mesh"), 0, 0, TVI_ROOT, TVI_LAST);
 
-	if(NOERROR == Add_StaticObject())
-		Tree_Mesh_StaticObj.InsertItem(strObjectName, 0, 0, Root, TVI_LAST);
+	if (NOERROR == Add_StaticObject())
+	{
+		auto iter = find_if(mapTreeItem.begin(), mapTreeItem.end(), CFinder_Tag(strObjectName));
+
+		if (iter == mapTreeItem.end())
+		{
+			CString ObjectNameTemp1 = strObjectName;
+			CString ItemNum;
+			int iItemNum = 1;
+
+			ItemNum.Format(_T(" [%d]"), iItemNum);
+
+			ObjectNameTemp1 += ItemNum;
+
+			hChild1 = Tree_Mesh_StaticObj.InsertItem(strObjectName, 0, 0, Root, TVI_LAST);
+			Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp1, 0, 0, hChild1, TVI_LAST);
+
+			mapTreeItem.emplace(strObjectName, hChild1);
+
+			strObjectName = _T("");
+			ObjectNameTemp1 = _T("");
+			ItemNum = _T("");
+		}
+		else
+		{
+			auto iter = find_if(mapTreeItem.begin(), mapTreeItem.end(), CFinder_Tag(strObjectName));
+			
+			if (iter != mapTreeItem.end())
+			{
+				CString ObjectNameTemp2 = strObjectName;
+				CString ItemNum;
+				CObject_Manager* pObjectManager = CObject_Manager::GetInstance();
+
+				int iItemNum = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().size();
+
+				ItemNum.Format(_T(" [%d]"), iItemNum);
+
+				ObjectNameTemp2 += ItemNum;
+
+				Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp2, 0, 0, iter->second, TVI_LAST);
+
+				strLayerTag = _T("");
+				ObjectNameTemp2 = _T("");
+				ItemNum = _T("");
+			}
+		}
+	}
 
 	*pResult = 0;
 }
@@ -300,7 +348,6 @@ void CMeshTab::OnTree_Mesh_StaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	
-
 
 	*pResult = 0;
 }

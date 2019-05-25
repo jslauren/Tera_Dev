@@ -40,8 +40,9 @@ STDMETHODIMP CHierarchyLoader::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDA
 	LPD3DXMESH pMesh = pMeshData->pMesh;
 	Safe_AddRef(pMesh);
 
-	pNewMeshContainer->pAdjacency = new _ulong[pMesh->GetNumFaces() * 3];
-	memcpy(pNewMeshContainer->pAdjacency, pAdjacency, sizeof(_ulong) * pMesh->GetNumFaces() * 3);
+	_ulong num = pMesh->GetNumFaces() * 3;
+	pNewMeshContainer->pAdjacency = new _ulong[num];
+	memcpy(pNewMeshContainer->pAdjacency, pAdjacency, sizeof(_ulong) * num);
 
 	_ulong	dwFVF = pMesh->GetFVF();
 
@@ -87,13 +88,15 @@ STDMETHODIMP CHierarchyLoader::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDA
 			if (FAILED(D3DXCreateTextureFromFile(m_pGraphic_Device, szFullPath, &pNewMeshContainer->pMeshTexture[i].pTextures[MESHTEXTURE::TYPE_DIFFUSE])))
 				return E_FAIL;
 
-			// For.NormalTexture
-			Change_TextureFileName(szFullPath, L'N');
-			D3DXCreateTextureFromFile(m_pGraphic_Device, szFullPath, &pNewMeshContainer->pMeshTexture[i].pTextures[MESHTEXTURE::TYPE_NORMAL]);
+			// 기존 파일의 이름을 바꿔버린당께?? 조취가 필요하것어...
 
-			// For.SpecularTexture
-			Change_TextureFileName(szFullPath, L'S');
-			D3DXCreateTextureFromFile(m_pGraphic_Device, szFullPath, &pNewMeshContainer->pMeshTexture[i].pTextures[MESHTEXTURE::TYPE_SPECULAR]);
+			//// For.NormalTexture
+			//Change_TextureFileName(szFullPath, L'N');
+			//D3DXCreateTextureFromFile(m_pGraphic_Device, szFullPath, &pNewMeshContainer->pMeshTexture[i].pTextures[MESHTEXTURE::TYPE_NORMAL]);
+
+			//// For.SpecularTexture
+			//Change_TextureFileName(szFullPath, L'S');
+			//D3DXCreateTextureFromFile(m_pGraphic_Device, szFullPath, &pNewMeshContainer->pMeshTexture[i].pTextures[MESHTEXTURE::TYPE_SPECULAR]);
 
 		}
 	}
@@ -125,11 +128,49 @@ STDMETHODIMP CHierarchyLoader::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDA
 
 STDMETHODIMP CHierarchyLoader::DestroyFrame(LPD3DXFRAME pFrameToFree)
 {
+	Safe_Delete_Array(pFrameToFree->Name);
+
+	if (nullptr != pFrameToFree->pMeshContainer)
+		DestroyMeshContainer(pFrameToFree->pMeshContainer);
+
+	if (nullptr != pFrameToFree->pFrameSibling)
+		DestroyFrame(pFrameToFree->pFrameSibling);
+
+	if (nullptr != pFrameToFree->pFrameFirstChild)
+		DestroyFrame(pFrameToFree->pFrameFirstChild);
+
+	Safe_Delete(pFrameToFree);
+
 	return NOERROR;
 }
 
 STDMETHODIMP CHierarchyLoader::DestroyMeshContainer(LPD3DXMESHCONTAINER pMeshContainerToFree)
 {
+	PD3DXMESHCONTAINER_DERIVED	pMeshContainer = (PD3DXMESHCONTAINER_DERIVED)pMeshContainerToFree;
+
+	_ulong		dwRefCnt = 0;
+
+	Safe_Delete_Array(pMeshContainer->Name);
+	dwRefCnt = Safe_Release(pMeshContainer->MeshData.pMesh);
+	Safe_Delete_Array(pMeshContainer->pMaterials);
+	Safe_Delete_Array(pMeshContainer->pAdjacency);
+	dwRefCnt = Safe_Release(pMeshContainer->pSkinInfo);
+	dwRefCnt = Safe_Release(pMeshContainer->pOriginalMesh);
+
+	for (size_t i = 0; i < pMeshContainer->NumMaterials; ++i)
+	{
+		// 나중에 TYPE_END로 변경해줘야함!!!!!
+		for (size_t j = 0; j < MESHTEXTURE::TYPE_NORMAL; ++j)
+			dwRefCnt = Safe_Release(pMeshContainer->pMeshTexture[i].pTextures[j]);
+	}
+
+	Safe_Delete_Array(pMeshContainer->pMeshTexture);
+	Safe_Delete_Array(pMeshContainer->pOffsetMatrices);
+	Safe_Delete_Array(pMeshContainer->pRenderingMatrices);
+	Safe_Delete_Array(pMeshContainer->ppCombinedTransformationMatrices);
+
+	Safe_Delete(pMeshContainerToFree);
+
 	return NOERROR;
 }
 
@@ -201,4 +242,5 @@ CHierarchyLoader * CHierarchyLoader::Create(LPDIRECT3DDEVICE9 pGraphic_Device, c
 
 void CHierarchyLoader::Free()
 {
+	Safe_Release(m_pGraphic_Device);
 }

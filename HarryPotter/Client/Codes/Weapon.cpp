@@ -1,24 +1,23 @@
 #include "stdafx.h"
-#include "..\Headers\Monster.h"
+#include "..\Headers\Weapon.h"
 #include "Object_Manager.h"
 #include "Light_Manager.h"
 
 _USING(Client)
 
-CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphic_Device)
+CWeapon::CWeapon(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
 	, m_fFrame(0.f)
 {
 }
 
-CMonster::CMonster(const CMonster & rhs)
+CWeapon::CWeapon(const CWeapon & rhs)
 	: CGameObject(rhs)
 	, m_fFrame(rhs.m_fFrame)
 {
 }
 
-// 원본객체에 필요한 데이터를 셋팅한다.
-HRESULT CMonster::Ready_GameObject_Prototype()
+HRESULT CWeapon::Ready_GameObject_Prototype()
 {
 	// 파일입출력을 통해 객체의 정보를 셋팅한다.
 	if (FAILED(CGameObject::Ready_GameObject_Prototype()))
@@ -27,22 +26,55 @@ HRESULT CMonster::Ready_GameObject_Prototype()
 	return NOERROR;
 }
 
-// 실제 씬에서 사용할 객체가 호출하는 함수.
-// 원본객체 복제외에도 추가적인 셋팅이필요하면 여기서 셋팅해라.
-HRESULT CMonster::Ready_GameObject(void* pArg)
+HRESULT CWeapon::Ready_GameObject(void * pArg)
 {
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(0.01f, 0.01f, 0.01f);
+	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
+	if (nullptr == pObject_Manager)
+		return E_FAIL;
 
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(rand() % 10 + 5, 0.f, rand() % 10 + 5));
-	m_pMeshCom->SetUp_AnimationSet(rand() % 10);
+	Safe_AddRef(pObject_Manager);
+
+	CMesh_Dynamic* pPlayerMeshCom = (CMesh_Dynamic*)pObject_Manager->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Mesh");
+	if (nullptr == pPlayerMeshCom)
+		return E_FAIL;
+
+	Safe_AddRef(pPlayerMeshCom);
+
+
+	m_pBoneMatrix = &(pPlayerMeshCom->Get_FrameDesc("Body_rFingerMidTop")->CombinedTransformationMatrix);
+	if (nullptr == m_pBoneMatrix)
+		return E_FAIL;
+
+	Safe_Release(pPlayerMeshCom);
+
+
+	CTransform* pPlayerTransform = (CTransform*)pObject_Manager->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Transform");
+	if (nullptr == pPlayerTransform)
+		return E_FAIL;
+
+	Safe_AddRef(pPlayerTransform);
+
+
+	m_pParentMatrix = pPlayerTransform->Get_WorldMatrixPointer();
+	if (nullptr == m_pParentMatrix)
+		return E_FAIL;
+
+	Safe_Release(pPlayerTransform);
+
+	Safe_Release(pObject_Manager);
+
+	// m_pTransformCom->Set_Scaling(0.01f, 0.01f, 0.01f);
+	// m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(rand() % 10 + 5, 0.f, rand() % 10 + 5));
+
+	m_pTransformCom->Set_Angle_Axis(_vec3(1.f, 0.f, 0.f),D3DXToRadian(300.0f));
 
 	return NOERROR;
 }
 
-_int CMonster::Update_GameObject(const _float & fTimeDelta)
+_int CWeapon::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
@@ -50,7 +82,7 @@ _int CMonster::Update_GameObject(const _float & fTimeDelta)
 	return _int();
 }
 
-_int CMonster::LateUpdate_GameObject(const _float & fTimeDelta)
+_int CWeapon::LateUpdate_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pRendererCom)
 		return -1;
@@ -68,15 +100,13 @@ _int CMonster::LateUpdate_GameObject(const _float & fTimeDelta)
 	return _int();
 }
 
-HRESULT CMonster::Render_GameObject()
+HRESULT CWeapon::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pTransformCom ||
 		nullptr == m_pMeshCom ||
 		nullptr == m_pTextureCom)
 		return E_FAIL;
-
-	m_pMeshCom->Play_Animation(m_fTimeDelta);
 
 	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
 	if (nullptr == pEffect)
@@ -89,27 +119,20 @@ HRESULT CMonster::Render_GameObject()
 
 	pEffect->Begin(nullptr, 0);
 
-
-	for (size_t i = 0; i < 1; ++i)
+	for (size_t i = 0; i < m_pMeshCom->Get_NumMaterials(); ++i)
 	{
-		if (FAILED(m_pMeshCom->Update_SkinnedMesh(i)))
-			break;
+		if (FAILED(m_pMeshCom->SetTexture_OnShader(pEffect, i, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+			return E_FAIL;
 
-		for (size_t j = 0; j < m_pMeshCom->Get_NumSubSet(i); ++j)
-		{
-			if (FAILED(m_pMeshCom->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
-				return E_FAIL;
+		pEffect->CommitChanges();
 
-			pEffect->CommitChanges();
+		pEffect->BeginPass(0);
 
-			pEffect->BeginPass(0);
+		m_pMeshCom->Render_Mesh(i);
 
-			m_pMeshCom->Render_Mesh(i, j);
-
-			pEffect->EndPass();
-		}
+		pEffect->EndPass();
 	}
-
+	
 	pEffect->End();
 
 	Safe_Release(pEffect);
@@ -117,14 +140,14 @@ HRESULT CMonster::Render_GameObject()
 	return NOERROR;
 }
 
-HRESULT CMonster::Add_Component()
+HRESULT CWeapon::Add_Component()
 {
 	// For.Com_Transform
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
 	// For.Com_Mesh
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Mesh_Monster", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Mesh_Weapon", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
 		return E_FAIL;
 
 	// For.Com_Renderer
@@ -138,11 +161,11 @@ HRESULT CMonster::Add_Component()
 	// For.Com_Shader
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
-	
+
 	return NOERROR;
 }
 
-HRESULT CMonster::SetUp_HeightOnTerrain()
+HRESULT CWeapon::SetUp_HeightOnTerrain()
 {
 	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
 
@@ -163,39 +186,16 @@ HRESULT CMonster::SetUp_HeightOnTerrain()
 	return NOERROR;
 }
 
-HRESULT CMonster::SetUp_BillBoard()
-{
-	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
-
-	if (nullptr == pObject_Manager)
-		return E_FAIL;
-	pObject_Manager->AddRef();
-
-	CTransform* pCamTransformCom = (CTransform*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_Camera", L"Com_Transform", 0);
-	if (nullptr == pCamTransformCom)
-		return E_FAIL;
-
-	// 카메라의 월드행렬 == 뷰스페이스 변환행렬 역행렬
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_RIGHT
-		, pCamTransformCom->Get_StateInfo(CTransform::STATE_RIGHT));
-	//m_pTransformCom->Set_StateInfo(CTransform::STATE_UP
-	//	, pCamTransformCom->Get_StateInfo(CTransform::STATE_UP));
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_LOOK
-		, pCamTransformCom->Get_StateInfo(CTransform::STATE_LOOK));
-
-	Safe_Release(pObject_Manager);
-
-	return NOERROR;
-}
-
-HRESULT CMonster::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
+HRESULT CWeapon::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 {
 	if (nullptr == pEffect)
 		return E_FAIL;
 
 	pEffect->AddRef();
 
-	pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
+	_matrix		matWorld = *m_pTransformCom->Get_WorldMatrixPointer() * *m_pBoneMatrix * *m_pParentMatrix;
+
+	pEffect->SetMatrix("g_matWorld", &matWorld);
 	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
 	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
 
@@ -226,38 +226,32 @@ HRESULT CMonster::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	return NOERROR;
 }
 
-
-// 원본객체를 생성한다.
-CMonster * CMonster::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CWeapon * CWeapon::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-	CMonster* pInstance = new CMonster(pGraphic_Device);
+	CWeapon* pInstance = new CWeapon(pGraphic_Device);
 
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
-		_MSGBOX("CMonster Created Failed");
+		_MSGBOX("CWeapon Created Failed");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-// this? : 
-// 1.멤버함수안에 존재. 
-// 2.멤버함수는 객체로부터 호출(객체.멤버함수(), 객체주소->멤버함수())
-// 3.멤버함수안에 존재하는 this는 멤버함수의 호출을 가능하게한 객체의 주소를 의미한다.
-CGameObject * CMonster::Clone(void* pArg)
+CGameObject * CWeapon::Clone(void * pArg)
 {
-	CMonster* pInstance = new CMonster(*this);
+	CWeapon* pInstance = new CWeapon(*this);
 
 	if (FAILED(pInstance->Ready_GameObject(pArg)))
 	{
-		_MSGBOX("CMonster Created Failed");
+		_MSGBOX("CWeapon Created Failed");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CMonster::Free()
+void CWeapon::Free()
 {
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);

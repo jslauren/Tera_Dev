@@ -47,12 +47,14 @@ public:
 	CTreeCtrl Tree_Mesh_StaticObj;
 
 private:
+	HTREEITEM Root = nullptr;
 	HTREEITEM SelectedItem = nullptr;
 	CString	  strLayerTag;
 	CString	  strComponentPrototypeTag;
 	CString	  strObjectName;
 	CString	  strXfileName;
 	TCHAR	  szFullPathForAdd[MAX_PATH] = L"";
+	map<CString, HTREEITEM>	mapTreeItem;
 private:
 	void	  InitTreeCtrl_Object();
 	HRESULT   Add_StaticObject();

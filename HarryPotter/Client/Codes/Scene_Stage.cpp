@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Monster.h"
 #include "SkyBox.h"
+#include "Weapon.h"
 #include "Light_Manager.h"
 
 _USING(Client)
@@ -154,8 +155,17 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 		return E_FAIL;
 
 	// For.Component_Mesh_Player
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Player", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Sylva/", L"Sylva.x"))))
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Player", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Hermione/", L"Hermione.x"))))
 		return E_FAIL;
+
+	// For.Component_Mesh_Weapon
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Weapon", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Wand/", L"Wand.x"))))
+		return E_FAIL;
+
+	// For.Component_Mesh_Monster
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Monster", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Juliet/", L"Player.x"))))
+		return E_FAIL;
+
 
 	return NOERROR;
 }
@@ -178,6 +188,10 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Player", CPlayer::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_Weapon
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Weapon", CWeapon::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	// For.GameObject_Monster
 	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Monster", CMonster::Create(m_pGraphic_Device))))
 		return E_FAIL;
@@ -189,6 +203,10 @@ HRESULT CScene_Stage::Ready_Layer_Player(const _tchar * pLayerTag)
 {
 	// For.Player
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Player", SCENE_STATIC, pLayerTag)))
+		return E_FAIL;
+
+	// For.Weapon
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Weapon", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -218,7 +236,7 @@ HRESULT CScene_Stage::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 HRESULT CScene_Stage::Ready_Layer_Monster(const _tchar * pLayerTag)
 {
-	for (size_t i = 0; i < 20; ++i)
+	for (size_t i = 0; i < 3; ++i)
 	{
 		// For.Monster
 		if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Monster", SCENE_STAGE, pLayerTag)))

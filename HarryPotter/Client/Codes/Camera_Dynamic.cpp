@@ -53,17 +53,20 @@ _int CCamera_Dynamic::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pInput_Device)
 		return -1;
 
-	if (GetKeyState('W') & 0x8000)
-		m_pTransformCom->Move(0, 10.f, fTimeDelta);
+	if (GetKeyState(VK_LSHIFT) & 0x8000)
+	{
+		if (GetKeyState('W') & 0x8000)
+			m_pTransformCom->Move(0, 10.f, fTimeDelta);
 
-	if (GetKeyState('S') & 0x8000)
-		m_pTransformCom->Move(1, 10.f, fTimeDelta);
+		if (GetKeyState('S') & 0x8000)
+			m_pTransformCom->Move(1, 10.f, fTimeDelta);
 
-	if (GetKeyState('A') & 0x8000)
-		m_pTransformCom->Move(2, 10.f, fTimeDelta);
+		if (GetKeyState('A') & 0x8000)
+			m_pTransformCom->Move(2, 10.f, fTimeDelta);
 
-	if (GetKeyState('D') & 0x8000)
-		m_pTransformCom->Move(3, 10.f, fTimeDelta);
+		if (GetKeyState('D') & 0x8000)
+			m_pTransformCom->Move(3, 10.f, fTimeDelta);
+	}
 
 	_long			dwMouseMove = 0;
 
