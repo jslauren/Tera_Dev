@@ -42,6 +42,7 @@ const unsigned int g_iWinCY = 900;
 enum SCENEID { SCENE_STATIC, SCENE_TERRAIN, SCENE_MESH, SCENE_CAMERA, SCENE_EFFECT, SCENE_PROTO, SCENE_END };
 
 extern HWND g_hWnd;
+extern HWND g_WinhWnd;
 //extern HINSTANCE g_hInst;
 
 typedef struct tagTexturePath

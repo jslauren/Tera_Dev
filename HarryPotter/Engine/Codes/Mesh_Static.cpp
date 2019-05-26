@@ -85,13 +85,13 @@ HRESULT CMesh_Static::Ready_Mesh_Static(const _tchar * pFilePath, const _tchar *
 		if (FAILED(D3DXCreateTextureFromFile(m_pGraphic_Device, szFullPath, &m_pMeshTexture[i].pTextures[MESHTEXTURE::TYPE_DIFFUSE])))
 			return E_FAIL;
 
-		// For.NormalMap
-		Change_TextureFileName(szFullPath, L'N');
-		D3DXCreateTextureFromFile(m_pGraphic_Device, szFullPath, &m_pMeshTexture[i].pTextures[MESHTEXTURE::TYPE_NORMAL]);
+		//// For.NormalMap
+		//Change_TextureFileName(szFullPath, L'N');
+		//D3DXCreateTextureFromFile(m_pGraphic_Device, szFullPath, &m_pMeshTexture[i].pTextures[MESHTEXTURE::TYPE_NORMAL]);
 
-		// For.SpecularMap
-		Change_TextureFileName(szFullPath, L'S');
-		D3DXCreateTextureFromFile(m_pGraphic_Device, szFullPath, &m_pMeshTexture[i].pTextures[MESHTEXTURE::TYPE_SPECULAR]);
+		//// For.SpecularMap
+		//Change_TextureFileName(szFullPath, L'S');
+		//D3DXCreateTextureFromFile(m_pGraphic_Device, szFullPath, &m_pMeshTexture[i].pTextures[MESHTEXTURE::TYPE_SPECULAR]);
 	}
 
 	return NOERROR;

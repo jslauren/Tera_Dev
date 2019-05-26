@@ -32,10 +32,13 @@ public: // Setter
 
 public:	// Getter
 	CTransform*		GetTransformCom() { return m_pTransformCom; }
+	CBuffer_Terrain_Tool* GetBufferCom() { return m_pBufferCom; }
 
 public:
 	HRESULT	Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval, _float _fDetail);
 	HRESULT	Reset_Texture(_tchar* pFilePath);
+	_bool	Picking(HWND hWnd, CTransform* pTransform, _vec3* pOut);
+
 private:
 	CTransform*				m_pTransformCom = nullptr;
 	CBuffer_Terrain_Tool*	m_pBufferCom = nullptr;

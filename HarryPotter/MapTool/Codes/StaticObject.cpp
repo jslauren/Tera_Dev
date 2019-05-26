@@ -112,9 +112,9 @@ void CStaticObject::SetState(_vec3 vPos, _vec3 vScale)
 {
 	m_vPosition = vPos;
 
-	m_pTransformCom->Set_Scaling(vPos.x, vPos.y, vPos.z);
+	m_pTransformCom->Set_Scaling(vScale.x, vScale.y, vScale.z);
 
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &vScale);
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &vPos);
 
 }
 

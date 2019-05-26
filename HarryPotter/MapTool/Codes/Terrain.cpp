@@ -3,6 +3,7 @@
 #include "EventManager.h"
 #include "Layer.h"
 #include "Light_Manager.h"
+#include "DataManager.h"
 
 CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
@@ -240,6 +241,80 @@ HRESULT CTerrain::Reset_Texture(_tchar* pFilePath)
 	m_pTextureCom->Reset_Texture(CTexture_Tool::TYPE_GENERAL, pFilePath, 1);
 	
 	return NOERROR;
+}
+
+_bool CTerrain::Picking(HWND hWnd, CTransform * pTransform, _vec3 * pOut)
+{
+	// 뷰포트 영역 (윈도우좌표영역) 상의 마우스 위치 = 로컬위치 * 월드행렬 * 뷰행렬 * 투영행렬 / z * 뷰포트 변환
+
+	// 뷰포트 영역 (윈도우좌표영역) 상의 마우스 위치를 구한다.
+	POINT		ptMouse;
+	GetCursorPos(&ptMouse);
+	ScreenToClient(hWnd, &ptMouse);
+
+	D3DVIEWPORT9		ViewPort;
+	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+
+	m_pGraphic_Device->GetViewport(&ViewPort);
+
+	_vec3		vMouse;
+
+	// 투영스페이스 상의 마우스 위치.
+	//vMouse.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
+	//vMouse.y = ptMouse.y / (ViewPort.Height * -0.5f) + 1.f;
+	vMouse.x = ptMouse.x / (1300 * 0.5f) - 1.f;
+	vMouse.y = ptMouse.y / (881 * -0.5f) + 1.f;
+	vMouse.z = 0.f;
+
+	// 뷰스페이스 영역상의 마우스 위치.
+	_matrix			matProj;
+	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &matProj);
+	D3DXMatrixInverse(&matProj, nullptr, &matProj);
+
+	D3DXVec3TransformCoord(&vMouse, &vMouse, &matProj);
+
+	_vec3			vRay, vPivot;
+
+	vPivot = _vec3(0.f, 0.f, 0.f);
+	vRay = vMouse - vPivot;
+
+	// 월드스페이스 영역상의 마우스 위치.
+	_matrix			matView;
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &matView);
+	D3DXMatrixInverse(&matView, nullptr, &matView);
+
+	D3DXVec3TransformCoord(&vPivot, &vPivot, &matView);
+	D3DXVec3TransformNormal(&vRay, &vRay, &matView);
+
+	// 지형점정`S 로컬스페이스영역상의 마우스 위치.
+	_matrix			matWorld = *pTransform->Get_WorldMatrixPointer();
+	D3DXMatrixInverse(&matWorld, nullptr, &matWorld);
+
+	D3DXVec3TransformCoord(&vPivot, &vPivot, &matWorld);
+	D3DXVec3TransformNormal(&vRay, &vRay, &matWorld);
+
+	D3DXVec3Normalize(&vRay, &vRay);
+
+	_float		fU, fV, fDist;
+
+	CDataManager*	m_pDataManager = CDataManager::GetInstance();
+
+	for (size_t i = 0; i < m_pDataManager->m_iNumPolygons; ++i)
+	{
+		if (D3DFMT_INDEX16 == m_pDataManager->m_Format)
+		{
+			INDEX16* pIndices = (INDEX16*)m_pDataManager->m_pIndices;
+
+			if (TRUE == D3DXIntersectTri(&m_pDataManager->m_pPositions[pIndices[i]._1], &m_pDataManager->m_pPositions[pIndices[i]._2], &m_pDataManager->m_pPositions[pIndices[i]._3], &vPivot, &vRay, &fU, &fV, &fDist))
+			{
+				*pOut = *D3DXVec3Normalize(&vRay, &vRay) * fDist + vPivot;
+
+				return true;
+			}
+		}
+	}
+
+	return _bool(false);
 }
 
 // 원본객체를 생성한다.

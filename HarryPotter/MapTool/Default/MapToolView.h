@@ -8,6 +8,7 @@
 _BEGIN(Engine)
 class CRenderer;
 class CManagement;
+class CBase;
 _END
 
 class CViewManager;

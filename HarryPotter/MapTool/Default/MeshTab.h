@@ -69,9 +69,10 @@ public:
 
 	afx_msg void OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnTree_Mesh_StaticObj(NMHDR *pNMHDR, LRESULT *pResult);
-
-	afx_msg void OnNMDblclkTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnNMDblclkTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult);
+	
+	afx_msg void OnNMClickTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMRClickTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMRClickTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult);
 
 	afx_msg void OnSpin_Scaling_X(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSpin_Scaling_Y(NMHDR *pNMHDR, LRESULT *pResult);
@@ -95,11 +96,17 @@ public:
 	float m_fPosY;
 	float m_fPosZ;
 
+	CString	strLayerTag;
+
+public:
+	HRESULT		Add_StaticObject();
+	HRESULT		MakeItemForTree();
+
 private:
 	HTREEITEM		Root = nullptr;
 	HTREEITEM		SelectedObjectItem = nullptr;
 	HTREEITEM		SelectedStaticObject = nullptr;
-	CString			strLayerTag;
+	TCHAR			szFullPath[MAX_PATH] = L"";
 	CString			strComponentPrototypeTag;
 	CString			strObjectName;
 	CString			strXfileName;
@@ -107,10 +114,10 @@ private:
 	CGameObject*	pSelectedObj = nullptr;
 	_bool			bDblClkTreeStaticObj = false;
 	map<CString, HTREEITEM>	mapTreeItem;
+	map<CString, CString> mapStaticObj_Com_Prototype;
 
 private:
-	void	  InitTreeCtrl_Object();
-	HRESULT   Add_StaticObject();
-
+	void		InitTreeCtrl_Object();
+	HRESULT		MakeArgVariableForStaticObj();
 
 };

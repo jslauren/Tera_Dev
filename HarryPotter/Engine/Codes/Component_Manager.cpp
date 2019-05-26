@@ -30,52 +30,13 @@ HRESULT CComponent_Manager::Add_Component_Prototype(const _uint & iSceneIdx, con
 	if (nullptr != pComponent)
 		return E_FAIL;
 
-	m_pmapComponent[iSceneIdx].insert(MAPCOMPONENT::value_type(pComponentTag, pInComponent));
+	_tchar* dynamicArray = new _tchar[lstrlen(pComponentTag) + 1];
+	lstrcpy(dynamicArray, pComponentTag);
+
+	m_pmapComponent[iSceneIdx].insert(MAPCOMPONENT::value_type(dynamicArray, pInComponent));
 
 	return NOERROR;
 }
-//
-//HRESULT CComponent_Manager::Reset_Component_Prototype(const _uint & iSceneIdx, const _tchar * pComponentTag, CComponent * pInComponent)
-//{
-//	if (m_iMaxNumScene <= iSceneIdx ||
-//		nullptr == m_pmapComponent ||
-//		nullptr == pInComponent)
-//		return E_FAIL;
-//
-//
-//	auto	iter = find_if(m_pmapComponent[iSceneIdx].begin(), m_pmapComponent[iSceneIdx].end(), CFinder_Tag(pComponentTag));
-//
-//	if (iter == m_pmapComponent[iSceneIdx].end())
-//		return E_FAIL;
-//
-//	Safe_Release((*iter).second);
-//	m_pmapComponent[iSceneIdx].erase(iter);
-//
-//	//CComponent*	pComponent = Find_Component(iSceneIdx, pComponentTag);
-//
-//	//if (nullptr == pComponent)
-//	//	return E_FAIL;
-//
-//	//for (auto iter = m_pmapComponent[iSceneIdx].begin(); iter != m_pmapComponent[iSceneIdx].end(); )
-//	//{
-//	//	if ((*iter).second == pComponent)
-//	//	{
-//	//		Safe_Release((*iter).second);
-//	//		iter = m_pmapComponent[iSceneIdx].erase(iter);
-//	//		break;
-//	//	}
-//	//	else
-//	//		++iter;
-//	//}
-//
-//	if (FAILED(Add_Component_Prototype(iSceneIdx, pComponentTag, pInComponent)))
-//		return E_FAIL;
-//
-//	if (FAILED(Clone_Component(iSceneIdx, pComponentTag)))
-//		return E_FAIL;
-//
-//	return NOERROR;
-//}
 
 HRESULT CComponent_Manager::Clear_Component_Prototype(const _uint & iSceneIdx)
 {
@@ -126,6 +87,8 @@ void CComponent_Manager::Free()
 	{
 		for (auto& Pair : m_pmapComponent[i])
 		{
+			_tchar* pTempArray = const_cast<_tchar*>(Pair.first);
+			Safe_Delete_Array(pTempArray);
 			Safe_Release(Pair.second);
 		}
 		m_pmapComponent[i].clear();

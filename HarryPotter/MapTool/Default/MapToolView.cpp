@@ -18,9 +18,15 @@
 #include "Object_Manager.h"
 #include "EventManagerTool.h"
 #include "EventManager.h"
+#include "Layer.h"
+#include "DataManager.h"
+#include "Buffer_Terrain_Tool.h"
+
 
 // Object
 #include "Camera_Dynamic.h"
+#include "StaticObject.h"
+#include "Terrain.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -28,6 +34,7 @@
 
 // CMapToolView
 HWND g_hWnd;
+HWND g_WinhWnd;
 IMPLEMENT_DYNCREATE(CMapToolView, CView)
 
 BEGIN_MESSAGE_MAP(CMapToolView, CView)
@@ -52,14 +59,16 @@ CMapToolView::CMapToolView()
 
 CMapToolView::~CMapToolView()
 {
+	CDataManager::GetInstance()->DestroyInstance();
 	CEventManager::GetInstance()->DestroyInstance();
 	CEventManagerTool::GetInstance()->DestroyInstance();
 	CViewManager::GetInstance()->DestroyInstance();
-	//Safe_Release(m_pDataManager);
+
 	Safe_Release(m_pViewManager);
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pManagement);
 	Safe_Release(m_pGraphicDevice);
+
 	CManagement::Release_Engine();
 }
 
@@ -147,16 +156,18 @@ HRESULT CMapToolView::InitDefaultSetting(CGraphic_Device::WINMODE eType, const _
 	if (nullptr == m_pManagement)
 		return E_FAIL;
 
+	HWND	hWnd;
+	hWnd = AfxGetApp()->m_pMainWnd->m_hWnd;
+
+	g_WinhWnd = m_hWnd;
+
 	// For.Graphic_Device
-	if (FAILED(CGraphic_Device::GetInstance()->Ready_Graphic_Device(g_hWnd, eType, iWinCX, iWinCY, &m_pGraphicDevice)))
+	if (FAILED(CGraphic_Device::GetInstance()->Ready_Graphic_Device(g_WinhWnd, eType, iWinCX, iWinCY, &m_pGraphicDevice)))
 		return E_FAIL;
 
 	// For.Input_Device //
 	HINSTANCE hInst;
 	hInst = AfxGetInstanceHandle();
-
-	HWND	hWnd;
-	hWnd = AfxGetApp()->m_pMainWnd->m_hWnd;
 
 	if (FAILED(CInput_Device::GetInstance()->Ready_Input_Device(hInst, hWnd)))
 		return E_FAIL;
@@ -307,14 +318,34 @@ void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-	CView::OnLButtonDown(nFlags, point);
+	if (FAILED(m_pViewManager->m_pEditorView->m_Tab_Mesh.MakeItemForTree()))
+		return;
+
+	_vec3 vPos = { 0.f, 0.f, 0.f };
+
+	CLayer* pTerrainLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
+	CTerrain* pTerrain = dynamic_cast<CTerrain*>(pTerrainLayer->Get_ObjectList().back());
+
+	CTransform* pTransform = pTerrain->GetTransformCom();
+	CBuffer_Terrain_Tool* pBufferCom = pTerrain->GetBufferCom();
+
+	RECT	rcTemp;
+	GetClientRect(&rcTemp);
+	
+	pBufferCom->Picking(g_WinhWnd, pTransform, &vPos);
+
+	vPos.y = 0.f;
+
+	CLayer* pStaticObjLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, m_pViewManager->m_pEditorView->m_Tab_Mesh.strLayerTag);
+	dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->SetState(vPos, _vec3(1.f, 1.f, 1.f));
+
+ 	CView::OnLButtonDown(nFlags, point);
 }
 
 
 void CMapToolView::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
-
 	CView::OnRButtonDown(nFlags, point);
 }
 
