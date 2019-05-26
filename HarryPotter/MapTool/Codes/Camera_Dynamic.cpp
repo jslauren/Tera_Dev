@@ -1,12 +1,11 @@
 #include "stdafx.h"
 #include "..\Headers\Camera_Dynamic.h"
 #include "Input_Device.h"
-#include "ViewManager.h"
+#include "TerrainTab.h"
 
 CCamera_Dynamic::CCamera_Dynamic(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CCamera(pGraphic_Device)
 	, m_pInput_Device(CInput_Device::GetInstance())
-	, m_pViewManager(CViewManager::GetInstance())
 {
 	m_pInput_Device->AddRef();
 }

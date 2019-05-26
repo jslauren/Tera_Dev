@@ -7,7 +7,6 @@ class CTransform;
 class CInput_Device;
 _END
 
-class CViewManager;
 class CCamera_Dynamic final : public CCamera
 {
 private:
@@ -23,7 +22,6 @@ public:
 private:
 	CTransform*		m_pTransformCom = nullptr;
 	CInput_Device*	m_pInput_Device = nullptr;
-	CViewManager*	m_pViewManager = nullptr;
 private:
 	HRESULT			Add_Component();
 	HRESULT			SetUp_ViewMatrix();

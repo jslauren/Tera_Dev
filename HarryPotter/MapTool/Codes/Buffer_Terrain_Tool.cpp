@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Buffer_Terrain_Tool.h"
 #include "Transform.h"
+#include "DataManager.h"
 
 CBuffer_Terrain_Tool::CBuffer_Terrain_Tool(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CVIBuffer(pGraphic_Device)
@@ -77,6 +78,8 @@ HRESULT CBuffer_Terrain_Tool::Ready_VIBuffer()
 	memcpy(m_pIndices, pIndices, sizeof(INDEX16) * m_iNumPolygons);
 
 	m_pIB->Unlock();
+
+	CDataManager::GetInstance()->Set_Picking_Variable(m_Format, m_iNumPolygons, m_pPositions, m_pIndices);
 
 	return NOERROR;
 }
@@ -220,6 +223,8 @@ HRESULT CBuffer_Terrain_Tool::Ready_VIBuffer(const _tchar * pHeighitMapPath)
 
 	m_pIB->Unlock();
 
+	CDataManager::GetInstance()->Set_Picking_Variable(m_Format, m_iNumPolygons, m_pPositions, m_pIndices);
+
 	return NOERROR;
 }
 
@@ -352,8 +357,9 @@ HRESULT CBuffer_Terrain_Tool::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _f
 
 	m_pIB->Unlock();
 
-	return NOERROR;
+	CDataManager::GetInstance()->Set_Picking_Variable(m_Format, m_iNumPolygons, m_pPositions, m_pIndices);
 
+	return NOERROR;
 }
 
 void CBuffer_Terrain_Tool::ComputeNormal(_vec3* pVtx0, _vec3* pVtx1, _vec3* pVtx2, _vec3* pOut)

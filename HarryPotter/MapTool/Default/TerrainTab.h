@@ -84,13 +84,14 @@ public:
 	float m_fRotY;
 	float m_fRotZ;
 
-private:
+public:
 	// Terrain_Vertex_Variable
 	_int	m_iNumVtxX = 0;
 	_int	m_iNumVtxZ = 0;
 	_float	m_fInterval = 0;
 	_float	m_fDetail = 0;
 
+private:
 	// Terrain_TreeControl_Texture
 	map<CString, CImage*>		m_mapPngImage;
 	CString						strImagName;

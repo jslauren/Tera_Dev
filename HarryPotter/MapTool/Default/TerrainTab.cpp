@@ -8,12 +8,12 @@
 #include "afxdialogex.h"
 #include "SceneStatic.h"
 #include "Component_Manager.h"
-#include "EventManagerTool.h"
 #include "Object_Manager.h"
 #include "Layer.h"
 #include "Terrain.h"
 #include "FileManager.h"
 #include "ViewManager.h"
+#include "DataManager.h"
 
 // CTerrainTab 대화 상자입니다.
 
@@ -198,7 +198,6 @@ void CTerrainTab::OnBnClickedTerrain_Apply()
 
 	Vertex_Detail.GetWindowTextW(strValue);
 	m_fDetail = _ttof(strValue);
-
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
 	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->Reset_Terrain(m_iNumVtxX, m_iNumVtxZ, m_fInterval, m_fDetail);

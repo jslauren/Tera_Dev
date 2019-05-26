@@ -62,17 +62,17 @@ void CMeshTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SPIN12, Obj_Y_Position_Btn);
 	DDX_Control(pDX, IDC_SPIN13, Obj_Z_Position_Btn);
 	DDX_Text(pDX, IDC_EDIT5, m_fScalingX);
-	DDV_MinMaxFloat(pDX, m_fScalingX, 1, 100);
+	DDV_MinMaxFloat(pDX, m_fScalingX, 0.01, 100);
 	DDX_Text(pDX, IDC_EDIT6, m_fScalingY);
-	DDV_MinMaxFloat(pDX, m_fScalingY, 1, 100);
+	DDV_MinMaxFloat(pDX, m_fScalingY, 0.01, 100);
 	DDX_Text(pDX, IDC_EDIT7, m_fScalingZ);
-	DDV_MinMaxFloat(pDX, m_fScalingZ, 1, 100);
+	DDV_MinMaxFloat(pDX, m_fScalingZ, 0.01, 100);
 	DDX_Text(pDX, IDC_EDIT8, m_fRotX);
-	DDV_MinMaxFloat(pDX, m_fRotX, 0, 360);
+	DDV_MinMaxFloat(pDX, m_fRotX, -360, 360);
 	DDX_Text(pDX, IDC_EDIT9, m_fRotY);
-	DDV_MinMaxFloat(pDX, m_fRotY, 0, 360);
+	DDV_MinMaxFloat(pDX, m_fRotY, -360, 360);
 	DDX_Text(pDX, IDC_EDIT10, m_fRotZ);
-	DDV_MinMaxFloat(pDX, m_fRotZ, 0, 360);
+	DDV_MinMaxFloat(pDX, m_fRotZ, -360, 360);
 	DDX_Text(pDX, IDC_EDIT11, m_fPosX);
 	DDV_MinMaxFloat(pDX, m_fPosX, -10000, 10000);
 	DDX_Text(pDX, IDC_EDIT12, m_fPosY);
@@ -92,8 +92,6 @@ BEGIN_MESSAGE_MAP(CMeshTab, CDialogEx)
 	ON_BN_CLICKED(IDC_RADIO8, &CMeshTab::OnBnClickedSelected)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &CMeshTab::OnTree_Mesh_Object)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE3, &CMeshTab::OnTree_Mesh_StaticObj)
-	ON_NOTIFY(NM_DBLCLK, IDC_TREE1, &CMeshTab::OnNMDblclkTreeMeshObject)
-	ON_NOTIFY(NM_DBLCLK, IDC_TREE3, &CMeshTab::OnNMDblclkTreeStaticObj)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN5, &CMeshTab::OnSpin_Scaling_X)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN6, &CMeshTab::OnSpin_Scaling_Y)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN7, &CMeshTab::OnSpin_Scaling_Z)
@@ -103,6 +101,9 @@ BEGIN_MESSAGE_MAP(CMeshTab, CDialogEx)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN11, &CMeshTab::OnSpin_Position_X)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN12, &CMeshTab::OnSpin_Position_Y)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN13, &CMeshTab::OnSpin_Position_Z)
+	ON_NOTIFY(NM_CLICK, IDC_TREE1, &CMeshTab::OnNMClickTreeMeshObject)
+	ON_NOTIFY(NM_RCLICK, IDC_TREE1, &CMeshTab::OnNMRClickTreeMeshObject)
+	ON_NOTIFY(NM_RCLICK, IDC_TREE3, &CMeshTab::OnNMRClickTreeStaticObj)
 END_MESSAGE_MAP()
 
 BOOL CMeshTab::OnInitDialog()
@@ -122,22 +123,22 @@ BOOL CMeshTab::OnInitDialog()
 	// 리소스 뷰 다이얼로그에서 Ctrl+D를 눌러서,
 	// Edit Box와 Spin Control이 연속된 숫자를 가지게 셋팅하면 된다.
 	Obj_X_Scaling_Btn.SetPos(1.f);
-	Obj_X_Scaling_Btn.SetRange(100.f, 1.f);
+	Obj_X_Scaling_Btn.SetRange(100.f, 0.01f);
 
 	Obj_Y_Scaling_Btn.SetPos(1.f);
-	Obj_Y_Scaling_Btn.SetRange(100.f, 1.f);
+	Obj_Y_Scaling_Btn.SetRange(100.f, 0.01f);
 
 	Obj_Z_Scaling_Btn.SetPos(1.f);
-	Obj_Z_Scaling_Btn.SetRange(100.f, 1.f);
+	Obj_Z_Scaling_Btn.SetRange(100.f, 0.01f);
 
 	Obj_X_Rotation_Btn.SetPos(0.f);
-	Obj_X_Rotation_Btn.SetRange(360.f, 0.f);
+	Obj_X_Rotation_Btn.SetRange(360.f, -360.f);
 
 	Obj_Y_Rotation_Btn.SetPos(0.f);
-	Obj_Y_Rotation_Btn.SetRange(360.f, 0.f);
+	Obj_Y_Rotation_Btn.SetRange(360.f, -360.f);
 
 	Obj_Z_Rotation_Btn.SetPos(0.f);
-	Obj_Z_Rotation_Btn.SetRange(360.f, 0.f);
+	Obj_Z_Rotation_Btn.SetRange(360.f, -360.f);
 
 	Obj_X_Position_Btn.SetPos(0.f);
 	Obj_X_Position_Btn.SetRange(10000.f, -10000.f);
@@ -239,15 +240,112 @@ void CMeshTab::InitTreeCtrl_Object()
 	Tree_Mesh_Object.EnsureVisible(hItem);
 }
 
+HRESULT CMeshTab::MakeItemForTree()
+{
+	HTREEITEM	hChild1 = nullptr;
+
+	UpdateData(TRUE);
+
+	if (NULL == Tree_Mesh_StaticObj.GetRootItem())
+		Root = Tree_Mesh_StaticObj.InsertItem(TEXT("Static_Mesh"), 0, 0, TVI_ROOT, TVI_LAST);
+
+	if (NOERROR == Add_StaticObject())
+	{
+		auto iter = find_if(mapTreeItem.begin(), mapTreeItem.end(), CFinder_Tag(strObjectName));
+
+		if (iter == mapTreeItem.end())
+		{
+			CString ObjectNameTemp1 = strObjectName;
+			CString ItemNum;
+			int iItemNum = 1;
+
+			ItemNum.Format(_T(" [%d]"), iItemNum);
+
+			ObjectNameTemp1 += ItemNum;
+
+			hChild1 = Tree_Mesh_StaticObj.InsertItem(strObjectName, 0, 0, Root, TVI_LAST);
+			Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp1, 0, 0, hChild1, TVI_LAST);
+
+			mapTreeItem.emplace(strObjectName, hChild1);
+
+			strObjectName = _T("");
+			ObjectNameTemp1 = _T("");
+			ItemNum = _T("");
+		}
+		else
+		{
+			auto iter = find_if(mapTreeItem.begin(), mapTreeItem.end(), CFinder_Tag(strObjectName));
+
+			if (iter != mapTreeItem.end())
+			{
+				CString ObjectNameTemp2 = strObjectName;
+				CString ItemNum;
+				CObject_Manager* pObjectManager = CObject_Manager::GetInstance();
+
+				int iItemNum = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().size();
+
+				ItemNum.Format(_T(" [%d]"), iItemNum);
+
+				ObjectNameTemp2 += ItemNum;
+
+				Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp2, 0, 0, iter->second, TVI_LAST);
+
+				//strLayerTag = _T("");
+				ObjectNameTemp2 = _T("");
+				ItemNum = _T("");
+			}
+		}
+	}
+
+	UpdateData(FALSE);
+
+	return NOERROR;
+}
+
 HRESULT CMeshTab::Add_StaticObject()
 {
 	m_pScene = CViewManager::GetInstance()->m_pCurScene;
 
-	TCHAR		szFullPath[MAX_PATH] = L"";
+	if (FAILED(MakeArgVariableForStaticObj()))
+		return E_FAIL;	
+
+	// 컴포넌트 프로토 타입도 최초 한번만 생성해야 하므로..
+	// find_if 함수를 사용하여 strComponentPrototypeTag를 통해 iter를 검색해서,
+	auto iter = find_if(mapStaticObj_Com_Prototype.begin(), mapStaticObj_Com_Prototype.end(), CFinder_Tag(strComponentPrototypeTag));
+
+	// 검색이 안되었다면, 만들어진적이 없는 최초 생성이므로,
+	if (iter == mapStaticObj_Com_Prototype.end())
+	{
+		// 생성한다.
+		// Add_Component_Prototype에 해당한다. (원본객체)
+		if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object_Component_Prototype(strComponentPrototypeTag, szFullPath, strXfileName)))
+			return E_FAIL;
+
+		mapStaticObj_Com_Prototype.emplace(strComponentPrototypeTag, strXfileName);
+
+		strXfileName = _T("");
+	}
+	
+	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object(strLayerTag)))
+		return E_FAIL;
+
+	// Add_Component에 해당한다. (실 사용 객체)
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
+	dynamic_cast<CStaticObject*>(pLayer->Get_ObjectList().back())->Add_Component_Tool(strComponentPrototypeTag);
+
+	strComponentPrototypeTag = _T("");
+
+	return NOERROR;
+}
+
+HRESULT CMeshTab::MakeArgVariableForStaticObj()
+{
+	//TCHAR		szFullPath[MAX_PATH] = L"";
 	CString		pathSelected = L"";
 	HTREEITEM	hParentItem = SelectedObjectItem;
 
-	//lstrcpy((LPWSTR)pathSelected.operator LPCWSTR(), L"");
+	if (nullptr == SelectedObjectItem)
+		return E_FAIL;
 
 	while (TRUE)
 	{
@@ -265,14 +363,14 @@ HRESULT CMeshTab::Add_StaticObject()
 		{
 			pathSelected = Tree_Mesh_Object.GetItemText(hParentItem);
 			strLayerTag = pathSelected;
-			
+
+			strXfileName = L"";
 			strXfileName += strLayerTag;
-			//lstrcpy((LPWSTR)strXfileName.operator LPCWSTR(), strLayerTag);
 			pathSelected = L"/";
 		}
 
 		hParentItem = Tree_Mesh_Object.GetParentItem(hParentItem);
-		
+
 		if (hParentItem == NULL)
 			break;
 
@@ -280,10 +378,9 @@ HRESULT CMeshTab::Add_StaticObject()
 			pathSelected = _T("/") + pathSelected;
 	}
 
-	//ZeroMemory(szFullPath, sizeof(szFullPath));
 	StrCpyW(szFullPath, pathSelected);
 
-	//PathRemoveExtension((LPWSTR)strLayerTag.operator LPCWSTR());	// 확장자명을 잘라내는 함수
+	// 확장자명 자르기.
 	strLayerTag.TrimRight(L".X");
 	strLayerTag.TrimRight(L".x");
 
@@ -294,22 +391,6 @@ HRESULT CMeshTab::Add_StaticObject()
 
 	// LayerTag를 만들어 준다.
 	strLayerTag = _T("Layer_") + strLayerTag;
-
-
-	// Add_Component_Prototype에 해당한다. (원본객체)
-	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object_Component_Prototype(strComponentPrototypeTag, szFullPath, strXfileName)))
-		return E_FAIL;
-
-	strXfileName = _T("");
-
-	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object(strLayerTag)))
-		return E_FAIL;
-
-	// Add_Component에 해당한다. (실 사용 객체)
-	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
-	dynamic_cast<CStaticObject*>(pLayer->Get_ObjectList().back())->Add_Component_Tool(strComponentPrototypeTag);
-
-	strComponentPrototypeTag = _T("");
 
 	return NOERROR;
 }
@@ -365,63 +446,24 @@ void CMeshTab::OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-void CMeshTab::OnNMDblclkTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult)
+void CMeshTab::OnNMRClickTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	//UpdateData(TRUE);
+
+ 	MakeItemForTree();
+
+	// UpdateData(FALSE);
 	
-	HTREEITEM	hChild1 = nullptr, hChild2 = nullptr;
-	CString		ItemName = L"";
+	*pResult = 0;
+}
 
-	if (NULL == Tree_Mesh_StaticObj.GetRootItem())
-		Root = Tree_Mesh_StaticObj.InsertItem(TEXT("Static_Mesh"), 0, 0, TVI_ROOT, TVI_LAST);
+void CMeshTab::OnNMClickTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	if (NOERROR == Add_StaticObject())
-	{
-		auto iter = find_if(mapTreeItem.begin(), mapTreeItem.end(), CFinder_Tag(strObjectName));
-
-		if (iter == mapTreeItem.end())
-		{
-			CString ObjectNameTemp1 = strObjectName;
-			CString ItemNum;
-			int iItemNum = 1;
-
-			ItemNum.Format(_T(" [%d]"), iItemNum);
-
-			ObjectNameTemp1 += ItemNum;
-
-			hChild1 = Tree_Mesh_StaticObj.InsertItem(strObjectName, 0, 0, Root, TVI_LAST);
-			Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp1, 0, 0, hChild1, TVI_LAST);
-
-			mapTreeItem.emplace(strObjectName, hChild1);
-
-			strObjectName = _T("");
-			ObjectNameTemp1 = _T("");
-			ItemNum = _T("");
-		}
-		else
-		{
-			auto iter = find_if(mapTreeItem.begin(), mapTreeItem.end(), CFinder_Tag(strObjectName));
-			
-			if (iter != mapTreeItem.end())
-			{
-				CString ObjectNameTemp2 = strObjectName;
-				CString ItemNum;
-				CObject_Manager* pObjectManager = CObject_Manager::GetInstance();
-
-				int iItemNum = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().size();
-
-				ItemNum.Format(_T(" [%d]"), iItemNum);
-
-				ObjectNameTemp2 += ItemNum;
-
-				Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp2, 0, 0, iter->second, TVI_LAST);
-
-				strLayerTag = _T("");
-				ObjectNameTemp2 = _T("");
-				ItemNum = _T("");
-			}
-		}
-	}
+	MakeArgVariableForStaticObj();
 
 	*pResult = 0;
 }
@@ -439,7 +481,7 @@ void CMeshTab::OnTree_Mesh_StaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-void CMeshTab::OnNMDblclkTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult)
+void CMeshTab::OnNMRClickTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
@@ -489,7 +531,7 @@ void CMeshTab::OnNMDblclkTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 	m_fScalingZ = D3DXVec3Length(&vLook);
 
 	_vec3 vRotRadValue = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_RotRadValue();
-	
+
 	m_fRotX = D3DXToDegree(vRotRadValue.x);
 	m_fRotY = D3DXToDegree(vRotRadValue.y);
 	m_fRotZ = D3DXToDegree(vRotRadValue.z);
@@ -505,7 +547,6 @@ void CMeshTab::OnNMDblclkTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-
 void CMeshTab::OnSpin_Scaling_X(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
@@ -520,18 +561,18 @@ void CMeshTab::OnSpin_Scaling_X(NMHDR *pNMHDR, LRESULT *pResult)
 			if (GetKeyState('Z') & 0x8000)
 				m_fScalingX += 1.f;
 			else
-				m_fScalingX += 0.1f;
+				m_fScalingX += 0.01f;
 		}
 		else
 		{
 			if (GetKeyState('Z') & 0x8000)
 				m_fScalingX -= 1.f;
 			else
-				m_fScalingX -= 0.1f;
+				m_fScalingX -= 0.01f;
 		}
 
-		if (m_fScalingX <= 1.f)
-			m_fScalingX = 1.f;
+		if (m_fScalingX <= 0.01f)
+			m_fScalingX = 0.01f;
 
 		UpdateData(FALSE);
 
@@ -556,15 +597,18 @@ void CMeshTab::OnSpin_Scaling_Y(NMHDR *pNMHDR, LRESULT *pResult)
 			if (GetKeyState('Z') & 0x8000)
 				m_fScalingY += 1.f;
 			else
-				m_fScalingY += 0.1f;
+				m_fScalingY += 0.01f;
 		}
 		else
 		{
 			if (GetKeyState('Z') & 0x8000)
 				m_fScalingY -= 1.f;
 			else
-				m_fScalingY -= 0.1f;
+				m_fScalingY -= 0.01f;
 		}
+
+		if (m_fScalingY <= 0.01f)
+			m_fScalingY = 0.01f;
 
 		UpdateData(FALSE);
 
@@ -587,17 +631,20 @@ void CMeshTab::OnSpin_Scaling_Z(NMHDR *pNMHDR, LRESULT *pResult)
 		if (pNMUpDown->iDelta < 0)
 		{
 			if (GetKeyState('Z') & 0x8000)
-				m_fScalingX += 1.f;
+				m_fScalingZ += 1.f;
 			else
-				m_fScalingX += 0.1f;
+				m_fScalingZ += 0.01f;
 		}
 		else
 		{
 			if (GetKeyState('Z') & 0x8000)
-				m_fScalingX -= 1.f;
+				m_fScalingZ -= 1.f;
 			else
-				m_fScalingX -= 0.1f;
+				m_fScalingZ -= 0.01f;
 		}
+
+		if (m_fScalingZ <= 0.01f)
+			m_fScalingZ = 0.01f;
 
 		UpdateData(FALSE);
 
@@ -632,8 +679,8 @@ void CMeshTab::OnSpin_Rotate_X(NMHDR *pNMHDR, LRESULT *pResult)
 				m_fRotX -= 0.1f;
 		}
 
-		if (m_fRotX <= 1.f)
-			m_fRotX = 1.f;
+		if (m_fRotX <= -360.f)
+			m_fRotX = -360.f;
 
 		if (m_fRotX >= 360.f)
 			m_fRotX = 360.f;
@@ -671,8 +718,8 @@ void CMeshTab::OnSpin_Rotate_Y(NMHDR *pNMHDR, LRESULT *pResult)
 				m_fRotY -= 0.1f;
 		}
 
-		if (m_fRotY <= 1.f)
-			m_fRotY = 1.f;
+		if (m_fRotY <= -360.f)
+			m_fRotY = -360.f;
 
 		if (m_fRotY >= 360.f)
 			m_fRotY = 360.f;
@@ -710,8 +757,8 @@ void CMeshTab::OnSpin_Rotate_Z(NMHDR *pNMHDR, LRESULT *pResult)
 				m_fRotZ -= 0.1f;
 		}
 
-		if (m_fRotZ <= 1.f)
-			m_fRotZ = 1.f;
+		if (m_fRotZ <= -360.f)
+			m_fRotZ = -360.f;
 
 		if (m_fRotZ >= 360.f)
 			m_fRotZ = 360.f;

@@ -220,6 +220,9 @@
     <ClInclude Include="..\Headers\StaticObject.h">
       <Filter>04. Object\00. Static\StaticObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\DataManager.h">
+      <Filter>02. Utill\01. DataManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainFrm.cpp">
@@ -302,6 +305,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\StaticObject.cpp">
       <Filter>04. Object\00. Static\StaticObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\DataManager.cpp">
+      <Filter>02. Utill\01. DataManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

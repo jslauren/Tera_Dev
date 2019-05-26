@@ -60,7 +60,24 @@ HRESULT CTransform::Set_Rotation_YawPitchRoll(_float fRadianY, _float fRadianX, 
 	m_vRotRadValue.y = fRadianY;
 	m_vRotRadValue.z = fRadianZ;
 
-	D3DXMatrixRotationYawPitchRoll(&m_matWorld, fRadianY, fRadianX, fRadianZ);
+	_matrix		matRotate;
+
+	D3DXMatrixRotationYawPitchRoll(&matRotate, fRadianY, fRadianX, fRadianZ);
+
+	_vec3		vRight(1.f, 0.f, 0.f), vUp(0.f, 1.f, 0.f), vLook(0.f, 0.f, 1.f);
+
+	vRight *= D3DXVec3Length((_vec3*)&m_matWorld.m[STATE_RIGHT][0]);
+	D3DXVec3TransformNormal(&vRight, &vRight, &matRotate);
+
+	vUp *= D3DXVec3Length((_vec3*)&m_matWorld.m[STATE_UP][0]);
+	D3DXVec3TransformNormal(&vUp, &vUp, &matRotate);
+
+	vLook *= D3DXVec3Length((_vec3*)&m_matWorld.m[STATE_LOOK][0]);
+	D3DXVec3TransformNormal(&vLook, &vLook, &matRotate);
+
+	memcpy(&m_matWorld.m[STATE_RIGHT][0], &vRight, sizeof(_vec3));
+	memcpy(&m_matWorld.m[STATE_UP][0], &vUp, sizeof(_vec3));
+	memcpy(&m_matWorld.m[STATE_LOOK][0], &vLook, sizeof(_vec3));
 
 	return NOERROR;
 }
