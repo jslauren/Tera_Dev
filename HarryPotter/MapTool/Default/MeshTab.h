@@ -36,6 +36,7 @@ public:
 
 	CTreeCtrl Tree_Mesh_Object;
 	CTreeCtrl Tree_Mesh_StaticObj;
+	CTreeCtrl Tree_Mesh_DynamicObj;
 
 	CEdit Obj_X_Scaling;
 	CEdit Obj_Y_Scaling;
@@ -116,9 +117,10 @@ private:
 	CString			strXfileName;
 	TCHAR			szFullPathForAdd[MAX_PATH] = L"";
 	CGameObject*	pSelectedObj = nullptr;
-	map<CString, HTREEITEM>	mapTreeItem;
-	map<CString, CString> mapStaticObj_Com_Prototype;
 	_bool			bIsFirstDeleteStaticObject = true;
+	_bool			bIsStaticMesh = true;
+	map<CString, HTREEITEM>	mapTreeItem;
+	map<CString, CString>	mapObj_Com_Prototype;
 
 private:
 	void		InitTreeCtrl_Object();

@@ -79,6 +79,7 @@ void CMeshTab::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxFloat(pDX, m_fPosY, -10000, 10000);
 	DDX_Text(pDX, IDC_EDIT13, m_fPosZ);
 	DDV_MinMaxFloat(pDX, m_fPosZ, -10000, 10000);
+	DDX_Control(pDX, IDC_TREE4, Tree_Mesh_DynamicObj);
 }
 
 BEGIN_MESSAGE_MAP(CMeshTab, CDialogEx)
@@ -202,12 +203,16 @@ void CMeshTab::OnBnClickedNavi_Mesh()
 void CMeshTab::OnBnClickedStatic()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	bIsStaticMesh = true;
+
 }
 
 
 void CMeshTab::OnBnClickedDynamic()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	bIsStaticMesh = false;
+
 }
 
 
@@ -255,26 +260,10 @@ void CMeshTab::OnBnClicked_StaticObject_Delete()
 	if (iLatestItemIdx < iItemIdx)
 		iLatestItemIdx = iItemIdx;
 
-	//if(bIsFirstDeleteStaticObject == true)
-	//	iLatestItemIdx = iItemIdx;
-
-	//bIsFirstDeleteStaticObject = false;
-
 	ParentItemName = _T("Layer_") + ParentItemName;
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, ParentItemName);
 	auto& iter = pLayer->Get_ObjectList().begin();
-
-	//for (size_t i = 0; i < iItemIdx; ++i)
-	//{
-	//	if (i == (iItemIdx - 1))
-	//	{
-	//		pSelectedObj = *iter;
-	//		break;
-	//	}
-	//	else
-	//		++iter;
-	//}
 
 	// 트리에 아이템 제거.
 	Tree_Mesh_StaticObj.DeleteItem(SelectedStaticObject);
@@ -314,6 +303,7 @@ void CMeshTab::InitTreeCtrl_Object()
 	}
 
 	Tree_Mesh_Object.EnsureVisible(hItem);
+
 }
 
 HRESULT CMeshTab::MakeItemForTree()
@@ -322,8 +312,16 @@ HRESULT CMeshTab::MakeItemForTree()
 
 	UpdateData(TRUE);
 
-	if (NULL == Tree_Mesh_StaticObj.GetRootItem())
-		Root = Tree_Mesh_StaticObj.InsertItem(TEXT("Static_Mesh"), 0, 0, TVI_ROOT, TVI_LAST);
+	if (bIsStaticMesh == true)
+	{
+		if (NULL == Tree_Mesh_StaticObj.GetRootItem())
+			Root = Tree_Mesh_StaticObj.InsertItem(TEXT("Static_Mesh"), 0, 0, TVI_ROOT, TVI_LAST);
+	}
+	else
+	{
+		if (NULL == Tree_Mesh_DynamicObj.GetRootItem())
+			Root = Tree_Mesh_DynamicObj.InsertItem(TEXT("Dynamic_Mesh"), 0, 0, TVI_ROOT, TVI_LAST);
+	}
 
 	if (NOERROR == Add_StaticObject())
 	{
@@ -345,8 +343,16 @@ HRESULT CMeshTab::MakeItemForTree()
 
 			ObjectNameTemp1 += ItemNum;
 
-			hChild1 = Tree_Mesh_StaticObj.InsertItem(strObjectName, 0, 0, Root, TVI_LAST);
-			Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp1, 0, 0, hChild1, TVI_LAST);
+			if (bIsStaticMesh == true)
+			{
+				hChild1 = Tree_Mesh_StaticObj.InsertItem(strObjectName, 0, 0, Root, TVI_LAST);
+				Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp1, 0, 0, hChild1, TVI_LAST);
+			}
+			else
+			{
+				hChild1 = Tree_Mesh_DynamicObj.InsertItem(strObjectName, 0, 0, Root, TVI_LAST);
+				Tree_Mesh_DynamicObj.InsertItem(ObjectNameTemp1, 0, 0, hChild1, TVI_LAST);
+			}
 
 			mapTreeItem.emplace(strObjectName, hChild1);
 
@@ -394,7 +400,10 @@ HRESULT CMeshTab::MakeItemForTree()
 
 				ObjectNameTemp2 += ItemNum;
 
-				Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp2, 0, 0, iter->second, TVI_LAST);
+				if(bIsStaticMesh == true)
+					Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp2, 0, 0, iter->second, TVI_LAST);
+				else
+					Tree_Mesh_DynamicObj.InsertItem(ObjectNameTemp2, 0, 0, iter->second, TVI_LAST);
 
 				//strLayerTag = _T("");
 				ObjectNameTemp2 = _T("");
@@ -419,17 +428,17 @@ HRESULT CMeshTab::Add_StaticObject()
 
 	// 컴포넌트 프로토 타입도 최초 한번만 생성해야 하므로..
 	// find_if 함수를 사용하여 strComponentPrototypeTag를 통해 iter를 검색해서,
-	auto iter = find_if(mapStaticObj_Com_Prototype.begin(), mapStaticObj_Com_Prototype.end(), CFinder_Tag(strComponentPrototypeTag));
+	auto iter = find_if(mapObj_Com_Prototype.begin(), mapObj_Com_Prototype.end(), CFinder_Tag(strComponentPrototypeTag));
 
 	// 검색이 안되었다면, 만들어진적이 없는 최초 생성이므로,
-	if (iter == mapStaticObj_Com_Prototype.end())
+	if (iter == mapObj_Com_Prototype.end())
 	{
 		// 생성한다.
 		// Add_Component_Prototype에 해당한다. (원본객체)
 		if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object_Component_Prototype(strComponentPrototypeTag, szFullPath, strXfileName)))
 			return E_FAIL;
 
-		mapStaticObj_Com_Prototype.emplace(strComponentPrototypeTag, strXfileName);
+		mapObj_Com_Prototype.emplace(strComponentPrototypeTag, strXfileName);
 
 		strXfileName = _T("");
 	}
@@ -495,7 +504,10 @@ HRESULT CMeshTab::MakeArgVariableForStaticObj()
 	strObjectName = strLayerTag;
 
 	// Component의 PrototypeTag를 만들어 준다.
-	strComponentPrototypeTag = _T("Component_Mesh_Static_") + strLayerTag;
+	if(bIsStaticMesh == true)
+		strComponentPrototypeTag = _T("Component_Mesh_Static_") + strLayerTag;
+	else
+		strComponentPrototypeTag = _T("Component_Mesh_Dynamic_") + strLayerTag;
 
 	// LayerTag를 만들어 준다.
 	strLayerTag = _T("Layer_") + strLayerTag;
