@@ -104,6 +104,7 @@ BEGIN_MESSAGE_MAP(CMeshTab, CDialogEx)
 	ON_NOTIFY(NM_CLICK, IDC_TREE1, &CMeshTab::OnNMClickTreeMeshObject)
 	ON_NOTIFY(NM_RCLICK, IDC_TREE1, &CMeshTab::OnNMRClickTreeMeshObject)
 	ON_NOTIFY(NM_RCLICK, IDC_TREE3, &CMeshTab::OnNMRClickTreeStaticObj)
+	ON_BN_CLICKED(IDC_BUTTON1, &CMeshTab::OnBnClicked_StaticObject_Delete)
 END_MESSAGE_MAP()
 
 BOOL CMeshTab::OnInitDialog()
@@ -221,6 +222,81 @@ void CMeshTab::OnBnClickedSelected()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
+void CMeshTab::OnBnClicked_StaticObject_Delete()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	// Static_Object Tree에서 현재 선택된 아이템의 부모 아이템을 가져오는 구문.
+	// 이걸 해주는 이유는 현재 트리에 아이템이 "오브젝트명 [n]" 이렇게 되는데,
+	// 자르기 귀찮아서 그냥 부모의 아이템을 가져오려 하기 때문이다.
+	HTREEITEM hSelectedParentItem = Tree_Mesh_StaticObj.GetParentItem(SelectedStaticObject);
+
+	// 부모 아이템 그러니까 딱 오브젝트 이름만있고 인덱스가 붙어있지 않은 순수한 텍스트를 가져온다.
+	CString ParentItemName = Tree_Mesh_StaticObj.GetItemText(hSelectedParentItem);
+
+	// 이건 현재 선택된 Static Object의 인덱스가 몇번째인지 잘라오는 구문이다.
+	CString strItemIdx = Tree_Mesh_StaticObj.GetItemText(SelectedStaticObject);
+
+	strItemIdx.Remove('[');
+	strItemIdx.Remove(']');
+	strItemIdx.Remove(' ');
+
+	int i = 0;
+
+	for (; i < strItemIdx.GetLength(); ++i)
+	{
+		if (isdigit(strItemIdx[i]) != 0)
+			break;
+	}
+	strItemIdx.Delete(0, i);
+
+	_int iItemIdx = _ttoi(strItemIdx);
+
+	if (iLatestItemIdx < iItemIdx)
+		iLatestItemIdx = iItemIdx;
+
+	//if(bIsFirstDeleteStaticObject == true)
+	//	iLatestItemIdx = iItemIdx;
+
+	//bIsFirstDeleteStaticObject = false;
+
+	ParentItemName = _T("Layer_") + ParentItemName;
+
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, ParentItemName);
+	auto& iter = pLayer->Get_ObjectList().begin();
+
+	//for (size_t i = 0; i < iItemIdx; ++i)
+	//{
+	//	if (i == (iItemIdx - 1))
+	//	{
+	//		pSelectedObj = *iter;
+	//		break;
+	//	}
+	//	else
+	//		++iter;
+	//}
+
+	// 트리에 아이템 제거.
+	Tree_Mesh_StaticObj.DeleteItem(SelectedStaticObject);
+
+	// 위에서 ++한 Iter 위치 초기화.
+	iter = pLayer->Get_ObjectList().begin();
+
+	for (; iter != pLayer->Get_ObjectList().end(); )
+	{
+		if ((*iter)->Get_IdxNum() == iItemIdx)
+		{
+			Safe_Release(*iter);
+			iter = pLayer->Get_ObjectList().erase(iter);
+			break;
+		}
+		else
+			++iter;
+	}
+
+	Invalidate(false);
+}
+
 void CMeshTab::InitTreeCtrl_Object()
 {
 	HTREEITEM hItem = Tree_Mesh_Object.InsertItem(_T("../Bin/Resources/Meshes/"));
@@ -255,11 +331,17 @@ HRESULT CMeshTab::MakeItemForTree()
 
 		if (iter == mapTreeItem.end())
 		{
+			iLatestItemIdx = 0;
+
 			CString ObjectNameTemp1 = strObjectName;
 			CString ItemNum;
-			int iItemNum = 1;
+			CObject_Manager* pObjectManager = CObject_Manager::GetInstance();
 
-			ItemNum.Format(_T(" [%d]"), iItemNum);
+			++iLatestItemIdx;
+
+			ItemNum.Format(_T(" [%d]"), iLatestItemIdx);
+			pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().back()->SetIdxNum(iLatestItemIdx);
+
 
 			ObjectNameTemp1 += ItemNum;
 
@@ -278,13 +360,37 @@ HRESULT CMeshTab::MakeItemForTree()
 
 			if (iter != mapTreeItem.end())
 			{
+				UpdateData(TRUE);
+
 				CString ObjectNameTemp2 = strObjectName;
 				CString ItemNum;
 				CObject_Manager* pObjectManager = CObject_Manager::GetInstance();
 
-				int iItemNum = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().size();
+				auto IdxValue = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().begin();
+				_int iSize = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().size();
 
-				ItemNum.Format(_T(" [%d]"), iItemNum);
+				// List의 .back() 함수는 이터레이터를 던져주는것이 아니라, 해당 이터의 값, 즉 (*iter)를 리턴하기 때문에,
+				// back - 1은 값에 -1을 해주는것이다. 결국 뻘짓이라는거지..
+				// 밑에처럼 순회하면서 돌아야지만, 가장 마지막에 생성된 놈의 바로 전놈을 찾을 수 있다.
+
+				for (size_t i = 0; i < iSize; ++i)
+				{
+					if (i == iSize - 2)
+						break;
+					else
+						++IdxValue;
+				}
+
+				iSaveItemIdx = (*IdxValue)->Get_IdxNum();
+				
+				if (iLatestItemIdx != iSaveItemIdx)
+					iLatestItemIdx = iSaveItemIdx;
+
+				//++iSaveItemIdx;
+				++iLatestItemIdx;
+
+				ItemNum.Format(_T(" [%d]"), iLatestItemIdx);
+				(pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().back())->SetIdxNum(iLatestItemIdx);
 
 				ObjectNameTemp2 += ItemNum;
 
@@ -293,6 +399,8 @@ HRESULT CMeshTab::MakeItemForTree()
 				//strLayerTag = _T("");
 				ObjectNameTemp2 = _T("");
 				ItemNum = _T("");
+
+				UpdateData(FALSE);
 			}
 		}
 	}

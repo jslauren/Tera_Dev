@@ -66,6 +66,7 @@ public:
 	afx_msg void OnBnClickedDynamic();
 	afx_msg void OnBnClickedTogether();
 	afx_msg void OnBnClickedSelected();
+	afx_msg void OnBnClicked_StaticObject_Delete();
 
 	afx_msg void OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnTree_Mesh_StaticObj(NMHDR *pNMHDR, LRESULT *pResult);
@@ -101,6 +102,9 @@ public:
 public:
 	HRESULT		Add_StaticObject();
 	HRESULT		MakeItemForTree();
+	_bool		bDblClkTreeStaticObj = false;
+	_int		iLatestItemIdx = 0;
+	_int		iSaveItemIdx = 0;
 
 private:
 	HTREEITEM		Root = nullptr;
@@ -112,9 +116,9 @@ private:
 	CString			strXfileName;
 	TCHAR			szFullPathForAdd[MAX_PATH] = L"";
 	CGameObject*	pSelectedObj = nullptr;
-	_bool			bDblClkTreeStaticObj = false;
 	map<CString, HTREEITEM>	mapTreeItem;
 	map<CString, CString> mapStaticObj_Com_Prototype;
+	_bool			bIsFirstDeleteStaticObject = true;
 
 private:
 	void		InitTreeCtrl_Object();

@@ -17,16 +17,17 @@ protected:
 	virtual ~CGameObject() = default;
 
 public:
-	LPDIRECT3DDEVICE9 Get_Graphic_Device() const { return m_pGraphic_Device; }
+	LPDIRECT3DDEVICE9	Get_Graphic_Device() const { return m_pGraphic_Device; }
 	const CComponent*	Get_Component(const _tchar* pComponentTag);
 	_float				Get_ViewZ() const { return m_fViewZ; }
 	_matrix				Get_Transform(_D3DTRANSFORMSTATETYPE eType) const;
-
+	_int				Get_IdxNum() const { return m_iIdxNum; }
 public:
 	void Set_Transform(_D3DTRANSFORMSTATETYPE eType, const _matrix* pMatrix) { m_pGraphic_Device->SetTransform(eType, pMatrix); }
 	void Set_SamplerState(_ulong dwSampler, D3DSAMPLERSTATETYPE SamplerState, _ulong dwValue);
 	void Set_RenderState(D3DRENDERSTATETYPE eType, _ulong dwValue);
 	void Set_Material(const D3DMATERIAL9& Material);
+	void SetIdxNum(_int iIdx) { m_iIdxNum = iIdx; }
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);
@@ -56,6 +57,9 @@ protected:
 	_bool	m_bDelete = false;
 
 	_float	m_fViewZ = 0.f;
+
+	// 맵툴 트리컨트롤 인덱스용 변수.
+	_int	m_iIdxNum = 0;
 private:
 	// CGameObject를 상속받은 객체가 가지고 있는 컴포넌트를 모아놓기위한 컨테이너.
 	map<const _tchar*, CComponent*>			m_mapComponents;

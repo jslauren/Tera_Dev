@@ -327,17 +327,17 @@ void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 	CTerrain* pTerrain = dynamic_cast<CTerrain*>(pTerrainLayer->Get_ObjectList().back());
 
 	CTransform* pTransform = pTerrain->GetTransformCom();
-	CBuffer_Terrain_Tool* pBufferCom = pTerrain->GetBufferCom();
 
 	RECT	rcTemp;
 	GetClientRect(&rcTemp);
-	
-	pBufferCom->Picking(g_WinhWnd, pTransform, &vPos);
+
+	pTerrain->Picking(g_WinhWnd, pTransform, &vPos);
 
 	vPos.y = 0.f;
 
 	CLayer* pStaticObjLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, m_pViewManager->m_pEditorView->m_Tab_Mesh.strLayerTag);
 	dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->SetState(vPos, _vec3(1.f, 1.f, 1.f));
+
 
  	CView::OnLButtonDown(nFlags, point);
 }
