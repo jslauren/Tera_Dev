@@ -106,6 +106,9 @@ BEGIN_MESSAGE_MAP(CMeshTab, CDialogEx)
 	ON_NOTIFY(NM_RCLICK, IDC_TREE1, &CMeshTab::OnNMRClickTreeMeshObject)
 	ON_NOTIFY(NM_RCLICK, IDC_TREE3, &CMeshTab::OnNMRClickTreeStaticObj)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMeshTab::OnBnClicked_StaticObject_Delete)
+	ON_NOTIFY(NM_RCLICK, IDC_TREE4, &CMeshTab::OnNMRClickTreeDynamicObj)
+	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE4, &CMeshTab::OnTree_Mesh_DynamicObj)
+	ON_BN_CLICKED(IDC_BUTTON8, &CMeshTab::OnBnClicked_DynamicObject_Delete)
 END_MESSAGE_MAP()
 
 BOOL CMeshTab::OnInitDialog()
@@ -267,6 +270,65 @@ void CMeshTab::OnBnClicked_StaticObject_Delete()
 
 	// 트리에 아이템 제거.
 	Tree_Mesh_StaticObj.DeleteItem(SelectedStaticObject);
+
+	// 위에서 ++한 Iter 위치 초기화.
+	iter = pLayer->Get_ObjectList().begin();
+
+	for (; iter != pLayer->Get_ObjectList().end(); )
+	{
+		if ((*iter)->Get_IdxNum() == iItemIdx)
+		{
+			Safe_Release(*iter);
+			iter = pLayer->Get_ObjectList().erase(iter);
+			break;
+		}
+		else
+			++iter;
+	}
+
+	Invalidate(false);
+}
+
+void CMeshTab::OnBnClicked_DynamicObject_Delete()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	// Static_Object Tree에서 현재 선택된 아이템의 부모 아이템을 가져오는 구문.
+	// 이걸 해주는 이유는 현재 트리에 아이템이 "오브젝트명 [n]" 이렇게 되는데,
+	// 자르기 귀찮아서 그냥 부모의 아이템을 가져오려 하기 때문이다.
+	HTREEITEM hSelectedParentItem = Tree_Mesh_DynamicObj.GetParentItem(SelectedDynamicObject);
+
+	// 부모 아이템 그러니까 딱 오브젝트 이름만있고 인덱스가 붙어있지 않은 순수한 텍스트를 가져온다.
+	CString ParentItemName = Tree_Mesh_DynamicObj.GetItemText(hSelectedParentItem);
+
+	// 이건 현재 선택된 Static Object의 인덱스가 몇번째인지 잘라오는 구문이다.
+	CString strItemIdx = Tree_Mesh_DynamicObj.GetItemText(SelectedDynamicObject);
+
+	strItemIdx.Remove('[');
+	strItemIdx.Remove(']');
+	strItemIdx.Remove(' ');
+
+	int i = 0;
+
+	for (; i < strItemIdx.GetLength(); ++i)
+	{
+		if (isdigit(strItemIdx[i]) != 0)
+			break;
+	}
+	strItemIdx.Delete(0, i);
+
+	_int iItemIdx = _ttoi(strItemIdx);
+
+	if (iLatestItemIdx < iItemIdx)
+		iLatestItemIdx = iItemIdx;
+
+	ParentItemName = _T("Layer_") + ParentItemName;
+
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, ParentItemName);
+	auto& iter = pLayer->Get_ObjectList().begin();
+
+	// 트리에 아이템 제거.
+	Tree_Mesh_DynamicObj.DeleteItem(SelectedDynamicObject);
 
 	// 위에서 ++한 Iter 위치 초기화.
 	iter = pLayer->Get_ObjectList().begin();
@@ -601,6 +663,19 @@ void CMeshTab::OnTree_Mesh_StaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
+void CMeshTab::OnTree_Mesh_DynamicObj(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	// 현재 트리 컨트롤에서 선택된 아이템을 불러온다.
+	HTREEITEM	hSelected = pNMTreeView->itemNew.hItem;
+
+	SelectedDynamicObject = hSelected;
+
+	*pResult = 0;
+}
+
 void CMeshTab::OnNMRClickTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -617,9 +692,105 @@ void CMeshTab::OnNMRClickTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 
 	// 이건 현재 선택된 Static Object의 인덱스가 몇번째인지 잘라오는 구문이다.
 	CString strItemIdx = Tree_Mesh_StaticObj.GetItemText(SelectedStaticObject);
-	strItemIdx.TrimRight(L"]");
 
-	_int	  iItemIdx = _ttoi(strItemIdx.Right(1));
+	strItemIdx.Remove('[');
+	strItemIdx.Remove(']');
+	strItemIdx.Remove(' ');
+
+	int i = 0;
+
+	for (; i < strItemIdx.GetLength(); ++i)
+	{
+		if (isdigit(strItemIdx[i]) != 0)
+			break;
+	}
+	strItemIdx.Delete(0, i);
+
+	_int iItemIdx = _ttoi(strItemIdx);
+
+	if (iLatestItemIdx < iItemIdx)
+		iLatestItemIdx = iItemIdx;
+
+	ParentItemName = _T("Layer_") + ParentItemName;
+
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, ParentItemName);
+	list<CGameObject*> ObjList = pLayer->Get_ObjectList();
+
+	_int iObjListIdx = 0;
+	auto iter = ObjList.begin();
+
+	for (size_t i = 0; i < iItemIdx; ++i)
+	{
+		if (i == (iItemIdx - 1))
+		{
+			pSelectedObj = *iter;
+			break;
+		}
+		else
+			++iter;
+	}
+
+	UpdateData(TRUE);
+
+	_vec3	vRight = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_StateInfo(CTransform::STATE_RIGHT);
+	_vec3	vUp = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_StateInfo(CTransform::STATE_UP);
+	_vec3	vLook = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_StateInfo(CTransform::STATE_LOOK);
+
+	m_fScalingX = D3DXVec3Length(&vRight);
+	m_fScalingY = D3DXVec3Length(&vUp);
+	m_fScalingZ = D3DXVec3Length(&vLook);
+
+	_vec3 vRotRadValue = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_RotRadValue();
+
+	m_fRotX = D3DXToDegree(vRotRadValue.x);
+	m_fRotY = D3DXToDegree(vRotRadValue.y);
+	m_fRotZ = D3DXToDegree(vRotRadValue.z);
+
+	_vec3 vPosition = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_StateInfo(CTransform::STATE_POSITION);
+
+	m_fPosX = vPosition.x;
+	m_fPosY = vPosition.y;
+	m_fPosZ = vPosition.z;
+
+	UpdateData(FALSE);
+
+	*pResult = 0;
+}
+
+void CMeshTab::OnNMRClickTreeDynamicObj(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	bDblClkTreeDynamicObj = true;
+
+	// Static_Object Tree에서 현재 선택된 아이템의 부모 아이템을 가져오는 구문.
+	// 이걸 해주는 이유는 현재 트리에 아이템이 "오브젝트명 [n]" 이렇게 되는데,
+	// 자르기 귀찮아서 그냥 부모의 아이템을 가져오려 하기 때문이다.
+	HTREEITEM hSelectedParentItem = Tree_Mesh_DynamicObj.GetParentItem(SelectedDynamicObject);
+
+	// 부모 아이템 그러니까 딱 오브젝트 이름만있고 인덱스가 붙어있지 않은 순수한 텍스트를 가져온다.
+	CString ParentItemName = Tree_Mesh_DynamicObj.GetItemText(hSelectedParentItem);
+
+	// 이건 현재 선택된 Static Object의 인덱스가 몇번째인지 잘라오는 구문이다.
+	CString strItemIdx = Tree_Mesh_DynamicObj.GetItemText(SelectedDynamicObject);
+
+	strItemIdx.Remove('[');
+	strItemIdx.Remove(']');
+	strItemIdx.Remove(' ');
+
+	int i = 0;
+
+	for (; i < strItemIdx.GetLength(); ++i)
+	{
+		if (isdigit(strItemIdx[i]) != 0)
+			break;
+	}
+	strItemIdx.Delete(0, i);
+
+	_int iItemIdx = _ttoi(strItemIdx);
+
+	if (iLatestItemIdx < iItemIdx)
+		iLatestItemIdx = iItemIdx;
 
 	ParentItemName = _T("Layer_") + ParentItemName;
 
@@ -672,7 +843,8 @@ void CMeshTab::OnSpin_Scaling_X(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	if (bDblClkTreeStaticObj == true)
+	if (bDblClkTreeStaticObj == true
+		|| bDblClkTreeDynamicObj == true)
 	{
 		UpdateData(TRUE);
 
@@ -708,7 +880,8 @@ void CMeshTab::OnSpin_Scaling_Y(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	if (bDblClkTreeStaticObj == true)
+	if (bDblClkTreeStaticObj == true
+		|| bDblClkTreeDynamicObj == true)
 	{
 		UpdateData(TRUE);
 
@@ -744,7 +917,8 @@ void CMeshTab::OnSpin_Scaling_Z(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	if (bDblClkTreeStaticObj == true)
+	if (bDblClkTreeStaticObj == true
+		|| bDblClkTreeDynamicObj == true)
 	{
 		UpdateData(TRUE);
 
@@ -780,7 +954,8 @@ void CMeshTab::OnSpin_Rotate_X(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	if (bDblClkTreeStaticObj == true)
+	if (bDblClkTreeStaticObj == true
+		|| bDblClkTreeDynamicObj == true)
 	{
 		UpdateData(TRUE);
 
@@ -819,7 +994,8 @@ void CMeshTab::OnSpin_Rotate_Y(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	if (bDblClkTreeStaticObj == true)
+	if (bDblClkTreeStaticObj == true
+		|| bDblClkTreeDynamicObj == true)
 	{
 		UpdateData(TRUE);
 
@@ -858,7 +1034,8 @@ void CMeshTab::OnSpin_Rotate_Z(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	if (bDblClkTreeStaticObj == true)
+	if (bDblClkTreeStaticObj == true
+		|| bDblClkTreeDynamicObj == true)
 	{
 		UpdateData(TRUE);
 
@@ -897,7 +1074,8 @@ void CMeshTab::OnSpin_Position_X(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	if (bDblClkTreeStaticObj == true)
+	if (bDblClkTreeStaticObj == true
+		|| bDblClkTreeDynamicObj == true)
 	{
 		UpdateData(TRUE);
 
@@ -935,7 +1113,8 @@ void CMeshTab::OnSpin_Position_Y(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	if (bDblClkTreeStaticObj == true)
+	if (bDblClkTreeStaticObj == true
+		|| bDblClkTreeDynamicObj == true)
 	{
 		UpdateData(TRUE);
 
@@ -974,7 +1153,8 @@ void CMeshTab::OnSpin_Position_Z(NMHDR *pNMHDR, LRESULT *pResult)
 	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
-	if (bDblClkTreeStaticObj == true)
+	if (bDblClkTreeStaticObj == true
+		|| bDblClkTreeDynamicObj == true)
 	{
 		UpdateData(TRUE);
 

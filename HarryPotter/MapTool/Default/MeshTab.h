@@ -68,13 +68,16 @@ public:
 	afx_msg void OnBnClickedTogether();
 	afx_msg void OnBnClickedSelected();
 	afx_msg void OnBnClicked_StaticObject_Delete();
+	afx_msg void OnBnClicked_DynamicObject_Delete();
 
 	afx_msg void OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnTree_Mesh_StaticObj(NMHDR *pNMHDR, LRESULT *pResult);
-	
+	afx_msg void OnTree_Mesh_DynamicObj(NMHDR *pNMHDR, LRESULT *pResult);
+
 	afx_msg void OnNMClickTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMRClickTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMRClickTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMRClickTreeDynamicObj(NMHDR *pNMHDR, LRESULT *pResult);
 
 	afx_msg void OnSpin_Scaling_X(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSpin_Scaling_Y(NMHDR *pNMHDR, LRESULT *pResult);
@@ -104,6 +107,7 @@ public:
 	HRESULT		Add_StaticObject();
 	HRESULT		MakeItemForTree();
 	_bool		bDblClkTreeStaticObj = false;
+	_bool		bDblClkTreeDynamicObj = false;
 	_int		iLatestItemIdx = 0;
 	_int		iSaveItemIdx = 0;
 
@@ -111,6 +115,7 @@ private:
 	HTREEITEM		Root = nullptr;
 	HTREEITEM		SelectedObjectItem = nullptr;
 	HTREEITEM		SelectedStaticObject = nullptr;
+	HTREEITEM		SelectedDynamicObject = nullptr;
 	TCHAR			szFullPath[MAX_PATH] = L"";
 	CString			strComponentPrototypeTag;
 	CString			strObjectName;
