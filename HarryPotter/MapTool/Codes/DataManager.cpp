@@ -40,11 +40,7 @@ void CDataManager::Free()
 		Safe_Delete(pair.second);
 	}
 
-	//for (auto& pair : m_MapMeshData)
-	//{
-	//	for(auto& iter : pair.second)
-	//		Safe_Delete(pair.second);
-	//}
+	m_MapMeshData.clear();
 
 	m_MapTerrainData.clear();
 

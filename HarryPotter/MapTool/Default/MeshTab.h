@@ -112,7 +112,8 @@ public:
 	_int		iSaveItemIdx = 0;
 
 private:
-	HTREEITEM		Root = nullptr;
+	HTREEITEM		StaticRoot = nullptr;
+	HTREEITEM		DynamicRoot = nullptr;
 	HTREEITEM		SelectedObjectItem = nullptr;
 	HTREEITEM		SelectedStaticObject = nullptr;
 	HTREEITEM		SelectedDynamicObject = nullptr;

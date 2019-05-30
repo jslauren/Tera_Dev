@@ -209,15 +209,22 @@ void CMeshTab::OnBnClickedNavi_Mesh()
 void CMeshTab::OnBnClickedStatic()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+
 	bIsStaticMesh = true;
 
+	UpdateData(FALSE);
 }
 
 
 void CMeshTab::OnBnClickedDynamic()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+
 	bIsStaticMesh = false;
+
+	UpdateData(FALSE);
 
 }
 
@@ -385,12 +392,12 @@ HRESULT CMeshTab::MakeItemForTree()
 	if (bIsStaticMesh == true)
 	{
 		if (NULL == Tree_Mesh_StaticObj.GetRootItem())
-			Root = Tree_Mesh_StaticObj.InsertItem(TEXT("Static_Mesh"), 0, 0, TVI_ROOT, TVI_LAST);
+			StaticRoot = Tree_Mesh_StaticObj.InsertItem(TEXT("Static_Mesh"), 0, 0, TVI_ROOT, TVI_LAST);
 	}
-	else
+	else if(bIsStaticMesh == false)
 	{
 		if (NULL == Tree_Mesh_DynamicObj.GetRootItem())
-			Root = Tree_Mesh_DynamicObj.InsertItem(TEXT("Dynamic_Mesh"), 0, 0, TVI_ROOT, TVI_LAST);
+			DynamicRoot = Tree_Mesh_DynamicObj.InsertItem(TEXT("Dynamic_Mesh"), 0, 0, TVI_ROOT, TVI_LAST);
 	}
 
 	if (NOERROR == Add_StaticObject())
@@ -415,12 +422,12 @@ HRESULT CMeshTab::MakeItemForTree()
 
 			if (bIsStaticMesh == true)
 			{
-				hChild1 = Tree_Mesh_StaticObj.InsertItem(strObjectName, 0, 0, Root, TVI_LAST);
+				hChild1 = Tree_Mesh_StaticObj.InsertItem(strObjectName, 0, 0, StaticRoot, TVI_LAST);
 				Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp1, 0, 0, hChild1, TVI_LAST);
 			}
-			else
+			else if (bIsStaticMesh == false)
 			{
-				hChild1 = Tree_Mesh_DynamicObj.InsertItem(strObjectName, 0, 0, Root, TVI_LAST);
+				hChild1 = Tree_Mesh_DynamicObj.InsertItem(strObjectName, 0, 0, DynamicRoot, TVI_LAST);
 				Tree_Mesh_DynamicObj.InsertItem(ObjectNameTemp1, 0, 0, hChild1, TVI_LAST);
 			}
 
@@ -432,55 +439,56 @@ HRESULT CMeshTab::MakeItemForTree()
 		}
 		else
 		{
-			auto iter = find_if(mapTreeItem.begin(), mapTreeItem.end(), CFinder_Tag(strObjectName));
+			//auto iter = find_if(mapTreeItem.begin(), mapTreeItem.end(), CFinder_Tag(strObjectName));
 
-			if (iter != mapTreeItem.end())
+			//if (iter != mapTreeItem.end())
+			//{
+		
+			//}
+			UpdateData(TRUE);
+
+			CString ObjectNameTemp2 = strObjectName;
+			CString ItemNum;
+			CObject_Manager* pObjectManager = CObject_Manager::GetInstance();
+
+			auto IdxValue = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().begin();
+			_int iSize = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().size();
+
+			// List의 .back() 함수는 이터레이터를 던져주는것이 아니라, 해당 이터의 값, 즉 (*iter)를 리턴하기 때문에,
+			// back - 1은 값에 -1을 해주는것이다. 결국 뻘짓이라는거지..
+			// 밑에처럼 순회하면서 돌아야지만, 가장 마지막에 생성된 놈의 바로 전놈을 찾을 수 있다.
+
+			for (size_t i = 0; i < iSize; ++i)
 			{
-				UpdateData(TRUE);
-
-				CString ObjectNameTemp2 = strObjectName;
-				CString ItemNum;
-				CObject_Manager* pObjectManager = CObject_Manager::GetInstance();
-
-				auto IdxValue = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().begin();
-				_int iSize = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().size();
-
-				// List의 .back() 함수는 이터레이터를 던져주는것이 아니라, 해당 이터의 값, 즉 (*iter)를 리턴하기 때문에,
-				// back - 1은 값에 -1을 해주는것이다. 결국 뻘짓이라는거지..
-				// 밑에처럼 순회하면서 돌아야지만, 가장 마지막에 생성된 놈의 바로 전놈을 찾을 수 있다.
-
-				for (size_t i = 0; i < iSize; ++i)
-				{
-					if (i == iSize - 2)
-						break;
-					else
-						++IdxValue;
-				}
-
-				iSaveItemIdx = (*IdxValue)->Get_IdxNum();
-				
-				if (iLatestItemIdx != iSaveItemIdx)
-					iLatestItemIdx = iSaveItemIdx;
-
-				//++iSaveItemIdx;
-				++iLatestItemIdx;
-
-				ItemNum.Format(_T(" [%d]"), iLatestItemIdx);
-				(pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().back())->SetIdxNum(iLatestItemIdx);
-
-				ObjectNameTemp2 += ItemNum;
-
-				if(bIsStaticMesh == true)
-					Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp2, 0, 0, iter->second, TVI_LAST);
+				if (i == iSize - 2)
+					break;
 				else
-					Tree_Mesh_DynamicObj.InsertItem(ObjectNameTemp2, 0, 0, iter->second, TVI_LAST);
-
-				//strLayerTag = _T("");
-				ObjectNameTemp2 = _T("");
-				ItemNum = _T("");
-
-				UpdateData(FALSE);
+					++IdxValue;
 			}
+
+			iSaveItemIdx = (*IdxValue)->Get_IdxNum();
+
+			if (iLatestItemIdx != iSaveItemIdx)
+				iLatestItemIdx = iSaveItemIdx;
+
+			//++iSaveItemIdx;
+			++iLatestItemIdx;
+
+			ItemNum.Format(_T(" [%d]"), iLatestItemIdx);
+			(pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().back())->SetIdxNum(iLatestItemIdx);
+
+			ObjectNameTemp2 += ItemNum;
+
+			if (bIsStaticMesh == true)
+				Tree_Mesh_StaticObj.InsertItem(ObjectNameTemp2, 0, 0, iter->second, TVI_LAST);
+			else if (bIsStaticMesh == false)
+				Tree_Mesh_DynamicObj.InsertItem(ObjectNameTemp2, 0, 0, iter->second, TVI_LAST);
+
+			//strLayerTag = _T("");
+			ObjectNameTemp2 = _T("");
+			ItemNum = _T("");
+
+			UpdateData(FALSE);
 		}
 	}
 
@@ -1324,6 +1332,9 @@ void CMeshTab::OnBnClicked_Mesh_Load()
 
 	DWORD		dwByte;
 
+	Tree_Mesh_StaticObj.DeleteAllItems();
+	Tree_Mesh_DynamicObj.DeleteAllItems();
+
 	while (true)
 	{
 		CString		ObjectName;
@@ -1369,6 +1380,7 @@ void CMeshTab::OnBnClicked_Mesh_Load()
 		strLayerTag = tObjMeshData.strLayerTag.c_str();
 		strComponentPrototypeTag = tObjMeshData.strComProtoTag.c_str();
 		lstrcpy(szFullPath, tObjMeshData.strFullPath.c_str());
+
 		MakeItemForTree();
 
 		CLayer* pStaticObjLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
