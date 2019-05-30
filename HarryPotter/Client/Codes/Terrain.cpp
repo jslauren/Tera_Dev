@@ -39,28 +39,6 @@ HRESULT CTerrain::Ready_GameObject(void* pArg)
 
 	CGameObject::Set_Material(m_MtrlInfo);
 
-	if (FAILED(D3DXCreateTexture(Get_Graphic_Device(), 129, 129, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &m_pFilterTexture)))
-		return E_FAIL;
-
-	D3DLOCKED_RECT		LockRect;
-
-	m_pFilterTexture->LockRect(0, &LockRect, nullptr, 0);
-
-	for (size_t i = 0; i < 129; ++i)
-	{
-		for (size_t j = 0; j < 129; ++j)
-		{
-			_uint	iIndex = i * 129 + j;
-
-			if (i < 64)
-				((_ulong*)LockRect.pBits)[iIndex] = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-		}
-	}
-
-	m_pFilterTexture->UnlockRect(0);
-
-	D3DXSaveTextureToFile(L"../Bin/Test.bmp", D3DXIFF_BMP, m_pFilterTexture, nullptr);
-
 	return NOERROR;
 }
 
@@ -69,10 +47,10 @@ _int CTerrain::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
-	_vec3			vOut;
+	//_vec3			vOut;
 
-	if (GetKeyState(VK_LBUTTON) & 0x8000)
-		m_pBufferCom->Picking(g_hWnd, m_pTransformCom, &vOut);
+	//if (GetKeyState(VK_LBUTTON) & 0x8000)
+	//	m_pBufferCom->Picking(g_hWnd, m_pTransformCom, &vOut);
 
 	return _int();
 }
@@ -138,13 +116,13 @@ HRESULT CTerrain::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
-	// For.Com_Filter
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Filter", L"Com_Filter", (CComponent**)&m_pFilterCom)))
-		return E_FAIL;
+	//// For.Com_Filter
+	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Filter", L"Com_Filter", (CComponent**)&m_pFilterCom)))
+	//	return E_FAIL;
 
-	// For.Com_Brush
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Brush", L"Com_Brush", (CComponent**)&m_pBrushCom)))
-		return E_FAIL;
+	//// For.Com_Brush
+	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Brush", L"Com_Brush", (CComponent**)&m_pBrushCom)))
+	//	return E_FAIL;
 
 	// For.Com_Shader
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Terrain", L"Com_Shader", (CComponent**)&m_pShaderCom)))
@@ -163,6 +141,7 @@ HRESULT CTerrain::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
 	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
 	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
+	pEffect->SetVector("g_fDetail", &m_vDetail);
 
 	CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
 	if (nullptr == pLight_Manager)
@@ -181,20 +160,12 @@ HRESULT CTerrain::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 
 	Safe_Release(pLight_Manager);
 
-	m_pTextureCom->SetUp_OnShader(pEffect, "g_SourTexture", 0);
-	m_pTextureCom->SetUp_OnShader(pEffect, "g_DestTexture", 1);
-	m_pBrushCom->SetUp_OnShader(pEffect, "g_BrushTexture", 0);
-
-	// m_pFilterCom->SetUp_OnShader(pEffect, "g_FilterTexture", 0);
-	pEffect->SetTexture("g_FilterTexture", m_pFilterTexture);
+	m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture", 0);
 
 	_matrix		matView = CGameObject::Get_Transform(D3DTS_VIEW);
 	D3DXMatrixInverse(&matView, nullptr, &matView);
 
 	pEffect->SetVector("g_vCamPosition", (_vec4*)&matView.m[3][0]);
-
-	pEffect->SetVector("g_vBrushPos", &_vec4(20.0f, 0.0f, 10.f, 1.f));
-	pEffect->SetFloat("g_fRange", 2.0f);
 
 	Safe_Release(pEffect);
 
@@ -261,9 +232,6 @@ void CTerrain::Free()
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pBufferCom);
-	Safe_Release(m_pFilterCom);
-	Safe_Release(m_pBrushCom);
-	Safe_Release(m_pFilterTexture);
 
 	CGameObject::Free();
 }

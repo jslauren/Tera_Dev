@@ -31,13 +31,14 @@ private:
 	CBuffer_Terrain*	m_pBufferCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
 	CTexture*			m_pTextureCom = nullptr;
-	CTexture*			m_pFilterCom = nullptr;
-	CTexture*			m_pBrushCom = nullptr;
+	//CTexture*			m_pFilterCom = nullptr;
+	//CTexture*			m_pBrushCom = nullptr;
 	CShader*			m_pShaderCom = nullptr;
-private:
-	LPDIRECT3DTEXTURE9	m_pFilterTexture = nullptr;
+//private:
+//	LPDIRECT3DTEXTURE9	m_pFilterTexture = nullptr;
 private:
 	D3DMATERIAL9		m_MtrlInfo;
+	_vec4				m_vDetail = { 1.f, 1.f, 1.f, 1.f };
 private:
 	HRESULT Add_Component();
 	HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);

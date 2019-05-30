@@ -72,9 +72,9 @@ HRESULT CScene_Logo::Ready_Component_Prototype()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_LOGO, L"Component_Buffer_TriCol", CBuffer_TriCol::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	// For.Component_Buffer_RcCol
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_LOGO, L"Component_Buffer_RcCol", CBuffer_RcCol::Create(m_pGraphic_Device))))
-		return E_FAIL;
+	//// For.Component_Buffer_RcCol
+	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_LOGO, L"Component_Buffer_RcCol", CBuffer_RcCol::Create(m_pGraphic_Device))))
+	//	return E_FAIL;
 
 	return NOERROR;
 }

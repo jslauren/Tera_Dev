@@ -36,6 +36,7 @@ private:
 	CKeyManager*	m_pKeyManager = nullptr;
 	_bool			m_isMove = false;
 	_vec3			m_vTargetPos;
+
 private:
 	HRESULT Add_Component();
 	HRESULT SetUp_HeightOnTerrain();
