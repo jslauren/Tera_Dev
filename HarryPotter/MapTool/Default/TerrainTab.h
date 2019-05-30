@@ -71,6 +71,10 @@ public:
 	afx_msg void OnSpin_Trans_RotX(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSpin_Trans_RotY(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnSpin_Trans_RotZ(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSpin_Vertex_X_Count(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSpin_Vertex_Z_Count(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSpin_Vertex_Interval(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSpin_Vertex_Detail(NMHDR *pNMHDR, LRESULT *pResult);
 
 	afx_msg void OnTree_Terrain_Texture(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkTreeTerrainTexture(NMHDR *pNMHDR, LRESULT *pResult);
@@ -86,20 +90,25 @@ public:
 
 public:
 	// Terrain_Vertex_Variable
-	_int	m_iNumVtxX = 0;
-	_int	m_iNumVtxZ = 0;
-	_float	m_fInterval = 0;
-	_float	m_fDetail = 0;
+	int		m_iNumVtxX;
+	int		m_iNumVtxZ;
+	float	m_fInterval;
+	float	m_fDetail;
 
 private:
 	// Terrain_TreeControl_Texture
 	map<CString, CImage*>		m_mapPngImage;
 	CString						strImagName;
 	TCHAR						szFullPathForTexture[MAX_PATH] = L"";
+
 private:
 	void InitTreeCtrl();
 	void ImageProcess(HTREEITEM	_hSelected);
 	void ImageSizing(CImage* pImage);
 
+
+public:
+	afx_msg void OnBnClicked_Terrain_Save();
+	afx_msg void OnBnClicked_Terrain_Load();
 
 };

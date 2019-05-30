@@ -131,4 +131,7 @@ private:
 	void		InitTreeCtrl_Object();
 	HRESULT		MakeArgVariableForStaticObj();
 
+public:
+	afx_msg void OnBnClicked_Mesh_Save();
+	afx_msg void OnBnClicked_Mesh_Load();
 };

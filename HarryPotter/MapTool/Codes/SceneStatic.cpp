@@ -9,6 +9,7 @@
 #include "Texture_Tool.h"
 #include "Light_Manager.h"
 #include "StaticObject.h"
+#include "DataManager.h"
 
 CSceneStatic::CSceneStatic(LPDIRECT3DDEVICE9 _pGraphic_Device)
 	: CScene(_pGraphic_Device)
@@ -132,9 +133,17 @@ HRESULT CSceneStatic::Ready_Component_Prototype()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/HP3_Floors/celtic_tile.tga"))))
 		return E_FAIL;
 
+	_tchar* wsr = L"../Bin/Resources/Textures/Terrain/HP3_Floors/celtic_tile.tga";
+
+	CDataManager::GetInstance()->m_pImgPath = wsr;
+
+	//CopyMemory(CDataManager::GetInstance()->m_pImgPath, wsr, sizeof(_tchar)*(lstrlen(wsr) + 1));
+
 	// For.Component_Buffer_Terrain
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_Terrain", CBuffer_Terrain_Tool::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+
 
 	return NOERROR;
 }

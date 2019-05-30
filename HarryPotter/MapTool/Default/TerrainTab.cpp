@@ -27,6 +27,10 @@ CTerrainTab::CTerrainTab(CWnd* pParent /*=NULL*/)
 	, m_fRotX(0)
 	, m_fRotY(0)
 	, m_fRotZ(0)
+	, m_iNumVtxX(100)
+	, m_iNumVtxZ(100)
+	, m_fInterval(1)
+	, m_fDetail(1)
 {
 }
 
@@ -80,7 +84,14 @@ void CTerrainTab::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxFloat(pDX, m_fRotY, 0, 360);
 	DDX_Text(pDX, IDC_EDIT10, m_fRotZ);
 	DDV_MinMaxFloat(pDX, m_fRotZ, 0, 360);
-
+	DDX_Text(pDX, IDC_EDIT1, m_iNumVtxX);
+	DDV_MinMaxInt(pDX, m_iNumVtxX, 1, 300);
+	DDX_Text(pDX, IDC_EDIT2, m_iNumVtxZ);
+	DDV_MinMaxInt(pDX, m_iNumVtxZ, 1, 300);
+	DDX_Text(pDX, IDC_EDIT3, m_fInterval);
+	DDV_MinMaxFloat(pDX, m_fInterval, 1, 20);
+	DDX_Text(pDX, IDC_EDIT4, m_fDetail);
+	DDV_MinMaxFloat(pDX, m_fDetail, 0, 500);
 }
 
 
@@ -96,6 +107,12 @@ BEGIN_MESSAGE_MAP(CTerrainTab, CDialogEx)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN10, &CTerrainTab::OnSpin_Trans_RotZ)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, &CTerrainTab::OnTree_Terrain_Texture)
 	ON_NOTIFY(NM_DBLCLK, IDC_TREE1, &CTerrainTab::OnNMDblclkTreeTerrainTexture)
+	ON_BN_CLICKED(IDC_BUTTON3, &CTerrainTab::OnBnClicked_Terrain_Save)
+	ON_BN_CLICKED(IDC_BUTTON4, &CTerrainTab::OnBnClicked_Terrain_Load)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN1, &CTerrainTab::OnSpin_Vertex_X_Count)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN2, &CTerrainTab::OnSpin_Vertex_Z_Count)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN3, &CTerrainTab::OnSpin_Vertex_Interval)
+	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN4, &CTerrainTab::OnSpin_Vertex_Detail)
 END_MESSAGE_MAP()
 
 
@@ -125,17 +142,17 @@ BOOL CTerrainTab::OnInitDialog()
 	
 	CStringW	strNumVtxX;
 
-	Vertex_X_Count_Btn.SetPos(100.f);
-	Vertex_X_Count_Btn.SetRange(0.f, 1000.f);
+	Vertex_X_Count_Btn.SetPos(100);
+	Vertex_X_Count_Btn.SetRange(1, 300);
 
-	Vertex_Z_Count_Btn.SetPos(100.f);
-	Vertex_Z_Count_Btn.SetRange(0.f, 1000.f);
+	Vertex_Z_Count_Btn.SetPos(100);
+	Vertex_Z_Count_Btn.SetRange(1, 300);
 
 	Vertex_Interval_Btn.SetPos(1.f);
-	Vertex_Interval_Btn.SetRange(0.f, 1000.f);
+	Vertex_Interval_Btn.SetRange(1.f, 20.f);
 
 	Vertex_Detail_Btn.SetPos(1.f);
-	Vertex_Detail_Btn.SetRange(0.f, 100.f);
+	Vertex_Detail_Btn.SetRange(1.f, 500.f);
 
 	PositionX_Btn.SetPos(0.f);
 	PositionX_Btn.SetRange(1000.f, -1000.f);
@@ -187,11 +204,11 @@ void CTerrainTab::OnBnClickedTerrain_Apply()
 
 	CStringW	strValue;
 
-	Vertex_X_Count.GetWindowTextW(strValue);
-	m_iNumVtxX = _ttoi(strValue);
+	//Vertex_X_Count.GetWindowTextW(strValue);
+	//m_iNumVtxX = _ttoi(strValue);
 
-	Vertex_Z_Count.GetWindowTextW(strValue);
-	m_iNumVtxZ = _ttoi(strValue);
+	//Vertex_Z_Count.GetWindowTextW(strValue);
+	//m_iNumVtxZ = _ttoi(strValue);
 
 	Vertex_Interval.GetWindowTextW(strValue);
 	m_fInterval = _ttof(strValue);
@@ -201,6 +218,11 @@ void CTerrainTab::OnBnClickedTerrain_Apply()
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
 	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->Reset_Terrain(m_iNumVtxX, m_iNumVtxZ, m_fInterval, m_fDetail);
+
+	CDataManager::GetInstance()->m_iNumVtxX = m_iNumVtxX;
+	CDataManager::GetInstance()->m_iNumVtxZ = m_iNumVtxZ;
+	CDataManager::GetInstance()->m_fInterval = m_fInterval;
+	CDataManager::GetInstance()->m_fDetail = m_fDetail;
 
 }
 
@@ -470,10 +492,12 @@ void CTerrainTab::OnTree_Terrain_Texture(NMHDR *pNMHDR, LRESULT *pResult)
 		// 그리고 넣어준 아이템의 출력과 사이즈 조정까지 한번에 하는 함수를 만들었다.
 		ImageProcess(hSelected);
 
+		// -> 여기  L"../Bin/Resources/Textures/Terrain/Grass.tga"
+
 		// 밑으로는 계속 트리컨트롤을 그려내기 위한 구문이다.
 		pathSelected = pathSelected + _T("*.*");
-
 		CFileFind finder;
+
 		BOOL bWorking = finder.FindFile(pathSelected);
 
 		while (bWorking)
@@ -522,7 +546,11 @@ void CTerrainTab::ImageProcess(HTREEITEM _hSelected)
 
 	lstrcatW(szFullPath, pathSelected);
 	strImagName = PathFindFileName(szFullPath);						// 경로를 기준으로 파일의 이름을 얻어오는 함수
-	PathRemoveExtension((LPWSTR)strImagName.operator LPCWSTR());	// 확장자명을 잘라내는 함수
+
+	strImagName.TrimRight(L".tga");
+	strImagName.TrimRight(L".TGA");
+		
+	//PathRemoveExtension((LPWSTR)strImagName.operator LPCWSTR());	// 확장자명을 잘라내는 함수
 
 	ZeroMemory(szFullPathForTexture, sizeof(szFullPathForTexture));
 	StrCpyW(szFullPathForTexture, szFullPath);
@@ -555,6 +583,10 @@ void CTerrainTab::ImageProcess(HTREEITEM _hSelected)
 	// 인자로 CImage를 넣어주면 된다.
 	// 보통 위에서 처리한 Iter의 second를 바로 넣어준다.
 	ImageSizing(iterSet->second);
+
+	_tchar* wsr = szFullPathForTexture;
+
+	CDataManager::GetInstance()->m_pImgPath = wsr;
 
 }
 
@@ -604,13 +636,333 @@ BOOL CTerrainTab::PreTranslateMessage(MSG* pMsg)
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-
 void CTerrainTab::OnNMDblclkTreeTerrainTexture(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
 	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->Reset_Texture(szFullPathForTexture);
+
+	*pResult = 0;
+}
+
+void CTerrainTab::OnBnClicked_Terrain_Save()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	TCHAR	szDirPath[MAX_PATH];
+	CString strName = L"";
+	GetCurrentDirectory(MAX_PATH, szDirPath);
+
+	CFileDialog		Dlg(FALSE,	// false인 경우 save, true인 경우 load
+		L"Map",	// 파일의 확장자명	
+		L"*.Map", // 창에 최초로 띄워줄 파일이름 문자열
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, // 중복 파일이 있을 경우 경고창 띄워주기
+		L"*.Map", // 저장 시 지원하는 파일 형식
+		this);
+
+	if (Dlg.DoModal() == IDOK)
+	{
+		strName = Dlg.GetPathName();
+		SetCurrentDirectory(szDirPath);
+	}
+	else return;
+
+	HANDLE	hFile = CreateFile(strName,
+		GENERIC_WRITE,
+		0,
+		NULL,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	DWORD		dwByte;
+
+	CDataManager::GetInstance()->Set_Terrain_Data();
+
+	for (auto& iter : CDataManager::GetInstance()->m_MapTerrainData)
+	{
+		WriteFile(hFile, &iter.second->iNumVtxX, sizeof(iter.second->iNumVtxX), &dwByte, NULL);
+		WriteFile(hFile, &iter.second->iNumVtxZ, sizeof(iter.second->iNumVtxZ), &dwByte, NULL);
+		WriteFile(hFile, &iter.second->fInterval, sizeof(iter.second->fInterval), &dwByte, NULL);
+		WriteFile(hFile, &iter.second->fDetail, sizeof(iter.second->fDetail), &dwByte, NULL);
+		
+		_tchar imgPathTemp[MAX_PATH] = L"";
+
+		lstrcpy(imgPathTemp, iter.second->pImgPath);
+
+		_int iPathLength = lstrlen(imgPathTemp);
+
+		WriteFile(hFile, &iPathLength, sizeof(_int), &dwByte, NULL);
+		WriteFile(hFile, imgPathTemp, sizeof(_tchar) * iPathLength, &dwByte, NULL);
+	}
+
+	CloseHandle(hFile);
+ }
+
+void CTerrainTab::OnBnClicked_Terrain_Load()
+{
+	// ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※ //
+	// 저장할 때, 숫자로 안하고 글자로 해서 터레인 카메라가 움직여 버리면 
+	// 이상하게 저장이 된다. 참고하고 이상하면 최대한 그렇게 만들어 보자.
+	// ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※ //
+
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+
+	TCHAR	szDirPath[MAX_PATH];
+	CString strName = L"";
+	GetCurrentDirectory(MAX_PATH, szDirPath);
+
+	CFileDialog		Dlg(TRUE,	// false인 경우 save, true인 경우 load
+		L"Map",	// 파일의 확장자명	
+		L"*.Map", // 창에 최초로 띄워줄 파일이름 문자열
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, // 중복 파일이 있을 경우 경고창 띄워주기
+		L"*.Map", // 저장 시 지원하는 파일 형식
+		this);
+	
+	CDataManager::GetInstance()->Free();
+	
+	// 혜현이가 도와줌 ㅎ
+	if (Dlg.DoModal() == IDOK)
+	{
+		strName = Dlg.GetPathName();
+		SetCurrentDirectory(szDirPath);
+	}
+
+	HANDLE	hFile = CreateFile(Dlg.GetPathName(),
+		GENERIC_READ,
+		0,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	DWORD		dwByte;
+
+	int iMapFirstValue = 0;
+	_tchar	imgPath[MAX_PATH] = L"";
+
+	while (true)
+	{
+		TERRAINDATA*	pTerrainData = new TERRAINDATA;
+		_int	iNumVtxX = 0, iNumVtxZ = 0;
+		_float	fInterval = 0.f, fDetail = 0.f;
+		_int	iImgPathLength = 0;
+		_tchar	imgPathTemp[MAX_PATH] = L"";
+		
+		ReadFile(hFile, &iNumVtxX, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, &iNumVtxZ, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, &fInterval, sizeof(_float), &dwByte, NULL);
+		ReadFile(hFile, &fDetail, sizeof(_float), &dwByte, NULL);
+		ReadFile(hFile, &iImgPathLength, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, imgPathTemp, sizeof(_tchar) * iImgPathLength, &dwByte, NULL);
+		
+		pTerrainData->iNumVtxX = iNumVtxX;
+		pTerrainData->iNumVtxZ = iNumVtxX;
+		pTerrainData->fInterval = fInterval;
+		pTerrainData->fDetail = fDetail;
+		pTerrainData->pImgPath = imgPathTemp;
+
+		if (0 == dwByte)
+		{
+			Safe_Delete(pTerrainData);
+			break;
+		}
+
+		CDataManager::GetInstance()->m_iNumVtxX = pTerrainData->iNumVtxX;
+		CDataManager::GetInstance()->m_iNumVtxZ = pTerrainData->iNumVtxZ;
+		CDataManager::GetInstance()->m_fInterval = pTerrainData->fInterval;
+		CDataManager::GetInstance()->m_fDetail = pTerrainData->fDetail;
+		CDataManager::GetInstance()->m_pImgPath = imgPathTemp;
+
+		lstrcpy(imgPath, imgPathTemp);
+
+	//	CDataManager::GetInstance()->m_MapTerrainData.emplace(iMapFirstValue++, pTerrainData);		
+	}
+
+	CloseHandle(hFile);
+
+	// Load 해온 정보를 가지고 새로운 터레인을 생성하여 셋팅해준다.
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
+	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->Reset_Terrain(CDataManager::GetInstance()->m_iNumVtxX, CDataManager::GetInstance()->m_iNumVtxZ, CDataManager::GetInstance()->m_fInterval, CDataManager::GetInstance()->m_fDetail);
+
+	// Load 해온 이미지 정보를 가지고 새로운 이미지로 터레인을 셋팅해준다.
+	CString strImgName = PathFindFileName(imgPath);
+	
+	strImgName.TrimRight(L".tga");
+	strImgName.TrimRight(L".TGA");
+
+	ZeroMemory(szFullPathForTexture, sizeof(szFullPathForTexture));
+	StrCpyW(szFullPathForTexture, imgPath);
+
+	auto iter = m_mapPngImage.find(strImgName);
+
+	if (iter == m_mapPngImage.end())
+	{
+		CImage*		pPngImage = new CImage;
+		pPngImage->Load(imgPath);
+
+		m_mapPngImage.emplace(strImgName, pPngImage);
+	}
+	
+	auto iterSet = m_mapPngImage.find(strImgName);
+
+	if (iterSet == m_mapPngImage.end())
+		return;
+
+	m_Terrain_Texture.SetBitmap(*iterSet->second);
+	ImageSizing(iterSet->second);
+
+	_tchar* wsr = szFullPathForTexture;
+	CDataManager::GetInstance()->m_pImgPath = wsr;
+
+	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->Reset_Texture(szFullPathForTexture);
+
+	//////////////////////////////////////////////////////////////////////////
+
+	m_iNumVtxX = CDataManager::GetInstance()->m_iNumVtxX;
+	m_iNumVtxZ = CDataManager::GetInstance()->m_iNumVtxZ;
+	m_fInterval = CDataManager::GetInstance()->m_fInterval;
+	m_fDetail = CDataManager::GetInstance()->m_fDetail;
+
+	Invalidate(false);
+
+	UpdateData(FALSE);
+
+}
+
+
+void CTerrainTab::OnSpin_Vertex_X_Count(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	UpdateData(TRUE);
+
+	if (pNMUpDown->iDelta < 0)
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_iNumVtxX += 10;
+		else
+			m_iNumVtxX += 1;
+	}
+	else
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_iNumVtxX -= 10;
+		else
+			m_iNumVtxX -= 1;
+	}
+
+	if (m_iNumVtxX <= 0)
+		m_iNumVtxX = 1;
+
+	if (m_iNumVtxX >= 300)
+		m_iNumVtxX = 300;
+
+	UpdateData(FALSE);
+
+	*pResult = 0;
+}
+
+
+void CTerrainTab::OnSpin_Vertex_Z_Count(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	UpdateData(TRUE);
+
+	if (pNMUpDown->iDelta < 0)
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_iNumVtxZ += 10;
+		else
+			m_iNumVtxZ += 1;
+	}
+	else
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_iNumVtxZ -= 10;
+		else
+			m_iNumVtxZ -= 1;
+	}
+
+	if (m_iNumVtxZ <= 0)
+		m_iNumVtxZ = 1;
+
+	if (m_iNumVtxZ >= 300)
+		m_iNumVtxZ = 300;
+
+	UpdateData(FALSE);
+
+	*pResult = 0;
+}
+
+
+void CTerrainTab::OnSpin_Vertex_Interval(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	UpdateData(TRUE);
+
+	if (pNMUpDown->iDelta < 0)
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fInterval += 1;
+		else
+			m_fInterval += 1;
+	}
+	else
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fInterval -= 1;
+		else
+			m_fInterval -= 1;
+	}
+
+	if (m_fInterval <= 0)
+		m_fInterval = 1;
+
+	if (m_fInterval >= 20)
+		m_fInterval = 20;
+
+	UpdateData(FALSE);
+
+	*pResult = 0;
+}
+
+
+void CTerrainTab::OnSpin_Vertex_Detail(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	UpdateData(TRUE);
+
+	if (pNMUpDown->iDelta < 0)
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fDetail += 1;
+		else
+			m_fDetail += 1;
+	}
+	else
+	{
+		if (GetKeyState('Z') & 0x8000)
+			m_fDetail -= 1;
+		else
+			m_fDetail -= 1;
+	}
+
+	if (m_fDetail <= 0)
+		m_fDetail = 1;
+
+	if (m_fDetail >= 500)
+		m_fDetail = 500;
+
+	UpdateData(FALSE);
 
 	*pResult = 0;
 }

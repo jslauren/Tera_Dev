@@ -2,6 +2,27 @@
 
 namespace Engine
 {
+	typedef struct tagObjectMeshData
+	{
+		_bool		bIsStaticMesh;	// 스태틱 메쉬인지 판별하기 위한 툴용 변수.
+		_matrix		matWorld;		// 해당 오브젝트의 행렬 정보를 저장하기 위한 matrix
+		wstring		strObjProtoTag;	// Add_Object를 할 때 필요한 값 정보인 변수.
+		wstring		strLayerTag;	// 툴의 트리컨트롤을 위한 변수. 여기서 strObjName도 제조한다.
+		wstring		strComProtoTag;	// 이 또한 툴용 변수이다.
+		wstring		strFullPath;
+
+	}OBJECTMESHDATA;
+
+	typedef struct tagTerrainData
+	{
+		_tchar*		pImgPath;
+		int			iNumVtxX;
+		int			iNumVtxZ;
+		float		fInterval;
+		float		fDetail;
+
+	}TERRAINDATA;
+
 	typedef struct tagMeshTexture
 	{
 		enum TYPE { TYPE_DIFFUSE, TYPE_NORMAL, TYPE_SPECULAR, TYPE_END };

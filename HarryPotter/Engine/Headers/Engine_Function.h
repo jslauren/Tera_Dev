@@ -2,6 +2,19 @@
 
 namespace Engine
 {
+	struct DeleteMap
+	{
+		template<typename T>
+		void operator()(T& Temp)
+		{
+			if (Temp.second)
+			{
+				delete Temp.second;
+				Temp.second = nullptr;
+			}
+		}
+	};
+
 	template<typename T>
 	void Safe_Delete(T& pPointer)
 	{

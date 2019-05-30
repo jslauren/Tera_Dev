@@ -278,7 +278,7 @@ _float CBuffer_Terrain_Tool::Compute_HeightOnBuffer(const CTransform * pTransfor
 
 }
 
-HRESULT CBuffer_Terrain_Tool::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval/*, _float _fDetail*/)
+HRESULT CBuffer_Terrain_Tool::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval, _float _fDetail)
 {
 	if (nullptr == m_pGraphic_Device)
 		return E_FAIL;

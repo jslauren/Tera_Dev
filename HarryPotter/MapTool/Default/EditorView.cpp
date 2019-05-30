@@ -5,6 +5,7 @@
 #include "MapTool.h"
 #include "EditorView.h"
 #include "ViewManager.h"
+#include "DataManager.h"
 
 // CEditorView
 
@@ -97,9 +98,11 @@ void CEditorView::OnInitialUpdate()
 
 void CEditorView::OnSelchangeTab(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	int sel = m_Tab.GetCurSel();
+	m_iSelectTab = m_Tab.GetCurSel();
 
-	switch (sel)
+	CDataManager::GetInstance()->m_iSelectTab = m_iSelectTab;
+
+	switch (m_iSelectTab)
 	{
 	case 0:
 		m_Tab_Terrain.ShowWindow(SW_SHOW);

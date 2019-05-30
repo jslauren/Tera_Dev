@@ -43,6 +43,9 @@ public:
 
 	CViewManager*	m_pViewManager;
 
+private:
+	_int			m_iSelectTab = 0;
+
 public:
 	virtual void OnInitialUpdate();
 

@@ -318,26 +318,56 @@ void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
-	if (FAILED(m_pViewManager->m_pEditorView->m_Tab_Mesh.MakeItemForTree()))
-		return;
+	if (CDataManager::GetInstance()->m_iSelectTab == 1)
+	{
+		if (FAILED(m_pViewManager->m_pEditorView->m_Tab_Mesh.MakeItemForTree()))
+			return;
 
-	_vec3 vPos = { 0.f, 0.f, 0.f };
+		_vec3 vPos = { 0.f, 0.f, 0.f };
 
-	CLayer* pTerrainLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
-	CTerrain* pTerrain = dynamic_cast<CTerrain*>(pTerrainLayer->Get_ObjectList().back());
+		CLayer* pTerrainLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
+		CTerrain* pTerrain = dynamic_cast<CTerrain*>(pTerrainLayer->Get_ObjectList().back());
 
-	CTransform* pTransform = pTerrain->GetTransformCom();
+		CTransform* pTransform = pTerrain->GetTransformCom();
 
-	RECT	rcTemp;
-	GetClientRect(&rcTemp);
+		RECT	rcTemp;
+		GetClientRect(&rcTemp);
 
-	pTerrain->Picking(g_WinhWnd, pTransform, &vPos);
+		pTerrain->Picking(g_WinhWnd, pTransform, &vPos);
 
-	vPos.y = 0.f;
+		vPos.y = 0.f;
 
-	CLayer* pStaticObjLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, m_pViewManager->m_pEditorView->m_Tab_Mesh.strLayerTag);
-	dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->SetState(vPos, _vec3(1.f, 1.f, 1.f));
+		CLayer* pStaticObjLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, m_pViewManager->m_pEditorView->m_Tab_Mesh.strLayerTag);
+		dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->SetState(vPos, _vec3(1.f, 1.f, 1.f));
 
+		CDataManager::GetInstance()->m_matWorld = *dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->GetTransformCom()->Get_WorldMatrixPointer();
+
+		OBJECTMESHDATA tObjMeshData;
+
+		tObjMeshData.bIsStaticMesh = CDataManager::GetInstance()->m_bIsStaticMesh;
+		tObjMeshData.matWorld = CDataManager::GetInstance()->m_matWorld;
+		tObjMeshData.strObjProtoTag = CDataManager::GetInstance()->m_strObjProtoTag;
+		tObjMeshData.strLayerTag = CDataManager::GetInstance()->m_strLayerTag;
+		tObjMeshData.strComProtoTag = CDataManager::GetInstance()->m_strComProtoTag;
+		tObjMeshData.strFullPath = CDataManager::GetInstance()->m_strFullPath;
+
+		vector<OBJECTMESHDATA> vObjMeshData;
+
+		auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(CDataManager::GetInstance()->m_strObjName));
+
+		// 해당 strObjName을 가진 Pair_First가 m_MapMeshData Map에 존재하지 않는다면?
+		if (iter == CDataManager::GetInstance()->m_MapMeshData.end())
+		{
+			// CDataManager를 통해서 복사한 값들을 vObjMeshData 벡터에 Push_back 해준다음,
+			vObjMeshData.push_back(tObjMeshData);
+			// 그 벡터를 CDataManager의 m_MapMeshData 맵에 넣어준다.
+			CDataManager::GetInstance()->m_MapMeshData.emplace(CDataManager::GetInstance()->m_strObjName, vObjMeshData);
+		}
+		// 존재하면,
+		else
+			iter->second.push_back(tObjMeshData);	// 그냥 검색한 그 친구의 벡터에 뒤로 추가해준다.
+
+	}
 
  	CView::OnLButtonDown(nFlags, point);
 }

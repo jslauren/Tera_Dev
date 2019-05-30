@@ -50,13 +50,13 @@ _int CTerrain::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
-	if (GetKeyState(VK_LBUTTON) & 0x8000)
-	{
-		_vec3	vOut;
+	//if (GetKeyState(VK_LBUTTON) & 0x8000)
+	//{
+	//	_vec3	vOut;
 
-		m_pBufferCom->Picking(g_hWnd, m_pTransformCom, &vOut);
+	//	m_pBufferCom->Picking(g_hWnd, m_pTransformCom, &vOut);
 
-	}
+	//}
 
 	return _int();
 }
@@ -226,7 +226,7 @@ HRESULT CTerrain::Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInter
 
 	Safe_Release(pEffect);
 
-	if (FAILED(m_pBufferCom->Reset_Terrain(_iNumVtxX, _iNumVtxZ, _fInterval/*, _fDetail*/)))
+	if (FAILED(m_pBufferCom->Reset_Terrain(_iNumVtxX, _iNumVtxZ, _fInterval, _fDetail)))
 		return E_FAIL;
 
 	return NOERROR;

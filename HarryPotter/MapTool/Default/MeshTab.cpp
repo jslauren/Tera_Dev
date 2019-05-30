@@ -10,6 +10,7 @@
 #include "ViewManager.h"
 #include "Layer.h"
 #include "StaticObject.h"
+#include "DataManager.h"
 
 // CMeshTab 대화 상자입니다.
 
@@ -109,6 +110,8 @@ BEGIN_MESSAGE_MAP(CMeshTab, CDialogEx)
 	ON_NOTIFY(NM_RCLICK, IDC_TREE4, &CMeshTab::OnNMRClickTreeDynamicObj)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE4, &CMeshTab::OnTree_Mesh_DynamicObj)
 	ON_BN_CLICKED(IDC_BUTTON8, &CMeshTab::OnBnClicked_DynamicObject_Delete)
+	ON_BN_CLICKED(IDC_BUTTON5, &CMeshTab::OnBnClicked_Mesh_Save)
+	ON_BN_CLICKED(IDC_BUTTON6, &CMeshTab::OnBnClicked_Mesh_Load)
 END_MESSAGE_MAP()
 
 BOOL CMeshTab::OnInitDialog()
@@ -280,6 +283,11 @@ void CMeshTab::OnBnClicked_StaticObject_Delete()
 		{
 			Safe_Release(*iter);
 			iter = pLayer->Get_ObjectList().erase(iter);
+
+			auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(CDataManager::GetInstance()->m_strObjName));
+
+			iter->second.erase(iter->second.begin() + (iItemIdx-1));
+
 			break;
 		}
 		else
@@ -418,7 +426,7 @@ HRESULT CMeshTab::MakeItemForTree()
 
 			mapTreeItem.emplace(strObjectName, hChild1);
 
-			strObjectName = _T("");
+			//strObjectName = _T("");
 			ObjectNameTemp1 = _T("");
 			ItemNum = _T("");
 		}
@@ -485,8 +493,7 @@ HRESULT CMeshTab::Add_StaticObject()
 {
 	m_pScene = CViewManager::GetInstance()->m_pCurScene;
 
-	if (FAILED(MakeArgVariableForStaticObj()))
-		return E_FAIL;	
+	MakeArgVariableForStaticObj();
 
 	// 컴포넌트 프로토 타입도 최초 한번만 생성해야 하므로..
 	// find_if 함수를 사용하여 strComponentPrototypeTag를 통해 iter를 검색해서,
@@ -495,7 +502,12 @@ HRESULT CMeshTab::Add_StaticObject()
 	// 검색이 안되었다면, 만들어진적이 없는 최초 생성이므로,
 	if (iter == mapObj_Com_Prototype.end())
 	{
-		// 생성한다.
+		// 현재 선택된 Object의 xFile 이름을 만들어준다.
+		wstring strXFileNameTemp;
+		strXFileNameTemp = strObjectName;
+		strXFileNameTemp += L".X";
+		strXfileName = strXFileNameTemp.c_str();
+
 		// Add_Component_Prototype에 해당한다. (원본객체)
 		if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object_Component_Prototype(strComponentPrototypeTag, szFullPath, strXfileName)))
 			return E_FAIL;
@@ -508,10 +520,27 @@ HRESULT CMeshTab::Add_StaticObject()
 	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object(strLayerTag)))
 		return E_FAIL;
 
-	// Add_Component에 해당한다. (실 사용 객체)
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
-	dynamic_cast<CStaticObject*>(pLayer->Get_ObjectList().back())->Add_Component_Tool(strComponentPrototypeTag);
 
+	// 여기에 맵하나 만들어서 오브젝트의 월드매트릭스값, Layer_Tag, Component_Tag 값 넣어주고,
+	// 클라에서 Ready함수에서 Load함수 불러오면서 Load함수 안에서 상기 값들을 통해 바로 로드 해주면 된다.
+
+	CString strObjProtoTag = L"GameObject_" + strObjectName;
+
+	CDataManager::GetInstance()->m_bIsStaticMesh = bIsStaticMesh;
+	CDataManager::GetInstance()->m_strObjProtoTag = strObjProtoTag;
+	CDataManager::GetInstance()->m_strLayerTag = strLayerTag;
+	CDataManager::GetInstance()->m_strComProtoTag = strComponentPrototypeTag;
+
+	CString	szFullPathModify = szFullPath;
+	//szFullPathModify.TrimRight(L"/");
+	
+	CDataManager::GetInstance()->m_strFullPath = szFullPathModify;
+
+	CDataManager::GetInstance()->m_strObjName = strObjectName;
+
+	// Add_Component에 해당한다. (실 사용 객체)	
+	dynamic_cast<CStaticObject*>(pLayer->Get_ObjectList().back())->Add_Component_Tool(strComponentPrototypeTag);
 	strComponentPrototypeTag = _T("");
 
 	return NOERROR;
@@ -1185,4 +1214,182 @@ void CMeshTab::OnSpin_Position_Z(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 
 	*pResult = 0;
+}
+
+
+void CMeshTab::OnBnClicked_Mesh_Save()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	TCHAR	szDirPath[MAX_PATH];
+	CString strName = L"";
+	GetCurrentDirectory(MAX_PATH, szDirPath);
+
+	CFileDialog		Dlg(FALSE,	// false인 경우 save, true인 경우 load
+		L"MeshDat",	// 파일의 확장자명	
+		L"*.MeshDat", // 창에 최초로 띄워줄 파일이름 문자열
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, // 중복 파일이 있을 경우 경고창 띄워주기
+		L"*.MeshDat", // 저장 시 지원하는 파일 형식
+		this);
+
+	if (Dlg.DoModal() == IDOK)
+	{
+		strName = Dlg.GetPathName();
+		SetCurrentDirectory(szDirPath);
+	}
+	else return;
+
+	HANDLE	hFile = CreateFile(strName,
+		GENERIC_WRITE,
+		0,
+		NULL,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	DWORD		dwByte;
+
+	for (auto& Pair : CDataManager::GetInstance()->m_MapMeshData)
+	{
+		for (auto& iter : Pair.second)
+		{
+			WriteFile(hFile, &iter.bIsStaticMesh, sizeof(iter.bIsStaticMesh), &dwByte, NULL);
+			WriteFile(hFile, &iter.matWorld, sizeof(iter.matWorld), &dwByte, NULL);
+
+			_tchar szTextInfo[MAX_PATH] = L"";
+			lstrcpy(szTextInfo, iter.strObjProtoTag.c_str());
+			_int iTextLength = lstrlen(szTextInfo) + 1;
+
+			WriteFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+			WriteFile(hFile, szTextInfo, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+			lstrcpy(szTextInfo, iter.strLayerTag.c_str());
+			iTextLength = lstrlen(szTextInfo) + 1;
+
+			WriteFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+			WriteFile(hFile, szTextInfo, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+			lstrcpy(szTextInfo, iter.strComProtoTag.c_str());
+			iTextLength = lstrlen(szTextInfo) + 1;
+
+			WriteFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+			WriteFile(hFile, szTextInfo, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+			lstrcpy(szTextInfo, iter.strFullPath.c_str());
+			iTextLength = lstrlen(szTextInfo) + 1;
+
+			WriteFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+			WriteFile(hFile, szTextInfo, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+			int i = 0;
+		}
+	}
+
+	CloseHandle(hFile);
+}
+
+
+void CMeshTab::OnBnClicked_Mesh_Load()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+
+	TCHAR	szDirPath[MAX_PATH];
+	CString strName = L"";
+	GetCurrentDirectory(MAX_PATH, szDirPath);
+
+	CFileDialog		Dlg(TRUE,	// false인 경우 save, true인 경우 load
+		L"MeshDat",	// 파일의 확장자명	
+		L"*.MeshDat", // 창에 최초로 띄워줄 파일이름 문자열
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, // 중복 파일이 있을 경우 경고창 띄워주기
+		L"*.MeshDat", // 저장 시 지원하는 파일 형식
+		this);
+
+	CDataManager::GetInstance()->Free();
+
+	// 혜현이가 도와줌 ㅎ
+	if (Dlg.DoModal() == IDOK)
+	{
+		strName = Dlg.GetPathName();
+		SetCurrentDirectory(szDirPath);
+	}
+
+	HANDLE	hFile = CreateFile(Dlg.GetPathName(),
+		GENERIC_READ,
+		0,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	DWORD		dwByte;
+
+	while (true)
+	{
+		CString		ObjectName;
+
+		_int	iTextLength = 0;
+		_tchar	szTextTemp[MAX_PATH] = L"";
+
+		OBJECTMESHDATA tObjMeshData;
+
+		ReadFile(hFile, &tObjMeshData.bIsStaticMesh, sizeof(_bool), &dwByte, NULL);
+		ReadFile(hFile, &tObjMeshData.matWorld, sizeof(_matrix), &dwByte, NULL);
+
+		ReadFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, szTextTemp, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+		tObjMeshData.strObjProtoTag = szTextTemp;
+
+		ReadFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, szTextTemp, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+		tObjMeshData.strLayerTag = szTextTemp;
+		ObjectName = tObjMeshData.strLayerTag.c_str();
+
+		ObjectName.TrimLeft(L"Layer_");
+
+		strObjectName = ObjectName;
+
+		ReadFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, szTextTemp, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+		tObjMeshData.strComProtoTag = szTextTemp;
+
+		ReadFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, szTextTemp, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+		tObjMeshData.strFullPath = szTextTemp;
+
+		if (0 == dwByte)
+			break;
+
+		bIsStaticMesh = tObjMeshData.bIsStaticMesh;
+		strObjectName = ObjectName;
+		strLayerTag = tObjMeshData.strLayerTag.c_str();
+		strComponentPrototypeTag = tObjMeshData.strComProtoTag.c_str();
+		lstrcpy(szFullPath, tObjMeshData.strFullPath.c_str());
+		MakeItemForTree();
+
+		CLayer* pStaticObjLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
+		dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->SetState(*(_vec3*)&tObjMeshData.matWorld.m[3], _vec3(1.f, 1.f, 1.f));
+
+		vector<OBJECTMESHDATA> vObjMeshData;
+
+		auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strObjectName));
+		
+		if (iter == CDataManager::GetInstance()->m_MapMeshData.end())
+		{
+			vObjMeshData.push_back(tObjMeshData);
+			CDataManager::GetInstance()->m_MapMeshData.emplace(ObjectName, vObjMeshData);
+		}
+		else
+			(*iter).second.push_back(tObjMeshData);
+	}
+
+	CloseHandle(hFile);
+
+	Invalidate(false);
+
+	UpdateData(FALSE);
 }

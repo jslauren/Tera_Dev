@@ -47,8 +47,8 @@ _int CStaticObject::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	Compute_ViewZ(m_pTransformCom);
 
-	//if (FAILED(SetUp_HeightOnTerrain()))
-	//	return -1;
+	if (FAILED(SetUp_HeightOnTerrain()))
+		return -1;
 
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
 		return -1;
@@ -158,7 +158,7 @@ HRESULT CStaticObject::SetUp_HeightOnTerrain()
 
 	_float	fY = pBufferCom->Compute_HeightOnBuffer(m_pTransformCom);
 
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->x, fY + 0.5f, m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->z));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->x, fY, m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->z));
 
 	Safe_Release(pObject_Manager);
 

@@ -71,6 +71,11 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 		m_pTransformCom->Move(3, 5.f, fTimeDelta);
 		m_pMeshCom->SetUp_AnimationSet(6);
 	}
+	else if (GetKeyState(VK_SPACE) & 0x8000)
+	{
+		m_pTransformCom->Move(3, 5.f, fTimeDelta);
+		m_pMeshCom->SetUp_AnimationSet(6);
+	}
 	else
 	{
 		m_pMeshCom->SetUp_AnimationSet(10);
@@ -233,6 +238,7 @@ HRESULT CPlayer::SetUp_HeightOnTerrain()
 	if (nullptr == pBufferCom)
 		return E_FAIL;
 
+	// 플레이어의 Y값과 이 지형의 Y값을 비교해서, 점프를 구현하면 된다.
 	_float	fY = pBufferCom->Compute_HeightOnBuffer(m_pTransformCom);
 
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->x, fY + 0.5f, m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->z));

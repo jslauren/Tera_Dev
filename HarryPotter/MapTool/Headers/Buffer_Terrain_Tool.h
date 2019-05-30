@@ -17,7 +17,7 @@ public:
 //	_vec3*			GetPositionPointer() { return m_pPositions; }
 //	void*			GetIndicesPointer() { return m_pIndices; }
 public:
-	HRESULT			Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval/*, _float _fDetail*/);
+	HRESULT			Reset_Terrain(_uint _iNumVtxX, _uint _iNumVtxZ, _float _fInterval, _float _fDetail);
 private:
 	void			ComputeNormal(_vec3* pVtx0, _vec3* pVtx1, _vec3* pVtx2, _vec3* pOut);
 private:

@@ -48,6 +48,9 @@ private:
 	CViewManager*				m_pViewManager = nullptr;
 	//CDataManager*				m_pDataManager = nullptr;
 
+private:
+	_int	m_iPairIndex=0;
+
 // 구현입니다.
 public:
 	virtual ~CMapToolView();
