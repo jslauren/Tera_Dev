@@ -46,6 +46,8 @@ HRESULT CComponent_Manager::Clear_Component_Prototype(const _uint & iSceneIdx)
 
 	for (auto& Pair : m_pmapComponent[iSceneIdx])
 	{
+		_tchar* pTempArray = const_cast<_tchar*>(Pair.first);
+		Safe_Delete_Array(pTempArray);
 		Safe_Release(Pair.second);
 	}
 	m_pmapComponent[iSceneIdx].clear();

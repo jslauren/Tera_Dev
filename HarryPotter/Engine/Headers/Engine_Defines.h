@@ -43,5 +43,7 @@ using namespace std;
 #include "Engine_Functor.h"
 
 // 외부 헤더파일
+#include <iostream>	
 
+using namespace std;
 using namespace Engine;

@@ -1,10 +1,19 @@
 #include "stdafx.h"
 #include "..\Headers\Scene_Stage.h"
 #include "Camera_Dynamic.h"
+#include "Camera_Static.h"
 #include "Light_Manager.h"
 #include "SkyBox.h"
 #include "Terrain.h"
 #include "Player.h"
+
+#define	NEAR			0.2f
+#define FAR				500.f
+#define ASPECT			_float(g_iWinCX) / g_iWinCY
+#define FOV(X)			D3DXToRadian(X)
+//#define EYE(X, Y, Z)	_vec3(X.f, Y.f, Z.f)
+//#define	AT(X, Y, Z)		_vec3(X.f, Y.f, Z.f)
+#define	AXIS_Y			_vec3(0.f, 1.f, 0.f)
 
 _USING(Client)
 
@@ -177,6 +186,10 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_SkyBox", CSkyBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_Camera_Static
+	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Camera_Static", CCamera_Static::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	// For.GameObject_Terrain
 	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Terrain", CTerrain::Create(m_pGraphic_Device))))
 		return E_FAIL;
@@ -215,8 +228,12 @@ HRESULT CScene_Stage::Ready_Layer_Player(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage::Ready_Layer_Camera(const _tchar * pLayerTag)
 {
-	// For.Camera
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Camera_Dynamic", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0.f, 7.f, -10.f), _vec3(0.f, 0.f, 0.f), _vec3(0.0f, 1.f, 0.f), D3DXToRadian(60.0f), _float(g_iWinCX) / g_iWinCY, 0.2f, 500.f))))
+	// For.Camera_Dynamic
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Camera_Dynamic", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 5, -5), _vec3(0, 0, 0), AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
+		return E_FAIL;
+
+	// For.Camera_Static
+	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Camera_Static", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 5, -5), _vec3(0, 0, 0), AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
 		return E_FAIL;
 
 	return NOERROR;
@@ -271,6 +288,19 @@ CScene_Stage * CScene_Stage::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 void CScene_Stage::Free()
 {
+	if (nullptr == m_pObject_Manager ||
+		nullptr == m_pComponent_Manager)
+		return;
+
+	if (FAILED(m_pObject_Manager->Clear_Object(SCENE_STAGE)))
+		return;
+
+	if (FAILED(m_pObject_Manager->Clear_Prototype(SCENE_STAGE)))
+		return;
+
+	if (FAILED(m_pComponent_Manager->Clear_Component_Prototype(SCENE_STAGE)))
+		return;
+
 	CScene::Free();
 }
 

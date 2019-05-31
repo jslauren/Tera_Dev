@@ -5,6 +5,7 @@
 #include "Scene_Logo.h"
 #include "Management.h"
 #include "Camera_Dynamic.h"
+#include "Camera_Static.h"
 #include "Component_Manager.h"
 
 _USING(Client)
@@ -176,7 +177,7 @@ HRESULT CMainApp::Ready_GameObject_Prototype()
 	// For.GameObject_Camera_Dynamic
 	if (FAILED(pObject_Manager->Add_Object_Prototype(SCENE_STATIC, L"GameObject_Camera_Dynamic", CCamera_Dynamic::Create(m_pGraphic_Device))))
 		return E_FAIL;
-
+		
 	Safe_Release(pObject_Manager);
 
 	return NOERROR;

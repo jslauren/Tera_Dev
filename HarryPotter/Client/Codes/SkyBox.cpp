@@ -54,7 +54,7 @@ _int CSkyBox::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	pObject_Manager->AddRef();
 
-	CTransform*	pCameraTransform = (CTransform*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_Camera", L"Com_Transform");
+	CTransform*	pCameraTransform = (CTransform*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_Camera", L"Com_Transform", 1);
 	if (nullptr == pCameraTransform)
 		return -1;
 

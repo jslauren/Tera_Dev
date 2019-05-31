@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="..\Headers\Back_Logo.h" />
     <ClInclude Include="..\Headers\Camera_Dynamic.h" />
+    <ClInclude Include="..\Headers\Camera_Static.h" />
     <ClInclude Include="..\Headers\Defines.h" />
     <ClInclude Include="..\Headers\MainApp.h" />
     <ClInclude Include="..\Headers\Monster.h" />
@@ -179,6 +180,7 @@
   <ItemGroup>
     <ClCompile Include="..\Codes\Back_Logo.cpp" />
     <ClCompile Include="..\Codes\Camera_Dynamic.cpp" />
+    <ClCompile Include="..\Codes\Camera_Static.cpp" />
     <ClCompile Include="..\Codes\MainApp.cpp" />
     <ClCompile Include="..\Codes\Monster.cpp" />
     <ClCompile Include="..\Codes\Player.cpp" />

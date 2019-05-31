@@ -49,10 +49,12 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
-	if (GetKeyState('W') & 0x8000)
+	ViewChanage();
+
+	if ((GetKeyState('W') & 0x8000))
 	{
-		m_pTransformCom->Move(0, 5.f, fTimeDelta);
-		m_pMeshCom->SetUp_AnimationSet(9);
+		//m_pTransformCom->Move(0, 5.f, fTimeDelta);
+		m_pMeshCom->SetUp_AnimationSet(1);
 	}
 	else if (GetKeyState('S') & 0x8000)
 	{
@@ -78,20 +80,19 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	{
 		m_pMeshCom->SetUp_AnimationSet(29);
 	}
+		
 
-	CKeyManager::GetInstance()->UpdateKey();
+	//if (true == m_isMove)
+	//{
+	//	_bool isFinish = false;
 
-	if (true == m_isMove)
-	{
-		_bool isFinish = false;
+	//	m_pTransformCom->Move_Target(&m_vTargetPos, 10.f, fTimeDelta, &isFinish);
 
-		m_pTransformCom->Move_Target(&m_vTargetPos, 10.f, fTimeDelta, &isFinish);
+	//	if (true == isFinish)
+	//		m_isMove = false;
+	//}
 
-		if (true == isFinish)
-			m_isMove = false;
-	}
-
-	m_pMeshCom->Play_Animation(fTimeDelta);
+	m_pMeshCom->Play_Animation(fTimeDelta * m_fAniTime);
 
 	//if (FAILED(SetUp_HeightOnTerrain()))
 	//	return -1;
@@ -239,6 +240,32 @@ HRESULT CPlayer::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	Safe_Release(pEffect);
 
 	return NOERROR;
+}
+
+void CPlayer::ViewChanage()
+{
+	// Feat.ÇüÁøÀÌ
+	CTransform*	vCameraTransformCom = ((CTransform*)(CObject_Manager::GetInstance()->Get_Component(SCENE_STAGE, L"Layer_Camera", L"Com_Transform", 1)));
+	_vec3 vCameraLook = *vCameraTransformCom->Get_StateInfo(CTransform::STATE_LOOK);
+	
+	_vec3	vPlayerRight = *m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT);
+	_vec3	vPlayerUp = *m_pTransformCom->Get_StateInfo(CTransform::STATE_UP);
+	_vec3	vPlayerLook = *m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK);
+	_float	fPlayerRightSize = D3DXVec3Length(&vPlayerRight);
+	_float	fPlayerLookSize = D3DXVec3Length(&vPlayerLook);
+
+	vCameraLook.y = 0.f;
+	D3DXVec3Normalize(&vCameraLook, &vCameraLook);
+
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_LOOK, &(vCameraLook * fPlayerLookSize));
+
+	_vec3 vPlayerNewRight;
+	D3DXVec3Cross(&vPlayerNewRight, &vPlayerUp, &vCameraLook);
+
+	D3DXVec3Normalize(&vPlayerNewRight, &vPlayerNewRight);
+
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_RIGHT, &(vPlayerNewRight * fPlayerRightSize));
+
 }
 
 //HRESULT CPlayer::SetUp_RenderState()

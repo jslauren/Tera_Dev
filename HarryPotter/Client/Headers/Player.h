@@ -14,12 +14,12 @@ _BEGIN(Client)
 
 class CPlayer final : public CGameObject
 {
+public:
+	enum STATE { STATE_END };
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CPlayer(const CPlayer& rhs);
 	virtual ~CPlayer() = default;
-public:
-
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);
@@ -36,11 +36,12 @@ private:
 	CKeyManager*	m_pKeyManager = nullptr;
 	_bool			m_isMove = false;
 	_vec3			m_vTargetPos;
-
+	_float			m_fAniTime = 1.f;
 private:
 	HRESULT Add_Component();
 	HRESULT SetUp_HeightOnTerrain();
 	HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
+	void	ViewChanage();
 
 public:
 	static CPlayer*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);

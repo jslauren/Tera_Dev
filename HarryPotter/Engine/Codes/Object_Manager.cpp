@@ -119,7 +119,11 @@ HRESULT CObject_Manager::Clear_Object(const _uint & iSceneIdx)
 		return E_FAIL;
 
 	for (auto& ObjectLayerPair : m_pmapObject[iSceneIdx])
+	{
+		_tchar* pTempArray = const_cast<_tchar*>(ObjectLayerPair.first);
+		Safe_Delete_Array(pTempArray);
 		Safe_Release(ObjectLayerPair.second);
+	}
 
 	m_pmapObject[iSceneIdx].clear();
 
@@ -133,7 +137,11 @@ HRESULT CObject_Manager::Clear_Prototype(const _uint & iSceneIdx)
 		return E_FAIL;
 
 	for (auto& ProtypePair : m_pmapPrototype[iSceneIdx])
+	{
+		_tchar* pTempArray = const_cast<_tchar*>(ProtypePair.first);
+		Safe_Delete_Array(pTempArray);
 		Safe_Release(ProtypePair.second);
+	}
 
 	m_pmapPrototype[iSceneIdx].clear();
 

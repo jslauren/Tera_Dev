@@ -117,6 +117,9 @@
     <ClInclude Include="..\Headers\Weapon.h">
       <Filter>02. GameObject\01. Stage\Player\Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Camera_Static.h">
+      <Filter>02. GameObject\99. Public\Camera\Static</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -157,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Weapon.cpp">
       <Filter>02. GameObject\01. Stage\Player\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Camera_Static.cpp">
+      <Filter>02. GameObject\99. Public\Camera\Static</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
