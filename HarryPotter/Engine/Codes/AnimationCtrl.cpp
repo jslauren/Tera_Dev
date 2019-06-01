@@ -1,5 +1,7 @@
 #include "..\Headers\AnimationCtrl.h"
 
+#define	TRANSITION_TIME 0.2
+
 CAnimationCtrl::CAnimationCtrl(LPD3DXANIMATIONCONTROLLER pAniCtrl)
 	: m_pAniCtrl(pAniCtrl)
 {
@@ -25,42 +27,30 @@ HRESULT CAnimationCtrl::SetUp_AnimationSet(_uint iIndex)
 	if (m_iOldIndex == iIndex)
 		return NOERROR;
 
-	LPD3DXANIMATIONSET		pAnimationSet = nullptr;
+	//LPD3DXANIMATIONSET		pAnimationSet = nullptr;
 
-	if (FAILED(m_pAniCtrl->GetAnimationSet(iIndex, &pAnimationSet)))
+	if (FAILED(m_pAniCtrl->GetAnimationSet(iIndex, &m_pAnimationSet)))
 		return E_FAIL;
 
 	m_iNewTrack = m_iCurrentTrack == 0 ? 1 : 0;
 
-	if (FAILED(m_pAniCtrl->SetTrackAnimationSet(m_iNewTrack, pAnimationSet)))
+	if (FAILED(m_pAniCtrl->SetTrackAnimationSet(m_iNewTrack, m_pAnimationSet)))
 		return E_FAIL;
 
-	//double Period = pAnimationSet->GetPeriod();
-	//D3DXTRACK_DESC		TrackDesc;
-	//ZeroMemory(&TrackDesc, sizeof(D3DXTRACK_DESC));
-
-	//m_pAniCtrl->GetTrackDesc(m_iCurrentTrack, &TrackDesc);
-
-	//if (Period <= TrackDesc.Position)
-	//{
-
-	//}
-
-	Safe_Release(pAnimationSet);
+	//Safe_Release(m_pAnimationSet);
 
 	m_pAniCtrl->UnkeyAllTrackEvents(m_iCurrentTrack);
 	m_pAniCtrl->UnkeyAllTrackEvents(m_iNewTrack);
 
 	// 기존 재생되던 트랙에 대한 설정.
-	m_pAniCtrl->KeyTrackEnable(m_iCurrentTrack, FALSE, m_TimeAcc + 0.2);
-	m_pAniCtrl->KeyTrackSpeed(m_iCurrentTrack, 1.f, m_TimeAcc, 0.2, D3DXTRANSITION_LINEAR);
-	m_pAniCtrl->KeyTrackWeight(m_iCurrentTrack, 0.2f, m_TimeAcc, 0.2, D3DXTRANSITION_LINEAR);
+	m_pAniCtrl->KeyTrackEnable(m_iCurrentTrack, FALSE, m_TimeAcc + TRANSITION_TIME);
+	m_pAniCtrl->KeyTrackSpeed(m_iCurrentTrack, 0.f, m_TimeAcc, TRANSITION_TIME, D3DXTRANSITION_LINEAR);
+	m_pAniCtrl->KeyTrackWeight(m_iCurrentTrack, 0.f, m_TimeAcc, TRANSITION_TIME, D3DXTRANSITION_LINEAR);
 
 	// 새롭게 재생되어야할 트랙에 대한 설정.
 	m_pAniCtrl->SetTrackEnable(m_iNewTrack, TRUE);
-	m_pAniCtrl->KeyTrackSpeed(m_iNewTrack, 1.f, m_TimeAcc, 0.2, D3DXTRANSITION_LINEAR);
-	m_pAniCtrl->KeyTrackWeight(m_iNewTrack, 0.8f, m_TimeAcc, 0.2, D3DXTRANSITION_LINEAR);
-
+	m_pAniCtrl->KeyTrackSpeed(m_iNewTrack, 1.f, m_TimeAcc, TRANSITION_TIME, D3DXTRANSITION_LINEAR);
+	m_pAniCtrl->KeyTrackWeight(m_iNewTrack, 1.f, m_TimeAcc, TRANSITION_TIME, D3DXTRANSITION_LINEAR);
 
 	m_pAniCtrl->SetTrackPosition(m_iNewTrack, 0.0);
 	m_TimeAcc = 0.0;
@@ -83,11 +73,28 @@ HRESULT CAnimationCtrl::SetUp_AnimationSet(const char * pName)
 
 HRESULT CAnimationCtrl::Play_Animation(const _float & fTimeDelta)
 {
-	m_pAniCtrl->AdvanceTime(fTimeDelta, nullptr);
+	m_pAniCtrl->AdvanceTime((fTimeDelta), nullptr);
 
 	m_TimeAcc += fTimeDelta;
 
 	return NOERROR;
+}
+
+_bool CAnimationCtrl::IsAnimationEnded()
+{
+	// 트랙의 최대 포지션 값.
+	double Period = m_pAnimationSet->GetPeriod();
+	D3DXTRACK_DESC	TrackDesc;
+	ZeroMemory(&TrackDesc, sizeof(D3DXTRACK_DESC));
+
+	// 트랙의 현재 포지션 값.
+	m_pAniCtrl->GetTrackDesc(m_iCurrentTrack, &TrackDesc);
+
+	// 애니메이션이 끝났다..!
+	if (Period <= TrackDesc.Position)
+		return TRUE;
+
+	return _bool(FALSE);
 }
 
 CAnimationCtrl * CAnimationCtrl::Create(LPD3DXANIMATIONCONTROLLER pAniCtrl)
@@ -116,5 +123,6 @@ CAnimationCtrl * CAnimationCtrl::Create(const CAnimationCtrl & rhs)
 
 void CAnimationCtrl::Free()
 {
+	Safe_Release(m_pAnimationSet);
 	Safe_Release(m_pAniCtrl);
 }

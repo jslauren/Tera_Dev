@@ -109,16 +109,21 @@ HRESULT CMesh_Dynamic::SetUp_AnimationSet(const char * pName)
 	return NOERROR;
 }
 
-HRESULT CMesh_Dynamic::Play_Animation(const _float & fTimeDelta)
+HRESULT CMesh_Dynamic::Play_Animation(const _float & fTimeDelta, const _float fAniSpeed)
 {
 	if (nullptr == m_pAniCtrl)
 		return E_FAIL;
 
-	m_pAniCtrl->Play_Animation(fTimeDelta);
+	m_pAniCtrl->Play_Animation(fTimeDelta * fAniSpeed);
 
 	Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot);
 
 	return NOERROR;
+}
+
+_bool CMesh_Dynamic::IsAnimationEnded()
+{
+	return m_pAniCtrl->IsAnimationEnded();
 }
 
 HRESULT CMesh_Dynamic::ChangePivot(_vec3 vState, _float fDegree)

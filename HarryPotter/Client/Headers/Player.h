@@ -1,5 +1,6 @@
 #pragma once
 #include "Defines.h"
+#include "PlayerStateInfo.h"
 #include "GameObject.h"
 #include "KeyManager.h"
 
@@ -14,8 +15,6 @@ _BEGIN(Client)
 
 class CPlayer final : public CGameObject
 {
-public:
-	enum STATE { STATE_END };
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CPlayer(const CPlayer& rhs);
@@ -36,13 +35,18 @@ private:
 	CKeyManager*	m_pKeyManager = nullptr;
 	_bool			m_isMove = false;
 	_vec3			m_vTargetPos;
-	_float			m_fAniTime = 1.f;
+	_float			m_fAniSpeed = 1.f;
+	_float			m_fTimeDelta = 1.f;
+	_bool			m_bIsRun = false;
+	_bool			m_bRunflag = false;
 private:
 	HRESULT Add_Component();
 	HRESULT SetUp_HeightOnTerrain();
 	HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 	void	ViewChanage();
+	void	KeyInput();
 
+	void	ETC();
 public:
 	static CPlayer*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

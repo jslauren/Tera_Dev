@@ -14,7 +14,10 @@ public:
 	HRESULT SetUp_AnimationSet(_uint iIndex);
 	HRESULT SetUp_AnimationSet(const char* pName);
 	HRESULT Play_Animation(const _float& fTimeDelta);
+public:
+	_bool	IsAnimationEnded();
 private:
+	LPD3DXANIMATIONSET			m_pAnimationSet = nullptr;
 	LPD3DXANIMATIONCONTROLLER	m_pAniCtrl = nullptr;
 	_uint						m_iCurrentTrack;
 	_uint						m_iNewTrack;

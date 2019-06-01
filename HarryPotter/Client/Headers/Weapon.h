@@ -28,7 +28,6 @@ private:
 	CTransform*		m_pTransformCom = nullptr;
 	CMesh_Static*	m_pMeshCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
-	CTexture*		m_pTextureCom = nullptr;
 	CShader*		m_pShaderCom = nullptr;
 private:
 	_float			m_fFrame = 0.f;

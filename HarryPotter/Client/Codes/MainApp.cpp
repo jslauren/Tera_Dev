@@ -7,6 +7,7 @@
 #include "Camera_Dynamic.h"
 #include "Camera_Static.h"
 #include "Component_Manager.h"
+#include "KeyManager.h"
 
 _USING(Client)
 
@@ -48,6 +49,8 @@ _int CMainApp::Update_MainApp(const _float & fTimeDelta)
 	// 연결된 키보드, 마우스 장치를 받아오는 구문
 	if (FAILED(CInput_Device::GetInstance()->SetUp_Input_State()))
 		return -1;
+
+	CKeyManager::GetInstance()->UpdateKey();
 
 	m_fTimeAcc += fTimeDelta;
 

@@ -5,6 +5,8 @@
 
 _USING(Client)
 
+#define PLAYER_SPEED	5.f
+
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
 	, m_pKeyManager(CKeyManager::GetInstance())
@@ -36,7 +38,7 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 
 	m_pTransformCom->Set_Scaling(0.01f, 0.01f, 0.01f);
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.2, 0.f, 0.2));
-	m_pMeshCom->SetUp_AnimationSet(1);
+	m_pMeshCom->SetUp_AnimationSet(STATE_IDLE);
 
 	m_pMeshCom->ChangePivot(_vec3(1.f, 0.f, 0.f), -90);
 	m_pMeshCom->ChangePivot(_vec3(0.f, 1.f, 0.f), 180);
@@ -49,53 +51,13 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
+	m_fTimeDelta = fTimeDelta;
+
 	ViewChanage();
+	KeyInput();
 
-	if ((GetKeyState('W') & 0x8000))
-	{
-		//m_pTransformCom->Move(0, 5.f, fTimeDelta);
-		m_pMeshCom->SetUp_AnimationSet(1);
-	}
-	else if (GetKeyState('S') & 0x8000)
-	{
-		m_pTransformCom->Move(1, 5.f, fTimeDelta);
-		m_pMeshCom->SetUp_AnimationSet(5);
-	}
-	else if (GetKeyState('A') & 0x8000)
-	{
-		m_pTransformCom->Move(2, 5.f, fTimeDelta);
-		m_pMeshCom->SetUp_AnimationSet(7);
-	}
-	else if (GetKeyState('D') & 0x8000)
-	{
-		m_pTransformCom->Move(3, 5.f, fTimeDelta);
-		m_pMeshCom->SetUp_AnimationSet(6);
-	}
-	else if (GetKeyState(VK_SPACE) & 0x8000)
-	{
-		m_pTransformCom->Move(3, 5.f, fTimeDelta);
-		m_pMeshCom->SetUp_AnimationSet(6);
-	}
-	else
-	{
-		m_pMeshCom->SetUp_AnimationSet(29);
-	}
-		
-
-	//if (true == m_isMove)
-	//{
-	//	_bool isFinish = false;
-
-	//	m_pTransformCom->Move_Target(&m_vTargetPos, 10.f, fTimeDelta, &isFinish);
-
-	//	if (true == isFinish)
-	//		m_isMove = false;
-	//}
-
-	m_pMeshCom->Play_Animation(fTimeDelta * m_fAniTime);
-
-	//if (FAILED(SetUp_HeightOnTerrain()))
-	//	return -1;
+	m_fAniSpeed = 1.f;
+	m_pMeshCom->Play_Animation(fTimeDelta, m_fAniSpeed);
 
 	return _int();
 }
@@ -105,7 +67,7 @@ _int CPlayer::LateUpdate_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pRendererCom)
 		return -1;
 
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHA, this)))
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
 		return -1;
 
 	return _int();
@@ -244,6 +206,7 @@ HRESULT CPlayer::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 
 void CPlayer::ViewChanage()
 {
+	// 마우스 커서를 기준으로 플레이어의 뷰를 변환한다 //
 	// Feat.형진이
 	CTransform*	vCameraTransformCom = ((CTransform*)(CObject_Manager::GetInstance()->Get_Component(SCENE_STAGE, L"Layer_Camera", L"Com_Transform", 1)));
 	_vec3 vCameraLook = *vCameraTransformCom->Get_StateInfo(CTransform::STATE_LOOK);
@@ -268,19 +231,87 @@ void CPlayer::ViewChanage()
 
 }
 
-//HRESULT CPlayer::SetUp_RenderState()
-//{
-//	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-//
-//	return NOERROR;
-//}
-//
-//HRESULT CPlayer::Release_RenderState()
-//{
-//	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-//
-//	return NOERROR;
-//}
+void CPlayer::KeyInput()
+{
+	// 걷고 뛰기 토글 플래그.
+	{
+		if (GetAsyncKeyState('R') && m_bRunflag == false)
+		{
+			m_bRunflag = true;
+			m_bIsRun = !m_bIsRun;
+		}
+		if (!GetAsyncKeyState('R') && m_bRunflag == true)
+			m_bRunflag = false;
+	}
+
+	if (GetAsyncKeyState('W') & 0x8000)
+	{
+		if (m_bIsRun == false)
+		{
+			m_pTransformCom->Move(0, PLAYER_SPEED - 2, m_fTimeDelta);
+			m_pMeshCom->SetUp_AnimationSet(STATE_WALK);
+		}
+		else if (m_bIsRun == true)
+		{
+			m_pTransformCom->Move(0, PLAYER_SPEED, m_fTimeDelta);
+			m_pMeshCom->SetUp_AnimationSet(STATE_RUN);
+		}
+	}
+	else if (GetAsyncKeyState('S') & 0x8000)
+	{
+		m_pTransformCom->Move(1, PLAYER_SPEED, m_fTimeDelta);
+		m_pMeshCom->SetUp_AnimationSet(STATE_RUN_BACK);
+	}
+	else if (GetAsyncKeyState('A') & 0x8000)
+	{
+		m_pTransformCom->Move(2, PLAYER_SPEED, m_fTimeDelta);
+		m_pMeshCom->SetUp_AnimationSet(STATE_RUN_LEFT);
+	}
+	else if (GetAsyncKeyState('D') & 0x8000)
+	{
+		m_pTransformCom->Move(3, PLAYER_SPEED, m_fTimeDelta);
+		m_pMeshCom->SetUp_AnimationSet(STATE_RUN_RIGHT);
+	}
+	else if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
+	{
+		m_pMeshCom->SetUp_AnimationSet(STATE_CASTAIM);
+	}
+	else if (GetAsyncKeyState(VK_RBUTTON) & 0x8000)
+	{
+		m_pMeshCom->SetUp_AnimationSet(6);
+	}
+	else
+	{
+		// 마법 태그랑 충돌 불 변수가 True 면
+		// 여기서 애니메이션 제어를 한다.
+
+		//if (스테이트 == 마법)
+		//{
+		//	애니메이션이 종료되었어?
+		//	되었으면 밑에 구문 실행.
+		//}
+		m_pMeshCom->SetUp_AnimationSet(25);
+	}
+}
+
+void CPlayer::ETC()
+{
+	// [Update_GameObject]
+	//{
+	//	if (true == m_isMove)
+	//	{
+	//		_bool isFinish = false;
+
+	//		m_pTransformCom->Move_Target(&m_vTargetPos, 10.f, fTimeDelta, &isFinish);
+
+	//		if (true == isFinish)
+	//			m_isMove = false;
+	//	}
+
+	//	if (FAILED(SetUp_HeightOnTerrain()))
+	//		return -1;
+	//}
+}
 
 // 원본객체를 생성한다.
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -314,7 +345,6 @@ CGameObject * CPlayer::Clone(void* pArg)
 
 void CPlayer::Free()
 {
-	Safe_Release(m_pKeyManager);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);

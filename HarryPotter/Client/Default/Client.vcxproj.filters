@@ -120,6 +120,9 @@
     <ClInclude Include="..\Headers\Camera_Static.h">
       <Filter>02. GameObject\99. Public\Camera\Static</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerStateInfo.h">
+      <Filter>98. Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

@@ -66,9 +66,6 @@ HRESULT CWeapon::Ready_GameObject(void * pArg)
 
 	Safe_Release(pObject_Manager);
 
-	// m_pTransformCom->Set_Scaling(0.01f, 0.01f, 0.01f);
-	// m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(rand() % 10 + 5, 0.f, rand() % 10 + 5));
-
 	m_pTransformCom->Set_Angle_Axis(_vec3(1.f, 0.f, 0.f),D3DXToRadian(300.0f));
 
 	return NOERROR;
@@ -89,8 +86,8 @@ _int CWeapon::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	Compute_ViewZ(m_pTransformCom);
 
-	if (FAILED(SetUp_HeightOnTerrain()))
-		return -1;
+	//if (FAILED(SetUp_HeightOnTerrain()))
+	//	return -1;
 
 	m_fTimeDelta = fTimeDelta;
 
@@ -104,8 +101,7 @@ HRESULT CWeapon::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pTransformCom ||
-		nullptr == m_pMeshCom ||
-		nullptr == m_pTextureCom)
+		nullptr == m_pMeshCom )
 		return E_FAIL;
 
 	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
@@ -147,15 +143,11 @@ HRESULT CWeapon::Add_Component()
 		return E_FAIL;
 
 	// For.Com_Mesh
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Mesh_Weapon", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Weapon", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
 		return E_FAIL;
 
 	// For.Com_Renderer
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
-		return E_FAIL;
-
-	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Effect", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	// For.Com_Shader
@@ -253,7 +245,6 @@ CGameObject * CWeapon::Clone(void * pArg)
 
 void CWeapon::Free()
 {
-	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pMeshCom);
