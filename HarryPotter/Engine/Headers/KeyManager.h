@@ -31,7 +31,9 @@ public:
 
 		KEY_SHIFT = 0x00010000,
 		KEY_CTRL = 0x00020000,
-		KEY_TAB = 0x00040000
+		KEY_TAB = 0x00040000,
+
+		KEY_R = 0x00080000
 	};
 
 private:

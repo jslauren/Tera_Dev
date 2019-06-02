@@ -50,6 +50,9 @@ _int CKeyManager::UpdateKey()
 	if (GetAsyncKeyState(VK_TAB) & 0x8000)
 		m_dwCurKey |= KEY_TAB;
 
+	if (GetAsyncKeyState('R') & 0x8000)
+		m_dwCurKey |= KEY_R;
+
 	return 0;
 }
 

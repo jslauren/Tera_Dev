@@ -748,12 +748,16 @@ void CMeshTab::OnNMRClickTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 	if (iLatestItemIdx < iItemIdx)
 		iLatestItemIdx = iItemIdx;
 
+	iCurrentSelcetedIndex = iItemIdx;
+	strCurrentSelectedObjectName = ParentItemName;
+
 	ParentItemName = _T("Layer_") + ParentItemName;
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, ParentItemName);
 	list<CGameObject*> ObjList = pLayer->Get_ObjectList();
 
 	_int iObjListIdx = 0;
+
 	auto iter = ObjList.begin();
 
 	for (size_t i = 0; i < iItemIdx; ++i)
@@ -826,6 +830,9 @@ void CMeshTab::OnNMRClickTreeDynamicObj(NMHDR *pNMHDR, LRESULT *pResult)
 
 	_int iItemIdx = _ttoi(strItemIdx);
 
+	iCurrentSelcetedIndex = iItemIdx;
+	strCurrentSelectedObjectName = ParentItemName;
+
 	if (iLatestItemIdx < iItemIdx)
 		iLatestItemIdx = iItemIdx;
 
@@ -847,7 +854,7 @@ void CMeshTab::OnNMRClickTreeDynamicObj(NMHDR *pNMHDR, LRESULT *pResult)
 		else
 			++iter;
 	}
-
+	
 	UpdateData(TRUE);
 
 	_vec3	vRight = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_StateInfo(CTransform::STATE_RIGHT);
@@ -906,6 +913,14 @@ void CMeshTab::OnSpin_Scaling_X(NMHDR *pNMHDR, LRESULT *pResult)
 		UpdateData(FALSE);
 
 		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Scaling(m_fScalingX, m_fScalingY, m_fScalingZ);
+
+		auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strCurrentSelectedObjectName));
+		
+		//iter->second[iCurrentSelcetedIndex-1].matWorld.m[0][0] = m_fScalingX;
+		
+		D3DXMatrixIdentity(&iter->second[iCurrentSelcetedIndex - 1].matWorld);
+		iter->second[iCurrentSelcetedIndex - 1].matWorld = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_WorldMatrixPointer();
+
 	}
 
 	*pResult = 0;
@@ -943,6 +958,11 @@ void CMeshTab::OnSpin_Scaling_Y(NMHDR *pNMHDR, LRESULT *pResult)
 		UpdateData(FALSE);
 
 		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Scaling(m_fScalingX, m_fScalingY, m_fScalingZ);
+
+		auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strCurrentSelectedObjectName));
+
+		D3DXMatrixIdentity(&iter->second[iCurrentSelcetedIndex - 1].matWorld);
+		iter->second[iCurrentSelcetedIndex - 1].matWorld = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_WorldMatrixPointer();
 	}
 
 	*pResult = 0;
@@ -980,6 +1000,11 @@ void CMeshTab::OnSpin_Scaling_Z(NMHDR *pNMHDR, LRESULT *pResult)
 		UpdateData(FALSE);
 
 		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Scaling(m_fScalingX, m_fScalingY, m_fScalingZ);
+
+		auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strCurrentSelectedObjectName));
+
+		D3DXMatrixIdentity(&iter->second[iCurrentSelcetedIndex - 1].matWorld);
+		iter->second[iCurrentSelcetedIndex - 1].matWorld = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_WorldMatrixPointer();
 	}
 	
 	*pResult = 0;
@@ -1017,9 +1042,16 @@ void CMeshTab::OnSpin_Rotate_X(NMHDR *pNMHDR, LRESULT *pResult)
 		if (m_fRotX >= 360.f)
 			m_fRotX = 360.f;
 
-		UpdateData(FALSE);
+	
 
 		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Rotation_YawPitchRoll(D3DXToRadian(m_fRotX), D3DXToRadian(m_fRotY), D3DXToRadian(m_fRotZ));
+		
+		auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strCurrentSelectedObjectName));
+
+		D3DXMatrixIdentity(&iter->second[iCurrentSelcetedIndex - 1].matWorld);
+		iter->second[iCurrentSelcetedIndex - 1].matWorld = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_WorldMatrixPointer();
+
+		UpdateData(FALSE);
 	}
 
 	*pResult = 0;
@@ -1057,9 +1089,15 @@ void CMeshTab::OnSpin_Rotate_Y(NMHDR *pNMHDR, LRESULT *pResult)
 		if (m_fRotY >= 360.f)
 			m_fRotY = 360.f;
 
-		UpdateData(FALSE);
 
 		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Rotation_YawPitchRoll(D3DXToRadian(m_fRotX), D3DXToRadian(m_fRotY), D3DXToRadian(m_fRotZ));
+
+		auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strCurrentSelectedObjectName));
+
+		D3DXMatrixIdentity(&iter->second[iCurrentSelcetedIndex - 1].matWorld);
+		iter->second[iCurrentSelcetedIndex - 1].matWorld = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_WorldMatrixPointer();
+
+		UpdateData(FALSE);
 	}
 
 	*pResult = 0;
@@ -1097,9 +1135,15 @@ void CMeshTab::OnSpin_Rotate_Z(NMHDR *pNMHDR, LRESULT *pResult)
 		if (m_fRotZ >= 360.f)
 			m_fRotZ = 360.f;
 
+		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Rotation_YawPitchRoll(D3DXToRadian(m_fRotX), D3DXToRadian(m_fRotY), D3DXToRadian(m_fRotZ));
+
+		auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strCurrentSelectedObjectName));
+
+		D3DXMatrixIdentity(&iter->second[iCurrentSelcetedIndex - 1].matWorld);
+		iter->second[iCurrentSelcetedIndex - 1].matWorld = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_WorldMatrixPointer();
+
 		UpdateData(FALSE);
 
-		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_Rotation_YawPitchRoll(D3DXToRadian(m_fRotX), D3DXToRadian(m_fRotY), D3DXToRadian(m_fRotZ));
 	}
 
 	*pResult = 0;
@@ -1140,6 +1184,12 @@ void CMeshTab::OnSpin_Position_X(NMHDR *pNMHDR, LRESULT *pResult)
 		UpdateData(FALSE);
 
 		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_fPosX, m_fPosY, m_fPosZ));
+
+		auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strCurrentSelectedObjectName));
+
+		D3DXMatrixIdentity(&iter->second[iCurrentSelcetedIndex - 1].matWorld);
+		iter->second[iCurrentSelcetedIndex - 1].matWorld = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_WorldMatrixPointer();
+
 	}
 
 	*pResult = 0;
@@ -1179,6 +1229,12 @@ void CMeshTab::OnSpin_Position_Y(NMHDR *pNMHDR, LRESULT *pResult)
 		UpdateData(FALSE);
 
 		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_fPosX, m_fPosY, m_fPosZ));
+
+		auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strCurrentSelectedObjectName));
+
+		D3DXMatrixIdentity(&iter->second[iCurrentSelcetedIndex - 1].matWorld);
+		iter->second[iCurrentSelcetedIndex - 1].matWorld = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_WorldMatrixPointer();
+
 	}
 
 	*pResult = 0;
@@ -1219,6 +1275,12 @@ void CMeshTab::OnSpin_Position_Z(NMHDR *pNMHDR, LRESULT *pResult)
 		UpdateData(FALSE);
 
 		dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_fPosX, m_fPosY, m_fPosZ));
+
+		auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strCurrentSelectedObjectName));
+
+		D3DXMatrixIdentity(&iter->second[iCurrentSelcetedIndex - 1].matWorld);
+		iter->second[iCurrentSelcetedIndex - 1].matWorld = *dynamic_cast<CStaticObject*>(pSelectedObj)->GetTransformCom()->Get_WorldMatrixPointer();
+
 	}
 
 	*pResult = 0;
@@ -1384,7 +1446,9 @@ void CMeshTab::OnBnClicked_Mesh_Load()
 		MakeItemForTree();
 
 		CLayer* pStaticObjLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
-		dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->SetState(*(_vec3*)&tObjMeshData.matWorld.m[3], _vec3(1.f, 1.f, 1.f));
+	//	dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->SetState(*(_vec3*)&tObjMeshData.matWorld.m[3], _vec3(tObjMeshData.matWorld.m[0][0], tObjMeshData.matWorld.m[1][1], tObjMeshData.matWorld.m[2][2]));
+
+		dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->SetWorldMatrix(tObjMeshData.matWorld);
 
 		vector<OBJECTMESHDATA> vObjMeshData;
 

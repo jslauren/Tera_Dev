@@ -31,12 +31,16 @@ HRESULT CMonster::Ready_GameObject_Prototype()
 // 원본객체 복제외에도 추가적인 셋팅이필요하면 여기서 셋팅해라.
 HRESULT CMonster::Ready_GameObject(void* pArg)
 {
+	_matrix matWorld = *(_matrix*)pArg;
+
+
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
 	m_pTransformCom->Set_Scaling(0.01f, 0.01f, 0.01f);
 
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(rand() % 10 + 5, 0.f, rand() % 10 + 5));
+	m_pTransformCom->Set_WorldMatrix(matWorld);
+	//m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(rand() % 10 + 5, 0.f, rand() % 10 + 5));
 	m_pMeshCom->SetUp_AnimationSet(rand() % 10);
 
 	return NOERROR;
@@ -72,8 +76,7 @@ HRESULT CMonster::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pTransformCom ||
-		nullptr == m_pMeshCom ||
-		nullptr == m_pTextureCom)
+		nullptr == m_pMeshCom )
 		return E_FAIL;
 
 	m_pMeshCom->Play_Animation(m_fTimeDelta);
@@ -131,9 +134,9 @@ HRESULT CMonster::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
-	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Effect", L"Com_Texture", (CComponent**)&m_pTextureCom)))
-		return E_FAIL;
+	//// For.Com_Texture
+	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Effect", L"Com_Texture", (CComponent**)&m_pTextureCom)))
+	//	return E_FAIL;
 
 	// For.Com_Shader
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
@@ -150,7 +153,8 @@ HRESULT CMonster::SetUp_HeightOnTerrain()
 		return E_FAIL;
 	pObject_Manager->AddRef();
 
-	CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Buffer", 0);
+	// 인덱스 1번으로 해야함.
+	CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Buffer", 1);
 	if (nullptr == pBufferCom)
 		return E_FAIL;
 
@@ -259,7 +263,7 @@ CGameObject * CMonster::Clone(void* pArg)
 
 void CMonster::Free()
 {
-	Safe_Release(m_pTextureCom);
+//	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pMeshCom);

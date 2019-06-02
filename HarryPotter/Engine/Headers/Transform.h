@@ -21,6 +21,7 @@ public: // Getter
 	const _vec3*	Get_RotRadValue() const { return &m_vRotRadValue; }
 public: // Setter
 	void			Set_StateInfo(STATE eState, const _vec3* pStateInfo) const { memcpy((_vec3*)&m_matWorld.m[eState][0], pStateInfo, sizeof(_vec3)); }
+	void			Set_WorldMatrix(_matrix matWorld) { memcpy(&m_matWorld, matWorld, sizeof(_matrix)); }
 public:
 	const _matrix*	Compute_InverseWorldMatrixPointer() { return D3DXMatrixInverse(&m_matWorldInv, nullptr, &m_matWorld); }
 

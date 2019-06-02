@@ -89,12 +89,12 @@ HRESULT CMesh_Dynamic::SetTexture_OnShader(LPD3DXEFFECT pEffect, _uint iMeshCont
 	return NOERROR;
 }
 
-HRESULT CMesh_Dynamic::SetUp_AnimationSet(_uint iIndex)
+HRESULT CMesh_Dynamic::SetUp_AnimationSet(_uint iIndex, _float fAniSpeed)
 {
 	if (nullptr == m_pAniCtrl)
 		return E_FAIL;
 
-	m_pAniCtrl->SetUp_AnimationSet(iIndex);
+	m_pAniCtrl->SetUp_AnimationSet(iIndex, fAniSpeed);
 
 	return NOERROR;
 }
@@ -121,9 +121,9 @@ HRESULT CMesh_Dynamic::Play_Animation(const _float & fTimeDelta, const _float fA
 	return NOERROR;
 }
 
-_bool CMesh_Dynamic::IsAnimationEnded()
+_bool CMesh_Dynamic::IsAnimationEnded(_float fCtrlEndTime)
 {
-	return m_pAniCtrl->IsAnimationEnded();
+	return m_pAniCtrl->IsAnimationEnded(fCtrlEndTime);
 }
 
 HRESULT CMesh_Dynamic::ChangePivot(_vec3 vState, _float fDegree)

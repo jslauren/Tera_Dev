@@ -339,7 +339,6 @@ void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 
 		CLayer* pStaticObjLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, m_pViewManager->m_pEditorView->m_Tab_Mesh.strLayerTag);
 		dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->SetState(vPos, _vec3(1.f, 1.f, 1.f));
-
 		CDataManager::GetInstance()->m_matWorld = *dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->GetTransformCom()->Get_WorldMatrixPointer();
 
 		OBJECTMESHDATA tObjMeshData;

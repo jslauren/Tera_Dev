@@ -14,12 +14,23 @@ CAnimationCtrl::CAnimationCtrl(const CAnimationCtrl & rhs)
 		return;
 }
 
+_double CAnimationCtrl::Get_CurretTrackPos()
+{
+	D3DXTRACK_DESC	TrackDesc;
+	ZeroMemory(&TrackDesc, sizeof(D3DXTRACK_DESC));
+
+	// 트랙의 현재 포지션 값.
+	m_pAniCtrl->GetTrackDesc(m_iCurrentTrack, &TrackDesc);
+
+	return _double(TrackDesc.Position);
+}
+
 HRESULT CAnimationCtrl::Ready_AnimationCtrl()
 {
 	return NOERROR;
 }
 
-HRESULT CAnimationCtrl::SetUp_AnimationSet(_uint iIndex)
+HRESULT CAnimationCtrl::SetUp_AnimationSet(_uint iIndex, const _float fAniSpeed)
 {
 	if (nullptr == m_pAniCtrl)
 		return E_FAIL;
@@ -60,6 +71,8 @@ HRESULT CAnimationCtrl::SetUp_AnimationSet(_uint iIndex)
 	m_iOldIndex = iIndex;
 	m_iCurrentTrack = m_iNewTrack;
 
+	m_fAniSpeed = fAniSpeed;
+
 	return NOERROR;
 }
 
@@ -73,14 +86,14 @@ HRESULT CAnimationCtrl::SetUp_AnimationSet(const char * pName)
 
 HRESULT CAnimationCtrl::Play_Animation(const _float & fTimeDelta)
 {
-	m_pAniCtrl->AdvanceTime((fTimeDelta), nullptr);
+	m_pAniCtrl->AdvanceTime((fTimeDelta * m_fAniSpeed), nullptr);
 
 	m_TimeAcc += fTimeDelta;
 
 	return NOERROR;
 }
 
-_bool CAnimationCtrl::IsAnimationEnded()
+_bool CAnimationCtrl::IsAnimationEnded(_float fCtrlEndTime)
 {
 	// 트랙의 최대 포지션 값.
 	double Period = m_pAnimationSet->GetPeriod();
@@ -91,7 +104,11 @@ _bool CAnimationCtrl::IsAnimationEnded()
 	m_pAniCtrl->GetTrackDesc(m_iCurrentTrack, &TrackDesc);
 
 	// 애니메이션이 끝났다..!
-	if (Period <= TrackDesc.Position)
+	// fCtrlEndTime는 원래 애니메이션의 End Time을 조절하기 위한 변수로서,
+	// 값을 받아와 Period에서 빼주게 되면,
+	// 기존에 끝나는 시간보다 일찍 애니메이션을 종료시킬 수 있어서,
+	// 약간의 튀는 애니메이션 보간이 가능하다. (점프같이 3단계로 나뉘어져 있는 애니일때 필요)
+	if (Period - fCtrlEndTime <= TrackDesc.Position)
 		return TRUE;
 
 	return _bool(FALSE);

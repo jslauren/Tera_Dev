@@ -7,6 +7,7 @@
 #include "Terrain.h"
 #include "Player.h"
 #include "Weapon.h"
+#include "Monster.h"
 
 #define	NEAR			0.2f
 #define FAR				500.f
@@ -23,6 +24,10 @@ CScene_Stage::CScene_Stage(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CScene_Stage::Ready_Scene()
 {
+	// For.Terrain Data Load
+	if (FAILED(Ready_TerrainLoad()))
+		return E_FAIL;
+
 	// For.Light Setting
 	if (FAILED(Ready_LightInfo()))
 		return E_FAIL;
@@ -33,6 +38,10 @@ HRESULT CScene_Stage::Ready_Scene()
 
 	// 로고씬에서 사용할 객체들의 원형을 준비해놓는다.
 	if (FAILED(Ready_GameObject_Prototype()))
+		return E_FAIL;
+
+	// For.Mesh Data Load
+	if (FAILED(Ready_MeshLoad()))
 		return E_FAIL;
 
 	// For.Layer_Camera
@@ -71,6 +80,138 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 HRESULT CScene_Stage::Render_Scene()
 {
 	return CScene::Render_Scene();
+}
+
+HRESULT CScene_Stage::Ready_TerrainLoad()
+{
+	const wstring& wstrPath = L"../../Data/3.Map";
+
+	HANDLE		hFile = CreateFile(wstrPath.c_str(),
+		GENERIC_READ,
+		0,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	DWORD	dwByte = 0;
+
+	while (true)
+	{
+		TERRAINDATA*	pTerrainData = new TERRAINDATA;
+		_int	iImgPathLength = 0;
+		_tchar	imgPathTemp[MAX_PATH] = L"";
+
+		ReadFile(hFile, &pTerrainData->iNumVtxX, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, &pTerrainData->iNumVtxZ, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, &pTerrainData->fInterval, sizeof(_float), &dwByte, NULL);
+		ReadFile(hFile, &pTerrainData->fDetail, sizeof(_float), &dwByte, NULL);
+		ReadFile(hFile, &iImgPathLength, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, imgPathTemp, sizeof(_tchar) * iImgPathLength, &dwByte, NULL);
+
+		if (dwByte == 0)
+		{
+			Safe_Delete(pTerrainData);
+			break;
+		}
+
+		m_fDetail = pTerrainData->fDetail;
+
+		// For.Component_Buffer_Terrain
+		if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device, pTerrainData->iNumVtxX, pTerrainData->iNumVtxZ, pTerrainData->fInterval, pTerrainData->fDetail))))
+			return E_FAIL;
+
+		// For.Component_Texture_Terrain
+		if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, imgPathTemp))))
+			return E_FAIL;
+
+	}
+
+	CloseHandle(hFile);
+
+	return NOERROR;
+}
+
+HRESULT CScene_Stage::Ready_MeshLoad()
+{
+	const wstring& wstrPath = L"../../Data/9.MeshDat";
+
+	HANDLE		hFile = CreateFile(wstrPath.c_str(),
+		GENERIC_READ,
+		0,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	DWORD	dwByte = 0;
+
+	while (true)
+	{
+		wstring		ObjectName;
+
+		_int	iTextLength = 0;
+		_tchar	szTextTemp[MAX_PATH] = L"";
+
+		OBJECTMESHDATA tObjMeshData;
+
+		ReadFile(hFile, &tObjMeshData.bIsStaticMesh, sizeof(_bool), &dwByte, NULL);
+		ReadFile(hFile, &tObjMeshData.matWorld, sizeof(_matrix), &dwByte, NULL);
+
+		ReadFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, szTextTemp, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+		tObjMeshData.strObjProtoTag = szTextTemp;
+
+		ReadFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, szTextTemp, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+		tObjMeshData.strLayerTag = szTextTemp;
+		ObjectName = tObjMeshData.strLayerTag.c_str();
+
+		_int iStrLength = ObjectName.length();
+
+		if (ObjectName.length() != 0)
+			ObjectName = ObjectName.substr(6, iStrLength);
+
+		//ObjectName.TrimLeft(L"Layer_");
+
+		ReadFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, szTextTemp, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+		tObjMeshData.strComProtoTag = szTextTemp;
+
+		ReadFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, szTextTemp, sizeof(_tchar) * iTextLength, &dwByte, NULL);
+
+		tObjMeshData.strFullPath = szTextTemp;
+
+		if (0 == dwByte)
+			break;
+
+		// For.Monster
+		if (FAILED(Add_Object(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), SCENE_STAGE, L"Layer_Monster", (void*)tObjMeshData.matWorld)))
+			return E_FAIL;
+
+		//CLayer* pStaticObjLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
+		//dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->SetState(*(_vec3*)&tObjMeshData.matWorld.m[3], _vec3(1.f, 1.f, 1.f));
+
+		//vector<OBJECTMESHDATA> vObjMeshData;
+
+		//auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strObjectName));
+
+		//if (iter == CDataManager::GetInstance()->m_MapMeshData.end())
+		//{
+		//	vObjMeshData.push_back(tObjMeshData);
+		//	CDataManager::GetInstance()->m_MapMeshData.emplace(ObjectName, vObjMeshData);
+		//}
+		//else
+		//	(*iter).second.push_back(tObjMeshData);
+	}
+
+	CloseHandle(hFile);
+
+	return NOERROR;
 }
 
 HRESULT CScene_Stage::Ready_LightInfo()
@@ -132,13 +273,13 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device, L"../Bin/Resources/Textures/Terrain/Height.bmp"))))
 	//	return E_FAIL;
 
-	// For.Component_Buffer_Terrain
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device))))
-		return E_FAIL;
+	//// For.Component_Buffer_Terrain
+	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device))))
+	//	return E_FAIL;
 
-	// For.Component_Texture_Terrain
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass.tga"))))
-		return E_FAIL;
+	//// For.Component_Texture_Terrain
+	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass.tga"))))
+	//	return E_FAIL;
 
 	//// For.Component_Texture_Filter
 	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Filter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Filter.bmp", 1))))
@@ -156,13 +297,13 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Effect", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Explosion/Explosion%d.png", 90))))
 	//	return E_FAIL;
 	//
-	//// For.Component_Mesh_TombStone
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_TombStone", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/TombStone/", L"TombStone.x"))))
-	//	return E_FAIL;
+	// For.Component_Mesh_TombStone
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_TombStone", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/TombStone/", L"TombStone.x"))))
+		return E_FAIL;
 
-	//// For.Component_Mesh_Tiger
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Tiger", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Tiger/", L"Tiger.x"))))
-	//	return E_FAIL;
+	// For.Component_Mesh_Tiger
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Tiger", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Tiger/", L"Tiger.x"))))
+		return E_FAIL;
 
 	// For.Component_Mesh_Player
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Hermione/", L"Hermione.x"))))
@@ -172,9 +313,12 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Wand/", L"Wand.x"))))
 		return E_FAIL;
 
-	//// For.Component_Mesh_Monster
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Monster", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Juliet/", L"Player.x"))))
-	//	return E_FAIL;
+	// 여기에 Component_Mesh_Monster 이 값이 몬스터 클래스의 Add_Component함수에 두 번째 인자로 들어가면서,
+	// 몬스터 클래스만 있기때문에 실바만 나온다. 추후 각 오브젝트들이 추가될 때마다 클래스를 생성해 주어야 한다.
+
+	// For.Component_Mesh_Monster
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Monster", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/sylva/", L"sylva.X"))))
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -205,9 +349,21 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Weapon", CWeapon::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	//// For.GameObject_Monster
-	//if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Monster", CMonster::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+	// For.GameObject_Monster
+	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Monster", CMonster::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_tiger
+	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_tiger", CMonster::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_TombStone
+	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_TombStone", CMonster::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_sylva
+	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_sylva", CMonster::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -245,7 +401,7 @@ HRESULT CScene_Stage::Ready_Layer_BackGround(const _tchar* pLayerTag)
 		return E_FAIL;
 
 	// For.Terrain
-	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Terrain", SCENE_STAGE, pLayerTag)))
+	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Terrain", SCENE_STAGE, pLayerTag, (void*)&m_fDetail)))
 		return E_FAIL;
 
 

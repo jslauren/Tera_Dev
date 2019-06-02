@@ -15,6 +15,8 @@ public:
 	virtual _int	LateUpdate_Scene(const _float& fTimeDelta);
 	virtual HRESULT Render_Scene();
 private:
+	HRESULT	Ready_TerrainLoad();
+	HRESULT	Ready_MeshLoad();
 	HRESULT Ready_LightInfo();
 	HRESULT Ready_Component_Prototype();
 	HRESULT Ready_GameObject_Prototype();
@@ -23,6 +25,10 @@ private:
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Monster(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_UI(const _tchar* pLayerTag);
+private:
+	map<int, TERRAINDATA*>					m_MapTerrainData;
+	map<wstring, vector<OBJECTMESHDATA>>	m_MapMeshData;
+	_float									m_fDetail = 1.f;
 public:
 	static CScene_Stage*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual void			Free();

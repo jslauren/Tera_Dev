@@ -23,6 +23,8 @@ public:
 	virtual HRESULT Render_GameObject();
 public:	// Setter
 	void			SetState(_vec3 vPos, _vec3 vScale);
+	void			SetPosition(_vec3 vPos);
+	void			SetWorldMatrix(_matrix matWorld);
 public:	// Getter
 	_vec3			GetPosition(void) { return m_vPosition; }
 	CTransform*		GetTransformCom() { return m_pTransformCom; }

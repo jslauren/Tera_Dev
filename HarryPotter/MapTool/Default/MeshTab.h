@@ -110,6 +110,7 @@ public:
 	_bool		bDblClkTreeDynamicObj = false;
 	_int		iLatestItemIdx = 0;
 	_int		iSaveItemIdx = 0;
+	_int		iCurrentSelcetedIndex = 0;
 
 private:
 	HTREEITEM		StaticRoot = nullptr;
@@ -120,6 +121,7 @@ private:
 	TCHAR			szFullPath[MAX_PATH] = L"";
 	CString			strComponentPrototypeTag;
 	CString			strObjectName;
+	CString			strCurrentSelectedObjectName;
 	CString			strXfileName;
 	TCHAR			szFullPathForAdd[MAX_PATH] = L"";
 	CGameObject*	pSelectedObj = nullptr;

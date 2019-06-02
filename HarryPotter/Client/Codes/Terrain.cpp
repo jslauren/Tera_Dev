@@ -28,6 +28,9 @@ HRESULT CTerrain::Ready_GameObject_Prototype()
 // 원본객체 복제외에도 추가적인 셋팅이필요하면 여기서 셋팅해라.
 HRESULT CTerrain::Ready_GameObject(void* pArg)
 {
+	_float fDetailValue = *(_float*)pArg;
+	m_vDetail *= fDetailValue;
+
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 

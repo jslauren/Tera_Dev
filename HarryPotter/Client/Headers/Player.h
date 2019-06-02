@@ -38,13 +38,16 @@ private:
 	_float			m_fAniSpeed = 1.f;
 	_float			m_fTimeDelta = 1.f;
 	_bool			m_bIsRun = false;
-	_bool			m_bRunflag = false;
+	_bool			m_bIsJumped = false;
+
+	P_STATE			m_dwPlayerState = STATE_IDLE;
 private:
 	HRESULT Add_Component();
 	HRESULT SetUp_HeightOnTerrain();
 	HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 	void	ViewChanage();
 	void	KeyInput();
+	void	AniChange();
 
 	void	ETC();
 public:

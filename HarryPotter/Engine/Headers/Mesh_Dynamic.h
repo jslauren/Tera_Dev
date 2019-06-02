@@ -20,11 +20,11 @@ public:
 	HRESULT Render_Mesh(_uint iMeshContainerID, _uint iSubSetID);
 	HRESULT Update_SkinnedMesh(_uint iMeshContainerID);
 	HRESULT SetTexture_OnShader(LPD3DXEFFECT pEffect, _uint iMeshContainerID, _uint iSubsetID, const char* pConstantName, MESHTEXTURE::TYPE eType);
-	HRESULT SetUp_AnimationSet(_uint iIndex);
+	HRESULT SetUp_AnimationSet(_uint iIndex, _float fAniSpeed = 1.f);
 	HRESULT SetUp_AnimationSet(const char* pName);
 	HRESULT Play_Animation(const _float& fTimeDelta, const _float fAniSpeed = 1.f);
 public:
-	_bool	IsAnimationEnded();
+	_bool	IsAnimationEnded(_float fCtrlEndTime = 0.f);
 	HRESULT ChangePivot(_vec3 vState, _float fDegree);
 private:
 	CHierarchyLoader*		m_pLoader = nullptr;

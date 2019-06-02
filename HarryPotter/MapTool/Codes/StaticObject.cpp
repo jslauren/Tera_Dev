@@ -115,7 +115,18 @@ void CStaticObject::SetState(_vec3 vPos, _vec3 vScale)
 	m_pTransformCom->Set_Scaling(vScale.x, vScale.y, vScale.z);
 
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &vPos);
+	
+}
 
+void CStaticObject::SetPosition(_vec3 vPos)
+{
+	m_vPosition = vPos;
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &vPos);
+}
+
+void CStaticObject::SetWorldMatrix(_matrix matWorld)
+{
+	m_pTransformCom->Set_WorldMatrix(matWorld);
 }
 
 HRESULT CStaticObject::Add_Component_Tool(const _tchar * pComponentPrototypeTag)
