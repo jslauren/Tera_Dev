@@ -19,7 +19,7 @@ private:
 	LPD3DXBUFFER	m_pBuffer;
 public:
 	static CShader*		Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar* pShaderFilePath);
-	virtual CComponent*	Clone();
+	virtual CComponent* Clone(void* pArg = nullptr);
 	virtual void		Free();
 };
 

@@ -105,7 +105,7 @@ CTexture_Tool * CTexture_Tool::Create(LPDIRECT3DDEVICE9 pGraphic_Device, TEXTURE
 	return pInstance;
 }
 
-CComponent * CTexture_Tool::Clone()
+CComponent * CTexture_Tool::Clone(void* pArg)
 {
 	AddRef();
 

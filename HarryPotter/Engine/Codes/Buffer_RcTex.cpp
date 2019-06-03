@@ -109,7 +109,7 @@ CBuffer_RcTex * CBuffer_RcTex::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
-CComponent * CBuffer_RcTex::Clone()
+CComponent * CBuffer_RcTex::Clone(void* pArg)
 {
 	return new CBuffer_RcTex(*this);
 }

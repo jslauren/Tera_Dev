@@ -56,7 +56,7 @@ private:
 	_vec3	m_vRotRadValue = { 0.f, 0.f, 0.f };
 public:
 	static CTransform*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual CComponent* Clone();
+	virtual CComponent* Clone(void* pArg = nullptr);
 	virtual void		Free();
 };
 

@@ -40,7 +40,6 @@ HRESULT CMonster::Ready_GameObject(void* pArg)
 	m_pTransformCom->Set_Scaling(0.01f, 0.01f, 0.01f);
 
 	m_pTransformCom->Set_WorldMatrix(matWorld);
-	//m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(rand() % 10 + 5, 0.f, rand() % 10 + 5));
 	m_pMeshCom->SetUp_AnimationSet(rand() % 10);
 
 	return NOERROR;
@@ -50,6 +49,12 @@ _int CMonster::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
+
+	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_BodyCollider");
+
+	//const CCollider* pWeaponCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Collider", 1);
+
+	m_pColliderCom->Collision_OBB(pPlayerCollider);
 
 	return _int();
 }
@@ -76,7 +81,8 @@ HRESULT CMonster::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pTransformCom ||
-		nullptr == m_pMeshCom )
+		nullptr == m_pMeshCom ||
+		nullptr == m_pColliderCom)
 		return E_FAIL;
 
 	m_pMeshCom->Play_Animation(m_fTimeDelta);
@@ -117,6 +123,8 @@ HRESULT CMonster::Render_GameObject()
 
 	Safe_Release(pEffect);
 
+	m_pColliderCom->Render_Collider();
+
 	return NOERROR;
 }
 
@@ -134,12 +142,21 @@ HRESULT CMonster::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
-	//// For.Com_Texture
-	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Effect", L"Com_Texture", (CComponent**)&m_pTextureCom)))
-	//	return E_FAIL;
-
 	// For.Com_Shader
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
+
+	// For.Com_Collider
+	CCollider::COLLIDERDESC		ColliderDesc;
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+
+	ColliderDesc.eType = CCollider::COLLIDERDESC::TYPE_TRANSFORM;
+	ColliderDesc.pTransformMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	ColliderDesc.pFrameMatrix = nullptr;
+	ColliderDesc.vScale = _vec3(1.0f, 2.f, 1.f);
+	ColliderDesc.vPivot = _vec3(0.0f, 1.f, 0.f);
+
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_AABB", L"Com_Collider", (CComponent**)&m_pColliderCom, &ColliderDesc)))
 		return E_FAIL;
 	
 	return NOERROR;
@@ -263,7 +280,7 @@ CGameObject * CMonster::Clone(void* pArg)
 
 void CMonster::Free()
 {
-//	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pMeshCom);

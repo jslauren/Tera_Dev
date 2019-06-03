@@ -15,6 +15,7 @@ public:
 	STDMETHOD(DestroyMeshContainer)(THIS_ LPD3DXMESHCONTAINER pMeshContainerToFree);
 public:
 	HRESULT Ready_HierarchyLoader(const _tchar* pFilePath);
+public:
 	_ulong	AddRef(); // 레퍼런스 카운트를 증가시킨다.
 	_ulong	Release(); // 레퍼런스 카운트를 감소시킨다. + 레퍼런스카운트가 0인경우 삭제한다.
 private:

@@ -45,7 +45,7 @@ public:
 	//오브젝트 매니져가 객체의 삭제 판단을 하기 위해 필요한 함수
 	const bool&		GetDelete();
 protected:
-	HRESULT	Add_Component(const _uint& iSceneIdx, const _tchar* pPrototypeTag, const _tchar* pComponentTag, CComponent** ppOutComponent);
+	HRESULT	Add_Component(const _uint& iSceneIdx, const _tchar* pPrototypeTag, const _tchar* pComponentTag, CComponent** ppOutComponent, void* pArg = nullptr);
 	HRESULT	Compute_ViewZ(CTransform* pTransform);
 protected:	// Protected로 시마이 하자....
 	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;

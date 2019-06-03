@@ -29,7 +29,7 @@ public:
 	static CBuffer_Terrain_Tool* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	static CBuffer_Terrain_Tool* Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar* pHeighitMapPath);
 
-	virtual CComponent* Clone();
+	virtual CComponent* Clone(void* pArg = nullptr);
 	virtual void		Free();
 };
 

@@ -15,7 +15,7 @@ public:
 
 public:
 	static CBuffer_ScreenTex*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual CComponent*			Clone();
+	virtual CComponent*			Clone(void* pArg = nullptr);
 	virtual void				Free();
 };
 

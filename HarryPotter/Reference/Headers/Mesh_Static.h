@@ -31,7 +31,7 @@ private:
 	HRESULT Change_TextureFileName(_tchar* pFileName, const _tchar Text);
 public:
 	static CMesh_Static*	Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar* pFilePath, const _tchar* pFileName);
-	virtual CComponent*		Clone();
+	virtual CComponent*		Clone(void* pArg = nullptr);
 	virtual void			Free();
 
 };

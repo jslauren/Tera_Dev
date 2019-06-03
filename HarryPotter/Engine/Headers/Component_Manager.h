@@ -2,8 +2,10 @@
 #include "Base.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "Collider.h"
 #include "Renderer.h"
 #include "Transform.h"
+#include "Navigation.h"
 #include "Mesh_Static.h"
 #include "Mesh_Dynamic.h"
 #include "Buffer_RcCol.h"
@@ -29,7 +31,7 @@ public:
 	HRESULT		Reserve_Component_Manager(const _uint& iMaxNumScene);
 	HRESULT		Add_Component_Prototype(const _uint& iSceneIdx, const _tchar* pComponentTag, CComponent* pComponent);
 	HRESULT		Clear_Component_Prototype(const _uint& iSceneIdx);
-	CComponent* Clone_Component(const _uint& iSceneIdx, const _tchar* pComponentTag);
+	CComponent* Clone_Component(const _uint& iSceneIdx, const _tchar* pComponentTag, void* pArg = nullptr);
 private:
 	// 원형 객체면 Prototype을 이름에 붙여줘야 안 헷갈리지 않을까...?
 	// m_pMapComponentPrototype 이런 식으로...

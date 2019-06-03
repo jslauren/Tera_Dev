@@ -140,7 +140,7 @@ CBuffer_CubeTex * CBuffer_CubeTex::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
-CComponent * CBuffer_CubeTex::Clone()
+CComponent * CBuffer_CubeTex::Clone(void* pArg)
 {
 	return new CBuffer_CubeTex(*this);
 }

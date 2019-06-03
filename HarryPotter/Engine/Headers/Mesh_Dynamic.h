@@ -38,7 +38,7 @@ private:
 
 public:
 	static CMesh_Dynamic*	Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar* pFilePath, const _tchar* pFileName);
-	virtual CComponent*		Clone();
+	virtual CComponent*		Clone(void* pArg = nullptr);
 	virtual void			Free();
 
 };

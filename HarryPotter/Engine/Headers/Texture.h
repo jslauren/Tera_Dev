@@ -20,7 +20,7 @@ private:
 	typedef vector<IDirect3DBaseTexture9*>	VECTEXTURE;
 public:
 	static CTexture*	Create(LPDIRECT3DDEVICE9 pGraphic_Device, TEXTURETYPE eType, const _tchar* pFileName, const _uint& iNumTexture = 1);
-	virtual CComponent* Clone();
+	virtual CComponent* Clone(void* pArg = nullptr);
 	virtual void		Free();
 };
 

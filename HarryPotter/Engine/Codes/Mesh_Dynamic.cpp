@@ -195,7 +195,7 @@ CMesh_Dynamic * CMesh_Dynamic::Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _
 	return pInstance;
 }
 
-CComponent * CMesh_Dynamic::Clone()
+CComponent * CMesh_Dynamic::Clone(void* pArg)
 {
 	return new CMesh_Dynamic(*this);
 }

@@ -116,7 +116,7 @@ CRenderer * CRenderer::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
-CComponent * CRenderer::Clone()
+CComponent * CRenderer::Clone(void* pArg)
 {
 	AddRef();
 

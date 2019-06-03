@@ -34,7 +34,7 @@ protected:
 	_vec3*							m_pPositions = nullptr; // 정점들의 최초 위치만 보관하는 배열.
 	void*							m_pIndices = nullptr;
 public:
-	virtual CComponent* Clone() = 0;
+	virtual CComponent* Clone(void* pArg = nullptr) = 0;
 	virtual void		Free();
 };
 

@@ -144,7 +144,7 @@ CMesh_Static * CMesh_Static::Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tc
 	return pInstance;
 }
 
-CComponent * CMesh_Static::Clone()
+CComponent * CMesh_Static::Clone(void* pArg)
 {
 	return new CMesh_Static(*this);
 }

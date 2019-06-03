@@ -115,6 +115,15 @@
     <ClInclude Include="..\Headers\AnimationCtrl.h">
       <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Collider.h">
+      <Filter>01. Utility\02. Component\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Navigation.h">
+      <Filter>01. Utility\02. Component\Component\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Cell.h">
+      <Filter>01. Utility\02. Component\Component\Navigation\Cell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -240,6 +249,18 @@
     <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic\Animation">
       <UniqueIdentifier>{626fda2f-0cd6-4ef9-bb6e-03dc3f2101f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Collider">
+      <UniqueIdentifier>{1e87ceee-4797-4b25-aeb5-0c6b3b85de41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Navigation">
+      <UniqueIdentifier>{242d507d-568d-470c-a375-501b16f6827c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Collider\ShaderFiles">
+      <UniqueIdentifier>{d1d4823f-67ec-46ea-bdd5-b5cf5fe0dbca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Navigation\Cell">
+      <UniqueIdentifier>{4cab6a37-8eee-4264-9f4b-2db92209862e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Graphic_Device.cpp">
@@ -338,5 +359,19 @@
     <ClCompile Include="..\Codes\AnimationCtrl.cpp">
       <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\Collider.cpp">
+      <Filter>01. Utility\02. Component\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Navigation.cpp">
+      <Filter>01. Utility\02. Component\Component\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Cell.cpp">
+      <Filter>01. Utility\02. Component\Component\Navigation\Cell</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Collider.fx">
+      <Filter>01. Utility\02. Component\Component\Collider\ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

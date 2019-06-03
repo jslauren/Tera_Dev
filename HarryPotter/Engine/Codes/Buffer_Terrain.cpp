@@ -531,7 +531,7 @@ CBuffer_Terrain * CBuffer_Terrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device, con
 	return pInstance;
 }
 
-CComponent * CBuffer_Terrain::Clone()
+CComponent * CBuffer_Terrain::Clone(void* pArg)
 {
 	return new CBuffer_Terrain(*this);
 }

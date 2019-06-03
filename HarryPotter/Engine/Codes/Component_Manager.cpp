@@ -55,7 +55,7 @@ HRESULT CComponent_Manager::Clear_Component_Prototype(const _uint & iSceneIdx)
 	return NOERROR;
 }
 
-CComponent * CComponent_Manager::Clone_Component(const _uint & iSceneIdx, const _tchar * pComponentTag)
+CComponent * CComponent_Manager::Clone_Component(const _uint & iSceneIdx, const _tchar * pComponentTag, void* pArg)
 {
 	if (m_iMaxNumScene <= iSceneIdx ||
 		nullptr == m_pmapComponent)
@@ -66,7 +66,7 @@ CComponent * CComponent_Manager::Clone_Component(const _uint & iSceneIdx, const 
 	if (nullptr == pComponent)
 		return nullptr;
 
-	return pComponent->Clone();
+	return pComponent->Clone(pArg);
 }
 
 CComponent * CComponent_Manager::Find_Component(const _uint & iSceneIdx, const _tchar * pComponentTag)

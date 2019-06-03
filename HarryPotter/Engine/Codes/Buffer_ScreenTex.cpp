@@ -108,7 +108,7 @@ CBuffer_ScreenTex * CBuffer_ScreenTex::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
-CComponent * CBuffer_ScreenTex::Clone()
+CComponent * CBuffer_ScreenTex::Clone(void* pArg)
 {
 	return new CBuffer_ScreenTex(*this);
 }

@@ -133,6 +133,8 @@ HRESULT CWeapon::Render_GameObject()
 
 	Safe_Release(pEffect);
 
+//	m_pColliderCom->Render_Collider();
+
 	return NOERROR;
 }
 
@@ -153,6 +155,11 @@ HRESULT CWeapon::Add_Component()
 	// For.Com_Shader
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
+
+	//// For.Com_Collider
+	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_OBB", L"Com_Collider", (CComponent**)&m_pColliderCom,
+	//	&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, &m_matWorld, nullptr, _vec3(0.2f, 0.2f, 1.5f), _vec3(0.0f, 0.f, -0.75f)))))
+	//	return E_FAIL;
 
 	return NOERROR;
 }
@@ -185,9 +192,10 @@ HRESULT CWeapon::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 
 	pEffect->AddRef();
 
-	_matrix		matWorld = *m_pTransformCom->Get_WorldMatrixPointer() * *m_pBoneMatrix * *m_pParentMatrix;
+	//_matrix		matWorld = *m_pTransformCom->Get_WorldMatrixPointer() * *m_pBoneMatrix * *m_pParentMatrix;
+	m_matWorld = *m_pTransformCom->Get_WorldMatrixPointer() * *m_pBoneMatrix * *m_pParentMatrix;
 
-	pEffect->SetMatrix("g_matWorld", &matWorld);
+	pEffect->SetMatrix("g_matWorld", &m_matWorld);
 	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
 	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
 
@@ -245,6 +253,7 @@ CGameObject * CWeapon::Clone(void * pArg)
 
 void CWeapon::Free()
 {
+//	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pMeshCom);

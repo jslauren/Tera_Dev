@@ -7,6 +7,8 @@
 _USING(Client)
 
 #define PLAYER_SPEED	5.f
+#define	GRAVITY			9.8f
+#define	JUMP_POWER		10.f
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
@@ -57,6 +59,8 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
+	m_fPlayerPosY = m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->y;
+
 	ViewChanage();
 	KeyInput();
 	AniChange();
@@ -82,8 +86,7 @@ HRESULT CPlayer::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pTransformCom ||
-		nullptr == m_pMeshCom ||
-		nullptr == m_pTextureCom)
+		nullptr == m_pMeshCom)
 		return E_FAIL;
 
 	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
@@ -121,6 +124,11 @@ HRESULT CPlayer::Render_GameObject()
 
 	Safe_Release(pEffect);
 
+	// 콜라이더 렌더
+	m_pBodyColliderCom->Render_Collider();
+//	m_pHandColliderCom->Render_Collider();
+
+
 	return NOERROR;
 }
 
@@ -138,13 +146,20 @@ HRESULT CPlayer::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
-	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Default", L"Com_Texture", (CComponent**)&m_pTextureCom)))
-		return E_FAIL;
-
 	// For.Com_Shader
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
+
+	// For.Com_BodyCollider
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_OBB", L"Com_BodyCollider", (CComponent**)&m_pBodyColliderCom,
+		&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, m_pTransformCom->Get_WorldMatrixPointer(), nullptr,
+			_vec3(1.f, 2.f, 1.f), _vec3(0.0f, 1.f, 0.f)))))
+		return E_FAIL;
+
+	//// For.Com_HandCollider
+	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_Sphere", L"Com_HandCollider", (CComponent**)&m_pHandColliderCom, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME, m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Body_rFingerMidTop")->CombinedTransformationMatrix)
+	//	, _vec3(0.3f, 0.3f, 0.3f), _vec3(0.f, 0.f, 0.f)))))
+	//	return E_FAIL;
 
 	return NOERROR;
 }
@@ -726,7 +741,10 @@ CGameObject * CPlayer::Clone(void* pArg)
 void CPlayer::Free()
 {
 	Safe_Release(m_pKeyManager);
-	Safe_Release(m_pTextureCom);
+
+	Safe_Release(m_pBodyColliderCom);
+//	Safe_Release(m_pHandColliderCom);
+
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pMeshCom);

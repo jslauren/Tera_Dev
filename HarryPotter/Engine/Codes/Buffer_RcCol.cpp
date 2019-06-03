@@ -107,7 +107,7 @@ CBuffer_RcCol * CBuffer_RcCol::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
-CComponent * CBuffer_RcCol::Clone()
+CComponent * CBuffer_RcCol::Clone(void* pArg)
 {
 	return new CBuffer_RcCol(*this);
 }

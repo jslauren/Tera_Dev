@@ -8,7 +8,7 @@ _BEGIN(Engine)
 class CTransform;
 class CMesh_Dynamic; // 그리기를 위한 리소스로 정점 버퍼를 추가한다.
 class CRenderer; //백로고를 렌더그룹에 추가하기 위해.and Render함수를 호출할 수 있도록 
-class CTexture;
+class CCollider;
 _END
 
 _BEGIN(Client)
@@ -29,7 +29,8 @@ private:
 	CTransform*		m_pTransformCom = nullptr;
 	CMesh_Dynamic*	m_pMeshCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
-	CTexture*		m_pTextureCom = nullptr;
+	CCollider*		m_pBodyColliderCom = nullptr;
+//	CCollider*		m_pHandColliderCom = nullptr;
 	CShader*		m_pShaderCom = nullptr;
 private:
 	CKeyManager*	m_pKeyManager = nullptr;
@@ -39,6 +40,8 @@ private:
 	_float			m_fTimeDelta = 1.f;
 	_bool			m_bIsRun = false;
 	_bool			m_bIsJumped = false;
+	_float			m_fJumpTime = 0.f;
+	_float			m_fPlayerPosY = 0.f;
 
 	P_STATE			m_dwPlayerState = STATE_IDLE;
 private:

@@ -7,6 +7,7 @@
 #include "Input_Device.h"
 #include "Component_Manager.h"
 #include "Light_Manager.h"
+#include "KeyManager.h"
 
 _IMPLEMENT_SINGLETON(CManagement)
 
@@ -99,6 +100,7 @@ HRESULT CManagement::Render_Management()
 HRESULT CManagement::Release_Engine()
 {
 	// 객체들을 Release 할 때, 순서에 굉장히 유의하여야 한다.
+
 	if (0 != CManagement::GetInstance()->DestroyInstance())
 		_MSGBOX("CManagement Release Failed");
 
@@ -113,6 +115,9 @@ HRESULT CManagement::Release_Engine()
 
 	if (0 != CLight_Manager::GetInstance()->DestroyInstance())
 		_MSGBOX("CLight_Manager Release Failed");
+
+	if (0 != CKeyManager::GetInstance()->DestroyInstance())
+		_MSGBOX("CManagement Release Failed");
 
 	if (0 != CGraphic_Device::GetInstance()->DestroyInstance())
 		_MSGBOX("CGraphic_Device Release Failed");

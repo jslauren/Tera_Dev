@@ -16,7 +16,7 @@ public:
 
 public:
 	static CBuffer_TriCol*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual CComponent*		Clone();
+	virtual CComponent*		Clone(void* pArg = nullptr);
 	virtual void			Free();
 };
 

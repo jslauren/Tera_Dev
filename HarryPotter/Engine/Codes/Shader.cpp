@@ -32,7 +32,7 @@ CShader * CShader::Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar * pSha
 	return pInstance;
 }
 
-CComponent * CShader::Clone()
+CComponent * CShader::Clone(void* pArg)
 {
 	return new CShader(*this);
 }

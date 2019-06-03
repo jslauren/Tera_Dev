@@ -27,7 +27,7 @@ public:
 	static CBuffer_Terrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device, _int iNumVtxX, _int iNumVtxZ, _float fInterval, _float fDetail);
 	static CBuffer_Terrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar* pHeighitMapPath);
 
-	virtual CComponent* Clone();
+	virtual CComponent* Clone(void* pArg = nullptr);
 	virtual void		Free();
 };
 

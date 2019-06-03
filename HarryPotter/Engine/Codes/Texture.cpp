@@ -78,7 +78,7 @@ CTexture * CTexture::Create(LPDIRECT3DDEVICE9 pGraphic_Device, TEXTURETYPE eType
 	return pInstance;
 }
 
-CComponent * CTexture::Clone()
+CComponent * CTexture::Clone(void* pArg)
 {
 	return new CTexture(*this);
 }

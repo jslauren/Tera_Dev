@@ -98,27 +98,24 @@ HRESULT CScene_Stage::Ready_TerrainLoad()
 
 	while (true)
 	{
-		TERRAINDATA*	pTerrainData = new TERRAINDATA;
+		TERRAINDATA	pTerrainData;// = new TERRAINDATA;
 		_int	iImgPathLength = 0;
 		_tchar	imgPathTemp[MAX_PATH] = L"";
 
-		ReadFile(hFile, &pTerrainData->iNumVtxX, sizeof(_int), &dwByte, NULL);
-		ReadFile(hFile, &pTerrainData->iNumVtxZ, sizeof(_int), &dwByte, NULL);
-		ReadFile(hFile, &pTerrainData->fInterval, sizeof(_float), &dwByte, NULL);
-		ReadFile(hFile, &pTerrainData->fDetail, sizeof(_float), &dwByte, NULL);
+		ReadFile(hFile, &pTerrainData.iNumVtxX, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, &pTerrainData.iNumVtxZ, sizeof(_int), &dwByte, NULL);
+		ReadFile(hFile, &pTerrainData.fInterval, sizeof(_float), &dwByte, NULL);
+		ReadFile(hFile, &pTerrainData.fDetail, sizeof(_float), &dwByte, NULL);
 		ReadFile(hFile, &iImgPathLength, sizeof(_int), &dwByte, NULL);
 		ReadFile(hFile, imgPathTemp, sizeof(_tchar) * iImgPathLength, &dwByte, NULL);
 
 		if (dwByte == 0)
-		{
-			Safe_Delete(pTerrainData);
 			break;
-		}
 
-		m_fDetail = pTerrainData->fDetail;
+		m_fDetail = pTerrainData.fDetail;
 
 		// For.Component_Buffer_Terrain
-		if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device, pTerrainData->iNumVtxX, pTerrainData->iNumVtxZ, pTerrainData->fInterval, pTerrainData->fDetail))))
+		if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device, pTerrainData.iNumVtxX, pTerrainData.iNumVtxZ, pTerrainData.fInterval, pTerrainData.fDetail))))
 			return E_FAIL;
 
 		// For.Component_Texture_Terrain
@@ -269,48 +266,9 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
 		return E_FAIL;
 
-	//// For.Component_Buffer_Terrain
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device, L"../Bin/Resources/Textures/Terrain/Height.bmp"))))
-	//	return E_FAIL;
-
-	//// For.Component_Buffer_Terrain
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
-
-	//// For.Component_Texture_Terrain
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass.tga"))))
-	//	return E_FAIL;
-
-	//// For.Component_Texture_Filter
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Filter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Filter.bmp", 1))))
-	//	return E_FAIL;
-
-	//// For.Component_Texture_Brush
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Brush", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Brush.png", 1))))
-	//	return E_FAIL;
-
-	//// For.Component_Texture_Monster
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Monster", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Monster/Stand/AKIHA_AKI00_00%d.png", 12))))
-	//	return E_FAIL;
-
-	//// For.Component_Texture_Effect
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Effect", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Explosion/Explosion%d.png", 90))))
-	//	return E_FAIL;
-	//
-	// For.Component_Mesh_TombStone
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_TombStone", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/TombStone/", L"TombStone.x"))))
-		return E_FAIL;
-
-	// For.Component_Mesh_Tiger
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Tiger", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Tiger/", L"Tiger.x"))))
-		return E_FAIL;
-
+	// [Mesh_Dynamic]
 	// For.Component_Mesh_Player
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Hermione/", L"Hermione.x"))))
-		return E_FAIL;
-
-	// For.Component_Mesh_Weapon
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Wand/", L"Wand.x"))))
 		return E_FAIL;
 
 	// 여기에 Component_Mesh_Monster 이 값이 몬스터 클래스의 Add_Component함수에 두 번째 인자로 들어가면서,
@@ -320,6 +278,32 @@ HRESULT CScene_Stage::Ready_Component_Prototype()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Monster", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/sylva/", L"sylva.X"))))
 		return E_FAIL;
 
+	// [Mesh_Static]
+	// For.Component_Mesh_Weapon
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Wand/", L"Wand.x"))))
+		return E_FAIL;
+
+	// For.Component_Mesh_TombStone
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_TombStone", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/TombStone/", L"TombStone.x"))))
+		return E_FAIL;
+
+	// For.Component_Mesh_Tiger
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Tiger", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Tiger/", L"Tiger.x"))))
+		return E_FAIL;	
+
+	// [Collider]
+	// For.Component_Collider_AABB
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Collider_AABB", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_AABB))))
+		return E_FAIL;
+
+	// For.Component_Collider_OBB
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Collider_OBB", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_OBB))))
+		return E_FAIL;
+
+	// For.Component_Collider_Sphere
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Collider_Sphere", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_SPHERE))))
+		return E_FAIL;
+	
 	return NOERROR;
 }
 
@@ -410,13 +394,6 @@ HRESULT CScene_Stage::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 HRESULT CScene_Stage::Ready_Layer_Monster(const _tchar * pLayerTag)
 {
-	//for (size_t i = 0; i < 3; ++i)
-	//{
-	//	// For.Monster
-	//	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Monster", SCENE_STAGE, pLayerTag)))
-	//		return E_FAIL;
-	//}
-
 	return NOERROR;
 }
 

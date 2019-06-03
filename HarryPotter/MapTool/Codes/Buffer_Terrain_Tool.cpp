@@ -395,7 +395,7 @@ CBuffer_Terrain_Tool * CBuffer_Terrain_Tool::Create(LPDIRECT3DDEVICE9 pGraphic_D
 	return pInstance;
 }
 
-CComponent * CBuffer_Terrain_Tool::Clone()
+CComponent * CBuffer_Terrain_Tool::Clone(void* pArg)
 {
 	AddRef();
 

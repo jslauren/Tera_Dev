@@ -25,7 +25,7 @@ private:
 	HRESULT Render_UI();
 public:
 	static CRenderer*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual CComponent* Clone();
+	virtual CComponent* Clone(void* pArg = nullptr);
 	virtual void		Free();
 };
 

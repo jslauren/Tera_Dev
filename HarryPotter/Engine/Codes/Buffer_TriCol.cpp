@@ -88,7 +88,7 @@ CBuffer_TriCol * CBuffer_TriCol::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
-CComponent * CBuffer_TriCol::Clone()
+CComponent * CBuffer_TriCol::Clone(void* pArg)
 {
 	return new CBuffer_TriCol(*this);
 }

@@ -441,7 +441,7 @@ CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
-CComponent * CTransform::Clone()
+CComponent * CTransform::Clone(void* pArg)
 {
 	return new CTransform(*this);
 }
