@@ -41,8 +41,10 @@ private:
 	HRESULT InitComponentPrototype();
 	HRESULT InitObjectPrototype();
 
-private:
+public:
 	LPDIRECT3DDEVICE9			m_pGraphicDevice = nullptr;
+
+private:
 	CManagement*				m_pManagement = nullptr;
 	CRenderer*					m_pRenderer = nullptr;
 	CViewManager*				m_pViewManager = nullptr;

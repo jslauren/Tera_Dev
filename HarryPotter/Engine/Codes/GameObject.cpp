@@ -56,6 +56,107 @@ void CGameObject::Set_Material(const D3DMATERIAL9 & Material)
 	m_pGraphic_Device->SetMaterial(&Material);
 }
 
+_bool CGameObject::Picking(HWND hWnd, CTransform * pTransform, LPD3DXBASEMESH pMesh, _vec3 * pOut)
+{
+	// 뷰포트 영역 (윈도우좌표영역) 상의 마우스 위치 = 로컬위치 * 월드행렬 * 뷰행렬 * 투영행렬 / z * 뷰포트 변환
+
+	// 뷰포트 영역 (윈도우좌표영역) 상의 마우스 위치를 구한다.
+	POINT	ptMouse;
+	GetCursorPos(&ptMouse);
+	ScreenToClient(hWnd, &ptMouse);
+
+	D3DVIEWPORT9	ViewPort;
+	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+
+	m_pGraphic_Device->GetViewport(&ViewPort);
+
+	_vec3	vMouse;
+
+	// 투영스페이스 상의 마우스 위치.
+	vMouse.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
+	vMouse.y = ptMouse.y / (ViewPort.Height * -0.5f) + 1.f;
+	vMouse.z = 0.f;
+
+	// 뷰스페이스 영역상의 마우스 위치.
+	_matrix		matProj;
+	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &matProj);
+	D3DXMatrixInverse(&matProj, nullptr, &matProj);
+
+	D3DXVec3TransformCoord(&vMouse, &vMouse, &matProj);
+
+	_vec3		vRay, vPivot;
+
+	vPivot = _vec3(0.f, 0.f, 0.f);
+	vRay = vMouse - vPivot;
+
+	// 월드스페이스 영역상의 마우스 위치.
+	_matrix		matView;
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &matView);
+	D3DXMatrixInverse(&matView, nullptr, &matView);
+
+	D3DXVec3TransformCoord(&vPivot, &vPivot, &matView);
+	D3DXVec3TransformNormal(&vRay, &vRay, &matView);
+
+	// 메쉬 오브젝트의 로컬스페이스 영역상의 마우스 위치.
+	_matrix		matWorld = *pTransform->Get_WorldMatrixPointer();
+	_matrix		matInverseWorld = matWorld;
+	D3DXMatrixInverse(&matInverseWorld, nullptr, &matInverseWorld);
+
+	D3DXVec3TransformCoord(&vPivot, &vPivot, &matInverseWorld);
+	D3DXVec3TransformNormal(&vRay, &vRay, &matInverseWorld);
+
+	D3DXVec3Normalize(&vRay, &vRay);
+	
+	_float		fU, fV, fDist;
+
+	LPDIRECT3DVERTEXBUFFER9 pVB;
+	LPDIRECT3DINDEXBUFFER9 pIB;
+	LPD3DXMESH pClonedMesh;
+
+	pMesh->CloneMeshFVF(pMesh->GetOptions(), D3DFVF_XYZ, m_pGraphic_Device, &pClonedMesh);
+
+	pClonedMesh->GetVertexBuffer(&pVB);
+	pClonedMesh->GetIndexBuffer(&pIB);
+	_int iNumPolygons = pClonedMesh->GetNumFaces();
+
+	INDEX16* pIndices;
+	VTX* pVertices;
+	_bool bPass = false;
+	_float fMyDist = 9999999999.f;
+	pIB->Lock(0, 0, (void**)&pIndices, 0);
+	pVB->Lock(0, 0, (void**)&pVertices, 0);
+
+	for (size_t i = 0; i < iNumPolygons; ++i)
+	{
+		if (TRUE == D3DXIntersectTri(&pVertices[pIndices[i]._1].vPosition, &pVertices[pIndices[i]._2].vPosition, &pVertices[pIndices[i]._3].vPosition, &vPivot, &vRay, &fU, &fV, &fDist))
+		{
+			if (fDist <= fMyDist)
+				fMyDist = fDist;
+
+			bPass = true;
+		}
+	}
+
+	_vec3 vTemp = { 1.f, 0.f, 0.f};
+
+	vTemp *= fMyDist;
+
+	D3DXVec3TransformCoord(&vTemp, &vTemp, &matWorld);
+
+	_float fLength = D3DXVec3Length(&vTemp);
+
+	if (bPass == true)
+		*pOut = *D3DXVec3Normalize(&vRay, &vRay) * fLength + vPivot;
+	
+	pVB->Unlock();
+	pIB->Unlock();
+	Safe_Release(pVB);
+	Safe_Release(pIB);
+
+
+	return _bool();
+}
+
 HRESULT CGameObject::Ready_GameObject_Prototype()
 {
 	return NOERROR;

@@ -69,6 +69,12 @@ namespace Engine
 
 	}VTXTEX;
 
+	typedef struct tagVertex
+	{
+		D3DXVECTOR3			vPosition; // D3DFVF_XYZ
+
+	}VTX;
+
 	typedef struct tagVertex_Normal_Texture
 	{
 		D3DXVECTOR3			vPosition; // D3DFVF_XYZ

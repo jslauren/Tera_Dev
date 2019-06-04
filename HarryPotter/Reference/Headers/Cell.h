@@ -26,7 +26,7 @@ public:
 public:
 	_bool			isIn(const _vec3* pPosition, EDGE* pOutEdge);
 	_bool			isNeighbor(const _vec3* pSourPoint, const _vec3* pDestPoint, CCell* pCell);
-
+	HRESULT			Clear_Neighbor();
 private:
 	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;
 	LPD3DXLINE			m_pLine = nullptr;

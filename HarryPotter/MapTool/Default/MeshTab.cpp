@@ -11,6 +11,7 @@
 #include "Layer.h"
 #include "StaticObject.h"
 #include "DataManager.h"
+#include "Terrain.h"
 
 // CMeshTab 대화 상자입니다.
 
@@ -28,7 +29,6 @@ CMeshTab::CMeshTab(CWnd* pParent /*=NULL*/)
 	, m_fPosY(0)
 	, m_fPosZ(0)
 {
-
 }
 
 CMeshTab::~CMeshTab()
@@ -159,6 +159,8 @@ BOOL CMeshTab::OnInitDialog()
 
 	InitTreeCtrl_Object();
 
+	//m_pGraphic_Device = CViewManager::GetInstance()->m_pMainView->m_pGraphicDevice;
+	
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -197,12 +199,22 @@ void CMeshTab::OnBnClickedWireFrame()
 void CMeshTab::OnBnClickedObject()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+
+	bIsNaviMesh = false;
+
+	UpdateData(FALSE);
 }
 
 
 void CMeshTab::OnBnClickedNavi_Mesh()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+
+	bIsNaviMesh = true;
+
+	UpdateData(FALSE);
 }
 
 
@@ -497,6 +509,71 @@ HRESULT CMeshTab::MakeItemForTree()
 	return NOERROR;
 }
 
+HRESULT CMeshTab::Picking()
+{
+	D3DXCreateLine(CViewManager::GetInstance()->m_pMainView->m_pGraphicDevice, &m_pLine);
+
+	// For.Mesh_Picking Variable
+	_vec3 vPos;
+	
+	// For.Terrain_Picking Variable
+	CLayer* pTerrainLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
+	CTerrain* pTerrain = dynamic_cast<CTerrain*>(pTerrainLayer->Get_ObjectList().back());
+	CTransform* pTerrainTransform = pTerrain->GetTransformCom();
+	
+ 
+
+	// 만약 해당하는게 없다면, 해당 위치의 Terrain과 피킹을 한다.
+	if (true == pTerrain->Picking(g_WinhWnd, pTerrainTransform, &vPos))
+	{
+		vPos.y = 0.f;
+
+		vecPos.push_back(vPos);
+
+		if (vecPos.size() == 3)
+		{
+			mapNaviMesh.emplace(iNaviMapCount++, vecPos);
+			vecPos.clear();
+		}
+	}
+	else
+		return E_FAIL;	// 이게 안되면 ㅈ된거쥬?
+		
+	return NOERROR;
+}
+
+void CMeshTab::Render_Navigation()
+{
+	for (auto& Pair : mapNaviMesh)
+	{
+		_vec3		vPoint[4];
+
+		vPoint[0] = Pair.second[0];
+		vPoint[1] = Pair.second[1];
+		vPoint[2] = Pair.second[2];
+		vPoint[3] = Pair.second[0];
+
+		_matrix			matView, matProj;
+
+		CViewManager::GetInstance()->m_pMainView->m_pGraphicDevice->GetTransform(D3DTS_VIEW, &matView);
+		CViewManager::GetInstance()->m_pMainView->m_pGraphicDevice->GetTransform(D3DTS_PROJECTION, &matProj);
+
+		for (size_t i = 0; i < 4; ++i)
+		{
+			D3DXVec3TransformCoord(&vPoint[i], &vPoint[i], &matView);
+
+			if (vPoint[i].z <= 0)
+				vPoint[i].z = 0;
+
+			D3DXVec3TransformCoord(&vPoint[i], &vPoint[i], &matProj);
+		}
+		_matrix		matIdentity;
+
+		m_pLine->SetWidth(2.f);
+		m_pLine->DrawTransform(vPoint, 4, D3DXMatrixIdentity(&matIdentity), D3DXCOLOR(1.f, 0.f, 0.f, 1.f));
+	}
+}
+
 HRESULT CMeshTab::Add_StaticObject()
 {
 	m_pScene = CViewManager::GetInstance()->m_pCurScene;
@@ -523,15 +600,14 @@ HRESULT CMeshTab::Add_StaticObject()
 		mapObj_Com_Prototype.emplace(strComponentPrototypeTag, strXfileName);
 
 		strXfileName = _T("");
+
+		vecObjLayerTag.push_back(strLayerTag);
 	}
 	
 	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object(strLayerTag)))
 		return E_FAIL;
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
-
-	// 여기에 맵하나 만들어서 오브젝트의 월드매트릭스값, Layer_Tag, Component_Tag 값 넣어주고,
-	// 클라에서 Ready함수에서 Load함수 불러오면서 Load함수 안에서 상기 값들을 통해 바로 로드 해주면 된다.
 
 	CString strObjProtoTag = L"GameObject_" + strObjectName;
 

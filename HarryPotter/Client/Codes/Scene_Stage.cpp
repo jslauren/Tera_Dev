@@ -189,21 +189,6 @@ HRESULT CScene_Stage::Ready_MeshLoad()
 		// For.Monster
 		if (FAILED(Add_Object(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), SCENE_STAGE, L"Layer_Monster", (void*)tObjMeshData.matWorld)))
 			return E_FAIL;
-
-		//CLayer* pStaticObjLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
-		//dynamic_cast<CStaticObject*>(pStaticObjLayer->Get_ObjectList().back())->SetState(*(_vec3*)&tObjMeshData.matWorld.m[3], _vec3(1.f, 1.f, 1.f));
-
-		//vector<OBJECTMESHDATA> vObjMeshData;
-
-		//auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strObjectName));
-
-		//if (iter == CDataManager::GetInstance()->m_MapMeshData.end())
-		//{
-		//	vObjMeshData.push_back(tObjMeshData);
-		//	CDataManager::GetInstance()->m_MapMeshData.emplace(ObjectName, vObjMeshData);
-		//}
-		//else
-		//	(*iter).second.push_back(tObjMeshData);
 	}
 
 	CloseHandle(hFile);
@@ -242,68 +227,6 @@ HRESULT CScene_Stage::Ready_LightInfo()
 
 HRESULT CScene_Stage::Ready_Component_Prototype()
 {
-	if (nullptr == m_pComponent_Manager)
-		return E_FAIL;
-	// [Shader]
-	// For.Component_Shader_Sky 
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Shader_Sky", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Sky.fx"))))
-		return E_FAIL;
-
-	// For.Component_Shader_Terrain
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Shader_Terrain", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Terrain.fx"))))
-		return E_FAIL;
-	
-	// For.Component_Shader_Mesh
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Shader_Mesh", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Mesh.fx"))))
-		return E_FAIL;
-
-	// [Buffer & Texture]
-	// For.Component_Buffer_CubeBox
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_CubeBox", CBuffer_CubeTex::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	// For.Component_Texture_SkyBox
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
-		return E_FAIL;
-
-	// [Mesh_Dynamic]
-	// For.Component_Mesh_Player
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Hermione/", L"Hermione.x"))))
-		return E_FAIL;
-
-	// 여기에 Component_Mesh_Monster 이 값이 몬스터 클래스의 Add_Component함수에 두 번째 인자로 들어가면서,
-	// 몬스터 클래스만 있기때문에 실바만 나온다. 추후 각 오브젝트들이 추가될 때마다 클래스를 생성해 주어야 한다.
-
-	// For.Component_Mesh_Monster
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Monster", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/sylva/", L"sylva.X"))))
-		return E_FAIL;
-
-	// [Mesh_Static]
-	// For.Component_Mesh_Weapon
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Wand/", L"Wand.x"))))
-		return E_FAIL;
-
-	// For.Component_Mesh_TombStone
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_TombStone", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/TombStone/", L"TombStone.x"))))
-		return E_FAIL;
-
-	// For.Component_Mesh_Tiger
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Tiger", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Tiger/", L"Tiger.x"))))
-		return E_FAIL;	
-
-	// [Collider]
-	// For.Component_Collider_AABB
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Collider_AABB", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_AABB))))
-		return E_FAIL;
-
-	// For.Component_Collider_OBB
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Collider_OBB", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_OBB))))
-		return E_FAIL;
-
-	// For.Component_Collider_Sphere
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Collider_Sphere", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_SPHERE))))
-		return E_FAIL;
-	
 	return NOERROR;
 }
 

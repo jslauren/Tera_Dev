@@ -39,7 +39,6 @@ CMainFrame::CMainFrame()
 
 CMainFrame::~CMainFrame()
 {
-//	CEventManager::GetInstance()->DestroyInstance();
 }
 
 void CMainFrame::SetStatusBar(int idx, CString _data)

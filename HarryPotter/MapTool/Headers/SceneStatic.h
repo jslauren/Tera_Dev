@@ -1,6 +1,6 @@
 #pragma once
 #include "SCene.h"
-#include "EventManagerTool.h"
+#include "ViewManager.h"
 
 class CSceneStatic final : public CScene
 {
@@ -25,7 +25,7 @@ private:
 	HRESULT Ready_GameObject();
 
 private:
-	CEventManagerTool*		m_pEventManager = nullptr;
+	CViewManager*		m_pViewManager = nullptr;
 
 public:
 	static CSceneStatic* Create(LPDIRECT3DDEVICE9 _pGraphicDevice);

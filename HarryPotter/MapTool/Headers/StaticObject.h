@@ -28,6 +28,7 @@ public:	// Setter
 public:	// Getter
 	_vec3			GetPosition(void) { return m_vPosition; }
 	CTransform*		GetTransformCom() { return m_pTransformCom; }
+	CMesh_Static*	GetMeshCom() { return m_pMeshCom; }
 public:
 	HRESULT			Add_Component_Tool(const _tchar* pComponentPrototypeTag);
 private:

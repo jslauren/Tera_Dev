@@ -13,9 +13,9 @@
 
 CSceneStatic::CSceneStatic(LPDIRECT3DDEVICE9 _pGraphic_Device)
 	: CScene(_pGraphic_Device)
-	, m_pEventManager(CEventManagerTool::GetInstance())
+	, m_pViewManager(CViewManager::GetInstance())
 {
-	m_pEventManager->AddRef();
+	m_pViewManager->AddRef();
 	//m_pEventManager->m_pGraphic_Device = _pGraphic_Device;
 }
 
@@ -43,6 +43,7 @@ _int CSceneStatic::Update_Scene(const _float & fTimeDelta)
 	if (FAILED(CInput_Device::GetInstance()->SetUp_Input_State()))
 		return -1;
 
+	
 	return CScene::Update_Scene(fTimeDelta);
 }
 
@@ -53,6 +54,8 @@ _int CSceneStatic::LateUpdate_Scene(const _float & fTimeDelta)
 
 HRESULT CSceneStatic::Render_Scene()
 {
+	m_pViewManager->m_pEditorView->m_Tab_Mesh.Render_Navigation();
+
 	return CScene::Render_Scene();
 }
 
@@ -197,7 +200,7 @@ CSceneStatic * CSceneStatic::Create(LPDIRECT3DDEVICE9 _pGraphicDevice)
 
 void CSceneStatic::Free()
 {
-	Safe_Release(m_pEventManager);
+	Safe_Release(m_pViewManager);
 
 	if (nullptr == m_pObject_Manager)
 		return;

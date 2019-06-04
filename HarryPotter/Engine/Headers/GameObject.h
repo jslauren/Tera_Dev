@@ -29,6 +29,8 @@ public:
 	void Set_Material(const D3DMATERIAL9& Material);
 	void SetIdxNum(_int iIdx) { m_iIdxNum = iIdx; }
 public:
+	_bool	Picking(HWND hWnd, CTransform * pTransform, LPD3DXBASEMESH pMesh, _vec3 * pOut);
+public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);
 	virtual _int	Update_GameObject(const _float& fTimeDelta);

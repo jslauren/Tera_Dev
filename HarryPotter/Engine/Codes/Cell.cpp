@@ -104,6 +104,14 @@ _bool CCell::isNeighbor(const _vec3 * pSourPoint, const _vec3 * pDestPoint, CCel
 	return _bool(false);
 }
 
+HRESULT CCell::Clear_Neighbor()
+{
+	for (auto& pCell : m_pNeighbor)
+		Safe_Release(pCell);
+
+	return NOERROR;
+}
+
 CCell * CCell::Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _vec3 * pPointA, const _vec3 * pPointB, const _vec3 * pPointC, _uint iIndex)
 {
 	CCell* pInstance = new CCell(pGraphic_Device);

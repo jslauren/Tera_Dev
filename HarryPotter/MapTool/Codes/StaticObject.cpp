@@ -3,6 +3,7 @@
 #include "Object_Manager.h"
 #include "Light_Manager.h"
 #include "Buffer_Terrain_Tool.h"
+#include "ViewManager.h"
 
 CStaticObject::CStaticObject(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)

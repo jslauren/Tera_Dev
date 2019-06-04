@@ -64,6 +64,9 @@
     <Filter Include="02. GameObject\01. Stage\Player\Weapon">
       <UniqueIdentifier>{b47953ee-b298-4c5a-8359-e75daf983c5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Scene\99. Loading">
+      <UniqueIdentifier>{ab972f0e-d4e7-4bf8-a66a-1afc55b3cf28}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -123,6 +126,9 @@
     <ClInclude Include="PlayerStateInfo.h">
       <Filter>98. Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Loading.h">
+      <Filter>01. Scene\99. Loading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -166,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Camera_Static.cpp">
       <Filter>02. GameObject\99. Public\Camera\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Loading.cpp">
+      <Filter>01. Scene\99. Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

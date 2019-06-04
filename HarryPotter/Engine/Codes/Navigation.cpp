@@ -79,7 +79,6 @@ _bool CNavigation::Move_OnNavigation(const _vec3 * pPosition, const _vec3 * pDir
 		*pOutIndex = m_iCurrentIndex;
 		return true;
 	}
-
 	else
 	{
 		const CCell* pNeighbor = nullptr;
@@ -95,9 +94,7 @@ _bool CNavigation::Move_OnNavigation(const _vec3 * pPosition, const _vec3 * pDir
 			*pOutIndex = m_iCurrentIndex;
 			return false;
 		}
-
 	}
-
 
 	return _bool();
 }
@@ -161,8 +158,17 @@ CComponent * CNavigation::Clone(void * pArg)
 
 void CNavigation::Free()
 {
+	if (false == m_isClone)
+	{
+		for (auto& pCell : m_vecCell)
+		{
+			pCell->Clear_Neighbor();
+		}
+	}
+
 	for (auto& pCell : m_vecCell)
 		Safe_Release(pCell);
+
 	m_vecCell.clear();
 
 	CComponent::Free();

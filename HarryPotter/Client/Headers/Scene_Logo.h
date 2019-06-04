@@ -4,6 +4,7 @@
 
 _BEGIN(Client)
 
+class CLoading;
 class CScene_Logo final : public CScene
 {
 private:
@@ -16,6 +17,8 @@ public:
 	// 씬안에서 객체들의 업데이트 호출. 모든 객체들의 업데이트를 호출한 후, 다시 한번 객체들의 업데이트를 호출.
 	virtual _int	LateUpdate_Scene(const _float& fTimeDelta);
 	virtual HRESULT Render_Scene();
+private:
+	CLoading*		m_pLoading = nullptr;
 private:
 	// 이 씬에서 사용할 객체들의 Initialize 작업을 위한 멤버함수 선언이다.
 	HRESULT Ready_Component_Prototype();

@@ -10,6 +10,7 @@ private:
 	explicit CMesh_Static(const CMesh_Static& rhs);
 	virtual ~CMesh_Static() = default;
 public:	// Getter
+	LPD3DXBASEMESH		Get_BaseMesh() const { return m_pMesh; }
 	_uint				Get_NumMaterials() const { return m_dwNumMaterials; }
 	const D3DXMATERIAL* Get_Materials() const {	return m_pSubsetMaterial; }
 public:

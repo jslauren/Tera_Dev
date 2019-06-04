@@ -3,6 +3,7 @@
 #include "Scene_Stage.h"
 #include "Management.h"
 #include "Back_Logo.h"
+#include "Loading.h"
 
 _USING(Client)
 
@@ -25,6 +26,9 @@ HRESULT CScene_Logo::Ready_Scene()
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
 		return E_FAIL;
 
+	m_pLoading = CLoading::Create(m_pGraphic_Device, SCENE_STAGE);
+	if (nullptr == m_pLoading)
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -60,6 +64,12 @@ _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 
 HRESULT CScene_Logo::Render_Scene()
 {
+	_tchar		szComplete[MAX_PATH];
+
+	wsprintf(szComplete, L"%d", m_pLoading->Get_Complete());
+
+	SetWindowText(g_hWnd, szComplete);
+
 	return CScene::Render_Scene();
 }
 
@@ -124,6 +134,8 @@ void CScene_Logo::Free()
 
 	if (FAILED(m_pComponent_Manager->Clear_Component_Prototype(SCENE_LOGO)))
 		return;
+
+	Safe_Release(m_pLoading);
 
 	CScene::Free();
 }

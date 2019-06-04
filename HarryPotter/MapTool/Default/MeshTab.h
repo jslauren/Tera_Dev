@@ -106,11 +106,15 @@ public:
 public:
 	HRESULT		Add_StaticObject();
 	HRESULT		MakeItemForTree();
+	HRESULT		Picking();
+	void		Render_Navigation();
+public:
 	_bool		bDblClkTreeStaticObj = false;
 	_bool		bDblClkTreeDynamicObj = false;
 	_int		iLatestItemIdx = 0;
 	_int		iSaveItemIdx = 0;
 	_int		iCurrentSelcetedIndex = 0;
+	_bool		bIsNaviMesh = false;	// 기본은 오브젝트 메쉬.
 
 private:
 	HTREEITEM		StaticRoot = nullptr;
@@ -127,9 +131,15 @@ private:
 	CGameObject*	pSelectedObj = nullptr;
 	_bool			bIsFirstDeleteStaticObject = true;
 	_bool			bIsStaticMesh = true;
-	map<CString, HTREEITEM>	mapTreeItem;
-	map<CString, CString>	mapObj_Com_Prototype;
-
+	map<CString, HTREEITEM>		mapTreeItem;
+	map<CString, CString>		mapObj_Com_Prototype;
+	vector<CString>				vecObjLayerTag;
+	
+//	LPDIRECT3DDEVICE9			m_pGraphic_Device = nullptr;
+	LPD3DXLINE					m_pLine = nullptr;
+	_int						iNaviMapCount = 0;
+	vector<_vec3>				vecPos;
+	map<_int, vector<_vec3>>	mapNaviMesh;
 private:
 	void		InitTreeCtrl_Object();
 	HRESULT		MakeArgVariableForStaticObj();
