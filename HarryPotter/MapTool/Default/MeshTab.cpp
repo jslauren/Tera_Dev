@@ -159,6 +159,8 @@ BOOL CMeshTab::OnInitDialog()
 
 	InitTreeCtrl_Object();
 
+	D3DXCreateLine(CViewManager::GetInstance()->m_pMainView->m_pGraphicDevice, &m_pLine);
+
 	//m_pGraphic_Device = CViewManager::GetInstance()->m_pMainView->m_pGraphicDevice;
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -511,18 +513,45 @@ HRESULT CMeshTab::MakeItemForTree()
 
 HRESULT CMeshTab::Picking()
 {
-	D3DXCreateLine(CViewManager::GetInstance()->m_pMainView->m_pGraphicDevice, &m_pLine);
-
 	// For.Mesh_Picking Variable
 	_vec3 vPos;
+	_bool bIsPicked = false;
+	_float fFinalDist;
+	_float fMinDist = 9999999999.f;
 	
 	// For.Terrain_Picking Variable
 	CLayer* pTerrainLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
 	CTerrain* pTerrain = dynamic_cast<CTerrain*>(pTerrainLayer->Get_ObjectList().back());
 	CTransform* pTerrainTransform = pTerrain->GetTransformCom();
 	
- 
+	for (auto iter : vecObjLayerTag)
+	{
+		CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, iter);
+		
+		for (auto Object : pLayer->Get_ObjectList())
+		{
+			if (true == dynamic_cast<CStaticObject*>(Object)->Picking(g_WinhWnd, dynamic_cast<CStaticObject*>(Object)->GetTransformCom(), dynamic_cast<CStaticObject*>(Object)->GetMeshCom()->Get_BaseMesh(), &vPos, &fFinalDist))
+			{
+				if (fFinalDist <= fMinDist)
+					fMinDist = fFinalDist;
 
+				bIsPicked = true;
+			}
+		}		
+	}	
+
+	if (bIsPicked == true)
+	{
+		vecPos.push_back(vPos);
+
+		if (vecPos.size() == 3)
+		{
+			mapNaviMesh.emplace(iNaviMapCount++, vecPos);
+			vecPos.clear();
+		}
+		return NOERROR;
+	}
+	
 	// 만약 해당하는게 없다면, 해당 위치의 Terrain과 피킹을 한다.
 	if (true == pTerrain->Picking(g_WinhWnd, pTerrainTransform, &vPos))
 	{

@@ -56,7 +56,7 @@ void CGameObject::Set_Material(const D3DMATERIAL9 & Material)
 	m_pGraphic_Device->SetMaterial(&Material);
 }
 
-_bool CGameObject::Picking(HWND hWnd, CTransform * pTransform, LPD3DXBASEMESH pMesh, _vec3 * pOut)
+_bool CGameObject::Picking(HWND hWnd, CTransform * pTransform, LPD3DXBASEMESH pMesh, _vec3 * pOut, _float* fFinalDist)
 {
 	// 뷰포트 영역 (윈도우좌표영역) 상의 마우스 위치 = 로컬위치 * 월드행렬 * 뷰행렬 * 투영행렬 / z * 뷰포트 변환
 
@@ -73,8 +73,8 @@ _bool CGameObject::Picking(HWND hWnd, CTransform * pTransform, LPD3DXBASEMESH pM
 	_vec3	vMouse;
 
 	// 투영스페이스 상의 마우스 위치.
-	vMouse.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
-	vMouse.y = ptMouse.y / (ViewPort.Height * -0.5f) + 1.f;
+	vMouse.x = ptMouse.x / (1300 * 0.5f) - 1.f;
+	vMouse.y = ptMouse.y / (881 * -0.5f) + 1.f;
 	vMouse.z = 0.f;
 
 	// 뷰스페이스 영역상의 마우스 위치.
@@ -107,7 +107,14 @@ _bool CGameObject::Picking(HWND hWnd, CTransform * pTransform, LPD3DXBASEMESH pM
 
 	D3DXVec3Normalize(&vRay, &vRay);
 	
-	_float		fU, fV, fDist;
+	_ulong			dwFaceIdx;
+	LPD3DXBUFFER	pBuffer;
+	_ulong			dwCountOfHits;
+	_float			fU, fV, fDist;
+	BOOL			bIshit = false;
+
+	if (FAILED(D3DXIntersect(pMesh, &vPivot, &vRay, &bIshit, &dwFaceIdx, &fU, &fV, &fDist, &pBuffer, &dwCountOfHits)) || bIshit == false)
+		return false;
 
 	LPDIRECT3DVERTEXBUFFER9 pVB;
 	LPDIRECT3DINDEXBUFFER9 pIB;
@@ -117,44 +124,37 @@ _bool CGameObject::Picking(HWND hWnd, CTransform * pTransform, LPD3DXBASEMESH pM
 
 	pClonedMesh->GetVertexBuffer(&pVB);
 	pClonedMesh->GetIndexBuffer(&pIB);
-	_int iNumPolygons = pClonedMesh->GetNumFaces();
+	//_int iNumPolygons = pClonedMesh->GetNumFaces();
 
-	INDEX16* pIndices;
+	_vec3 vPos[3];
+
+	WORD* pIndices;
 	VTX* pVertices;
-	_bool bPass = false;
-	_float fMyDist = 9999999999.f;
+	//_bool bPass = false;
+	//_float fMinDist = 9999999999.f;
 	pIB->Lock(0, 0, (void**)&pIndices, 0);
 	pVB->Lock(0, 0, (void**)&pVertices, 0);
 
-	for (size_t i = 0; i < iNumPolygons; ++i)
+	for (size_t i = 0; i < 3; ++i)
 	{
-		if (TRUE == D3DXIntersectTri(&pVertices[pIndices[i]._1].vPosition, &pVertices[pIndices[i]._2].vPosition, &pVertices[pIndices[i]._3].vPosition, &vPivot, &vRay, &fU, &fV, &fDist))
-		{
-			if (fDist <= fMyDist)
-				fMyDist = fDist;
-
-			bPass = true;
-		}
+		DWORD dix = pIndices[dwFaceIdx * 3 + i];
+		vPos[i] = pVertices[dix].vPosition;
 	}
 
-	_vec3 vTemp = { 1.f, 0.f, 0.f};
+	if (TRUE == D3DXIntersectTri(&vPos[0], &vPos[1], &vPos[2], &vPivot, &vRay, &fU, &fV, &fDist))
+	{
+		*fFinalDist = fDist;
+		*pOut = *D3DXVec3Normalize(&vRay, &vRay) * fDist + vPivot;
+		D3DXVec3TransformCoord(pOut, pOut, &matWorld);
+	}
 
-	vTemp *= fMyDist;
-
-	D3DXVec3TransformCoord(&vTemp, &vTemp, &matWorld);
-
-	_float fLength = D3DXVec3Length(&vTemp);
-
-	if (bPass == true)
-		*pOut = *D3DXVec3Normalize(&vRay, &vRay) * fLength + vPivot;
-	
 	pVB->Unlock();
 	pIB->Unlock();
 	Safe_Release(pVB);
 	Safe_Release(pIB);
+	
 
-
-	return _bool();
+	return true;
 }
 
 HRESULT CGameObject::Ready_GameObject_Prototype()

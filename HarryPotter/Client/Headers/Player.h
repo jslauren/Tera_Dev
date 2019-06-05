@@ -1,5 +1,6 @@
 #pragma once
 #include "Defines.h"
+#include "PlayerState.h"
 #include "PlayerStateInfo.h"
 #include "GameObject.h"
 #include "KeyManager.h"
@@ -13,7 +14,7 @@ _END
 
 _BEGIN(Client)
 
-class CPlayer final : public CGameObject
+class CPlayer : public CGameObject
 {
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -25,6 +26,11 @@ public:
 	virtual _int	Update_GameObject(const _float& fTimeDelta);
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
+//public:
+//	virtual void	handleInput(P_STATE eInput);
+//	virtual void	StateUpdate() { pState->StateUpdate(*this); }
+//private:
+//	CPlayerState*	pState;
 private:
 	CTransform*		m_pTransformCom = nullptr;
 	CMesh_Dynamic*	m_pMeshCom = nullptr;

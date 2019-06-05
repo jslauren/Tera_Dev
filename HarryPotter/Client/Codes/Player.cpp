@@ -132,6 +132,18 @@ HRESULT CPlayer::Render_GameObject()
 	return NOERROR;
 }
 
+//void CPlayer::handleInput(P_STATE eInput)
+//{
+//	CPlayerState* State = pState->HandleInput(*this, eInput);
+//	
+//	if (pState != NULL)
+//	{
+//		Safe_Delete(pState);
+//		pState = State;
+//	}
+//	pState->Enter(*this);
+//}
+
 HRESULT CPlayer::Add_Component()
 {
 	// For.Com_Transform

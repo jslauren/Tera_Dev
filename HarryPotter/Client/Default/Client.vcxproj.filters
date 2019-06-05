@@ -67,6 +67,9 @@
     <Filter Include="01. Scene\99. Loading">
       <UniqueIdentifier>{ab972f0e-d4e7-4bf8-a66a-1afc55b3cf28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. Stage\Player\PlayerState">
+      <UniqueIdentifier>{7d8c8299-0600-42ab-9c04-e314af9ab97a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -129,6 +132,9 @@
     <ClInclude Include="..\Headers\Loading.h">
       <Filter>01. Scene\99. Loading</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\PlayerState.h">
+      <Filter>02. GameObject\01. Stage\Player\PlayerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -175,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Loading.cpp">
       <Filter>01. Scene\99. Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\PlayerState.cpp">
+      <Filter>02. GameObject\01. Stage\Player\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

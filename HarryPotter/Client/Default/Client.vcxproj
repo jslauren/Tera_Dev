@@ -167,6 +167,7 @@
     <ClInclude Include="..\Headers\MainApp.h" />
     <ClInclude Include="..\Headers\Monster.h" />
     <ClInclude Include="..\Headers\Player.h" />
+    <ClInclude Include="..\Headers\PlayerState.h" />
     <ClInclude Include="..\Headers\Scene_Logo.h" />
     <ClInclude Include="..\Headers\Scene_Stage.h" />
     <ClInclude Include="..\Headers\SkyBox.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="..\Codes\MainApp.cpp" />
     <ClCompile Include="..\Codes\Monster.cpp" />
     <ClCompile Include="..\Codes\Player.cpp" />
+    <ClCompile Include="..\Codes\PlayerState.cpp" />
     <ClCompile Include="..\Codes\Scene_Logo.cpp" />
     <ClCompile Include="..\Codes\Scene_Stage.cpp" />
     <ClCompile Include="..\Codes\SkyBox.cpp" />
