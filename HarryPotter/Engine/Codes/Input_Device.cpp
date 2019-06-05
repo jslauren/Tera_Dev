@@ -34,6 +34,30 @@ HRESULT CInput_Device::SetUp_Input_State()
 	return NOERROR;
 }
 
+bool CInput_Device::Get_DIKeyDown(BYTE byKeyID)
+{
+	// 전 프레임의 키보드 키는 눌린 적이 없고, 현재 프레임의 키보드 키는 눌린 적이 있을 때 true, 아니라면 0인 false 반환.
+	return (!m_PreKeyState[byKeyID] && m_KeyState[byKeyID]);
+}
+
+bool CInput_Device::Get_DIKeyUp(BYTE byKeyID)
+{
+	// 전 프레임의 키보드 키는 눌린 적이 있고, 현재 프레임의 키보드 키는 눌린 적이 없을 때 true, 아니라면 0인 false 반환.
+	return (m_PreKeyState[byKeyID] && !m_KeyState[byKeyID]);
+}
+
+bool CInput_Device::Get_DIMouseDown(MOUSEBUTTON eMouseID)
+{
+	// 전 프레임의 마우스 키는 눌린 적이 없고, 현재 프레임의 마우스 키는 눌린 적이 있을 때 true, 아니라면 0인 false 반환.
+	return (!m_PreMouseState.rgbButtons[eMouseID] && m_MouseState.rgbButtons[eMouseID]);
+}
+
+bool CInput_Device::Get_DIMouseUp(MOUSEMOVE eMouseID)
+{
+	// 전 프레임의 마우스 키는 눌린 적이 있고, 현재 프레임의 마우스 키는 눌린 적이 없을 때 true, 아니라면 0인 false 반환.
+	return (m_PreMouseState.rgbButtons[eMouseID] && !m_MouseState.rgbButtons[eMouseID]);
+}
+
 HRESULT CInput_Device::Ready_KeyBoard(HWND hWnd)
 {
 	if (FAILED(m_pSDK->CreateDevice(GUID_SysKeyboard, &m_pKeyboard, nullptr)))

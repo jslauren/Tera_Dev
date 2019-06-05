@@ -6,14 +6,14 @@
 _USING(Client)
 
 CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphic_Device)
-	: CGameObject(pGraphic_Device)
-	, m_fFrame(0.f)
+	: CUnit(pGraphic_Device)
+//	, m_fFrame(0.f)
 {
 }
 
 CMonster::CMonster(const CMonster & rhs)
-	: CGameObject(rhs)
-	, m_fFrame(rhs.m_fFrame)
+	: CUnit(rhs)
+//	, m_fFrame(rhs.m_fFrame)
 {
 }
 
@@ -66,7 +66,7 @@ _int CMonster::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	Compute_ViewZ(m_pTransformCom);
 
-	if (FAILED(SetUp_HeightOnTerrain()))
+	if (FAILED(SetUp_HeightOnTerrain(1)))
 		return -1;
 
 	m_fTimeDelta = fTimeDelta;
@@ -162,52 +162,52 @@ HRESULT CMonster::Add_Component()
 	return NOERROR;
 }
 
-HRESULT CMonster::SetUp_HeightOnTerrain()
-{
-	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
+//HRESULT CMonster::SetUp_HeightOnTerrain()
+//{
+//	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
+//
+//	if (nullptr == pObject_Manager)
+//		return E_FAIL;
+//	pObject_Manager->AddRef();
+//
+//	// 인덱스 1번으로 해야함.
+//	CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Buffer", 1);
+//	if (nullptr == pBufferCom)
+//		return E_FAIL;
+//
+//	_float	fY = pBufferCom->Compute_HeightOnBuffer(m_pTransformCom);
+//
+//	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->x, fY + 0.5f, m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->z));
+//
+//	Safe_Release(pObject_Manager);
+//
+//	return NOERROR;
+//}
 
-	if (nullptr == pObject_Manager)
-		return E_FAIL;
-	pObject_Manager->AddRef();
-
-	// 인덱스 1번으로 해야함.
-	CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Buffer", 1);
-	if (nullptr == pBufferCom)
-		return E_FAIL;
-
-	_float	fY = pBufferCom->Compute_HeightOnBuffer(m_pTransformCom);
-
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->x, fY + 0.5f, m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->z));
-
-	Safe_Release(pObject_Manager);
-
-	return NOERROR;
-}
-
-HRESULT CMonster::SetUp_BillBoard()
-{
-	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
-
-	if (nullptr == pObject_Manager)
-		return E_FAIL;
-	pObject_Manager->AddRef();
-
-	CTransform* pCamTransformCom = (CTransform*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_Camera", L"Com_Transform", 0);
-	if (nullptr == pCamTransformCom)
-		return E_FAIL;
-
-	// 카메라의 월드행렬 == 뷰스페이스 변환행렬 역행렬
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_RIGHT
-		, pCamTransformCom->Get_StateInfo(CTransform::STATE_RIGHT));
-	//m_pTransformCom->Set_StateInfo(CTransform::STATE_UP
-	//	, pCamTransformCom->Get_StateInfo(CTransform::STATE_UP));
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_LOOK
-		, pCamTransformCom->Get_StateInfo(CTransform::STATE_LOOK));
-
-	Safe_Release(pObject_Manager);
-
-	return NOERROR;
-}
+//HRESULT CMonster::SetUp_BillBoard()
+//{
+//	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
+//
+//	if (nullptr == pObject_Manager)
+//		return E_FAIL;
+//	pObject_Manager->AddRef();
+//
+//	CTransform* pCamTransformCom = (CTransform*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_Camera", L"Com_Transform", 0);
+//	if (nullptr == pCamTransformCom)
+//		return E_FAIL;
+//
+//	// 카메라의 월드행렬 == 뷰스페이스 변환행렬 역행렬
+//	m_pTransformCom->Set_StateInfo(CTransform::STATE_RIGHT
+//		, pCamTransformCom->Get_StateInfo(CTransform::STATE_RIGHT));
+//	//m_pTransformCom->Set_StateInfo(CTransform::STATE_UP
+//	//	, pCamTransformCom->Get_StateInfo(CTransform::STATE_UP));
+//	m_pTransformCom->Set_StateInfo(CTransform::STATE_LOOK
+//		, pCamTransformCom->Get_StateInfo(CTransform::STATE_LOOK));
+//
+//	Safe_Release(pObject_Manager);
+//
+//	return NOERROR;
+//}
 
 HRESULT CMonster::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 {
@@ -247,7 +247,6 @@ HRESULT CMonster::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	return NOERROR;
 }
 
-
 // 원본객체를 생성한다.
 CMonster * CMonster::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
@@ -261,10 +260,6 @@ CMonster * CMonster::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
-// this? : 
-// 1.멤버함수안에 존재. 
-// 2.멤버함수는 객체로부터 호출(객체.멤버함수(), 객체주소->멤버함수())
-// 3.멤버함수안에 존재하는 this는 멤버함수의 호출을 가능하게한 객체의 주소를 의미한다.
 CGameObject * CMonster::Clone(void* pArg)
 {
 	CMonster* pInstance = new CMonster(*this);
@@ -280,11 +275,11 @@ CGameObject * CMonster::Clone(void* pArg)
 
 void CMonster::Free()
 {
-	Safe_Release(m_pColliderCom);
-	Safe_Release(m_pTransformCom);
-	Safe_Release(m_pRendererCom);
-	Safe_Release(m_pMeshCom);
-	Safe_Release(m_pShaderCom);
+	//Safe_Release(m_pColliderCom);
+	//Safe_Release(m_pTransformCom);
+	//Safe_Release(m_pRendererCom);
+	//Safe_Release(m_pMeshCom);
+	//Safe_Release(m_pShaderCom);
 
-	CGameObject::Free();
+	CUnit::Free();
 }

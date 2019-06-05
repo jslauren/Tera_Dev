@@ -1,20 +1,30 @@
 #pragma once
-#include "GameObject.h"
 #include "Player.h"
+#include "Base.h"
 
 _BEGIN(Client)
 
-//class CPlayer;
-class CPlayerState final : public CGameObject
+class CPlayer;
+class CPlayerState : public CBase
 {
-public:
-	//static IdleState Idle;
-private:
+protected:
+	explicit CPlayerState(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CPlayerState() = default;
 
-//public:
-//	virtual void	HandleInput(CPlayer& rPlayer, P_STATE eInput) {}
-//	virtual void	StateUpdate(CPlayer& Player) {}
+public:
+	virtual HRESULT			Initialize_State(CPlayer& Player);
+	virtual CPlayerState*	Input_Keyboard(CPlayer& Player, const float& fTimeDelta, BYTE KeyID);
+	virtual void			Update_State(CPlayer& Player, const float& fTimeDelta);
+
+	// Initialize_State는 State를 최초 생성할 때만 실행하고,
+	// Enter_State는 그 이후로 해당 State로 바뀔 때마다 한번씩 들어와서 셋팅하는 역할을 해준다.
+	virtual void			Enter_State(CPlayer& Player);
+
+protected:
+	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
+
+public:
+	virtual void			Free();
 
 };
 

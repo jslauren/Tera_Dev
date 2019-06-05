@@ -242,6 +242,6 @@ void CMainApp::Free()
 	Safe_Release(m_pManagement);
 	Safe_Release(m_pGraphic_Device);
 
-	if (FAILED(CManagement::Release_Engine()))
+ 	if (FAILED(CManagement::Release_Engine()))
 		return;
 }
