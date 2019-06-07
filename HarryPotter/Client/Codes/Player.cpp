@@ -2,7 +2,8 @@
 #include "..\Headers\Player.h"
 #include "Object_Manager.h"
 #include "Light_Manager.h"
-#include "KeyManager.h"
+#include "Player_Idle.h"
+#include "Player_Move.h"
 
 _USING(Client)
 
@@ -42,11 +43,13 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(0.01f, 0.01f, 0.01f);
+	m_pTransformCom->Set_Scaling(0.05f, 0.05f, 0.05f);
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.2, 0.f, 0.2));
-	m_pMeshCom->SetUp_AnimationSet(IDLE);
+	m_pMeshCom->SetUp_AnimationSet(LUMOSSTRAFELEFT);
 
-	m_pMeshCom->ChangePivot(_vec3(1.f, 0.f, 0.f), -90);
+	m_pState = CPlayer_Idle::Create(m_pGraphic_Device, *this);
+
+	//m_pMeshCom->ChangePivot(_vec3(1.f, 0.f, 0.f), -90);
 	m_pMeshCom->ChangePivot(_vec3(0.f, 1.f, 0.f), 180);
 	
 	return NOERROR;
@@ -262,8 +265,22 @@ void CPlayer::ViewChanage()
 
 void CPlayer::KeyInput()
 {
-	//CPlayerState* pState = m_pState->Input_Keyboard(*this, fTimeDelta, 0);
+	CPlayerState* pState = m_pState->Input_Keyboard(*this, m_fTimeDelta, 0);
 
+	if (nullptr != pState)
+	{
+		Safe_Release(m_pState);
+		m_pState = pState;
+	}
+
+	if (true == m_pMeshCom->IsAnimationEnded() || m_eOldAnimationIndex != m_eAnimationIndex)
+	{
+		m_pMeshCom->SetUp_AnimationSet(m_eAnimationIndex);
+	}
+
+	m_eOldAnimationIndex = m_eAnimationIndex;
+
+	m_pState->Update_State(*this, m_fTimeDelta);
 
 }
 
@@ -762,6 +779,8 @@ void CPlayer::Free()
 	//Safe_Release(m_pRendererCom);
 	//Safe_Release(m_pMeshCom);
 	//Safe_Release(m_pShaderCom);
+
+	Safe_Release(m_pState);
 
 	CUnit::Free();
 }

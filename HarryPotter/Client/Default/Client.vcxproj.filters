@@ -79,6 +79,9 @@
     <Filter Include="04. UI\UI">
       <UniqueIdentifier>{42e78082-211c-4195-a8d1-5df54df64307}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\01. Move">
+      <UniqueIdentifier>{5e6622f2-9919-4233-8d54-f070b972cb25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -147,6 +150,9 @@
     <ClInclude Include="..\Headers\Unit.h">
       <Filter>03. Unit</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Player_Move.h">
+      <Filter>03. Unit\Player\PlayerState\01. Move</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -202,6 +208,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Unit.cpp">
       <Filter>03. Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Move.cpp">
+      <Filter>03. Unit\Player\PlayerState\01. Move</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

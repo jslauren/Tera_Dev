@@ -17,13 +17,13 @@ _BEGIN(Client)
 class CUnit : public CGameObject
 {
 public:
-	enum Unit_ID { Unit_Player, Unit_Monster, Unit_BossMonster, Unit_End };
-	enum Stance_ID { Stance_Search, Stance_Tarcking, Stance_Attack, Stance_Skill, Stance_Groggy, Stance_Death, Stance_End };
-	enum Action_ID 
+	enum UNIT_ID { UNIT_PLAYER, UNIT_MONSTER, UNIT_BOSSMONSTER, UNIT_END };
+	enum STANCE_ID { STANCE_SEARCH, STANCE_TARCKING, STANCE_ATTACK, STANCE_SKILL, STANCE_GROGGY, STANCE_DEATH, STANCE_END };
+	enum ACTION_ID 
 	{
-		Action_Idle, Action_Walk, Action_Run, Action_Jump, Action_Ready, 
-		Action_Cast, Action_Attack, Action_PhysicsSkill, Action_Stun,
-		Action_Wound, Action_Die, Action_End
+		ACTION_IDLE, ACTION_WALK, ACTION_RUN, ACTION_JUMP, ACTION_READY, 
+		ACTION_CAST, ACTION_ATTACK, ACTION_PHYSICSSKILL, ACTION_STUN,
+		ACTION_WOUND, ACTION_DIE, ACTION_END
 	};
 
 protected:
@@ -32,9 +32,9 @@ protected:
 	virtual ~CUnit() = default;
 
 public:	// Getter
-	const Action_ID&	Get_ActionID() const { return m_eCurActionID; }
-	const Unit_ID&		Get_UnitID() const { return m_eUnitID; }
-	const Stance_ID&	Get_StanceID() const { return m_eCurStanceID; }
+	const ACTION_ID&	Get_ActionID() const { return m_eCurActionID; }
+	const UNIT_ID&		Get_UnitID() const { return m_eUnitID; }
+	const STANCE_ID&	Get_StanceID() const { return m_eCurStanceID; }
 
 public:
 	CTransform*		Get_Transform() { return m_pTransformCom; }
@@ -42,7 +42,7 @@ public:
 	CNavigation*	Get_NaviMesh() { return m_pNavigationCom; }
 
 public:	// Setter
-	void			Set_ActionID(const Action_ID& eActionID) { m_eCurActionID = eActionID; }
+	void			Set_ActionID(const ACTION_ID& eActionID) { m_eCurActionID = eActionID; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -65,11 +65,11 @@ protected:
 	CNavigation*	m_pNavigationCom = nullptr;
 //	CUnit*			m_pTargetUnit = nullptr;
 
-	Unit_ID			m_eUnitID;
-	Stance_ID		m_eCurStanceID = Stance_Search;
-	Stance_ID		m_ePreStanceID = Stance_End;
-	Action_ID		m_eCurActionID = Action_Idle;
-	Action_ID		m_ePreActionID = Action_End;
+	UNIT_ID			m_eUnitID;
+	STANCE_ID		m_eCurStanceID = STANCE_SEARCH;
+	STANCE_ID		m_ePreStanceID = STANCE_END;
+	ACTION_ID		m_eCurActionID = ACTION_IDLE;
+	ACTION_ID		m_ePreActionID = ACTION_END;
 
 	_float			m_fFrame = 0.f;
 	_float			m_fAniSpeed = 1.f;

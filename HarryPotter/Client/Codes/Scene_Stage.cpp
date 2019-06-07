@@ -281,9 +281,9 @@ HRESULT CScene_Stage::Ready_Layer_Player(const _tchar * pLayerTag)
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Player", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
 
-	// For.Weapon
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Weapon", SCENE_STATIC, pLayerTag)))
-		return E_FAIL;
+	//// For.Weapon
+	//if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Weapon", SCENE_STATIC, pLayerTag)))
+	//	return E_FAIL;
 
 	return NOERROR;
 }

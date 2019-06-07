@@ -93,7 +93,7 @@ HRESULT CAnimationCtrl::Play_Animation(const _float & fTimeDelta)
 	return NOERROR;
 }
 
-_bool CAnimationCtrl::IsAnimationEnded(_float fCtrlEndTime)
+_bool CAnimationCtrl::IsAnimationEnded(_double fCtrlEndTime)
 {
 	// 트랙의 최대 포지션 값.
 	double Period = m_pAnimationSet->GetPeriod();
@@ -108,7 +108,7 @@ _bool CAnimationCtrl::IsAnimationEnded(_float fCtrlEndTime)
 	// 값을 받아와 Period에서 빼주게 되면,
 	// 기존에 끝나는 시간보다 일찍 애니메이션을 종료시킬 수 있어서,
 	// 약간의 튀는 애니메이션 보간이 가능하다. (점프같이 3단계로 나뉘어져 있는 애니일때 필요)
-	if (Period - fCtrlEndTime <= TrackDesc.Position)
+	if (Period * fCtrlEndTime <= TrackDesc.Position)
 		return TRUE;
 
 	return _bool(FALSE);

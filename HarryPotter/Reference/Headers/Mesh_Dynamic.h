@@ -24,7 +24,7 @@ public:
 	HRESULT SetUp_AnimationSet(const char* pName);
 	HRESULT Play_Animation(const _float& fTimeDelta, const _float fAniSpeed = 1.f);
 public:
-	_bool	IsAnimationEnded(_float fCtrlEndTime = 0.f);
+	_bool	IsAnimationEnded(_double fCtrlEndTime = 0.f);
 	HRESULT ChangePivot(_vec3 vState, _float fDegree);
 private:
 	CHierarchyLoader*		m_pLoader = nullptr;

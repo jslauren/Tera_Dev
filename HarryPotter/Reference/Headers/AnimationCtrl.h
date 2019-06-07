@@ -17,7 +17,7 @@ public:
 	HRESULT SetUp_AnimationSet(const char* pName);
 	HRESULT Play_Animation(const _float& fTimeDelta);
 public:
-	_bool	IsAnimationEnded(_float fCtrlEndTime = 0.f);
+	_bool	IsAnimationEnded(_double fCtrlEndTime = 0.f);
 private:
 	LPD3DXANIMATIONSET			m_pAnimationSet = nullptr;
 	LPD3DXANIMATIONCONTROLLER	m_pAniCtrl = nullptr;

@@ -121,7 +121,7 @@ HRESULT CMesh_Dynamic::Play_Animation(const _float & fTimeDelta, const _float fA
 	return NOERROR;
 }
 
-_bool CMesh_Dynamic::IsAnimationEnded(_float fCtrlEndTime)
+_bool CMesh_Dynamic::IsAnimationEnded(_double fCtrlEndTime)
 {
 	return m_pAniCtrl->IsAnimationEnded(fCtrlEndTime);
 }
