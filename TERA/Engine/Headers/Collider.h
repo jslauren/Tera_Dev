@@ -1,7 +1,7 @@
 #pragma once
 
 // 충돌의 기능. 
-// 충돌하기위하나 정점(메시)을 가지고 있는 객체다.
+// 충돌하기위한 정점(메시)을 가지고 있는 객체다.
 #include "Component.h"
 
 _BEGIN(Engine)

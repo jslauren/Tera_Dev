@@ -375,7 +375,7 @@ void CMapToolView::OnLButtonDown(UINT nFlags, CPoint point)
 		}
 		else if (m_pViewManager->m_pEditorView->m_Tab_Mesh.bIsNaviMesh == true)
 		{
-			m_pViewManager->m_pEditorView->m_Tab_Mesh.Picking();
+			m_pViewManager->m_pEditorView->m_Tab_Mesh.Make_Navigation();
 		}
 	}
 	

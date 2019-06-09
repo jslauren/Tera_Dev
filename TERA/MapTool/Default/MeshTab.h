@@ -106,7 +106,7 @@ public:
 public:
 	HRESULT		Add_StaticObject();
 	HRESULT		MakeItemForTree();
-	HRESULT		Picking();
+	HRESULT		Make_Navigation();
 	void		Render_Navigation();
 public:
 	_bool		bDblClkTreeStaticObj = false;

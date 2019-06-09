@@ -48,8 +48,8 @@ _int CStaticObject::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	Compute_ViewZ(m_pTransformCom);
 
-	if (FAILED(SetUp_HeightOnTerrain()))
-		return -1;
+	//if (FAILED(SetUp_HeightOnTerrain()))
+	//	return -1;
 
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
 		return -1;

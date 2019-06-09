@@ -11,6 +11,7 @@
 #include "Layer.h"
 #include "StaticObject.h"
 #include "DataManager.h"
+#include "Object_Manager.h"
 #include "Terrain.h"
 
 // CMeshTab 대화 상자입니다.
@@ -125,6 +126,9 @@ BOOL CMeshTab::OnInitDialog()
 	Mesh_ObjectType_Static.SetCheck(TRUE);
 	Mesh_NaviVtxMove_Together.SetCheck(TRUE);
 
+	GetDlgItem(IDC_RADIO7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO8)->EnableWindow(FALSE);
+
 	//Obj_X_Scaling_Btn.SetRange(0, 360);
 	// SetPos로 EditBox의 초기 텍스트 값을 지정하고 싶다면,
 	// Spin_Control의 속성 값에 Auto_Buddy값과 Set_Buddy_Integer값을 True로 바꾸고,
@@ -205,6 +209,24 @@ void CMeshTab::OnBnClickedObject()
 
 	bIsNaviMesh = false;
 
+	GetDlgItem(IDC_RADIO7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO8)->EnableWindow(FALSE);
+	
+	GetDlgItem(IDC_RADIO5)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO6)->EnableWindow(TRUE);
+	GetDlgItem(IDC_SPIN5)->EnableWindow(TRUE);
+	GetDlgItem(IDC_SPIN6)->EnableWindow(TRUE);
+	GetDlgItem(IDC_SPIN7)->EnableWindow(TRUE);
+	GetDlgItem(IDC_SPIN8)->EnableWindow(TRUE);
+	GetDlgItem(IDC_SPIN9)->EnableWindow(TRUE);
+	GetDlgItem(IDC_SPIN10)->EnableWindow(TRUE);
+	GetDlgItem(IDC_EDIT5)->EnableWindow(TRUE);
+	GetDlgItem(IDC_EDIT6)->EnableWindow(TRUE);
+	GetDlgItem(IDC_EDIT7)->EnableWindow(TRUE);
+	GetDlgItem(IDC_EDIT8)->EnableWindow(TRUE);
+	GetDlgItem(IDC_EDIT9)->EnableWindow(TRUE);
+	GetDlgItem(IDC_EDIT10)->EnableWindow(TRUE);
+
 	UpdateData(FALSE);
 }
 
@@ -216,6 +238,24 @@ void CMeshTab::OnBnClickedNavi_Mesh()
 
 	bIsNaviMesh = true;
 
+	GetDlgItem(IDC_RADIO7)->EnableWindow(TRUE);
+	GetDlgItem(IDC_RADIO8)->EnableWindow(TRUE);
+
+	GetDlgItem(IDC_RADIO5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_RADIO6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_SPIN5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_SPIN6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_SPIN7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_SPIN8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_SPIN9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_SPIN10)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT5)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT6)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT7)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT8)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT9)->EnableWindow(FALSE);
+	GetDlgItem(IDC_EDIT10)->EnableWindow(FALSE);
+	
 	UpdateData(FALSE);
 }
 
@@ -287,6 +327,14 @@ void CMeshTab::OnBnClicked_StaticObject_Delete()
 	if (iLatestItemIdx < iItemIdx)
 		iLatestItemIdx = iItemIdx;
 
+	// CDataManager에 m_MapMeshData도 값을 저장하고 있기에, 해당 객체에 접근해서 지워줘야 하는데,
+	// 그러려면 objName이 필요하다.
+	// 기존에는 CDataManager가 가지고있는 멤버변수에 접근했는데,
+	// 이게 로드하면서 값이 다른걸로 바뀌어 있기때문에, 밑에 구문에서 오류를 범할 수 있으므로,
+	// 여기서 "Layer_" 를 붙여주기 전에 따로 지역변수로 저장해 놓는다.
+	CString strTempObjName;
+	strTempObjName = ParentItemName;
+
 	ParentItemName = _T("Layer_") + ParentItemName;
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, ParentItemName);
@@ -295,9 +343,6 @@ void CMeshTab::OnBnClicked_StaticObject_Delete()
 	// 트리에 아이템 제거.
 	Tree_Mesh_StaticObj.DeleteItem(SelectedStaticObject);
 
-	// 위에서 ++한 Iter 위치 초기화.
-	iter = pLayer->Get_ObjectList().begin();
-
 	for (; iter != pLayer->Get_ObjectList().end(); )
 	{
 		if ((*iter)->Get_IdxNum() == iItemIdx)
@@ -305,14 +350,25 @@ void CMeshTab::OnBnClicked_StaticObject_Delete()
 			Safe_Release(*iter);
 			iter = pLayer->Get_ObjectList().erase(iter);
 
-			auto iter = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(CDataManager::GetInstance()->m_strObjName));
+			auto& iterFirst = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strTempObjName));
 
-			iter->second.erase(iter->second.begin() + (iItemIdx-1));
+			iterFirst->second.erase(iterFirst->second.begin() + (iItemIdx-1));
+
+			// 내가 지운 객체가 동일한 First Key 값으로 더이상 객체를 가지지 않는다면,
+			// 해당 값의 Fisrt 값도 지워준다.
+			if (iterFirst->second.size() <= 0)
+				CDataManager::GetInstance()->m_MapMeshData.erase(iterFirst);
 
 			break;
 		}
 		else
 			++iter;
+	}
+
+	if (iItemIdx == 1)
+	{
+		Tree_Mesh_StaticObj.DeleteItem(SelectedStaticObject);
+		return;
 	}
 
 	Invalidate(false);
@@ -351,6 +407,9 @@ void CMeshTab::OnBnClicked_DynamicObject_Delete()
 	if (iLatestItemIdx < iItemIdx)
 		iLatestItemIdx = iItemIdx;
 
+	CString strTempObjName;
+	strTempObjName = ParentItemName;
+
 	ParentItemName = _T("Layer_") + ParentItemName;
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, ParentItemName);
@@ -359,20 +418,55 @@ void CMeshTab::OnBnClicked_DynamicObject_Delete()
 	// 트리에 아이템 제거.
 	Tree_Mesh_DynamicObj.DeleteItem(SelectedDynamicObject);
 
-	// 위에서 ++한 Iter 위치 초기화.
-	iter = pLayer->Get_ObjectList().begin();
-
 	for (; iter != pLayer->Get_ObjectList().end(); )
 	{
 		if ((*iter)->Get_IdxNum() == iItemIdx)
 		{
 			Safe_Release(*iter);
 			iter = pLayer->Get_ObjectList().erase(iter);
+
+			auto& iterFirst = find_if(CDataManager::GetInstance()->m_MapMeshData.begin(), CDataManager::GetInstance()->m_MapMeshData.end(), CFinder_Tag(strTempObjName));
+
+			iterFirst->second.erase(iterFirst->second.begin() + (iItemIdx - 1));
+
+			// 내가 지운 객체가 동일한 First Key 값으로 더이상 객체를 가지지 않는다면,
+			// 해당 값의 Fisrt 값도 지워준다.
+			if (iterFirst->second.size() <= 0)
+				CDataManager::GetInstance()->m_MapMeshData.erase(iterFirst);
+
 			break;
 		}
 		else
 			++iter;
 	}
+
+	if (iItemIdx == 1)
+	{
+		Tree_Mesh_DynamicObj.DeleteItem(SelectedDynamicObject);
+		return;
+	}
+
+	//// 위에서 ++한 Iter 위치 초기화.
+	//iter = pLayer->Get_ObjectList().begin();
+
+	//for (; iter != pLayer->Get_ObjectList().end(); )
+	//{
+	//	if ((*iter)->Get_IdxNum() == iItemIdx)
+	//	{
+	//		Safe_Release(*iter);
+	//		iter = pLayer->Get_ObjectList().erase(iter);
+	//		break;
+	//	}
+	//	else
+	//		++iter;
+	//}
+
+	//// 아이템이 마지막으로 지워졌다면 해당 트리의 부모트리까지 지워준다.
+	//if (iItemIdx == 1)
+	//{
+	//	Tree_Mesh_DynamicObj.DeleteItem(SelectedDynamicObject);
+	//	return;
+	//}
 
 	Invalidate(false);
 }
@@ -430,8 +524,7 @@ HRESULT CMeshTab::MakeItemForTree()
 
 			ItemNum.Format(_T(" [%d]"), iLatestItemIdx);
 			pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().back()->SetIdxNum(iLatestItemIdx);
-
-
+			
 			ObjectNameTemp1 += ItemNum;
 
 			if (bIsStaticMesh == true)
@@ -511,7 +604,7 @@ HRESULT CMeshTab::MakeItemForTree()
 	return NOERROR;
 }
 
-HRESULT CMeshTab::Picking()
+HRESULT CMeshTab::Make_Navigation()
 {
 	// For.Mesh_Picking Variable
 	_vec3 vPos;
@@ -598,7 +691,7 @@ void CMeshTab::Render_Navigation()
 		}
 		_matrix		matIdentity;
 
-		m_pLine->SetWidth(2.f);
+		m_pLine->SetWidth(5.f);
 		m_pLine->DrawTransform(vPoint, 4, D3DXMatrixIdentity(&matIdentity), D3DXCOLOR(1.f, 0.f, 0.f, 1.f));
 	}
 }
@@ -636,8 +729,6 @@ HRESULT CMeshTab::Add_StaticObject()
 	if (FAILED(dynamic_cast<CSceneStatic*>(m_pScene)->Add_Static_Object(strLayerTag)))
 		return E_FAIL;
 
-	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
-
 	CString strObjProtoTag = L"GameObject_" + strObjectName;
 
 	CDataManager::GetInstance()->m_bIsStaticMesh = bIsStaticMesh;
@@ -649,8 +740,9 @@ HRESULT CMeshTab::Add_StaticObject()
 	//szFullPathModify.TrimRight(L"/");
 	
 	CDataManager::GetInstance()->m_strFullPath = szFullPathModify;
-
 	CDataManager::GetInstance()->m_strObjName = strObjectName;
+	
+	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, strLayerTag);
 
 	// Add_Component에 해당한다. (실 사용 객체)	
 	dynamic_cast<CStaticObject*>(pLayer->Get_ObjectList().back())->Add_Component_Tool(strComponentPrototypeTag);
@@ -833,7 +925,7 @@ void CMeshTab::OnNMRClickTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 	CString ParentItemName = Tree_Mesh_StaticObj.GetItemText(hSelectedParentItem);
 
 	// 이건 현재 선택된 Static Object의 인덱스가 몇번째인지 잘라오는 구문이다.
-	CString strItemIdx = Tree_Mesh_StaticObj.GetItemText(SelectedStaticObject);
+ 	CString strItemIdx = Tree_Mesh_StaticObj.GetItemText(SelectedStaticObject);
 
 	strItemIdx.Remove('[');
 	strItemIdx.Remove(']');
