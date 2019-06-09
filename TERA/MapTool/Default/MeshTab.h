@@ -138,6 +138,7 @@ private:
 //	LPDIRECT3DDEVICE9			m_pGraphic_Device = nullptr;
 	LPD3DXLINE					m_pLine = nullptr;
 	_int						iNaviMapCount = 0;
+	_float						fNaviDotCompareValue = 1.f;
 	vector<_vec3>				vecPos;
 	map<_int, vector<_vec3>>	mapNaviMesh;
 private:

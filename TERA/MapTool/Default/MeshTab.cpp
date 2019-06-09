@@ -631,10 +631,23 @@ HRESULT CMeshTab::Make_Navigation()
 				bIsPicked = true;
 			}
 		}		
-	}	
+	}
 
 	if (bIsPicked == true)
 	{
+		_float fCompareLength = 0.f;
+
+		for (auto Pair : mapNaviMesh)
+		{
+			for (auto PairSecond : Pair.second)
+			{
+				fCompareLength = D3DXVec3Length(&(vPos - PairSecond));
+
+				if(fNaviDotCompareValue >= fCompareLength)
+					vPos = Pair.second[0];
+			}
+		}
+		
 		vecPos.push_back(vPos);
 
 		if (vecPos.size() == 3)
@@ -648,6 +661,27 @@ HRESULT CMeshTab::Make_Navigation()
 	// 만약 해당하는게 없다면, 해당 위치의 Terrain과 피킹을 한다.
 	if (true == pTerrain->Picking(g_WinhWnd, pTerrainTransform, &vPos))
 	{
+		_float fCompareLength = 0.f;
+
+		for (auto Pair : mapNaviMesh)
+		{
+			for (auto PairSecond : Pair.second)
+			{
+				// 현재 피킹 된 정점의 포지션과,
+				// 현재 찍혀있는 정점들이 들어가있는 mapNaviMesh 맵 컨테이너를 순회하며 나온 값 들의 차의 길이 값을
+				// 임시 변수를 하나 생성하여 담아준다.
+				fCompareLength = D3DXVec3Length(&(vPos - PairSecond));
+
+				// 이 거리 값이 내가 정한 임의의 값보다 작거나 같다면
+				// 근처에 위치한 정점이 되므로,
+				// 기존에 위치한 정점의 포지션 값을 새롭게 찍으려는 정점의 포지션값에 복사해준다.
+				if (fNaviDotCompareValue >= fCompareLength)
+					vPos = PairSecond;
+
+				// 이러면 네비메쉬를 찍을 때, 근접한 정점에 피킹을 하면 그 근접한 정점의 포지션으로 새로운 정점이 찍히게 된다.
+			}
+		}
+
 		vPos.y = 0.f;
 
 		vecPos.push_back(vPos);
@@ -691,7 +725,7 @@ void CMeshTab::Render_Navigation()
 		}
 		_matrix		matIdentity;
 
-		m_pLine->SetWidth(5.f);
+		m_pLine->SetWidth(7.f);
 		m_pLine->DrawTransform(vPoint, 4, D3DXMatrixIdentity(&matIdentity), D3DXCOLOR(1.f, 0.f, 0.f, 1.f));
 	}
 }

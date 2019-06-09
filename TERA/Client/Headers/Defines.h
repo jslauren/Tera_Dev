@@ -18,3 +18,7 @@ extern HWND g_hWnd;
 //#else
 //#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console") 
 //#endif
+
+//namespace Client {}
+//
+//using namespace Client;
