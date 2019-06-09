@@ -28,7 +28,7 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 			//return CPlayer_Jump::Create(m_pGraphicDevice, Player);
 
 		Player.Set_AniIndex(CPlayer::PLAYER_STATE::RUN);
-		Player.Get_Transform()->Move(0, 5.f, fTimeDelta);
+		Player.Get_Transform()->Move(0, 100.f, fTimeDelta);
 
 		//if (CInput_Device::GetInstance()->GetDIKeyState(DIK_A) & 0x80)
 		//	Player.Set_AniIndex(CPlayer::PLAYER_STATE::LUMOSSTRAFELEFT);

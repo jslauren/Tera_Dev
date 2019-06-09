@@ -136,7 +136,7 @@ HRESULT CSceneStatic::Ready_Component_Prototype()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Common_BG/Texture2D/CM_Floor_08_Diff.tga"))))
 		return E_FAIL;
 
-	_tchar* wsr = L"../Bin/Resources/Textures/Terrain/HP3_Floors/celtic_tile.tga";
+	_tchar* wsr = L"../Bin/Resources/Textures/Terrain/Common_BG/Texture2D/CM_Floor_08_Diff.tga";
 
 	CDataManager::GetInstance()->m_pImgPath = wsr;
 

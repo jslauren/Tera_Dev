@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Weapon.h"
 #include "Monster.h"
+#include "TerrainObject.h"
 
 #define	NEAR			0.2f
 #define FAR				500.f
@@ -84,7 +85,7 @@ HRESULT CScene_Stage::Render_Scene()
 
 HRESULT CScene_Stage::Ready_TerrainLoad()
 {
-	const wstring& wstrPath = L"../../Data/3.Map";
+	const wstring& wstrPath = L"../../Data/Town.Map";
 
 	HANDLE		hFile = CreateFile(wstrPath.c_str(),
 		GENERIC_READ,
@@ -131,7 +132,7 @@ HRESULT CScene_Stage::Ready_TerrainLoad()
 
 HRESULT CScene_Stage::Ready_MeshLoad()
 {
-	const wstring& wstrPath = L"../../Data/9.MeshDat";
+	const wstring& wstrPath = L"../../Data/Town.MeshDat";
 
 	HANDLE		hFile = CreateFile(wstrPath.c_str(),
 		GENERIC_READ,
@@ -146,6 +147,7 @@ HRESULT CScene_Stage::Ready_MeshLoad()
 	while (true)
 	{
 		wstring		ObjectName;
+		wstring		strXfileName;
 
 		_int	iTextLength = 0;
 		_tchar	szTextTemp[MAX_PATH] = L"";
@@ -171,7 +173,8 @@ HRESULT CScene_Stage::Ready_MeshLoad()
 		if (ObjectName.length() != 0)
 			ObjectName = ObjectName.substr(6, iStrLength);
 
-		//ObjectName.TrimLeft(L"Layer_");
+		strXfileName = ObjectName;
+		strXfileName += L".X";
 
 		ReadFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
 		ReadFile(hFile, szTextTemp, sizeof(_tchar) * iTextLength, &dwByte, NULL);
@@ -183,12 +186,39 @@ HRESULT CScene_Stage::Ready_MeshLoad()
 
 		tObjMeshData.strFullPath = szTextTemp;
 
+//		m_MapMeshData.emplace(ObjectName, tObjMeshData);
+
 		if (0 == dwByte)
 			break;
 
-		// For.Monster
-		if (FAILED(Add_Object(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), SCENE_STAGE, L"Layer_Monster", (void*)tObjMeshData.matWorld)))
-			return E_FAIL;
+		if (tObjMeshData.bIsStaticMesh == true)
+		{
+			// 컴포넌트 정보 추가.
+			if (nullptr == m_pComponent_Manager->Find_Component_Prototype(SCENE_STAGE, tObjMeshData.strComProtoTag.c_str()))
+			{
+				if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, tObjMeshData.strComProtoTag.c_str(), CMesh_Static::Create(m_pGraphic_Device, tObjMeshData.strFullPath.c_str(), strXfileName.c_str()))))
+					return E_FAIL;
+			}
+
+
+			// 오브젝트 정보 추가.
+			if (nullptr == CObject_Manager::GetInstance()->Find_Object_Prototype(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str()))
+			{
+				if (FAILED(Add_Object_Prototype(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), CTerrainObject::Create(m_pGraphic_Device))))
+					return E_FAIL;
+			}
+			//if (FAILED(Add_Object(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), SCENE_STAGE, L"Layer_TerrainData", (void*)tObjMeshData.strComProtoTag.c_str())))
+			//	return E_FAIL;
+
+			if (FAILED(Add_Object(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), SCENE_STAGE, L"Layer_TerrainData", &tObjMeshData)))
+				return E_FAIL;
+		}
+		else
+		{
+			// For.Monster
+			if (FAILED(Add_Object(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), SCENE_STAGE, L"Layer_Monster", (void*)tObjMeshData.matWorld)))
+				return E_FAIL;
+		}
 	}
 
 	CloseHandle(hFile);

@@ -3,16 +3,16 @@
 _IMPLEMENT_SINGLETON(CComponent_Manager)
 
 CComponent_Manager::CComponent_Manager()
-	: m_pmapComponent(nullptr)
+	: m_pmapComponentPrototype(nullptr)
 {
 }
 
 HRESULT CComponent_Manager::Reserve_Component_Manager(const _uint & iMaxNumScene)
 {
-	if (nullptr != m_pmapComponent)
+	if (nullptr != m_pmapComponentPrototype)
 		return E_FAIL;
 
-	m_pmapComponent = new MAPCOMPONENT[iMaxNumScene];
+	m_pmapComponentPrototype = new MAPCOMPONENT[iMaxNumScene];
 	m_iMaxNumScene = iMaxNumScene;
 
 	return NOERROR;
@@ -21,11 +21,11 @@ HRESULT CComponent_Manager::Reserve_Component_Manager(const _uint & iMaxNumScene
 HRESULT CComponent_Manager::Add_Component_Prototype(const _uint & iSceneIdx, const _tchar * pComponentTag, CComponent * pInComponent)
 {
 	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapComponent ||
+		nullptr == m_pmapComponentPrototype ||
 		nullptr == pInComponent)
 		return E_FAIL;
 
-	CComponent*	pComponent = Find_Component(iSceneIdx, pComponentTag);
+	CComponent*	pComponent = Find_Component_Prototype(iSceneIdx, pComponentTag);
 
 	if (nullptr != pComponent)
 		return E_FAIL;
@@ -33,7 +33,7 @@ HRESULT CComponent_Manager::Add_Component_Prototype(const _uint & iSceneIdx, con
 	_tchar* dynamicArray = new _tchar[lstrlen(pComponentTag) + 1];
 	lstrcpy(dynamicArray, pComponentTag);
 
-	m_pmapComponent[iSceneIdx].insert(MAPCOMPONENT::value_type(dynamicArray, pInComponent));
+	m_pmapComponentPrototype[iSceneIdx].insert(MAPCOMPONENT::value_type(dynamicArray, pInComponent));
 
 	return NOERROR;
 }
@@ -41,16 +41,16 @@ HRESULT CComponent_Manager::Add_Component_Prototype(const _uint & iSceneIdx, con
 HRESULT CComponent_Manager::Clear_Component_Prototype(const _uint & iSceneIdx)
 {
 	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapComponent)
+		nullptr == m_pmapComponentPrototype)
 		return E_FAIL;
 
-	for (auto& Pair : m_pmapComponent[iSceneIdx])
+	for (auto& Pair : m_pmapComponentPrototype[iSceneIdx])
 	{
 		_tchar* pTempArray = const_cast<_tchar*>(Pair.first);
 		Safe_Delete_Array(pTempArray);
 		Safe_Release(Pair.second);
 	}
-	m_pmapComponent[iSceneIdx].clear();
+	m_pmapComponentPrototype[iSceneIdx].clear();
 
 	return NOERROR;
 }
@@ -58,10 +58,10 @@ HRESULT CComponent_Manager::Clear_Component_Prototype(const _uint & iSceneIdx)
 CComponent * CComponent_Manager::Clone_Component(const _uint & iSceneIdx, const _tchar * pComponentTag, void* pArg)
 {
 	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapComponent)
+		nullptr == m_pmapComponentPrototype)
 		return nullptr;
 
-	CComponent*	pComponent = Find_Component(iSceneIdx, pComponentTag);
+	CComponent*	pComponent = Find_Component_Prototype(iSceneIdx, pComponentTag);
 
 	if (nullptr == pComponent)
 		return nullptr;
@@ -69,15 +69,15 @@ CComponent * CComponent_Manager::Clone_Component(const _uint & iSceneIdx, const 
 	return pComponent->Clone(pArg);
 }
 
-CComponent * CComponent_Manager::Find_Component(const _uint & iSceneIdx, const _tchar * pComponentTag)
+CComponent * CComponent_Manager::Find_Component_Prototype(const _uint & iSceneIdx, const _tchar * pComponentTag)
 {
 	if (m_iMaxNumScene <= iSceneIdx ||
-		nullptr == m_pmapComponent)
+		nullptr == m_pmapComponentPrototype)
 		return nullptr;
 
-	auto	iter = find_if(m_pmapComponent[iSceneIdx].begin(), m_pmapComponent[iSceneIdx].end(), CFinder_Tag(pComponentTag));
+	auto	iter = find_if(m_pmapComponentPrototype[iSceneIdx].begin(), m_pmapComponentPrototype[iSceneIdx].end(), CFinder_Tag(pComponentTag));
 
-	if (iter == m_pmapComponent[iSceneIdx].end())
+	if (iter == m_pmapComponentPrototype[iSceneIdx].end())
 		return nullptr;
 
 	return iter->second;
@@ -87,14 +87,14 @@ void CComponent_Manager::Free()
 {
 	for (size_t i = 0; i < m_iMaxNumScene; i++)
 	{
-		for (auto& Pair : m_pmapComponent[i])
+		for (auto& Pair : m_pmapComponentPrototype[i])
 		{
 			_tchar* pTempArray = const_cast<_tchar*>(Pair.first);
 			Safe_Delete_Array(pTempArray);
 			Safe_Release(Pair.second);
 		}
-		m_pmapComponent[i].clear();
+		m_pmapComponentPrototype[i].clear();
 	}
 
-	Safe_Delete_Array(m_pmapComponent);
+	Safe_Delete_Array(m_pmapComponentPrototype);
 }

@@ -34,8 +34,9 @@ public:
 	_int	Update_Object_Manager(const _float& fTimeDelta);
 	_int	LateUpdate_Object_Manager(const _float& fTimeDelta);
 public:
+	CGameObject*	Find_Object_Prototype(const _uint& iSceneIdx, const _tchar* pProtoTag);
 	// 복사본맵에서 오브젝트 레이어를 검색
-	CLayer*	FindObjectLayer(const _uint& iSceneIdx, const _tchar* pLayerTag);
+	CLayer*			FindObjectLayer(const _uint& iSceneIdx, const _tchar* pLayerTag);
 private:
 	_uint	m_iMaxNumScene = 0;
 
@@ -47,9 +48,7 @@ private: // 각 씬에서 실 사용할 객체들을 보관하는 컨테이너.
 	map<const _tchar*, CLayer*>*		m_pmapObject = nullptr;
 	typedef map<const _tchar*, CLayer*>	MAPOBJECT;
 private:
-	CGameObject*	Find_Object_Prototype(const _uint& iSceneIdx, const _tchar* pProtoTag);
 	CLayer*			Find_Layer(const _uint& iSceneIdx, const _tchar* pLayerTag);
-
 public:
 	virtual void	Free();
 };

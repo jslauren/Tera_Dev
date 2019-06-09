@@ -33,7 +33,7 @@ private:
 	void			TracingPlayer();
 private:
 	_float			m_fTimeDelta = 0.f;
-	_float			fCameraDistance = 2.7f;
+	_float			fCameraDistance = 32.f;
 	_float			m_fDotValuePri = 0.f;
 public:
 	static CCamera_Static*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);

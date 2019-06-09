@@ -127,7 +127,7 @@ void CCamera_Static::ChangeView()
 
 	if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_Y))
 	{
-		if (dwMouseMove < 0 && fDotValue < 0.9f)
+		if (dwMouseMove < 0 && fDotValue < 0.1f)
 		{
 			// 마우스 커서를 일정영역 밑으로 내리면 카메라 줌아웃 하는 구문.
 			if (fDotValue < 0.4f && fDotValue > m_fDotValuePri)
@@ -135,7 +135,7 @@ void CCamera_Static::ChangeView()
 
 			m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 10.f, m_fTimeDelta);
 		}
-		else if (dwMouseMove > 0 && fDotValue > -0.9f)
+		else if (dwMouseMove > 0 && fDotValue > -0.3f)
 		{
 			// 카메라 줌인 구문.
 			if (fDotValue < -0.5f && fDotValue < m_fDotValuePri)
@@ -163,7 +163,7 @@ void CCamera_Static::TracingPlayer()
 	// 플레이어 포지션을 가져와서 카메라포지션 변수를 하나 만들어 넣어준다.
 	_vec3 vCameraPos = *vPlayerTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
 
-	_vec3	vCameraLook;
+	_vec3 vCameraLook;
 	
 
 	// 카메라의 Look 정보를 가져온 뒤
@@ -173,15 +173,15 @@ void CCamera_Static::TracingPlayer()
 	// 그걸 카메라의 포지션에 더해준다.
 	// 결국 플레이어의 포지션에서 부터 반대로 Distance값 만큼 멀어진 값이 카메라 포지션이 되는것이다.
 
-	if (fCameraDistance > 3.8f)
-		fCameraDistance = 3.8f;
-	
-	if (fCameraDistance < 2.7f)
-		fCameraDistance = 2.7f;
+	//if (fCameraDistance > 3.8f)
+	//	fCameraDistance = 3.8f;
+	//
+	//if (fCameraDistance < 2.7f)
+	//	fCameraDistance = 2.7f;
 
 	vCameraPos += (vCameraLook * -1) * fCameraDistance;
 
-	vCameraPos.y += 2.f;
+	vCameraPos.y += 10.f;
 
 	// 그 후, 그 값을 다시 내 포지션에 넣어준다.
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &vCameraPos);

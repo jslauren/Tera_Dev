@@ -82,6 +82,9 @@
     <Filter Include="03. Unit\Player\PlayerState\01. Move">
       <UniqueIdentifier>{5e6622f2-9919-4233-8d54-f070b972cb25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\99. Public\TerrainObject">
+      <UniqueIdentifier>{5e305c39-409e-4a42-a599-be676d83f8d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -153,6 +156,9 @@
     <ClInclude Include="..\Headers\Player_Move.h">
       <Filter>03. Unit\Player\PlayerState\01. Move</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\TerrainObject.h">
+      <Filter>02. GameObject\99. Public\TerrainObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -211,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Player_Move.cpp">
       <Filter>03. Unit\Player\PlayerState\01. Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\TerrainObject.cpp">
+      <Filter>02. GameObject\99. Public\TerrainObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

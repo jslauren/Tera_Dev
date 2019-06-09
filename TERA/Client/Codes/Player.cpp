@@ -43,7 +43,8 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(0.05f, 0.05f, 0.05f);
+	m_pTransformCom->Set_Scaling(0.25f, 0.25f, 0.25f);
+//	m_pTransformCom->Set_Scaling(0.05f, 0.05f, 0.05f);
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.2, 0.f, 0.2));
 	m_pMeshCom->SetUp_AnimationSet(LUMOSSTRAFELEFT);
 

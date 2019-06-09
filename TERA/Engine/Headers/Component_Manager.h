@@ -32,15 +32,15 @@ public:
 	HRESULT		Add_Component_Prototype(const _uint& iSceneIdx, const _tchar* pComponentTag, CComponent* pComponent);
 	HRESULT		Clear_Component_Prototype(const _uint& iSceneIdx);
 	CComponent* Clone_Component(const _uint& iSceneIdx, const _tchar* pComponentTag, void* pArg = nullptr);
+public:
+	CComponent*	Find_Component_Prototype(const _uint& iSceneIdx, const _tchar* pComponentTag);
 private:
 	// 원형 객체면 Prototype을 이름에 붙여줘야 안 헷갈리지 않을까...?
 	// m_pMapComponentPrototype 이런 식으로...
-	map<const _tchar*, CComponent*>*		m_pmapComponent = nullptr; // 원형객체를 모아놓는다.
+	map<const _tchar*, CComponent*>*		m_pmapComponentPrototype = nullptr; // 원형객체를 모아놓는다.
 	typedef map<const _tchar*, CComponent*>	MAPCOMPONENT;
 private:
 	_uint		m_iMaxNumScene = 0;
-private:
-	CComponent*	Find_Component(const _uint& iSceneIdx, const _tchar* pComponentTag);
 public:
 	virtual void Free();
 };

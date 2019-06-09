@@ -26,10 +26,10 @@ public:
 
 	// For.Terrain_Data I/O
 	_tchar*		m_pImgPath;
-	_int		m_iNumVtxX;
-	_int		m_iNumVtxZ;
-	_float		m_fInterval;
-	_float		m_fDetail;
+	_int		m_iNumVtxX = 100;
+	_int		m_iNumVtxZ = 100;
+	_float		m_fInterval = 1.f;
+	_float		m_fDetail = 1.f;
 
 	// For.Mesh_Data I/O
 	_bool		m_bIsStaticMesh;
