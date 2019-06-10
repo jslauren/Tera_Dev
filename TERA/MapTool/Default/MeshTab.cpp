@@ -82,6 +82,7 @@ void CMeshTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT13, m_fPosZ);
 	DDV_MinMaxFloat(pDX, m_fPosZ, -10000, 10000);
 	DDX_Control(pDX, IDC_TREE4, Tree_Mesh_DynamicObj);
+	DDX_Control(pDX, IDC_TREE2, Tree_Mesh_Navi);
 }
 
 BEGIN_MESSAGE_MAP(CMeshTab, CDialogEx)
@@ -113,6 +114,10 @@ BEGIN_MESSAGE_MAP(CMeshTab, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON8, &CMeshTab::OnBnClicked_DynamicObject_Delete)
 	ON_BN_CLICKED(IDC_BUTTON5, &CMeshTab::OnBnClicked_Mesh_Save)
 	ON_BN_CLICKED(IDC_BUTTON6, &CMeshTab::OnBnClicked_Mesh_Load)
+	ON_BN_CLICKED(IDC_BUTTON9, &CMeshTab::OnBnClicked_Navi_List_Delete)
+	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE2, &CMeshTab::OnTree_Navi_List)
+	ON_BN_CLICKED(IDC_BUTTON15, &CMeshTab::OnBnClicked_Navi_Save)
+	ON_BN_CLICKED(IDC_BUTTON16, &CMeshTab::OnBnClicked_Navi_Load)
 END_MESSAGE_MAP()
 
 BOOL CMeshTab::OnInitDialog()
@@ -471,6 +476,35 @@ void CMeshTab::OnBnClicked_DynamicObject_Delete()
 	Invalidate(false);
 }
 
+void CMeshTab::OnBnClicked_Navi_List_Delete()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	CString strItemIdx = Tree_Mesh_Navi.GetItemText(SelectedNaviItem);
+
+	strItemIdx.Remove('[');
+	strItemIdx.Remove(']');
+
+	_int iItemIdx = _ttoi(strItemIdx);
+
+	for (auto iter = mapNaviMesh.begin(); iter != mapNaviMesh.end(); )
+	{
+		if (iter->first == (iItemIdx -1))
+		{
+			Tree_Mesh_Navi.DeleteItem(SelectedNaviItem);
+
+			iter->second.clear();
+			mapNaviMesh.erase(iItemIdx);
+
+			break;
+		}
+		else
+			++iter;
+	}
+
+}
+
+
 void CMeshTab::InitTreeCtrl_Object()
 {
 	HTREEITEM hItem = Tree_Mesh_Object.InsertItem(_T("../Bin/Resources/Meshes/"));
@@ -606,6 +640,10 @@ HRESULT CMeshTab::MakeItemForTree()
 
 HRESULT CMeshTab::Make_Navigation()
 {
+	HTREEITEM	hRoot = nullptr;
+
+	UpdateData(TRUE);
+
 	// For.Mesh_Picking Variable
 	_vec3 vPos;
 	_bool bIsPicked = false;
@@ -652,6 +690,25 @@ HRESULT CMeshTab::Make_Navigation()
 
 		if (vecPos.size() == 3)
 		{
+			CString strRoot;
+			strRoot.Format(_T("[%d]"), iNaviRootTreeCount++);
+
+			hRoot = Tree_Mesh_Navi.InsertItem(strRoot, 0, 0, TVI_ROOT, TVI_LAST);
+
+			CString strChild;
+			strChild.Format(_T("%d"), iNaviChildTreeCount);
+			Tree_Mesh_Navi.InsertItem(strChild, 0, 0, hRoot, TVI_LAST);
+
+			++iNaviChildTreeCount;
+			strChild.Format(_T("%d"), iNaviChildTreeCount);
+			Tree_Mesh_Navi.InsertItem(strChild, 0, 0, hRoot, TVI_LAST);
+
+			++iNaviChildTreeCount;
+			strChild.Format(_T("%d"), iNaviChildTreeCount);
+			Tree_Mesh_Navi.InsertItem(strChild, 0, 0, hRoot, TVI_LAST);
+
+			iNaviChildTreeCount = 1;
+
 			mapNaviMesh.emplace(iNaviMapCount++, vecPos);
 			vecPos.clear();
 		}
@@ -688,6 +745,25 @@ HRESULT CMeshTab::Make_Navigation()
 
 		if (vecPos.size() == 3)
 		{
+			CString strRoot;
+			strRoot.Format(_T("[%d]"), iNaviRootTreeCount++);
+
+			hRoot = Tree_Mesh_Navi.InsertItem(strRoot, 0, 0, TVI_ROOT, TVI_LAST);
+
+			CString strChild;
+			strChild.Format(_T("%d"), iNaviChildTreeCount);
+			Tree_Mesh_Navi.InsertItem(strChild, 0, 0, hRoot, TVI_LAST);
+
+			++iNaviChildTreeCount;
+			strChild.Format(_T("%d"), iNaviChildTreeCount);
+			Tree_Mesh_Navi.InsertItem(strChild, 0, 0, hRoot, TVI_LAST);
+
+			++iNaviChildTreeCount;
+			strChild.Format(_T("%d"), iNaviChildTreeCount);
+			Tree_Mesh_Navi.InsertItem(strChild, 0, 0, hRoot, TVI_LAST);
+
+			iNaviChildTreeCount = 1;
+
 			mapNaviMesh.emplace(iNaviMapCount++, vecPos);
 			vecPos.clear();
 		}
@@ -940,6 +1016,19 @@ void CMeshTab::OnTree_Mesh_DynamicObj(NMHDR *pNMHDR, LRESULT *pResult)
 	HTREEITEM	hSelected = pNMTreeView->itemNew.hItem;
 
 	SelectedDynamicObject = hSelected;
+
+	*pResult = 0;
+}
+
+void CMeshTab::OnTree_Navi_List(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
+	// 현재 트리 컨트롤에서 선택된 아이템을 불러온다.
+	HTREEITEM	hSelected = pNMTreeView->itemNew.hItem;
+
+	SelectedNaviItem = hSelected;
 
 	*pResult = 0;
 }
@@ -1699,4 +1788,103 @@ void CMeshTab::OnBnClicked_Mesh_Load()
 	Invalidate(false);
 
 	UpdateData(FALSE);
+}
+
+
+void CMeshTab::OnBnClicked_Navi_Save()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	TCHAR	szDirPath[MAX_PATH];
+	CString strName = L"";
+	GetCurrentDirectory(MAX_PATH, szDirPath);
+
+	CFileDialog		Dlg(FALSE,	// false인 경우 save, true인 경우 load
+		L"NaviDat",	// 파일의 확장자명	
+		L"*.NaviDat", // 창에 최초로 띄워줄 파일이름 문자열
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, // 중복 파일이 있을 경우 경고창 띄워주기
+		L"*.NaviDat", // 저장 시 지원하는 파일 형식
+		this);
+
+	if (Dlg.DoModal() == IDOK)
+	{
+		strName = Dlg.GetPathName();
+		SetCurrentDirectory(szDirPath);
+	}
+	else return;
+
+	HANDLE	hFile = CreateFile(strName,
+		GENERIC_WRITE,
+		0,
+		NULL,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	DWORD		dwByte;
+
+	for (auto& Pair : mapNaviMesh)
+	{
+		for (auto& iter : Pair.second)
+		{
+			//WriteFile(hFile, iter, sizeof(_vec3) * 3, &dwByte, nullptr);
+			WriteFile(hFile, &iter, sizeof(_vec3), &dwByte, nullptr);
+		}
+	}
+
+	CloseHandle(hFile);
+
+}
+
+void CMeshTab::OnBnClicked_Navi_Load()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	TCHAR	szDirPath[MAX_PATH];
+	CString strName = L"";
+	GetCurrentDirectory(MAX_PATH, szDirPath);
+
+	CFileDialog		Dlg(TRUE,	// false인 경우 save, true인 경우 load
+		L"NaviDat",	// 파일의 확장자명	
+		L"*.NaviDat", // 창에 최초로 띄워줄 파일이름 문자열
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, // 중복 파일이 있을 경우 경고창 띄워주기
+		L"*.NaviDat", // 저장 시 지원하는 파일 형식
+		this);
+
+	mapNaviMesh.clear();
+
+	// 혜현이가 도와줌 ㅎ
+	if (Dlg.DoModal() == IDOK)
+	{
+		strName = Dlg.GetPathName();
+		SetCurrentDirectory(szDirPath);
+	}
+
+	HANDLE	hFile = CreateFile(Dlg.GetPathName(),
+		GENERIC_READ,
+		0,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+
+	DWORD		dwByte;
+
+	_vec3		vPoint[3];
+
+	while (true)
+	{
+		ReadFile(hFile, vPoint, sizeof(_vec3) * 3, &dwByte, nullptr);
+
+		if (0 == dwByte)
+			break;
+
+		vecPos.push_back(vPoint[0]);
+		vecPos.push_back(vPoint[1]);
+		vecPos.push_back(vPoint[2]);
+
+		mapNaviMesh.emplace(iNaviMapCount++, vecPos);
+		vecPos.clear();
+	}
+
+	CloseHandle(hFile);
 }

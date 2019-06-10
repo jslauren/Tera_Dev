@@ -37,6 +37,7 @@ public:
 	CTreeCtrl Tree_Mesh_Object;
 	CTreeCtrl Tree_Mesh_StaticObj;
 	CTreeCtrl Tree_Mesh_DynamicObj;
+	CTreeCtrl Tree_Mesh_Navi;
 
 	CEdit Obj_X_Scaling;
 	CEdit Obj_Y_Scaling;
@@ -69,10 +70,12 @@ public:
 	afx_msg void OnBnClickedSelected();
 	afx_msg void OnBnClicked_StaticObject_Delete();
 	afx_msg void OnBnClicked_DynamicObject_Delete();
+	afx_msg void OnBnClicked_Navi_List_Delete();
 
 	afx_msg void OnTree_Mesh_Object(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnTree_Mesh_StaticObj(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnTree_Mesh_DynamicObj(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnTree_Navi_List(NMHDR *pNMHDR, LRESULT *pResult);
 
 	afx_msg void OnNMClickTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMRClickTreeMeshObject(NMHDR *pNMHDR, LRESULT *pResult);
@@ -122,6 +125,8 @@ private:
 	HTREEITEM		SelectedObjectItem = nullptr;
 	HTREEITEM		SelectedStaticObject = nullptr;
 	HTREEITEM		SelectedDynamicObject = nullptr;
+	HTREEITEM		SelectedNaviItem = nullptr;
+
 	TCHAR			szFullPath[MAX_PATH] = L"";
 	CString			strComponentPrototypeTag;
 	CString			strObjectName;
@@ -138,6 +143,8 @@ private:
 //	LPDIRECT3DDEVICE9			m_pGraphic_Device = nullptr;
 	LPD3DXLINE					m_pLine = nullptr;
 	_int						iNaviMapCount = 0;
+	_int						iNaviRootTreeCount = 1;
+	_int						iNaviChildTreeCount = 1;
 	_float						fNaviDotCompareValue = 1.f;
 	vector<_vec3>				vecPos;
 	map<_int, vector<_vec3>>	mapNaviMesh;
@@ -148,4 +155,8 @@ private:
 public:
 	afx_msg void OnBnClicked_Mesh_Save();
 	afx_msg void OnBnClicked_Mesh_Load();
+
+	afx_msg void OnBnClicked_Navi_Save();
+	afx_msg void OnBnClicked_Navi_Load();
+
 };

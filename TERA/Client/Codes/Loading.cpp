@@ -130,6 +130,11 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Collider_Sphere", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_SPHERE))))
 		return E_FAIL;
 
+	// [Navigation]
+	// For.Component_Navigation_Stage
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Navigation_Stage", CNavigation::Create(m_pGraphic_Device, L"../Bin/Data/Town.NaviDat"))))
+		return E_FAIL;
+
 	m_iComplete = 100;
 
 	return NOERROR;
