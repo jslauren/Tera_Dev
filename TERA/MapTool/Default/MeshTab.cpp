@@ -489,12 +489,12 @@ void CMeshTab::OnBnClicked_Navi_List_Delete()
 
 	for (auto iter = mapNaviMesh.begin(); iter != mapNaviMesh.end(); )
 	{
-		if (iter->first == (iItemIdx -1))
+		if (iter->first == (iItemIdx - 1))
 		{
 			Tree_Mesh_Navi.DeleteItem(SelectedNaviItem);
 
 			iter->second.clear();
-			mapNaviMesh.erase(iItemIdx);
+			mapNaviMesh.erase(iter);
 
 			break;
 		}
@@ -1832,7 +1832,7 @@ void CMeshTab::OnBnClicked_Navi_Save()
 	}
 
 	CloseHandle(hFile);
-
+	
 }
 
 void CMeshTab::OnBnClicked_Navi_Load()
@@ -1871,6 +1871,8 @@ void CMeshTab::OnBnClicked_Navi_Load()
 
 	_vec3		vPoint[3];
 
+	HTREEITEM	hRoot = nullptr;
+
 	while (true)
 	{
 		ReadFile(hFile, vPoint, sizeof(_vec3) * 3, &dwByte, nullptr);
@@ -1881,6 +1883,25 @@ void CMeshTab::OnBnClicked_Navi_Load()
 		vecPos.push_back(vPoint[0]);
 		vecPos.push_back(vPoint[1]);
 		vecPos.push_back(vPoint[2]);
+
+		CString strRoot;
+		strRoot.Format(_T("[%d]"), iNaviRootTreeCount++);
+
+		hRoot = Tree_Mesh_Navi.InsertItem(strRoot, 0, 0, TVI_ROOT, TVI_LAST);
+
+		CString strChild;
+		strChild.Format(_T("%d"), iNaviChildTreeCount);
+		Tree_Mesh_Navi.InsertItem(strChild, 0, 0, hRoot, TVI_LAST);
+
+		++iNaviChildTreeCount;
+		strChild.Format(_T("%d"), iNaviChildTreeCount);
+		Tree_Mesh_Navi.InsertItem(strChild, 0, 0, hRoot, TVI_LAST);
+
+		++iNaviChildTreeCount;
+		strChild.Format(_T("%d"), iNaviChildTreeCount);
+		Tree_Mesh_Navi.InsertItem(strChild, 0, 0, hRoot, TVI_LAST);
+
+		iNaviChildTreeCount = 1;
 
 		mapNaviMesh.emplace(iNaviMapCount++, vecPos);
 		vecPos.clear();

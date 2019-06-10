@@ -130,16 +130,16 @@ void CCamera_Static::ChangeView()
 		if (dwMouseMove < 0 && fDotValue < 0.1f)
 		{
 			// 마우스 커서를 일정영역 밑으로 내리면 카메라 줌아웃 하는 구문.
-			if (fDotValue < 0.4f && fDotValue > m_fDotValuePri)
-				fCameraDistance -= 0.05f;
+			if (fDotValue < 0.1f && fDotValue > m_fDotValuePri)
+				fCameraDistance -= 0.01f;
 
 			m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 10.f, m_fTimeDelta);
 		}
 		else if (dwMouseMove > 0 && fDotValue > -0.3f)
 		{
 			// 카메라 줌인 구문.
-			if (fDotValue < -0.5f && fDotValue < m_fDotValuePri)
-				fCameraDistance += 0.05f;
+			if (fDotValue < -0.3f && fDotValue < m_fDotValuePri)
+				fCameraDistance += 0.03f;
 
 			m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 10.f, m_fTimeDelta);
 		}
