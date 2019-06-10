@@ -12,7 +12,7 @@ protected:
 
 public:
 	virtual HRESULT			Initialize_State(CPlayer& Player);
-	virtual CPlayerState*	Input_Keyboard(CPlayer& Player, const float& fTimeDelta, BYTE KeyID);
+	virtual CPlayerState*	Input_Keyboard(CPlayer& Player, const float& fTimeDelta, BYTE KeyID, void* pAgr);
 	virtual void			Update_State(CPlayer& Player, const float& fTimeDelta);
 
 public:

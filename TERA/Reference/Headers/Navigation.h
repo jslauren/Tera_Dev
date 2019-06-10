@@ -25,7 +25,7 @@ private:
 	vector<CCell*>			m_vecCell;
 	typedef vector<CCell*>	VECCELL;
 private:
-	_uint					m_iCurrentIndex;
+	_uint					m_iCurrentIndex = 0;
 public:
 	static CNavigation* Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar* pFilePath);
 	virtual CComponent* Clone(void* pArg = nullptr);

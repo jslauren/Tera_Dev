@@ -14,7 +14,7 @@ HRESULT CPlayerState::Initialize_State(CPlayer & Player)
 	return NOERROR;
 }
 
-CPlayerState * CPlayerState::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID)
+CPlayerState * CPlayerState::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void* pAgr)
 {
 	return nullptr;
 }

@@ -11,7 +11,7 @@
 #include "TerrainObject.h"
 
 #define	NEAR			0.2f
-#define FAR				500.f
+#define FAR				1000.f
 #define ASPECT			_float(g_iWinCX) / g_iWinCY
 #define FOV(X)			D3DXToRadian(X)
 #define	AXIS_Y			_vec3(0.f, 1.f, 0.f)

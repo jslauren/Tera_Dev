@@ -709,6 +709,18 @@ HRESULT CMeshTab::Make_Navigation()
 
 			iNaviChildTreeCount = 1;
 
+			// 시계 방향으로 네비메쉬를 찍지 않았을 때를 고려한 구문.
+			_vec3 vCrossValue;
+			D3DXVec3Cross(&vCrossValue, &(vecPos[1] - vecPos[0]), &(vecPos[2] - vecPos[1]));
+
+			if (vCrossValue.y < 0)
+			{
+				_vec3 vTemp;
+				vTemp = vecPos[1];
+				vecPos[1] = vecPos[2];
+				vecPos[2] = vTemp;
+			}
+
 			mapNaviMesh.emplace(iNaviMapCount++, vecPos);
 			vecPos.clear();
 		}
@@ -763,6 +775,18 @@ HRESULT CMeshTab::Make_Navigation()
 			Tree_Mesh_Navi.InsertItem(strChild, 0, 0, hRoot, TVI_LAST);
 
 			iNaviChildTreeCount = 1;
+
+			// 시계 방향으로 네비메쉬를 찍지 않았을 때를 고려한 구문.
+			_vec3 vCrossValue;
+			D3DXVec3Cross(&vCrossValue, &(vecPos[1] - vecPos[0]), &(vecPos[2] - vecPos[1]));
+
+			if (vCrossValue.y < 0)
+			{
+				_vec3 vTemp;
+				vTemp = vecPos[1];
+				vecPos[1] = vecPos[2];
+				vecPos[2] = vTemp;
+			}
 
 			mapNaviMesh.emplace(iNaviMapCount++, vecPos);
 			vecPos.clear();

@@ -132,7 +132,7 @@ HRESULT CLoading::Ready_Stage_Component()
 
 	// [Navigation]
 	// For.Component_Navigation_Stage
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Navigation_Stage", CNavigation::Create(m_pGraphic_Device, L"../Bin/Data/Town.NaviDat"))))
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Navigation_Stage", CNavigation::Create(m_pGraphic_Device, L"../../Data/Town.NaviDat"))))
 		return E_FAIL;
 
 	m_iComplete = 100;

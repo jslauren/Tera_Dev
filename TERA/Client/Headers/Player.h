@@ -4,12 +4,12 @@
 //#include "GameObject.h"
 #include "KeyManager.h"
 
-//_BEGIN(Engine)
+_BEGIN(Engine)
 //class CTransform;
 //class CMesh_Dynamic; // 그리기를 위한 리소스로 정점 버퍼를 추가한다.
 //class CRenderer; //백로고를 렌더그룹에 추가하기 위해.and Render함수를 호출할 수 있도록 
 //class CCollider;
-//_END
+_END
 
 _BEGIN(Client)
 
@@ -52,12 +52,13 @@ public:
 private:
 	CPlayerState*	m_pState = nullptr;
 	CMesh_Dynamic*	m_pMeshCom_PlayerFace = nullptr;
+
 //private:
 //	CTransform*		m_pTransformCom = nullptr;
 //	CMesh_Dynamic*	m_pMeshCom = nullptr;
 //	CRenderer*		m_pRendererCom = nullptr;
 //	CCollider*		m_pBodyColliderCom = nullptr;
-////	CCollider*		m_pHandColliderCom = nullptr;
+//	CCollider*		m_pHandColliderCom = nullptr;
 //	CShader*		m_pShaderCom = nullptr;
 private:
 	const _matrix*	m_pBoneMatrix = nullptr;
@@ -68,7 +69,6 @@ private:
 
 	PLAYER_STATE	m_eAnimationIndex = LUMOSSTRAFELEFT;
 	PLAYER_STATE	m_eOldAnimationIndex = LUMOSSTRAFELEFT;
-
 
 private:
 	virtual HRESULT Add_Component();

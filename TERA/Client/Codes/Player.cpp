@@ -45,7 +45,7 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 
 	m_pTransformCom->Set_Scaling(0.25f, 0.25f, 0.25f);
 //	m_pTransformCom->Set_Scaling(0.05f, 0.05f, 0.05f);
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.2, 0.f, 0.2));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));
 	m_pMeshCom->SetUp_AnimationSet(LUMOSSTRAFELEFT);
 
 	m_pState = CPlayer_Idle::Create(m_pGraphic_Device, *this);
@@ -130,6 +130,8 @@ HRESULT CPlayer::Render_GameObject()
 	// 콜라이더 렌더
 	m_pColliderCom->Render_Collider();
 
+	m_pNavigationCom->Render_Navigation();
+
 	return NOERROR;
 }
 
@@ -173,6 +175,11 @@ HRESULT CPlayer::Add_Component()
 	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_Sphere", L"Com_HandCollider", (CComponent**)&m_pHandColliderCom, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME, m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Body_rFingerMidTop")->CombinedTransformationMatrix)
 	//	, _vec3(0.3f, 0.3f, 0.3f), _vec3(0.f, 0.f, 0.f)))))
 	//	return E_FAIL;
+
+	// For.Com_Navigation
+	_uint		iIndex = 0;
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Navigation_Stage", L"Com_Navigation", (CComponent**)&m_pNavigationCom, &iIndex)))
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -266,7 +273,7 @@ void CPlayer::ViewChanage()
 
 void CPlayer::KeyInput()
 {
-	CPlayerState* pState = m_pState->Input_Keyboard(*this, m_fTimeDelta, 0);
+	CPlayerState* pState = m_pState->Input_Keyboard(*this, m_fTimeDelta, 0, m_pNavigationCom);
 
 	if (nullptr != pState)
 	{

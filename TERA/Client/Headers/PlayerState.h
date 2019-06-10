@@ -13,7 +13,7 @@ protected:
 
 public:
 	virtual HRESULT			Initialize_State(CPlayer& Player);
-	virtual CPlayerState*	Input_Keyboard(CPlayer& Player, const float& fTimeDelta, BYTE KeyID);
+	virtual CPlayerState*	Input_Keyboard(CPlayer& Player, const float& fTimeDelta, BYTE KeyID, void* pAgr = nullptr);
 	virtual void			Update_State(CPlayer& Player, const float& fTimeDelta);
 
 	// Initialize_State는 State를 최초 생성할 때만 실행하고,

@@ -17,23 +17,28 @@ CNavigation::CNavigation(const CNavigation & rhs)
 
 HRESULT CNavigation::Ready_Component_Prototype(const _tchar* pFilePath)
 {
-	HANDLE		hFile = 0;
-	_ulong		dwByte = 0;
+	HANDLE hFile = CreateFile(pFilePath,
+		GENERIC_READ,
+		0,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
 
-	hFile = CreateFile(pFilePath, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	DWORD		dwByte;
+	_vec3		vPoint[3];
+
 	if (0 == hFile)
 		return E_FAIL;
 
 	while (true)
 	{
-		_vec3		vPoint[3];
-
 		ReadFile(hFile, vPoint, sizeof(_vec3) * 3, &dwByte, nullptr);
 
 		if (0 == dwByte)
 			break;
 
-		CCell*		pCell = CCell::Create(m_pGraphic_Device, &vPoint[0], &vPoint[1], &vPoint[2], m_vecCell.size());
+		CCell*	pCell = CCell::Create(m_pGraphic_Device, &vPoint[0], &vPoint[1], &vPoint[2], m_vecCell.size());
 		if (nullptr == pCell)
 			break;
 
