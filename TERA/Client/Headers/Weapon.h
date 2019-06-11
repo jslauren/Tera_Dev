@@ -6,7 +6,7 @@ _BEGIN(Engine)
 class CTransform;
 class CMesh_Static; // 그리기를 위한 리소스로 정점 버퍼를 추가한다.
 class CRenderer; //백로고를 렌더그룹에 추가하기 위해.and Render함수를 호출할 수 있도록 
-//class CCollider;
+class CCollider;
 _END
 
 _BEGIN(Client)
@@ -29,7 +29,7 @@ private:
 	CMesh_Static*	m_pMeshCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
 	CShader*		m_pShaderCom = nullptr;
-//	CCollider*		m_pColliderCom = nullptr;
+	CCollider*		m_pColliderCom = nullptr;
 private:
 	_float			m_fFrame = 0.f;
 	_float			m_fTimeDelta = 0.0f;

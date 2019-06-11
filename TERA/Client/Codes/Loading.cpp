@@ -26,11 +26,11 @@ HRESULT CLoading::Ready_Loading(SCENEID eSceneID)
 
 _uint CLoading::Thread_Main(void * pArg)
 {
-	CLoading*		pLoading = (CLoading*)pArg;
+	CLoading*	pLoading = (CLoading*)pArg;
 
 	EnterCriticalSection(&pLoading->m_CS);
 
-	HRESULT			hr;
+	HRESULT		hr;
 
 	switch (pLoading->Get_SceneID())
 	{
@@ -93,18 +93,18 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/", L"Popori_B.X"))))
 		return E_FAIL;
 
+	m_iComplete = 49;
+
+	// [Mesh_Static]
+	// For.Component_Mesh_Weapon
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Weapon/1/", L"Popori_Weapon_B.X"))))
+		return E_FAIL;
+	
 	// 여기에 Component_Mesh_Monster 이 값이 몬스터 클래스의 Add_Component함수에 두 번째 인자로 들어가면서,
 	// 몬스터 클래스만 있기때문에 실바만 나온다. 추후 각 오브젝트들이 추가될 때마다 클래스를 생성해 주어야 한다.
 
 	//// For.Component_Mesh_Monster
 	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Monster", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/sylva/", L"sylva.X"))))
-	//	return E_FAIL;
-
-	m_iComplete = 49;
-
-	//// [Mesh_Static]
-	//// For.Component_Mesh_Weapon
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Wand/", L"Wand.x"))))
 	//	return E_FAIL;
 
 	//// For.Component_Mesh_TombStone
@@ -133,6 +133,11 @@ HRESULT CLoading::Ready_Stage_Component()
 	// [Navigation]
 	// For.Component_Navigation_Stage
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Navigation_Stage", CNavigation::Create(m_pGraphic_Device, L"../../Data/Town.NaviDat"))))
+		return E_FAIL;
+
+	// [Frustum]
+	// For.Component_Frustum
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Frustum", CFrustum::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	m_iComplete = 100;

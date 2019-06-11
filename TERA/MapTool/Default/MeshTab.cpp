@@ -1689,6 +1689,9 @@ void CMeshTab::OnBnClicked_Mesh_Save()
 			WriteFile(hFile, &iTextLength, sizeof(_int), &dwByte, NULL);
 			WriteFile(hFile, szTextInfo, sizeof(_tchar) * iTextLength, &dwByte, NULL);
 
+			//(iter.strFullPath).erase(0, 34);
+			//iter.strFullPath = L"../Bin/Resources/Meshes/StaticMesh/TerrainObject" + iter.strFullPath;;
+
 			lstrcpy(szTextInfo, iter.strFullPath.c_str());
 			iTextLength = lstrlen(szTextInfo) + 1;
 

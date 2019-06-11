@@ -1,6 +1,7 @@
 #pragma once
 #include "Base.h"
 #include "Shader.h"
+#include "Frustum.h"
 #include "Texture.h"
 #include "Collider.h"
 #include "Renderer.h"

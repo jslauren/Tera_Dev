@@ -486,6 +486,27 @@ _float CBuffer_Terrain::Compute_HeightOnBuffer(const CTransform * pTransform)
 
 }
 
+HRESULT CBuffer_Terrain::Culling(CFrustum * pFrustum)
+{
+	if (nullptr == m_pPositions)
+		return E_FAIL;
+
+	_matrix			matIdentity;
+	D3DXMatrixIdentity(&matIdentity);
+
+	for (size_t i = 0; i < m_iNumVerticesZ; ++i)
+	{
+		for (size_t j = 0; j < m_iNumVerticesX; ++j)
+		{
+			size_t iIndex = i * m_iNumVerticesX + j;
+
+			//pFrustum->isIn_Frustum(&m_pPositions[iIndex], &matIdentity);
+		}
+	}
+
+	return NOERROR;
+}
+
 void CBuffer_Terrain::ComputeNormal(_vec3* pVtx0, _vec3* pVtx1, _vec3* pVtx2, _vec3* pOut)
 {
 	_vec3 u = *pVtx1 - *pVtx0;

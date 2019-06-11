@@ -124,6 +124,9 @@
     <ClInclude Include="..\Headers\Cell.h">
       <Filter>01. Utility\02. Component\Component\Navigation\Cell</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Frustum.h">
+      <Filter>01. Utility\02. Component\Component\Frustum</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. System">
@@ -261,6 +264,9 @@
     <Filter Include="01. Utility\02. Component\Component\Navigation\Cell">
       <UniqueIdentifier>{4cab6a37-8eee-4264-9f4b-2db92209862e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Frustum">
+      <UniqueIdentifier>{ba1bae3d-9de4-4bda-9e63-b694f619d168}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Graphic_Device.cpp">
@@ -367,6 +373,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Cell.cpp">
       <Filter>01. Utility\02. Component\Component\Navigation\Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Frustum.cpp">
+      <Filter>01. Utility\02. Component\Component\Frustum</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

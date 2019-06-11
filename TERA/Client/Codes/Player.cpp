@@ -34,8 +34,12 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(0.25f, 0.25f, 0.25f);
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));
+	/*m_pTransformCom->Set_Scaling(0.3f, 0.3f, 0.3f);
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));*/
+
+	m_pTransformMoveCom->Set_Scaling(0.3f, 0.3f, 0.3f);
+	m_pTransformMoveCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));
+
 	m_pMeshCom->SetUp_AnimationSet(R05UNARMEDWAIT);
 
 	m_pState = CPlayer_Idle::Create(m_pGraphic_Device, *this);
@@ -57,6 +61,8 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	KeyInput();
 
 	m_pMeshCom->Play_Animation(fTimeDelta, m_fAniSpeed);
+
+	m_pTransformCom->Set_WorldMatrix((*m_pTransformRotateCom->Get_WorldMatrixPointer()) * (*m_pTransformMoveCom->Get_WorldMatrixPointer()));
 
 	return _int();
 }
@@ -127,6 +133,14 @@ HRESULT CPlayer::Add_Component()
 {
 	// For.Com_Transform
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
+		return E_FAIL;
+
+	// For.Com_TransformRotation
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_TransformRotation", (CComponent**)&m_pTransformRotateCom)))
+		return E_FAIL;
+
+	// For.Com_TransformMove
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_TransformMove", (CComponent**)&m_pTransformMoveCom)))
 		return E_FAIL;
 
 	// For.Com_Mesh

@@ -42,9 +42,9 @@ HRESULT CWeapon::Ready_GameObject(void * pArg)
 		return E_FAIL;
 
 	Safe_AddRef(pPlayerMeshCom);
-
-
-	m_pBoneMatrix = &(pPlayerMeshCom->Get_FrameDesc("Body_rFingerMidTop")->CombinedTransformationMatrix);
+	
+	// R_Sword
+	m_pBoneMatrix = &(pPlayerMeshCom->Get_FrameDesc("Weapon_Back")->CombinedTransformationMatrix);
 	if (nullptr == m_pBoneMatrix)
 		return E_FAIL;
 
@@ -66,7 +66,11 @@ HRESULT CWeapon::Ready_GameObject(void * pArg)
 
 	Safe_Release(pObject_Manager);
 
-	m_pTransformCom->Set_Angle_Axis(_vec3(1.f, 0.f, 0.f),D3DXToRadian(300.0f));
+//	m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(-90.0f), D3DXToRadian(180.f), D3DXToRadian(90.0f));
+
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-5.5f, 7.f, 0.f));
+	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 0.f, 1.f), D3DXToRadian(225));
+	m_pTransformCom->Set_Scaling(0.65f, 0.65f, 0.65f);
 
 	return NOERROR;
 }
@@ -133,7 +137,7 @@ HRESULT CWeapon::Render_GameObject()
 
 	Safe_Release(pEffect);
 
-//	m_pColliderCom->Render_Collider();
+	m_pColliderCom->Render_Collider();
 
 	return NOERROR;
 }
@@ -156,10 +160,10 @@ HRESULT CWeapon::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
-	//// For.Com_Collider
-	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_OBB", L"Com_Collider", (CComponent**)&m_pColliderCom,
-	//	&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, &m_matWorld, nullptr, _vec3(0.2f, 0.2f, 1.5f), _vec3(0.0f, 0.f, -0.75f)))))
-	//	return E_FAIL;
+	// For.Com_Collider
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_OBB", L"Com_Collider", (CComponent**)&m_pColliderCom,
+		&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, &m_matWorld, nullptr, _vec3(0.2f, 0.2f, 1.5f), _vec3(0.0f, 0.f, -0.75f)))))
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -253,7 +257,7 @@ CGameObject * CWeapon::Clone(void * pArg)
 
 void CWeapon::Free()
 {
-//	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pMeshCom);
