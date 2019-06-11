@@ -21,9 +21,9 @@ public:
 private:
 	LPD3DXANIMATIONSET			m_pAnimationSet = nullptr;
 	LPD3DXANIMATIONCONTROLLER	m_pAniCtrl = nullptr;
-	_uint						m_iCurrentTrack;
-	_uint						m_iNewTrack;
-	_uint						m_iOldIndex = 0;
+	_uint						m_iCurrentTrack = 0;
+	_uint						m_iNewTrack = 1;
+	_uint						m_iOldIndex = 12000;
 	_double						m_TimeAcc = 0.0;
 	_float						m_fAniSpeed = 1.f;
 public:

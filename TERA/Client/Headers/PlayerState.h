@@ -18,7 +18,7 @@ public:
 
 	// Initialize_State는 State를 최초 생성할 때만 실행하고,
 	// Enter_State는 그 이후로 해당 State로 바뀔 때마다 한번씩 들어와서 셋팅하는 역할을 해준다.
-	virtual void			Enter_State(CPlayer& Player);
+	virtual HRESULT			Enter_State(CPlayer& Player);
 
 protected:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;

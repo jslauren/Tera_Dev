@@ -17,16 +17,13 @@ class CPlayerState;
 class CPlayer : public CUnit
 {
 public:
-	enum PLAYER_STATE
+	enum PLAYER_STATE	// ÃÑ 42°³ÀÇ ¸ð¼Ç
 	{
-		LUMOSSTRAFERIGHT, LUMOSSTRAFELEFT, LUMOSSTRAFEFORWARD, LUMOSSTRAFEBACK,
-		JUMPLANDTORUN, ACQUIREWIZARDCARD, ATTACKHITFALL, ATTACKHITSTAND, BATTLECAST,
-		BATTLEIDLE,	BUNDIJUMP1, BUNDIJUMP2, CAST1, CASTAIM, CLIMB32, CLIMB64, CLIMB96START,
-		CLIMB96END, COLLAPSE, CR0CASTAIM, CR1CATCH, CR2FLY, CR3APEX, CR4FALL, CR6DANGLE, CRAWLCROUCH,
-		CRAWLCIRCULARFORWARD, CRAWLSTAND, CRPULL, FAINT, IDLE, JUMP_START, JUMP, JUMPLANDTOSTAND, LADDERBOTTOMMOUNTDISMOUNT,
-		LADDERDOWNMOUNT, LADDERUPDISMOUNT, LADDERUPDOWN, PANELPUSH, PROPHOLDIDLE, PROPHOLDWALK, PROPHOLDWALKBACK, PROPHOLDWALKLEFT,
-		PROPHOLDWALKRIGHT, PROPPICKUP, PROPTHROW, RUN, RUN_BACK, RUN_LEFT, RUN_RIGHT, RUNTOSTOP, SEARCHCHEST, SEARCHCHESTSTAND, STANDTOWALKNONE, WALK,
-		END
+		R05UNARMEDWAIT, UNARMEDRUN, SITEND, SITLOOP, SITSTART, JUMPSTART, JUMPLOOP, JUMPENDLAND, JUMPEND, FALL,
+		WAIT, STINGERBLADE, SREACTION, RUN, RISINGATTACK, JAWBREAKER, OUTWEAPON, INWEAPON, HANDYSLASH, GROGGY1,
+		GAIACRUSH03, GAIACRUSH02, GAIACRUSH01, FLATBLADE, DRAWSWORDEND, DRAWSWORD, DRAWSWORDMOVE, DRAWSWORDLOOP,
+		DRAWSWORDCHARGE, DEATH, CUTTINGSLASH, CUTHEAD, COMBO4, COMBO3R, COMBO3, COMBO2R, COMBO2, COMBO1R, COMBO1, 
+		BREACTIONLAND3, BREACTIONCOM3, ADVLEAP, END
 	};
 
 private:
@@ -37,11 +34,13 @@ private:
 public:	// Getter
 	const PLAYER_STATE&	Get_AniIndex() { return m_eAnimationIndex; }
 	const PLAYER_STATE&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
+	const _bool			Get_BackBtnState() { return m_bIsFirstBackBtn; }
 
 public:	// Setter
 	void			Set_AniIndex(const PLAYER_STATE& iIndex) { m_eAnimationIndex = iIndex; }
 	void			Set_OldAniIndex(const PLAYER_STATE& iIndex) { m_eOldAnimationIndex = iIndex; }
-	
+	void			Set_BackBtnState(_bool bState) { m_bIsFirstBackBtn = bState; }
+
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);
@@ -67,17 +66,17 @@ private:
 	_vec3			m_vTargetPos;
 	_float			m_fPlayerPosY = 0.f;
 
-	PLAYER_STATE	m_eAnimationIndex = LUMOSSTRAFELEFT;
-	PLAYER_STATE	m_eOldAnimationIndex = LUMOSSTRAFELEFT;
+	PLAYER_STATE	m_eAnimationIndex = WAIT;
+	PLAYER_STATE	m_eOldAnimationIndex = WAIT;
+	_bool			m_bIsFirstBackBtn = true;
 
 private:
 	virtual HRESULT Add_Component();
 	//HRESULT SetUp_HeightOnTerrain();
 	virtual HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
-	void	ViewChanage();
-	void	KeyInput();
+	void			ViewChanage();
+	void			KeyInput();
 
-	void	ETC();
 public:
 	static CPlayer*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

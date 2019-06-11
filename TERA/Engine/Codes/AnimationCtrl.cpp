@@ -97,6 +97,7 @@ _bool CAnimationCtrl::IsAnimationEnded(_double fCtrlEndTime)
 {
 	// 트랙의 최대 포지션 값.
 	double Period = m_pAnimationSet->GetPeriod();
+
 	D3DXTRACK_DESC	TrackDesc;
 	ZeroMemory(&TrackDesc, sizeof(D3DXTRACK_DESC));
 

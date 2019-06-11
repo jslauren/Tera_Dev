@@ -16,6 +16,8 @@ private:
 	explicit CCamera_Static(const CCamera_Static& rhs);
 	virtual ~CCamera_Static() = default;
 
+public:	// Getter
+	CTransform*		Get_TransformCom() { return m_pTransformCom; }
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);

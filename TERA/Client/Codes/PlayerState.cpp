@@ -23,8 +23,9 @@ void CPlayerState::Update_State(CPlayer & Player, const float & fTimeDelta)
 {
 }
 
-void CPlayerState::Enter_State(CPlayer & Player)
+HRESULT CPlayerState::Enter_State(CPlayer & Player)
 {
+	return NOERROR;
 }
 
 void CPlayerState::Free()
