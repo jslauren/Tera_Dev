@@ -22,6 +22,32 @@ const CComponent * CObject_Manager::Get_Component(const _uint & iSceneIdx, const
 	return pLayer->Get_Component(pComponentTag, iIndex);
 }
 
+CGameObject * CObject_Manager::Get_Object(const _uint & iSceneIdx, const _tchar * pLayerTag, const _uint & iIndex)
+{
+	if (m_iMaxNumScene <= iSceneIdx ||
+		nullptr == m_pmapObject)
+		return nullptr;
+
+	CLayer*		pLayer = Find_Layer(iSceneIdx, pLayerTag);
+
+	if (nullptr == pLayer)
+		return nullptr;
+
+	list<CGameObject*>* pTempObjList = &pLayer->Get_ObjectList();
+
+	if (iIndex == -1)
+		return pTempObjList->back();
+	
+	auto iter = pTempObjList->begin();
+
+	for (size_t i = 0; i < iIndex; i++)
+	{
+		++iter;
+	}
+	
+	return *iter;
+}
+
 HRESULT CObject_Manager::Reserve_Object_Manager(const _uint & iMaxNumScene)
 {
 	// 쉽게 생각하면 Ready_Object_Manager 정도가 아닐까 생각된다.

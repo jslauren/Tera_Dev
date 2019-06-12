@@ -85,6 +85,9 @@
     <Filter Include="02. GameObject\99. Public\TerrainObject">
       <UniqueIdentifier>{5e305c39-409e-4a42-a599-be676d83f8d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\02. WeaponState">
+      <UniqueIdentifier>{eaac568d-524b-476a-90fe-38c3a68d8a15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -159,6 +162,9 @@
     <ClInclude Include="..\Headers\TerrainObject.h">
       <Filter>02. GameObject\99. Public\TerrainObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Player_WeaponState.h">
+      <Filter>03. Unit\Player\PlayerState\02. WeaponState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -220,6 +226,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\TerrainObject.cpp">
       <Filter>02. GameObject\99. Public\TerrainObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_WeaponState.cpp">
+      <Filter>03. Unit\Player\PlayerState\02. WeaponState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

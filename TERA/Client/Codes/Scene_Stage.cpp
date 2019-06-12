@@ -53,6 +53,10 @@ HRESULT CScene_Stage::Ready_Scene()
 	if (FAILED(Ready_Layer_Player(L"Layer_Player")))
 		return E_FAIL;
 
+	// For.Layer_Weapon
+	if (FAILED(Ready_Layer_Weapon(L"Layer_Weapon")))
+		return E_FAIL;
+
 	// For.Layer_BackGround
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
 		return E_FAIL;
@@ -311,6 +315,11 @@ HRESULT CScene_Stage::Ready_Layer_Player(const _tchar * pLayerTag)
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Player", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
 
+	return NOERROR;
+}
+
+HRESULT CScene_Stage::Ready_Layer_Weapon(const _tchar * pLayerTag)
+{
 	// For.Weapon
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Weapon", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;

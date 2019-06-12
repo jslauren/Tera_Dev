@@ -21,6 +21,7 @@ private:
 	HRESULT Ready_Component_Prototype();
 	HRESULT Ready_GameObject_Prototype();
 	HRESULT Ready_Layer_Player(const _tchar* pLayerTag);
+	HRESULT Ready_Layer_Weapon(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Camera(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Monster(const _tchar* pLayerTag);

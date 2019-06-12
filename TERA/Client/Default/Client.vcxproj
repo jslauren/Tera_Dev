@@ -170,6 +170,7 @@
     <ClInclude Include="..\Headers\PlayerState.h" />
     <ClInclude Include="..\Headers\Player_Idle.h" />
     <ClInclude Include="..\Headers\Player_Move.h" />
+    <ClInclude Include="..\Headers\Player_WeaponState.h" />
     <ClInclude Include="..\Headers\Scene_Logo.h" />
     <ClInclude Include="..\Headers\Scene_Stage.h" />
     <ClInclude Include="..\Headers\SkyBox.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="..\Codes\PlayerState.cpp" />
     <ClCompile Include="..\Codes\Player_Idle.cpp" />
     <ClCompile Include="..\Codes\Player_Move.cpp" />
+    <ClCompile Include="..\Codes\Player_WeaponState.cpp" />
     <ClCompile Include="..\Codes\Scene_Logo.cpp" />
     <ClCompile Include="..\Codes\Scene_Stage.cpp" />
     <ClCompile Include="..\Codes\SkyBox.cpp" />

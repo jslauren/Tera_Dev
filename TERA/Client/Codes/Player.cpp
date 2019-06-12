@@ -4,12 +4,11 @@
 #include "Light_Manager.h"
 #include "Player_Idle.h"
 #include "Player_Move.h"
+#include "Layer.h"
+
+#define PLAYER_SCALING	0.33f
 
 _USING(Client)
-
-#define PLAYER_SPEED	5.f
-#define	GRAVITY			9.8f
-#define	JUMP_POWER		10.f
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CUnit(pGraphic_Device)
@@ -37,15 +36,16 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	/*m_pTransformCom->Set_Scaling(0.3f, 0.3f, 0.3f);
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));*/
 
-	m_pTransformMoveCom->Set_Scaling(0.3f, 0.3f, 0.3f);
+	m_pTransformMoveCom->Set_Scaling(PLAYER_SCALING, PLAYER_SCALING, PLAYER_SCALING);
 	m_pTransformMoveCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));
 
 	m_pMeshCom->SetUp_AnimationSet(R05UNARMEDWAIT);
 
-	m_pState = CPlayer_Idle::Create(m_pGraphic_Device, *this);
+	int iIdleState = 1;
+	m_pState = CPlayer_Idle::Create(m_pGraphic_Device, *this, &iIdleState);
 
 	m_pMeshCom->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
-	
+
 	return NOERROR;
 }
 
@@ -63,6 +63,8 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	m_pMeshCom->Play_Animation(fTimeDelta, m_fAniSpeed);
 
 	m_pTransformCom->Set_WorldMatrix((*m_pTransformRotateCom->Get_WorldMatrixPointer()) * (*m_pTransformMoveCom->Get_WorldMatrixPointer()));
+
+	Compute_HeightOnNavi();
 
 	return _int();
 }
@@ -280,6 +282,16 @@ void CPlayer::KeyInput()
 
 	m_pState->Update_State(*this, m_fTimeDelta);
 
+}
+
+void CPlayer::Compute_HeightOnNavi()
+{
+	_vec3	pPlayerPos = *m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
+	_float fDist = m_pNavigationCom->Compute_HeightOnNavi(&pPlayerPos);
+
+	pPlayerPos.y = fDist;
+
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &pPlayerPos);
 }
 
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

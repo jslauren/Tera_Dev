@@ -3,6 +3,8 @@
 #include "Object_Manager.h"
 #include "Light_Manager.h"
 
+#define WEAPON_SCALING	0.7f
+
 _USING(Client)
 
 CWeapon::CWeapon(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -68,9 +70,10 @@ HRESULT CWeapon::Ready_GameObject(void * pArg)
 
 //	m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(-90.0f), D3DXToRadian(180.f), D3DXToRadian(90.0f));
 
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-5.5f, 7.f, 0.f));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-7.f, 7.f, 0.f));
 	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 0.f, 1.f), D3DXToRadian(225));
-	m_pTransformCom->Set_Scaling(0.65f, 0.65f, 0.65f);
+	//m_pTransformCom->Set_Scaling(0.65f, 0.65f, 0.65f);
+	m_pTransformCom->Set_Scaling(WEAPON_SCALING, WEAPON_SCALING, WEAPON_SCALING);
 
 	return NOERROR;
 }
@@ -139,6 +142,48 @@ HRESULT CWeapon::Render_GameObject()
 
 	m_pColliderCom->Render_Collider();
 
+	return NOERROR;
+}
+
+HRESULT CWeapon::Set_BoneMatrix(_int iIndex)
+{
+	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
+	if (nullptr == pObject_Manager)
+		return E_FAIL;
+
+	Safe_AddRef(pObject_Manager);
+
+	CMesh_Dynamic* pPlayerMeshCom = (CMesh_Dynamic*)pObject_Manager->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Mesh");
+	if (nullptr == pPlayerMeshCom)
+		return E_FAIL;
+
+	Safe_AddRef(pPlayerMeshCom);
+
+	if (iIndex == 1)
+	{
+		m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-7.f, 7.f, 0.f));
+		m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 0.f, 1.f), D3DXToRadian(225));
+		m_pTransformCom->Set_Scaling(WEAPON_SCALING, WEAPON_SCALING, WEAPON_SCALING);
+
+		m_pBoneMatrix = &(pPlayerMeshCom->Get_FrameDesc("Weapon_Back")->CombinedTransformationMatrix);
+		if (nullptr == m_pBoneMatrix)
+			return E_FAIL;
+	}
+	else if (iIndex == 2)
+	{
+		m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(2.5f, -3.f, 0.f));
+		m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(180), D3DXToRadian(0), D3DXToRadian(0));
+		//m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 0.f, 1.f), D3DXToRadian(0));
+		m_pTransformCom->Set_Scaling(WEAPON_SCALING, WEAPON_SCALING, WEAPON_SCALING);
+
+		m_pBoneMatrix = &(pPlayerMeshCom->Get_FrameDesc("R_Sword")->CombinedTransformationMatrix);
+		if (nullptr == m_pBoneMatrix)
+			return E_FAIL;
+	}
+
+	Safe_Release(pPlayerMeshCom);
+	Safe_Release(pObject_Manager);
+	
 	return NOERROR;
 }
 

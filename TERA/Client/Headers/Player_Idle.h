@@ -15,11 +15,8 @@ public:
 	virtual CPlayerState*	Input_Keyboard(CPlayer& Player, const float& fTimeDelta, BYTE KeyID, void* pAgr);
 	virtual void			Update_State(CPlayer& Player, const float& fTimeDelta);
 
-private:
-	CPlayer_Idle*			m_pInstance;
-
 public:
-	static CPlayer_Idle*	Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer& Player);
+	static CPlayer_Idle*	Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer& Player, void* pArg = nullptr);
 	virtual void			Free();
 
 };

@@ -137,6 +137,25 @@ HRESULT CNavigation::SetUp_Neighbor()
 	return NOERROR;
 }
 
+_float CNavigation::Compute_HeightOnNavi(_vec3 * _pPlayerPos)
+{
+	_vec3	vPoint[3];
+
+	vPoint[0] = *m_vecCell[m_iCurrentIndex]->Get_Point(CCell::POINT_A);
+	vPoint[1] = *m_vecCell[m_iCurrentIndex]->Get_Point(CCell::POINT_B);
+	vPoint[2] = *m_vecCell[m_iCurrentIndex]->Get_Point(CCell::POINT_C);
+
+	_float	fU, fV, fDist;
+
+	_vec3* pPlayerPos = _pPlayerPos;
+
+	pPlayerPos->y = 0;
+
+	D3DXIntersectTri(&vPoint[0], &vPoint[1], &vPoint[2], pPlayerPos, &_vec3(0.f, -1.f, 0.f), &fU, &fV, &fDist);
+
+	return _float(fDist);
+}
+
 CNavigation * CNavigation::Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar * pFilePath)
 {
 	CNavigation* pInstance = new CNavigation(pGraphic_Device);

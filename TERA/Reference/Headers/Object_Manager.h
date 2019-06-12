@@ -17,6 +17,7 @@ private:
 	virtual ~CObject_Manager() = default;
 public:
 	const CComponent* Get_Component(const _uint& iSceneIdx, const _tchar* pLayerTag, const _tchar* pComponentTag, const _uint& iIndex = 0);
+	CGameObject* Get_Object(const _uint& iSceneIdx, const _tchar* pLayerTag, const _uint& iIndex = 0);
 public:
 	//객체들을 보관하는 맵들의 동적 배열의 크기를 정해준다,
 	HRESULT Reserve_Object_Manager(const _uint& iMaxNumScene);

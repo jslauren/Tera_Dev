@@ -18,6 +18,12 @@ CMesh_Dynamic::CMesh_Dynamic(const CMesh_Dynamic & rhs)
 	Safe_AddRef(m_pLoader);
 }
 
+const _uint & CMesh_Dynamic::Get_NowPlayAniIndex()
+{
+	// TODO: 여기에 반환 구문을 삽입합니다.
+	return m_pAniCtrl->Get_NowPlayAniIndex(); 
+}
+
 HRESULT CMesh_Dynamic::Ready_Mesh_Dynamic(const _tchar * pFilePath, const _tchar * pFileName)
 {
 	_tchar		szFullPath[MAX_PATH] = L"";

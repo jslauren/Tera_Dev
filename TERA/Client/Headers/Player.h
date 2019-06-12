@@ -1,6 +1,7 @@
 #pragma once
 #include "Unit.h"
 #include "KeyManager.h"
+#include "Weapon.h"
 
 _BEGIN(Client)
 
@@ -8,7 +9,7 @@ class CPlayerState;
 class CPlayer : public CUnit
 {
 public:
-	enum PLAYER_STATE	// ÃÑ 42°³ÀÇ ¸ð¼Ç
+	enum PLAYER_ANI	// ÃÑ 42°³ÀÇ ¸ð¼Ç
 	{
 		R05UNARMEDWAIT, UNARMEDRUN, SITEND, SITLOOP, SITSTART, JUMPSTART, JUMPLOOP, JUMPENDLAND, JUMPEND, FALL,
 		WAIT, STINGERBLADE, SREACTION, RUN, RISINGATTACK, JAWBREAKER, OUTWEAPON, INWEAPON, HANDYSLASH, GROGGY1,
@@ -23,13 +24,13 @@ private:
 	virtual ~CPlayer() = default;
 
 public:	// Getter
-	const PLAYER_STATE&	Get_AniIndex() { return m_eAnimationIndex; }
-	const PLAYER_STATE&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
+	const PLAYER_ANI&	Get_AniIndex() { return m_eAnimationIndex; }
+	const PLAYER_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
 	const _bool			Get_BackBtnState() { return m_bIsFirstBackBtn; }
 
 public:	// Setter
-	void			Set_AniIndex(const PLAYER_STATE& iIndex) { m_eAnimationIndex = iIndex; }
-	void			Set_OldAniIndex(const PLAYER_STATE& iIndex) { m_eOldAnimationIndex = iIndex; }
+	void			Set_AniIndex(const PLAYER_ANI& iIndex) { m_eAnimationIndex = iIndex; }
+	void			Set_OldAniIndex(const PLAYER_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
 	void			Set_BackBtnState(_bool bState) { m_bIsFirstBackBtn = bState; }
 
 public:
@@ -50,8 +51,8 @@ private:
 	_vec3			m_vTargetPos;
 	_float			m_fPlayerPosY = 0.f;
 
-	PLAYER_STATE	m_eAnimationIndex = WAIT;
-	PLAYER_STATE	m_eOldAnimationIndex = WAIT;
+	PLAYER_ANI		m_eAnimationIndex = WAIT;
+	PLAYER_ANI		m_eOldAnimationIndex = WAIT;
 	_bool			m_bIsFirstBackBtn = true;
 
 private:
@@ -60,6 +61,7 @@ private:
 	virtual HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 	void			ViewChanage();
 	void			KeyInput();
+	void			Compute_HeightOnNavi();
 
 public:
 	static CPlayer*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);

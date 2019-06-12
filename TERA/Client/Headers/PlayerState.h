@@ -23,6 +23,9 @@ public:
 protected:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
 
+protected:
+	_int					m_iAniState = 1;
+
 public:
 	virtual void			Free();
 

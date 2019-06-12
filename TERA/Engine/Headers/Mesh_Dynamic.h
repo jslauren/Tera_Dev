@@ -12,9 +12,10 @@ private:
 	explicit CMesh_Dynamic(const CMesh_Dynamic& rhs);
 	virtual ~CMesh_Dynamic() = default;
 public:
-	_uint	Get_NumMeshContainer() { return m_MeshContainers.size(); }
-	_uint	Get_NumSubSet(_uint iMeshContainerID) { return m_MeshContainers[iMeshContainerID]->NumMaterials; }
-	const D3DXFRAME_DERIVED* Get_FrameDesc(const char* pFrameName) { return (D3DXFRAME_DERIVED*)D3DXFrameFind(m_pRootFrame, pFrameName); }
+	_uint						Get_NumMeshContainer() { return m_MeshContainers.size(); }
+	_uint						Get_NumSubSet(_uint iMeshContainerID) { return m_MeshContainers[iMeshContainerID]->NumMaterials; }
+	const D3DXFRAME_DERIVED*	Get_FrameDesc(const char* pFrameName) { return (D3DXFRAME_DERIVED*)D3DXFrameFind(m_pRootFrame, pFrameName); }
+	const _uint&				Get_NowPlayAniIndex();
 public:
 	HRESULT Ready_Mesh_Dynamic(const _tchar* pFilePath, const _tchar* pFileName);
 	HRESULT Render_Mesh(_uint iMeshContainerID, _uint iSubSetID);

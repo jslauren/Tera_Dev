@@ -15,7 +15,7 @@ CPlayer_Move::CPlayer_Move(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CPlayer_Move::Initialize_State(CPlayer & Player)
 {
-	Player.Set_AniIndex(CPlayer::PLAYER_STATE::UNARMEDRUN);
+//	Player.Set_AniIndex(CPlayer::PLAYER_ANI::UNARMEDRUN);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_RUN);
 
 	return NOERROR;
@@ -25,10 +25,10 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 {
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_W) & 0x80)
 	{
-		if (CInput_Device::GetInstance()->GetDIMouseState(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
+		//if (CInput_Device::GetInstance()->GetDIMouseState(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 			//return CPlayer_Jump::Create(m_pGraphicDevice, Player);
 
-		Player.Set_AniIndex(CPlayer::PLAYER_STATE::UNARMEDRUN);
+		//Player.Set_AniIndex(CPlayer::PLAYER_ANI::UNARMEDRUN);
 
 		_uint		iCellIndx = 0;
 		// 여기서 Move함수의 스피드랑 Move_OnNavigation함수의 인자값인 fTimeDelta랑 값을 동기화 해줘야 안끼고 잘간다.
@@ -59,7 +59,7 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 		//if (Engine::Get_DIKeyDown(DIK_SPACE))
 		//	return CPlayer_Jump::Create(m_pGraphicDevice, Player);
 
-		Player.Set_AniIndex(CPlayer::PLAYER_STATE::UNARMEDRUN);
+	//	Player.Set_AniIndex(CPlayer::PLAYER_ANI::UNARMEDRUN);
 		
 		_uint		iCellIndx = 0;
 		// 여기서 Move함수의 스피드랑 Move_OnNavigation함수의 인자값인 fTimeDelta랑 값을 동기화 해줘야 안끼고 잘간다.
@@ -123,8 +123,20 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 
 		return nullptr;
 	}
-	else
-		return CPlayer_Idle::Create(m_pGraphic_Device, Player);
+	else // Go to Idle
+	{
+		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::UNARMEDRUN)
+		{
+			m_iAniState = 1;
+			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
+		}
+		else if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::RUN)
+		{
+			m_iAniState = 2;
+			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
+		}
+
+	}
 
 	return nullptr;
 }
@@ -133,9 +145,14 @@ void CPlayer_Move::Update_State(CPlayer & Player, const float & fTimeDelta)
 {
 }
 
-CPlayer_Move * CPlayer_Move::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer & Player)
+CPlayer_Move * CPlayer_Move::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer & Player, void* pArg)
 {
 	CPlayer_Move* pInstance = new CPlayer_Move(pGraphicDevice);
+
+	if (*(_int*)(pArg) == 1)
+		Player.Set_AniIndex(CPlayer::PLAYER_ANI::UNARMEDRUN);
+	else
+		Player.Set_AniIndex(CPlayer::PLAYER_ANI::RUN);
 
 	if (FAILED(pInstance->Initialize_State(Player)))
 		Safe_Release(pInstance);

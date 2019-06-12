@@ -29,7 +29,7 @@ HRESULT CSceneStatic::Ready_Scene()
 		return E_FAIL;
 
 	if (FAILED(Ready_GameObject_Prototype()))
-		return E_FAIL;
+		return E_FAIL; 
 
 	if (FAILED(Ready_GameObject()))
 		return E_FAIL;

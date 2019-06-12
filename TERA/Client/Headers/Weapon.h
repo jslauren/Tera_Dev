@@ -24,6 +24,10 @@ public:
 	virtual _int	Update_GameObject(const _float& fTimeDelta);
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
+
+public: // Setter
+	HRESULT			Set_BoneMatrix(_int iIndex);
+
 private:
 	CTransform*		m_pTransformCom = nullptr;
 	CMesh_Static*	m_pMeshCom = nullptr;
