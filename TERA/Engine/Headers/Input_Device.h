@@ -23,7 +23,7 @@ public:
 	bool		Get_DIKeyDown(BYTE byKeyID);
 	bool		Get_DIKeyUp(BYTE byKeyID);
 	bool		Get_DIMouseDown(MOUSEBUTTON eMouseID);
-	bool		Get_DIMouseUp(MOUSEMOVE eMouseID);
+	bool		Get_DIMouseUp(MOUSEBUTTON eMouseID);
 private:
 	LPDIRECTINPUT8				m_pSDK = nullptr;
 private:

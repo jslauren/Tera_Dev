@@ -28,8 +28,6 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 		//if (CInput_Device::GetInstance()->GetDIMouseState(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 			//return CPlayer_Jump::Create(m_pGraphicDevice, Player);
 
-		//Player.Set_AniIndex(CPlayer::PLAYER_ANI::UNARMEDRUN);
-
 		_uint		iCellIndx = 0;
 		// 여기서 Move함수의 스피드랑 Move_OnNavigation함수의 인자값인 fTimeDelta랑 값을 동기화 해줘야 안끼고 잘간다.
 		if (true == ((CNavigation*)(pAgr))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
@@ -58,8 +56,6 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		//if (Engine::Get_DIKeyDown(DIK_SPACE))
 		//	return CPlayer_Jump::Create(m_pGraphicDevice, Player);
-
-	//	Player.Set_AniIndex(CPlayer::PLAYER_ANI::UNARMEDRUN);
 		
 		_uint		iCellIndx = 0;
 		// 여기서 Move함수의 스피드랑 Move_OnNavigation함수의 인자값인 fTimeDelta랑 값을 동기화 해줘야 안끼고 잘간다.
@@ -151,7 +147,8 @@ CPlayer_Move * CPlayer_Move::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer & 
 
 	if (*(_int*)(pArg) == 1)
 		Player.Set_AniIndex(CPlayer::PLAYER_ANI::UNARMEDRUN);
-	else
+
+	else if (*(_int*)(pArg) == 2)
 		Player.Set_AniIndex(CPlayer::PLAYER_ANI::RUN);
 
 	if (FAILED(pInstance->Initialize_State(Player)))

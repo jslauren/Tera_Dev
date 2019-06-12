@@ -27,6 +27,10 @@ HRESULT CInput_Device::SetUp_Input_State()
 		nullptr == m_pMouse)
 		return E_FAIL;
 
+	// Feat.형진이
+	memcpy(&m_PreMouseState, &m_MouseState, sizeof(m_MouseState));
+	memcpy(&m_PreKeyState, &m_KeyState, sizeof(m_KeyState));
+
 	m_pKeyboard->GetDeviceState(sizeof(m_KeyState), m_KeyState);
 
 	m_pMouse->GetDeviceState(sizeof(m_MouseState), &m_MouseState);
@@ -52,7 +56,7 @@ bool CInput_Device::Get_DIMouseDown(MOUSEBUTTON eMouseID)
 	return (!m_PreMouseState.rgbButtons[eMouseID] && m_MouseState.rgbButtons[eMouseID]);
 }
 
-bool CInput_Device::Get_DIMouseUp(MOUSEMOVE eMouseID)
+bool CInput_Device::Get_DIMouseUp(MOUSEBUTTON eMouseID)
 {
 	// 전 프레임의 마우스 키는 눌린 적이 있고, 현재 프레임의 마우스 키는 눌린 적이 없을 때 true, 아니라면 0인 false 반환.
 	return (m_PreMouseState.rgbButtons[eMouseID] && !m_MouseState.rgbButtons[eMouseID]);

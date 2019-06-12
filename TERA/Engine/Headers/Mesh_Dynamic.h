@@ -30,9 +30,11 @@ public:
 private:
 	CHierarchyLoader*		m_pLoader = nullptr;
 	D3DXFRAME*				m_pRootFrame = nullptr;
+	D3DXFRAME*				m_pSpineFrame = nullptr;
 	vector<D3DXMESHCONTAINER_DERIVED*>	m_MeshContainers;
 	CAnimationCtrl*			m_pAniCtrl = nullptr;
 	_matrix					m_matPivot;
+
 private:
 	HRESULT Update_CombinedTransformationMatrix(D3DXFRAME* pFrame, const D3DXMATRIX* pParentMatrix);
 	HRESULT SetUp_CombinedMatrixPointer(D3DXFRAME* pFrame);

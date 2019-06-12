@@ -88,6 +88,15 @@
     <Filter Include="03. Unit\Player\PlayerState\02. WeaponState">
       <UniqueIdentifier>{eaac568d-524b-476a-90fe-38c3a68d8a15}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\03. Attack_Combo%28Normal%29">
+      <UniqueIdentifier>{7f066527-a98d-4bb0-9017-a231aaf17bdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\03. Attack_Combo%28Normal%29\Attack">
+      <UniqueIdentifier>{f8c01572-0e05-45a1-a5bc-f19ce0569429}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\03. Attack_Combo%28Normal%29\Release">
+      <UniqueIdentifier>{2d9a69be-d4f6-403f-b657-0497a2694b47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -165,6 +174,12 @@
     <ClInclude Include="..\Headers\Player_WeaponState.h">
       <Filter>03. Unit\Player\PlayerState\02. WeaponState</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Player_AttackCombo.h">
+      <Filter>03. Unit\Player\PlayerState\03. Attack_Combo%28Normal%29\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_AttackCombo_R.h">
+      <Filter>03. Unit\Player\PlayerState\03. Attack_Combo%28Normal%29\Release</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -229,6 +244,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Player_WeaponState.cpp">
       <Filter>03. Unit\Player\PlayerState\02. WeaponState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_AttackCombo.cpp">
+      <Filter>03. Unit\Player\PlayerState\03. Attack_Combo%28Normal%29\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_AttackCombo_R.cpp">
+      <Filter>03. Unit\Player\PlayerState\03. Attack_Combo%28Normal%29\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

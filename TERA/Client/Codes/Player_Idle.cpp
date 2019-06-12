@@ -5,6 +5,7 @@
 
 #include "Player_Move.h"
 #include "Player_WeaponState.h"
+#include "Player_AttackCombo.h"
 
 #define PLAYER_SCALING	0.33f
 
@@ -178,14 +179,16 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 			return CPlayer_Move::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
-
-	if (CInput_Device::GetInstance()->GetDIMouseState(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
+	// [비 전투 중 = 칼 뽑기 / 전투 중 = 공격 ]
+	if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 	{
 		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
 			return CPlayer_WeaponState::Create(m_pGraphic_Device, Player, &m_iAniState);
-		else
-			return nullptr;
+
+		else if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+			return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
 	}
+	// [무기 발검, 착검]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_F) & 0x80)
 	{
 		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)

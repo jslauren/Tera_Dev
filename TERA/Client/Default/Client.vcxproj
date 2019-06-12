@@ -168,6 +168,8 @@
     <ClInclude Include="..\Headers\Monster.h" />
     <ClInclude Include="..\Headers\Player.h" />
     <ClInclude Include="..\Headers\PlayerState.h" />
+    <ClInclude Include="..\Headers\Player_AttackCombo.h" />
+    <ClInclude Include="..\Headers\Player_AttackCombo_R.h" />
     <ClInclude Include="..\Headers\Player_Idle.h" />
     <ClInclude Include="..\Headers\Player_Move.h" />
     <ClInclude Include="..\Headers\Player_WeaponState.h" />
@@ -193,6 +195,8 @@
     <ClCompile Include="..\Codes\Monster.cpp" />
     <ClCompile Include="..\Codes\Player.cpp" />
     <ClCompile Include="..\Codes\PlayerState.cpp" />
+    <ClCompile Include="..\Codes\Player_AttackCombo.cpp" />
+    <ClCompile Include="..\Codes\Player_AttackCombo_R.cpp" />
     <ClCompile Include="..\Codes\Player_Idle.cpp" />
     <ClCompile Include="..\Codes\Player_Move.cpp" />
     <ClCompile Include="..\Codes\Player_WeaponState.cpp" />

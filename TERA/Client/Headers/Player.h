@@ -26,12 +26,10 @@ private:
 public:	// Getter
 	const PLAYER_ANI&	Get_AniIndex() { return m_eAnimationIndex; }
 	const PLAYER_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
-	const _bool			Get_BackBtnState() { return m_bIsFirstBackBtn; }
 
 public:	// Setter
 	void			Set_AniIndex(const PLAYER_ANI& iIndex) { m_eAnimationIndex = iIndex; }
 	void			Set_OldAniIndex(const PLAYER_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
-	void			Set_BackBtnState(_bool bState) { m_bIsFirstBackBtn = bState; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -53,8 +51,7 @@ private:
 
 	PLAYER_ANI		m_eAnimationIndex = WAIT;
 	PLAYER_ANI		m_eOldAnimationIndex = WAIT;
-	_bool			m_bIsFirstBackBtn = true;
-
+	
 private:
 	virtual HRESULT Add_Component();
 	//HRESULT SetUp_HeightOnTerrain();
