@@ -62,7 +62,7 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 	{
 		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::COMBO1)
 		{
-			MovePlayerPosition(Player, 0.33f, 10.f, fTimeDelta, pAgr);
+			MovePlayerPosition(Player, 0.33f, 20.f, 0.002, pAgr);
 
 			if (Player.Get_Mesh()->IsAnimationEnded(0.8f))
 			{

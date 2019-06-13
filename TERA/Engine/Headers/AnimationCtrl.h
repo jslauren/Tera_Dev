@@ -12,6 +12,7 @@ private:
 public: // Getter
 	_double			Get_CurretTrackPos();
 	const _uint&	Get_NowPlayAniIndex() { return m_iOldIndex; }
+	const _double	Get_Period();
 public:
 	HRESULT Ready_AnimationCtrl();
 	HRESULT SetUp_AnimationSet(_uint iIndex, const _float fAniSpeed = 1.f);

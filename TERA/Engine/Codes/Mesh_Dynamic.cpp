@@ -25,6 +25,18 @@ const _uint & CMesh_Dynamic::Get_NowPlayAniIndex()
 	return m_pAniCtrl->Get_NowPlayAniIndex(); 
 }
 
+const _double & CMesh_Dynamic::Get_CurrentTrackPos()
+{
+	// TODO: 여기에 반환 구문을 삽입합니다.
+	return m_pAniCtrl->Get_CurretTrackPos();
+}
+
+const _double & CMesh_Dynamic::Get_Period()
+{
+	// TODO: 여기에 반환 구문을 삽입합니다.
+	return m_pAniCtrl->Get_Period();
+}
+
 HRESULT CMesh_Dynamic::Ready_Mesh_Dynamic(const _tchar * pFilePath, const _tchar * pFileName)
 {
 	_tchar		szFullPath[MAX_PATH] = L"";

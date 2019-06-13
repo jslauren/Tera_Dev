@@ -97,6 +97,48 @@
     <Filter Include="03. Unit\Player\PlayerState\03. Attack_Combo%28Normal%29\Release">
       <UniqueIdentifier>{2d9a69be-d4f6-403f-b657-0497a2694b47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill">
+      <UniqueIdentifier>{8cf5361b-82e5-4046-90d9-86c627e85e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\01. CutHead">
+      <UniqueIdentifier>{492ffdc2-d5d4-4519-94b8-fd5baa132105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\02. CuttingSlash">
+      <UniqueIdentifier>{94a0b53a-3b0c-4e5a-9076-cfff0905c63f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\03. FlatBlade">
+      <UniqueIdentifier>{d2768319-4f09-47c7-b77d-175d10323413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\04. HandySlash">
+      <UniqueIdentifier>{c6dca476-3ffc-4910-849e-d52ee44f7447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\05. JawBreaker">
+      <UniqueIdentifier>{26701ddc-f602-4160-9fb3-21afeb00d2a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\06. StingerBlade">
+      <UniqueIdentifier>{0952727c-7cac-4121-aade-68fb7c03fd04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\07. GaiaCrush_문제있음">
+      <UniqueIdentifier>{163bf3be-0ecd-4935-8cea-341c60ff1827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\08. DrawSword">
+      <UniqueIdentifier>{e2f595c4-15c6-4cf6-ab64-7ae067b87620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\08. DrawSword\01. Charge">
+      <UniqueIdentifier>{cb120bbf-d7f3-40f0-84b9-37be93c3f054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\08. DrawSword\02. Loop">
+      <UniqueIdentifier>{aa74c52c-69ce-4a32-81c9-7d4659a77e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\08. DrawSword\03. Move">
+      <UniqueIdentifier>{858b91d2-1557-4256-80f2-ee7030940d45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\08. DrawSword\04. Attack">
+      <UniqueIdentifier>{271d7ab8-2164-4213-b6af-720db694115f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\08. DrawSword\05. End">
+      <UniqueIdentifier>{a631cb25-7e7e-4a36-b253-33f918bfdb86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -180,6 +222,42 @@
     <ClInclude Include="..\Headers\Player_AttackCombo_R.h">
       <Filter>03. Unit\Player\PlayerState\03. Attack_Combo%28Normal%29\Release</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_CutHead.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\01. CutHead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_CuttingSlash.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\02. CuttingSlash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_FlatBlade.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\03. FlatBlade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_HandySlash.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\04. HandySlash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_JawBreaker.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\05. JawBreaker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_StingerBlade.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\06. StingerBlade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_GaiaCrush.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\07. GaiaCrush_문제있음</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_DrawSword.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\04. Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_DrawSword_Charge.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\01. Charge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_DrawSword_Loop.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\02. Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_DrawSword_Move.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\03. Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_DrawSword_End.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\05. End</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -250,6 +328,42 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Player_AttackCombo_R.cpp">
       <Filter>03. Unit\Player\PlayerState\03. Attack_Combo%28Normal%29\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_CutHead.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\01. CutHead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_CuttingSlash.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\02. CuttingSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_FlatBlade.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\03. FlatBlade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_HandySlash.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\04. HandySlash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_JawBreaker.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\05. JawBreaker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_StingerBlade.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\06. StingerBlade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\codes\Player_Skill_GaiaCrush.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\07. GaiaCrush_문제있음</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_DrawSword.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\04. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_DrawSword_Charge.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\01. Charge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_DrawSword_Loop.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\02. Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_DrawSword_Move.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\03. Move</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_DrawSword_End.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\05. End</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

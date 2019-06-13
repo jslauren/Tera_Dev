@@ -18,6 +18,9 @@ private:
 	explicit CWeapon(const CWeapon& rhs);
 	virtual ~CWeapon() = default;
 
+public:	// Getter
+	CTransform*	Get_TransformCom() { return m_pTransformCom; }
+
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);

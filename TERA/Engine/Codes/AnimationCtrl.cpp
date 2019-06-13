@@ -25,6 +25,11 @@ _double CAnimationCtrl::Get_CurretTrackPos()
 	return _double(TrackDesc.Position);
 }
 
+const _double CAnimationCtrl::Get_Period()
+{
+	return m_pAnimationSet->GetPeriod();
+}
+
 HRESULT CAnimationCtrl::Ready_AnimationCtrl()
 {
 	return NOERROR;
