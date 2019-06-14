@@ -5,6 +5,7 @@
 #include "Player_Idle.h"
 #include "Player_Move.h"
 #include "Layer.h"
+#include "Input_Device.h"
 
 #define PLAYER_SCALING	0.33f
 
@@ -33,18 +34,25 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
+	// 파츠가 추가되면 여기에 추가되는거 추가해줘
+	m_pMeshCom_Bone->Set_HeadFrame(m_pMeshCom_Head->GetRootFrame());
+	m_pMeshCom_Bone->Set_BodyFrame(m_pMeshCom_Body->GetRootFrame());
+	m_pMeshCom_Bone->Set_HandFrame(m_pMeshCom_Hand->GetRootFrame());
+	m_pMeshCom_Bone->Set_LegFrame(m_pMeshCom_Leg->GetRootFrame());
+	m_pMeshCom_Bone->Set_TailFrame(m_pMeshCom_Tail->GetRootFrame());
+
 	/*m_pTransformCom->Set_Scaling(0.3f, 0.3f, 0.3f);
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));*/
 
 	m_pTransformMoveCom->Set_Scaling(PLAYER_SCALING, PLAYER_SCALING, PLAYER_SCALING);
 	m_pTransformMoveCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));
 
-	m_pMeshCom->SetUp_AnimationSet(R05UNARMEDWAIT);
+	m_pMeshCom_Bone->SetUp_AnimationSet(wtf);
 
 	int iIdleState = 1;
 	m_pState = CPlayer_Idle::Create(m_pGraphic_Device, *this, &iIdleState);
 
-	m_pMeshCom->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
+	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
 
 	return NOERROR;
 }
@@ -59,12 +67,31 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	m_fPlayerPosY = m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->y;
 
 	KeyInput();
+	
+	// 이 부분은 추후에 인벤토리 구현 시 참고할 구문이다.
+	if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_8))
+	{
+		if (m_bTest == false)
+		{
+			Safe_Release(m_pMeshCom_Body);
+			m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Body2");
 
-	m_pMeshCom->Play_Animation(fTimeDelta, m_fAniSpeed);
+			m_pMeshCom_Bone->Set_BodyFrame(m_pMeshCom_Body->GetRootFrame());
+		}
+		else
+		{
+			Safe_Release(m_pMeshCom_Body);
+			m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Body");
+			m_pMeshCom_Bone->Set_BodyFrame(m_pMeshCom_Body->GetRootFrame());
+		}
+		m_bTest = !m_bTest;
+	}
+
+	//m_pMeshCom_Bone->Play_Animation(fTimeDelta, m_fAniSpeed);
 
 	m_pTransformCom->Set_WorldMatrix((*m_pTransformRotateCom->Get_WorldMatrixPointer()) * (*m_pTransformMoveCom->Get_WorldMatrixPointer()));
 
-	Compute_HeightOnNavi();
+//	Compute_HeightOnNavi();
 
 	return _int();
 }
@@ -84,8 +111,10 @@ HRESULT CPlayer::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pTransformCom ||
-		nullptr == m_pMeshCom)
+		nullptr == m_pMeshCom_Body)
 		return E_FAIL;
+
+	m_pMeshCom_Bone->Play_Animation(m_fTimeDelta, m_fAniSpeed);		// 몬스터 할 때 이 위치 기억해라!!
 
 	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
 	if (nullptr == pEffect)
@@ -98,21 +127,103 @@ HRESULT CPlayer::Render_GameObject()
 
 	pEffect->Begin(nullptr, 0);
 	
-	for (size_t i = 0; i < m_pMeshCom->Get_NumMeshContainer(); ++i)
+	// 이 포문이 파츠 개수만큼 추가 되어야 함
+	// [Head]
+	for (size_t i = 0; i < m_pMeshCom_Head->Get_NumMeshContainer(); ++i)
 	{
-		if (FAILED(m_pMeshCom->Update_SkinnedMesh(i)))
+		if (FAILED(m_pMeshCom_Head->Update_SkinnedMesh(i)))
 			break;
 
-		for (size_t j = 0; j < m_pMeshCom->Get_NumSubSet(i); ++j)
+		for (size_t j = 0; j < m_pMeshCom_Head->Get_NumSubSet(i); ++j)
 		{
-			if (FAILED(m_pMeshCom->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+			if (FAILED(m_pMeshCom_Head->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
 				return E_FAIL;
 
 			pEffect->CommitChanges();
 
 			pEffect->BeginPass(0);
 
-			m_pMeshCom->Render_Mesh(i, j);
+			m_pMeshCom_Head->Render_Mesh(i, j);
+
+			pEffect->EndPass();
+		}
+	}
+	// [Body]
+	for (size_t i = 0; i < m_pMeshCom_Body->Get_NumMeshContainer(); ++i)
+	{
+		if (FAILED(m_pMeshCom_Body->Update_SkinnedMesh(i)))
+			break;
+
+		for (size_t j = 0; j < m_pMeshCom_Body->Get_NumSubSet(i); ++j)
+		{
+			if (FAILED(m_pMeshCom_Body->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+				return E_FAIL;
+
+			pEffect->CommitChanges();
+
+			pEffect->BeginPass(0);
+
+			m_pMeshCom_Body->Render_Mesh(i, j);
+
+			pEffect->EndPass();
+		}
+	}
+	// [Hand]
+	for (size_t i = 0; i < m_pMeshCom_Hand->Get_NumMeshContainer(); ++i)
+	{
+		if (FAILED(m_pMeshCom_Hand->Update_SkinnedMesh(i)))
+			break;
+
+		for (size_t j = 0; j < m_pMeshCom_Hand->Get_NumSubSet(i); ++j)
+		{
+			if (FAILED(m_pMeshCom_Hand->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+				return E_FAIL;
+
+			pEffect->CommitChanges();
+
+			pEffect->BeginPass(0);
+
+			m_pMeshCom_Hand->Render_Mesh(i, j);
+
+			pEffect->EndPass();
+		}
+	}
+	// [Leg]
+	for (size_t i = 0; i < m_pMeshCom_Leg->Get_NumMeshContainer(); ++i)
+	{
+		if (FAILED(m_pMeshCom_Leg->Update_SkinnedMesh(i)))
+			break;
+
+		for (size_t j = 0; j < m_pMeshCom_Leg->Get_NumSubSet(i); ++j)
+		{
+			if (FAILED(m_pMeshCom_Leg->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+				return E_FAIL;
+
+			pEffect->CommitChanges();
+
+			pEffect->BeginPass(0);
+
+			m_pMeshCom_Leg->Render_Mesh(i, j);
+
+			pEffect->EndPass();
+		}
+	}
+	// [Tail]
+	for (size_t i = 0; i < m_pMeshCom_Tail->Get_NumMeshContainer(); ++i)
+	{
+		if (FAILED(m_pMeshCom_Tail->Update_SkinnedMesh(i)))
+			break;
+
+		for (size_t j = 0; j < m_pMeshCom_Tail->Get_NumSubSet(i); ++j)
+		{
+			if (FAILED(m_pMeshCom_Tail->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+				return E_FAIL;
+
+			pEffect->CommitChanges();
+
+			pEffect->BeginPass(0);
+
+			m_pMeshCom_Tail->Render_Mesh(i, j);
 
 			pEffect->EndPass();
 		}
@@ -145,9 +256,36 @@ HRESULT CPlayer::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_TransformMove", (CComponent**)&m_pTransformMoveCom)))
 		return E_FAIL;
 
+	// [ 플레이어 메쉬 추가 ]
 	// For.Com_Mesh
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Player", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_Player_Bone", L"Com_Mesh_Bone", (CComponent**)&m_pMeshCom_Bone)))
 		return E_FAIL;
+
+	// For.Com_Mesh_Head
+	m_pMeshCom_Head = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Head03");
+	if (nullptr == m_pMeshCom_Head)
+		return E_FAIL;
+
+	// For.Com_Mesh_Body
+	m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_BodyR29");
+	if (nullptr == m_pMeshCom_Body)
+		return E_FAIL;
+
+	// For.Com_Mesh_Hand
+	m_pMeshCom_Hand = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_HandR29");
+	if (nullptr == m_pMeshCom_Hand)
+		return E_FAIL;
+
+	// For.Com_Mesh_Leg
+	m_pMeshCom_Leg = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_LegR29");
+	if (nullptr == m_pMeshCom_Leg)
+		return E_FAIL;
+
+	// For.Com_Mesh_Tail
+	m_pMeshCom_Tail = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Tail03");
+	if (nullptr == m_pMeshCom_Tail)
+		return E_FAIL;
+
 
 	// For.Com_Renderer
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
@@ -273,9 +411,9 @@ void CPlayer::KeyInput()
 		m_pState = pState;
 	}
 
-	if (true == m_pMeshCom->IsAnimationEnded() || m_eOldAnimationIndex != m_eAnimationIndex)
+	if (true == m_pMeshCom_Bone->IsAnimationEnded() || m_eOldAnimationIndex != m_eAnimationIndex)
 	{
-		m_pMeshCom->SetUp_AnimationSet(m_eAnimationIndex);
+		m_pMeshCom_Bone->SetUp_AnimationSet(m_eAnimationIndex);
 	}
 
 	m_eOldAnimationIndex = m_eAnimationIndex;
@@ -321,6 +459,12 @@ CGameObject * CPlayer::Clone(void* pArg)
 
 void CPlayer::Free()
 {
+	Safe_Release(m_pMeshCom_Tail);
+	Safe_Release(m_pMeshCom_Leg);
+	Safe_Release(m_pMeshCom_Hand);
+	Safe_Release(m_pMeshCom_Body);
+	Safe_Release(m_pMeshCom_Head);
+	Safe_Release(m_pMeshCom_Bone);
 	Safe_Release(m_pState);
 
 	CUnit::Free();

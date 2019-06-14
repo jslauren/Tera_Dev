@@ -9,6 +9,8 @@
 #include "Navigation.h"
 #include "Mesh_Static.h"
 #include "Mesh_Dynamic.h"
+#include "Mesh_Dynamic_Bone.h"
+#include "Mesh_Dynamic_Parts.h"
 #include "Buffer_RcCol.h"
 #include "Buffer_RcTex.h"
 #include "Buffer_TriCol.h"

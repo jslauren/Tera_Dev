@@ -11,8 +11,9 @@ class CPlayer : public CUnit
 public:
 	enum PLAYER_ANI	// ÃÑ 42°³ÀÇ ¸ð¼Ç
 	{
+		wtf, WAIT,
 		R05UNARMEDWAIT, UNARMEDRUN, SITEND, SITLOOP, SITSTART, JUMPSTART, JUMPLOOP, JUMPENDLAND, JUMPEND, FALL,
-		WAIT, STINGERBLADE, SREACTION, RUN, RISINGATTACK, JAWBREAKER, OUTWEAPON, INWEAPON, HANDYSLASH, GROGGY1,
+		/*WAIT,*/ STINGERBLADE, SREACTION, RUN, RISINGATTACK, JAWBREAKER, OUTWEAPON, INWEAPON, HANDYSLASH, GROGGY1,
 		GAIACRUSH03, GAIACRUSH02, GAIACRUSH01, FLATBLADE, DRAWSWORDEND, DRAWSWORD, DRAWSWORDMOVE, DRAWSWORDLOOP,
 		DRAWSWORDCHARGE, DEATH, CUTTINGSLASH, CUTHEAD, COMBO4, COMBO3R, COMBO3, COMBO2R, COMBO2, COMBO1R, COMBO1, 
 		BREACTIONLAND3, BREACTIONCOM3, ADVLEAP, END
@@ -27,6 +28,7 @@ public:	// Getter
 	const PLAYER_ANI&	Get_AniIndex() { return m_eAnimationIndex; }
 	const PLAYER_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
 	const _bool&		Get_DrawSwordBtnState() { return m_bIsDrawSwordPressed; }
+	CMesh_Dynamic_Bone*	Get_Mesh_Bone() { return m_pMeshCom_Bone; }
 
 public:	// Setter
 	void			Set_AniIndex(const PLAYER_ANI& iIndex) { m_eAnimationIndex = iIndex; }
@@ -41,8 +43,13 @@ public:
 	virtual HRESULT Render_GameObject();
 
 private:
-	CPlayerState*	m_pState = nullptr;
-	CMesh_Dynamic*	m_pMeshCom_PlayerFace = nullptr;
+	CPlayerState*			m_pState = nullptr;
+	CMesh_Dynamic_Bone*		m_pMeshCom_Bone = nullptr;
+	CMesh_Dynamic_Parts*	m_pMeshCom_Head = nullptr;
+	CMesh_Dynamic_Parts*	m_pMeshCom_Body = nullptr;
+	CMesh_Dynamic_Parts*	m_pMeshCom_Hand = nullptr;
+	CMesh_Dynamic_Parts*	m_pMeshCom_Leg = nullptr;
+	CMesh_Dynamic_Parts*	m_pMeshCom_Tail = nullptr;
 
 private:
 	const _matrix*	m_pBoneMatrix = nullptr;
@@ -51,8 +58,10 @@ private:
 	_vec3			m_vTargetPos;
 	_float			m_fPlayerPosY = 0.f;
 
-	PLAYER_ANI		m_eAnimationIndex = WAIT;
-	PLAYER_ANI		m_eOldAnimationIndex = WAIT;
+	PLAYER_ANI		m_eAnimationIndex = wtf;
+	PLAYER_ANI		m_eOldAnimationIndex = wtf;
+
+	_bool			m_bTest = false;
 
 	_bool			m_bIsDrawSwordPressed = false;
 	

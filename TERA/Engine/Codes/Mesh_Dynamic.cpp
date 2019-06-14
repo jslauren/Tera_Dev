@@ -11,7 +11,6 @@ CMesh_Dynamic::CMesh_Dynamic(const CMesh_Dynamic & rhs)
 	: CComponent(rhs)
 	, m_pLoader(rhs.m_pLoader)
 	, m_pRootFrame(rhs.m_pRootFrame)
-	, m_pSpineFrame(rhs.m_pSpineFrame)
 	, m_MeshContainers(rhs.m_MeshContainers)
 	, m_matPivot(rhs.m_matPivot)
 	, m_pAniCtrl(CAnimationCtrl::Create(*rhs.m_pAniCtrl))
@@ -68,7 +67,7 @@ HRESULT CMesh_Dynamic::Ready_Mesh_Dynamic(const _tchar * pFilePath, const _tchar
 	if (FAILED(SetUp_CombinedMatrixPointer(m_pRootFrame)))
 		return E_FAIL;
 
-	m_pSpineFrame = (D3DXFRAME*)Get_FrameDesc("FxBottom");
+	//m_pSpineFrame = (D3DXFRAME*)Get_FrameDesc("Skirt_Dummy");
 
 	return NOERROR;
 }
@@ -139,18 +138,18 @@ HRESULT CMesh_Dynamic::Play_Animation(const _float & fTimeDelta, const _float fA
 
 	//memcpy(&m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][0], _vec3(0.f, 0.f, 0.f), sizeof(_vec3));
 
-	if (nullptr != m_pSpineFrame)
-	{
-		// 플레이어의 기준을 허리가 아닌 발 밑으로 둔다.
-		m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][0] = -m_pSpineFrame->TransformationMatrix.m[3][0];
-		m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][2] = -m_pSpineFrame->TransformationMatrix.m[3][2];
-	}
-	else
-	{
-		// 혹시 몬스터를 위한 용도.
-		m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][0] = 0;
-		m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][2] = 0;
-	}
+	//m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][0] = 0;
+	//m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][2] = 0;
+	//
+	//if (nullptr != m_pSpineFrame)
+	//{
+	//	_vec3	vTemp;
+	//	D3DXVec3TransformNormal(&vTemp, (_vec3*)&m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][0], &m_pSpineFrame->TransformationMatrix);
+
+	//	vTemp = -vTemp;
+
+	//	memcpy(&m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][0], &vTemp, sizeof(_vec3));
+	//}
 
 	Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot);
 

@@ -39,7 +39,7 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 {
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_Q) & 0x80)
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 			Player.Set_DrawSwordBtn(true);
 	}
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_W) & 0x80)
@@ -73,10 +73,10 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 		Player.Get_TransformMove()->Set_Scaling(PLAYER_SCALING, PLAYER_SCALING, PLAYER_SCALING);
 		Player.Get_TransformRotation()->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(0));		
 
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
 			return CPlayer_Move::Create(m_pGraphic_Device, Player, &m_iAniState);
 
-		else if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
 			m_iAniState = 2;
 			return CPlayer_Move::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -112,10 +112,10 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 		Player.Get_TransformMove()->Set_Scaling(PLAYER_SCALING, PLAYER_SCALING, PLAYER_SCALING);
 		Player.Get_TransformRotation()->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(180));
 
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
 			return CPlayer_Move::Create(m_pGraphic_Device, Player, &m_iAniState);
 
-		else if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
 			m_iAniState = 2;
 			return CPlayer_Move::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -149,10 +149,10 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 		Player.Get_TransformMove()->Set_Scaling(PLAYER_SCALING, PLAYER_SCALING, PLAYER_SCALING);
 		Player.Get_TransformRotation()->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(-90));
 
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
 			return CPlayer_Move::Create(m_pGraphic_Device, Player, &m_iAniState);
 
-		else if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
 			m_iAniState = 2;
 			return CPlayer_Move::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -186,10 +186,10 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 		Player.Get_TransformMove()->Set_Scaling(PLAYER_SCALING, PLAYER_SCALING, PLAYER_SCALING);
 		Player.Get_TransformRotation()->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(90));
 
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
 			return CPlayer_Move::Create(m_pGraphic_Device, Player, &m_iAniState);
 
-		else if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
 			m_iAniState = 2;
 			return CPlayer_Move::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -198,10 +198,10 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	// [비 전투 중 = 칼 뽑기 / 전투 중 = 공격 ]
 	if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
 			return CPlayer_WeaponState::Create(m_pGraphic_Device, Player, &m_iAniState);
 
-		else if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
 			if (Player.Get_DrawSwordBtnState() == true)
 			{
@@ -215,15 +215,15 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	// [무기 발검, 착검]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_F) & 0x80)
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded())
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 				return CPlayer_WeaponState::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 
-		else if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded())
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 			{
 				m_iAniState = 2;
 				return CPlayer_WeaponState::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -233,9 +233,9 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	// [ 앉기, 서기]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_R) & 0x80)
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded())
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 			{
 				m_iAniState = 1;
 				return CPlayer_Sit::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -245,66 +245,66 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	// [ 테스트]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_T) & 0x80)
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded())
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 				return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
 	// [스킬 넘버]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_1) & 0x80)
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded())
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 				return CPlayer_Skill_CutHead::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_2) & 0x80)
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded())
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 				return CPlayer_Skill_CuttingSlash::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_3) & 0x80)
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded())
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 				return Player_Skill_FlatBlade::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_4) & 0x80)
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded())
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 				return CPlayer_Skill_HandySlash::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_5) & 0x80)
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded())
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 				return CPlayer_Skill_JawBreaker::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_6) & 0x80)
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded())
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 				return CPlayer_Skill_StingerBlade::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
 	//if (CInput_Device::GetInstance()->GetDIKeyState(DIK_7) & 0x80)
 	//{
-	//	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+	//	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
 	//	{
-	//		if (Player.Get_Mesh()->IsAnimationEnded())
+	//		if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 	//		{
 	//			m_iAniState = 1;
 	//			return CPlayer_Skill_GaiaCrush::Create(m_pGraphic_Device, Player, &m_iAniState);

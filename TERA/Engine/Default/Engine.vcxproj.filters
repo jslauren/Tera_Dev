@@ -107,13 +107,13 @@
       <Filter>01. Utility\02. Component\Component\Mesh\Static</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Mesh_Dynamic.h">
-      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic</Filter>
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Normal</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\HierarchyLoader.h">
-      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Loader</Filter>
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Normal\Loader_Normal</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\AnimationCtrl.h">
-      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Animation</Filter>
+      <Filter>01. Utility\02. Component\Component\Mesh\Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Collider.h">
       <Filter>01. Utility\02. Component\Component\Collider</Filter>
@@ -126,6 +126,15 @@
     </ClInclude>
     <ClInclude Include="..\Headers\Frustum.h">
       <Filter>01. Utility\02. Component\Component\Frustum</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Mesh_Dynamic_Bone.h">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Player\Mesh_Dynamic_Bone</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Mesh_Dynamic_Parts.h">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Player\Mesh_Dynamic_Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\HierarchyLoader_Player.h">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Player\Loader_Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -240,17 +249,8 @@
     <Filter Include="01. Utility\02. Component\Component\Mesh">
       <UniqueIdentifier>{715c7d8d-2c69-4bf2-bd60-19b2c8fa605f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic">
-      <UniqueIdentifier>{a72b03a1-ad3b-4056-89b2-42f223ce63a9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Utility\02. Component\Component\Mesh\Static">
       <UniqueIdentifier>{cba29199-9bc1-4829-ad97-026fabbb6d04}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic\Loader">
-      <UniqueIdentifier>{23ae61ce-4a43-4ddd-ac3d-264dd45a41ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic\Animation">
-      <UniqueIdentifier>{626fda2f-0cd6-4ef9-bb6e-03dc3f2101f6}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Utility\02. Component\Component\Collider">
       <UniqueIdentifier>{1e87ceee-4797-4b25-aeb5-0c6b3b85de41}</UniqueIdentifier>
@@ -266,6 +266,27 @@
     </Filter>
     <Filter Include="01. Utility\02. Component\Component\Frustum">
       <UniqueIdentifier>{ba1bae3d-9de4-4bda-9e63-b694f619d168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic_Normal">
+      <UniqueIdentifier>{a72b03a1-ad3b-4056-89b2-42f223ce63a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic_Normal\Loader_Normal">
+      <UniqueIdentifier>{23ae61ce-4a43-4ddd-ac3d-264dd45a41ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic_Player">
+      <UniqueIdentifier>{927981a5-9caf-4f69-b205-6fe2e37eb50c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic_Player\Loader_Player">
+      <UniqueIdentifier>{93d6dff6-060e-4261-b3de-5ef499f705b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh\Animation">
+      <UniqueIdentifier>{626fda2f-0cd6-4ef9-bb6e-03dc3f2101f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic_Player\Mesh_Dynamic_Bone">
+      <UniqueIdentifier>{e6545dc3-be75-479a-bb26-cecfde71544f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic_Player\Mesh_Dynamic_Parts">
+      <UniqueIdentifier>{8801e23c-1b44-4c5f-a9d8-df421b545e4a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -357,13 +378,13 @@
       <Filter>01. Utility\02. Component\Component\Mesh\Static</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Mesh_Dynamic.cpp">
-      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic</Filter>
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Normal</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\HierarchyLoader.cpp">
-      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Loader</Filter>
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Normal\Loader_Normal</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\AnimationCtrl.cpp">
-      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic\Animation</Filter>
+      <Filter>01. Utility\02. Component\Component\Mesh\Animation</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Collider.cpp">
       <Filter>01. Utility\02. Component\Component\Collider</Filter>
@@ -376,6 +397,15 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Frustum.cpp">
       <Filter>01. Utility\02. Component\Component\Frustum</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Mesh_Dynamic_Bone.cpp">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Player\Mesh_Dynamic_Bone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Mesh_Dynamic_Parts.cpp">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Player\Mesh_Dynamic_Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\HierarchyLoader_Player.cpp">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Player\Loader_Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

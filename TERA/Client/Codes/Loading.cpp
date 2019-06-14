@@ -90,7 +90,117 @@ HRESULT CLoading::Ready_Stage_Component()
 
 	// [Mesh_Dynamic]
 	// For.Component_Mesh_Player
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/", L"Popori_B.X"))))
+	// [메인 통 본]
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Bone", CMesh_Dynamic_Bone::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Bone/", L"Bone_B.X"))))
+		return E_FAIL;
+	// [추가 될 Parts 들]
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Head00", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Head/00/", L"Head00_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Head01", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Head/01/", L"Head01_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Head02", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Head/02/", L"Head02_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Head03", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Head/03/", L"Head03_B.X"))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Body15", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Body/15/", L"Body15_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Body16", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Body/16/", L"Body16_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Body17", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Body/17/", L"Body17_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Body18", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Body/18/", L"Body18_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_BodyH20", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Body/H20/", L"BodyH20_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_BodyL20", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Body/L20/", L"BodyL20_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_BodyR20", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Body/R20/", L"BodyR20_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_BodyR21", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Body/R21/", L"BodyR21_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_BodyR29", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Body/R29/", L"BodyR29_B.X"))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Hand15", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Hand/15/", L"Hand15_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Hand16", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Hand/16/", L"Hand16_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Hand17", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Hand/17/", L"Hand17_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Hand18", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Hand/18/", L"Hand18_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_HandH20", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Hand/H20/", L"HandH20_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_HandL20", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Hand/L20/", L"HandL20_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_HandR20", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Hand/R20/", L"HandR20_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_HandR21", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Hand/R21/", L"HandR21_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_HandR29", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Hand/R29/", L"HandR29_B.X"))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Leg15", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Leg/15/", L"Leg15_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Leg16", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Leg/16/", L"Leg16_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Leg17", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Leg/17/", L"Leg17_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Leg18", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Leg/18/", L"Leg18_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_LegH20", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Leg/H20/", L"LegH20_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_LegL20", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Leg/L20/", L"LegL20_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_LegR20", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Leg/R20/", L"LegR20_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_LegR21", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Leg/R21/", L"LegR21_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_LegR29", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Leg/R29/", L"LegR29_B.X"))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Tail00", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Tail/00/", L"Tail00_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Tail01", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Tail/01/", L"Tail01_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Tail02", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Tail/02/", L"Tail02_B.X"))))
+		return E_FAIL;
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Tail03", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Tail/03/", L"Tail03_B.X"))))
 		return E_FAIL;
 
 	m_iComplete = 49;
@@ -99,22 +209,11 @@ HRESULT CLoading::Ready_Stage_Component()
 	// For.Component_Mesh_Weapon
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Weapon", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Weapon/1/", L"Popori_Weapon_B.X"))))
 		return E_FAIL;
-	
-	// 여기에 Component_Mesh_Monster 이 값이 몬스터 클래스의 Add_Component함수에 두 번째 인자로 들어가면서,
-	// 몬스터 클래스만 있기때문에 실바만 나온다. 추후 각 오브젝트들이 추가될 때마다 클래스를 생성해 주어야 한다.
 
 	//// For.Component_Mesh_Monster
 	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Monster", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/sylva/", L"sylva.X"))))
 	//	return E_FAIL;
-
-	//// For.Component_Mesh_TombStone
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_TombStone", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/TombStone/", L"TombStone.x"))))
-	//	return E_FAIL;
-
-	//// For.Component_Mesh_Tiger
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Mesh_Tiger", CMesh_Static::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/StaticMesh/Tiger/", L"Tiger.x"))))
-	//	return E_FAIL;
-
+	
 	m_iComplete = 70;
 
 	// [Collider]

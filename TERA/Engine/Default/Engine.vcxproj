@@ -43,6 +43,7 @@
     <ClInclude Include="..\Headers\GameObject.h" />
     <ClInclude Include="..\Headers\Graphic_Device.h" />
     <ClInclude Include="..\Headers\HierarchyLoader.h" />
+    <ClInclude Include="..\Headers\HierarchyLoader_Player.h" />
     <ClInclude Include="..\Headers\Input_Device.h" />
     <ClInclude Include="..\Headers\KeyManager.h" />
     <ClInclude Include="..\Headers\Layer.h" />
@@ -50,6 +51,8 @@
     <ClInclude Include="..\Headers\Light_Manager.h" />
     <ClInclude Include="..\Headers\Management.h" />
     <ClInclude Include="..\Headers\Mesh_Dynamic.h" />
+    <ClInclude Include="..\Headers\Mesh_Dynamic_Bone.h" />
+    <ClInclude Include="..\Headers\Mesh_Dynamic_Parts.h" />
     <ClInclude Include="..\Headers\Mesh_Static.h" />
     <ClInclude Include="..\Headers\Navigation.h" />
     <ClInclude Include="..\Headers\Object_Manager.h" />
@@ -81,6 +84,7 @@
     <ClCompile Include="..\Codes\GameObject.cpp" />
     <ClCompile Include="..\Codes\Graphic_Device.cpp" />
     <ClCompile Include="..\Codes\HierarchyLoader.cpp" />
+    <ClCompile Include="..\Codes\HierarchyLoader_Player.cpp" />
     <ClCompile Include="..\Codes\Input_Device.cpp" />
     <ClCompile Include="..\Codes\KeyManager.cpp" />
     <ClCompile Include="..\Codes\Layer.cpp" />
@@ -88,6 +92,8 @@
     <ClCompile Include="..\Codes\Light_Manager.cpp" />
     <ClCompile Include="..\Codes\Management.cpp" />
     <ClCompile Include="..\Codes\Mesh_Dynamic.cpp" />
+    <ClCompile Include="..\Codes\Mesh_Dynamic_Bone.cpp" />
+    <ClCompile Include="..\Codes\Mesh_Dynamic_Parts.cpp" />
     <ClCompile Include="..\Codes\Mesh_Static.cpp" />
     <ClCompile Include="..\Codes\Navigation.cpp" />
     <ClCompile Include="..\Codes\Object_Manager.cpp" />

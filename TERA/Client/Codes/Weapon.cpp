@@ -39,7 +39,7 @@ HRESULT CWeapon::Ready_GameObject(void * pArg)
 
 	Safe_AddRef(pObject_Manager);
 
-	CMesh_Dynamic* pPlayerMeshCom = (CMesh_Dynamic*)pObject_Manager->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Mesh");
+	CMesh_Dynamic_Bone* pPlayerMeshCom = (CMesh_Dynamic_Bone*)pObject_Manager->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Mesh_Bone");
 	if (nullptr == pPlayerMeshCom)
 		return E_FAIL;
 
