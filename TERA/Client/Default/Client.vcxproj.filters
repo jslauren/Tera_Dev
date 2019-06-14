@@ -139,6 +139,21 @@
     <Filter Include="03. Unit\Player\PlayerState\04. Skill\08. DrawSword\05. End">
       <UniqueIdentifier>{a631cb25-7e7e-4a36-b253-33f918bfdb86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\05. Sit">
+      <UniqueIdentifier>{5e15b629-d07e-4153-adfb-16e290d357ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\06. Hit">
+      <UniqueIdentifier>{28167eee-4a24-478a-943d-a42453f11b3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\06. Hit\Hit">
+      <UniqueIdentifier>{02a45f7b-9cbb-4749-8005-8c938e928450}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\06. Hit\Wake">
+      <UniqueIdentifier>{d6fc2d3e-f9af-439e-ae61-95ba0e8c1255}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\06. Hit\KnockDown">
+      <UniqueIdentifier>{bd558815-22c2-4917-9625-ee6ec0f4549b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -258,6 +273,18 @@
     <ClInclude Include="..\Headers\Player_Skill_DrawSword_End.h">
       <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\05. End</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Player_Sit.h">
+      <Filter>03. Unit\Player\PlayerState\05. Sit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Hit.h">
+      <Filter>03. Unit\Player\PlayerState\06. Hit\Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_KnockDown.h">
+      <Filter>03. Unit\Player\PlayerState\06. Hit\KnockDown</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Wake.h">
+      <Filter>03. Unit\Player\PlayerState\06. Hit\Wake</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -364,6 +391,18 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Player_Skill_DrawSword_End.cpp">
       <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\05. End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Sit.cpp">
+      <Filter>03. Unit\Player\PlayerState\05. Sit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Hit.cpp">
+      <Filter>03. Unit\Player\PlayerState\06. Hit\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_KnockDown.cpp">
+      <Filter>03. Unit\Player\PlayerState\06. Hit\KnockDown</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Wake.cpp">
+      <Filter>03. Unit\Player\PlayerState\06. Hit\Wake</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

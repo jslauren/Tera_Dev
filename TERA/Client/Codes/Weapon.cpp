@@ -180,6 +180,17 @@ HRESULT CWeapon::Set_BoneMatrix(_int iIndex)
 		if (nullptr == m_pBoneMatrix)
 			return E_FAIL;
 	}
+	else if (iIndex == 3)	// ¿À¸¥¼Õ
+	{
+		//m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(2.5f, -3.f, 0.f));
+		//m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(180), D3DXToRadian(0), D3DXToRadian(0));
+		//m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 0.f, 1.f), D3DXToRadian(0));
+		m_pTransformCom->Set_Scaling(WEAPON_SCALING, WEAPON_SCALING, WEAPON_SCALING);
+
+		m_pBoneMatrix = &(pPlayerMeshCom->Get_FrameDesc("Bip01-R-Hand")->CombinedTransformationMatrix);
+		if (nullptr == m_pBoneMatrix)
+			return E_FAIL;
+	}
 
 	Safe_Release(pPlayerMeshCom);
 	Safe_Release(pObject_Manager);
@@ -206,8 +217,12 @@ HRESULT CWeapon::Add_Component()
 		return E_FAIL;
 
 	// For.Com_Collider
+	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_OBB", L"Com_Collider", (CComponent**)&m_pColliderCom,
+	//	&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, &m_matWorld, nullptr, _vec3(0.2f, 0.2f, 1.5f), _vec3(0.0f, 0.f, -0.75f)))))
+	//	return E_FAIL;
+
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_OBB", L"Com_Collider", (CComponent**)&m_pColliderCom,
-		&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, &m_matWorld, nullptr, _vec3(0.2f, 0.2f, 1.5f), _vec3(0.0f, 0.f, -0.75f)))))
+		&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, &m_matWorld, nullptr, _vec3(2.5f, 13.f, 1.f), _vec3(0.0f, 6.f, 0.f)))))
 		return E_FAIL;
 
 	return NOERROR;

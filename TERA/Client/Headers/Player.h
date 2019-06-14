@@ -58,8 +58,8 @@ private:
 	
 private:
 	virtual HRESULT Add_Component();
-	//HRESULT SetUp_HeightOnTerrain();
 	virtual HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
+	HRESULT			SetUp_HeightOnTerrain();
 	void			ViewChanage();
 	void			KeyInput();
 	void			Compute_HeightOnNavi();

@@ -17,7 +17,6 @@ HRESULT CPlayer_Skill_DrawSword::Initialize_State(CPlayer & Player)
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DRAWSWORD);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
-
 	return NOERROR;
 }
 
@@ -25,7 +24,7 @@ CPlayerState * CPlayer_Skill_DrawSword::Input_Keyboard(CPlayer & Player, const f
 {
 	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::DRAWSWORD)
 	{
-		if (Player.Get_Mesh()->IsAnimationEnded(0.55f))
+		if (Player.Get_Mesh()->IsAnimationEnded(0.3f))
 			dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", -1))->Set_BoneMatrix(2);
 
 		if (Player.Get_Mesh()->IsAnimationEnded(0.85f))

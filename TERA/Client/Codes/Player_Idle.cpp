@@ -3,7 +3,10 @@
 #include "Player.h"
 #include "Input_Device.h"
 
+#include "Player_Hit.h"
+#include "Player_Sit.h"
 #include "Player_Move.h"
+#include "Player_KnockDown.h"
 #include "Player_WeaponState.h"
 #include "Player_AttackCombo.h"
 #include "Player_Skill_CutHead.h"
@@ -227,6 +230,27 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 			}
 		}
 	}
+	// [ 앉기, 서기]
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_R) & 0x80)
+	{
+		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::R05UNARMEDWAIT)
+		{
+			if (Player.Get_Mesh()->IsAnimationEnded())
+			{
+				m_iAniState = 1;
+				return CPlayer_Sit::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
+		}
+	}
+	// [ 테스트]
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_T) & 0x80)
+	{
+		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
+		{
+			if (Player.Get_Mesh()->IsAnimationEnded())
+				return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+		}
+	}
 	// [스킬 넘버]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_1) & 0x80)
 	{
@@ -302,7 +326,10 @@ CPlayer_Idle * CPlayer_Idle::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer & 
 	if (*(_int*)(pArg) == 1)
 		Player.Set_AniIndex(CPlayer::PLAYER_ANI::R05UNARMEDWAIT);
 	else
+	{
 		Player.Set_AniIndex(CPlayer::PLAYER_ANI::WAIT);
+		dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", -1))->Set_BoneMatrix(2);
+	}
 
 	if (FAILED(pInstance->Initialize_State(Player)))
 		Safe_Release(pInstance);

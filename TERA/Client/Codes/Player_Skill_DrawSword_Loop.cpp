@@ -4,6 +4,7 @@
 #include "Input_Device.h"
 
 #include "Player_Skill_DrawSword.h"
+#include "Player_Skill_DrawSword_Move.h"
 
 _USING(Client)
 
@@ -26,11 +27,20 @@ CPlayerState * CPlayer_Skill_DrawSword_Loop::Input_Keyboard(CPlayer & Player, co
 	{
 		if (CInput_Device::GetInstance()->GetDIMouseState(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 		{
-			return nullptr;
+			if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_W) ||
+				CInput_Device::GetInstance()->Get_DIKeyDown(DIK_S) ||
+				CInput_Device::GetInstance()->Get_DIKeyDown(DIK_A) ||
+				CInput_Device::GetInstance()->Get_DIKeyDown(DIK_D))
+			{
+				return CPlayer_Skill_DrawSword_Move::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
+			else
+				return nullptr;
 		}
+
 		else if (CInput_Device::GetInstance()->Get_DIMouseUp(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded(0.75f))
+			if (Player.Get_Mesh()->IsAnimationEnded(0.75f));
 				return CPlayer_Skill_DrawSword::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}

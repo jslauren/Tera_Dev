@@ -64,7 +64,7 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 
 	m_pTransformCom->Set_WorldMatrix((*m_pTransformRotateCom->Get_WorldMatrixPointer()) * (*m_pTransformMoveCom->Get_WorldMatrixPointer()));
 
-//	Compute_HeightOnNavi();
+	Compute_HeightOnNavi();
 
 	return _int();
 }
@@ -160,7 +160,7 @@ HRESULT CPlayer::Add_Component()
 	// For.Com_BodyCollider
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_OBB", L"Com_BodyCollider", (CComponent**)&m_pColliderCom,
 		&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, m_pTransformCom->Get_WorldMatrixPointer(), nullptr,
-			_vec3(1.f, 2.f, 1.f), _vec3(0.0f, 1.f, 0.f)))))
+			_vec3(7.5f, 12.f, 8.5f), _vec3(0.0f, 6.f, 0.f)))))
 		return E_FAIL;
 
 	//// For.Com_HandCollider
@@ -176,27 +176,27 @@ HRESULT CPlayer::Add_Component()
 	return NOERROR;
 }
 
-//HRESULT CPlayer::SetUp_HeightOnTerrain()
-//{
-//	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
-//
-//	if (nullptr == pObject_Manager)
-//		return E_FAIL;
-//	pObject_Manager->AddRef();
-//
-//	CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Buffer", 0);
-//	if (nullptr == pBufferCom)
-//		return E_FAIL;
-//
-//	// 플레이어의 Y값과 이 지형의 Y값을 비교해서, 점프를 구현하면 된다.
-//	_float	fY = pBufferCom->Compute_HeightOnBuffer(m_pTransformCom);
-//
-//	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->x, fY + 0.5f, m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->z));
-//
-//	Safe_Release(pObject_Manager);
-//
-//	return NOERROR;
-//}
+HRESULT CPlayer::SetUp_HeightOnTerrain()
+{
+	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
+
+	if (nullptr == pObject_Manager)
+		return E_FAIL;
+	pObject_Manager->AddRef();
+
+	CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Buffer", 0);
+	if (nullptr == pBufferCom)
+		return E_FAIL;
+
+	// 플레이어의 Y값과 이 지형의 Y값을 비교해서, 점프를 구현하면 된다.
+	_float	fY = pBufferCom->Compute_HeightOnBuffer(m_pTransformCom);
+
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->x, fY + 0.5f, m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->z));
+
+	Safe_Release(pObject_Manager);
+
+	return NOERROR;
+}
 
 HRESULT CPlayer::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 {
