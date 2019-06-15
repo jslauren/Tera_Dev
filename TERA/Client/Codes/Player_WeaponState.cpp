@@ -23,24 +23,24 @@ HRESULT CPlayer_WeaponState::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_WeaponState::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
-	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::OUTWEAPON)
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::OutWeapon)
 	{
-		if (Player.Get_Mesh()->IsAnimationEnded(0.41f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.41f))
 			dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", -1))->Set_BoneMatrix(2);
 
-		if (Player.Get_Mesh()->IsAnimationEnded(0.8))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.8))
 		{
 			m_iAniState = 2;
 			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
 			//return nullptr;
 		}
 	}
-	else if(Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::INWEAPON)
+	else if(Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::InWeapon)
 	{
-		if (Player.Get_Mesh()->IsAnimationEnded(0.6f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.6f))
 			dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", -1))->Set_BoneMatrix(1);
 
-		if (Player.Get_Mesh()->IsAnimationEnded(0.7f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.7f))
 		{
 			m_iAniState = 1;
 			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -60,9 +60,9 @@ CPlayer_WeaponState * CPlayer_WeaponState::Create(LPDIRECT3DDEVICE9 pGraphicDevi
 	CPlayer_WeaponState* pInstance = new CPlayer_WeaponState(pGraphicDevice);
 
 	if (*(_int*)(pArg) == 1)
-		Player.Set_AniIndex(CPlayer::PLAYER_ANI::OUTWEAPON);
+		Player.Set_AniIndex(CPlayer::PLAYER_ANI::OutWeapon);
 	else if ((*(_int*)(pArg) == 2))
-		Player.Set_AniIndex(CPlayer::PLAYER_ANI::INWEAPON);
+		Player.Set_AniIndex(CPlayer::PLAYER_ANI::InWeapon);
 
 	if (FAILED(pInstance->Initialize_State(Player)))
 		Safe_Release(pInstance);

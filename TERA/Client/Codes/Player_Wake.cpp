@@ -14,7 +14,7 @@ CPlayer_Wake::CPlayer_Wake(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CPlayer_Wake::Initialize_State(CPlayer & Player)
 {
-	Player.Set_AniIndex(CPlayer::PLAYER_ANI::BREACTIONCOM3);
+	Player.Set_AniIndex(CPlayer::PLAYER_ANI::Hit_Wake);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_READY);
 
 	return NOERROR;
@@ -22,9 +22,9 @@ HRESULT CPlayer_Wake::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_Wake::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
-	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::BREACTIONCOM3)
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Hit_Wake)
 	{
-		if (Player.Get_Mesh()->IsAnimationEnded(0.85f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 		{
 			m_iAniState = 2;
 			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);

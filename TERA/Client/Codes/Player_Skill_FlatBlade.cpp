@@ -14,7 +14,7 @@ Player_Skill_FlatBlade::Player_Skill_FlatBlade(LPDIRECT3DDEVICE9 pGraphic_Device
 
 HRESULT Player_Skill_FlatBlade::Initialize_State(CPlayer & Player)
 {
-	Player.Set_AniIndex(CPlayer::PLAYER_ANI::FLATBLADE);
+	Player.Set_AniIndex(CPlayer::PLAYER_ANI::FlatBlade);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
@@ -22,15 +22,15 @@ HRESULT Player_Skill_FlatBlade::Initialize_State(CPlayer & Player)
 
 CPlayerState * Player_Skill_FlatBlade::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
-	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::FLATBLADE)
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::FlatBlade)
 	{
-		if (Player.Get_Mesh()->IsAnimationEnded(0.05f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.05f))
 			MovePlayerPosition(Player, 40.f, fTimeDelta, pArg, 0);
 
-		if (Player.Get_Mesh()->IsAnimationEnded(0.43f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.43f))
 			MovePlayerPosition(Player, -38.f, fTimeDelta, pArg, 0);
 
-		if (Player.Get_Mesh()->IsAnimationEnded(0.9f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.9f))
 		{
 			m_iAniState = 2;
 			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);

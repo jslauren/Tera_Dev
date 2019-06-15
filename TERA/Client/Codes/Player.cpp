@@ -47,7 +47,7 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	m_pTransformMoveCom->Set_Scaling(PLAYER_SCALING, PLAYER_SCALING, PLAYER_SCALING);
 	m_pTransformMoveCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));
 
-	m_pMeshCom_Bone->SetUp_AnimationSet(wtf);
+	m_pMeshCom_Bone->SetUp_AnimationSet(Idle);
 
 	int iIdleState = 1;
 	m_pState = CPlayer_Idle::Create(m_pGraphic_Device, *this, &iIdleState);
@@ -68,24 +68,24 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 
 	KeyInput();
 	
-	// 이 부분은 추후에 인벤토리 구현 시 참고할 구문이다.
-	if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_8))
-	{
-		if (m_bTest == false)
-		{
-			Safe_Release(m_pMeshCom_Body);
-			m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Body2");
+	//// 이 부분은 추후에 인벤토리 구현 시 참고할 구문이다.
+	//if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_8))
+	//{
+	//	if (m_bTest == false)
+	//	{
+	//		Safe_Release(m_pMeshCom_Body);
+	//		m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Body2");
 
-			m_pMeshCom_Bone->Set_BodyFrame(m_pMeshCom_Body->GetRootFrame());
-		}
-		else
-		{
-			Safe_Release(m_pMeshCom_Body);
-			m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Body");
-			m_pMeshCom_Bone->Set_BodyFrame(m_pMeshCom_Body->GetRootFrame());
-		}
-		m_bTest = !m_bTest;
-	}
+	//		m_pMeshCom_Bone->Set_BodyFrame(m_pMeshCom_Body->GetRootFrame());
+	//	}
+	//	else
+	//	{
+	//		Safe_Release(m_pMeshCom_Body);
+	//		m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Body");
+	//		m_pMeshCom_Bone->Set_BodyFrame(m_pMeshCom_Body->GetRootFrame());
+	//	}
+	//	m_bTest = !m_bTest;
+	//}
 
 	//m_pMeshCom_Bone->Play_Animation(fTimeDelta, m_fAniSpeed);
 

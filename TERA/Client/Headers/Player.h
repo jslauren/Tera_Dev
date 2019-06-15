@@ -11,14 +11,13 @@ class CPlayer : public CUnit
 public:
 	enum PLAYER_ANI	// ÃÑ 42°³ÀÇ ¸ð¼Ç
 	{
-		wtf, WAIT,
-		R05UNARMEDWAIT, UNARMEDRUN, SITEND, SITLOOP, SITSTART, JUMPSTART, JUMPLOOP, JUMPENDLAND, JUMPEND, FALL,
-		/*WAIT,*/ STINGERBLADE, SREACTION, RUN, RISINGATTACK, JAWBREAKER, OUTWEAPON, INWEAPON, HANDYSLASH, GROGGY1,
-		GAIACRUSH03, GAIACRUSH02, GAIACRUSH01, FLATBLADE, DRAWSWORDEND, DRAWSWORD, DRAWSWORDMOVE, DRAWSWORDLOOP,
-		DRAWSWORDCHARGE, DEATH, CUTTINGSLASH, CUTHEAD, COMBO4, COMBO3R, COMBO3, COMBO2R, COMBO2, COMBO1R, COMBO1, 
-		BREACTIONLAND3, BREACTIONCOM3, ADVLEAP, END
+		RageRunner, Hit_Wake, Hit_Loop, Hit_Land, Hit_Rolling, Hit_High, Combo1, Combo1R, Combo2, Combo2R,
+		Combo3, Combo3R, Combo4, CutHead, CuttingSlash, Death, DrawSwordCharge, DrawSwordLoop, 
+		DrawSwordMove, DrawSword, DrawSwordEnd, FlatBlade, Groggy, HandySlash, InWeapon, OutWeapon, JawBreaker, 
+		RagingStrike, Run_Battle, Hit, StingerBlade, Tumbling, Idle_Battle, Fall, JumpStart, JumpLoop, JumpEndLand, JumpEnd,
+		SitStart, SitLoop, SitEnd, Run, Idle, END
 	};
-
+	// Jump, Fall, Tumbling_, RagingStrike_, Groggy, Death, Hit_Rolling_
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CPlayer(const CPlayer& rhs);
@@ -58,8 +57,8 @@ private:
 	_vec3			m_vTargetPos;
 	_float			m_fPlayerPosY = 0.f;
 
-	PLAYER_ANI		m_eAnimationIndex = wtf;
-	PLAYER_ANI		m_eOldAnimationIndex = wtf;
+	PLAYER_ANI		m_eAnimationIndex = Idle;
+	PLAYER_ANI		m_eOldAnimationIndex = Idle;
 
 	_bool			m_bTest = false;
 

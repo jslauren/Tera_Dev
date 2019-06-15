@@ -121,12 +121,12 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	}
 	else // Go to Idle
 	{
-		if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::UNARMEDRUN)
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Run)
 		{
 			m_iAniState = 1;
 			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
-		else if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::RUN)
+		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Run_Battle)
 		{
 			m_iAniState = 2;
 			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -146,10 +146,10 @@ CPlayer_Move * CPlayer_Move::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer & 
 	CPlayer_Move* pInstance = new CPlayer_Move(pGraphicDevice);
 
 	if (*(_int*)(pArg) == 1)
-		Player.Set_AniIndex(CPlayer::PLAYER_ANI::UNARMEDRUN);
+		Player.Set_AniIndex(CPlayer::PLAYER_ANI::Run);
 
 	else if (*(_int*)(pArg) == 2)
-		Player.Set_AniIndex(CPlayer::PLAYER_ANI::RUN);
+		Player.Set_AniIndex(CPlayer::PLAYER_ANI::Run_Battle);
 
 	if (FAILED(pInstance->Initialize_State(Player)))
 		Safe_Release(pInstance);

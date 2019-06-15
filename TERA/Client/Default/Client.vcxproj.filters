@@ -118,9 +118,6 @@
     <Filter Include="03. Unit\Player\PlayerState\04. Skill\06. StingerBlade">
       <UniqueIdentifier>{0952727c-7cac-4121-aade-68fb7c03fd04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Unit\Player\PlayerState\04. Skill\07. GaiaCrush_문제있음">
-      <UniqueIdentifier>{163bf3be-0ecd-4935-8cea-341c60ff1827}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Unit\Player\PlayerState\04. Skill\08. DrawSword">
       <UniqueIdentifier>{e2f595c4-15c6-4cf6-ab64-7ae067b87620}</UniqueIdentifier>
     </Filter>
@@ -153,6 +150,9 @@
     </Filter>
     <Filter Include="03. Unit\Player\PlayerState\06. Hit\KnockDown">
       <UniqueIdentifier>{bd558815-22c2-4917-9625-ee6ec0f4549b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\07. RagingStrike">
+      <UniqueIdentifier>{163bf3be-0ecd-4935-8cea-341c60ff1827}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +254,6 @@
     </ClInclude>
     <ClInclude Include="..\Headers\Player_Skill_StingerBlade.h">
       <Filter>03. Unit\Player\PlayerState\04. Skill\06. StingerBlade</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Headers\Player_Skill_GaiaCrush.h">
-      <Filter>03. Unit\Player\PlayerState\04. Skill\07. GaiaCrush_문제있음</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Player_Skill_DrawSword.h">
       <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\04. Attack</Filter>
@@ -373,9 +370,6 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Player_Skill_StingerBlade.cpp">
       <Filter>03. Unit\Player\PlayerState\04. Skill\06. StingerBlade</Filter>
-    </ClCompile>
-    <ClCompile Include="..\codes\Player_Skill_GaiaCrush.cpp">
-      <Filter>03. Unit\Player\PlayerState\04. Skill\07. GaiaCrush_문제있음</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Player_Skill_DrawSword.cpp">
       <Filter>03. Unit\Player\PlayerState\04. Skill\08. DrawSword\04. Attack</Filter>

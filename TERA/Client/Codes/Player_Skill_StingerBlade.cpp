@@ -14,7 +14,7 @@ CPlayer_Skill_StingerBlade::CPlayer_Skill_StingerBlade(LPDIRECT3DDEVICE9 pGraphi
 
 HRESULT CPlayer_Skill_StingerBlade::Initialize_State(CPlayer & Player)
 {
-	Player.Set_AniIndex(CPlayer::PLAYER_ANI::STINGERBLADE);
+	Player.Set_AniIndex(CPlayer::PLAYER_ANI::StingerBlade);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
@@ -22,15 +22,15 @@ HRESULT CPlayer_Skill_StingerBlade::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_Skill_StingerBlade::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
-	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::STINGERBLADE)
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::StingerBlade)
 	{
-		if (Player.Get_Mesh()->IsAnimationEnded(0.2f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.2f))
 			MovePlayerPosition(Player, 40.f, fTimeDelta, pArg, 0);
 
-		if (Player.Get_Mesh()->IsAnimationEnded(0.43f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.43f))
 			MovePlayerPosition(Player, -38.f, fTimeDelta, pArg, 0);
 
-		if (Player.Get_Mesh()->IsAnimationEnded(0.9f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.9f))
 		{
 			m_iAniState = 2;
 			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);

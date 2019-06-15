@@ -14,7 +14,7 @@ CPlayer_Skill_CuttingSlash::CPlayer_Skill_CuttingSlash(LPDIRECT3DDEVICE9 pGraphi
 
 HRESULT CPlayer_Skill_CuttingSlash::Initialize_State(CPlayer & Player)
 {
-	Player.Set_AniIndex(CPlayer::PLAYER_ANI::CUTTINGSLASH);
+	Player.Set_AniIndex(CPlayer::PLAYER_ANI::CuttingSlash);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
@@ -22,15 +22,15 @@ HRESULT CPlayer_Skill_CuttingSlash::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_Skill_CuttingSlash::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
-	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::CUTTINGSLASH)
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::CuttingSlash)
 	{
-		if (Player.Get_Mesh()->IsAnimationEnded(0.2f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.2f))
 			MovePlayerPosition(Player, 40.f, fTimeDelta, pArg, 0);
 
-		if (Player.Get_Mesh()->IsAnimationEnded(0.43f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.43f))
 			MovePlayerPosition(Player, -38.f, fTimeDelta, pArg, 0);
 
-		if (Player.Get_Mesh()->IsAnimationEnded(0.9f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.9f))
 		{
 			m_iAniState = 2;
 			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);

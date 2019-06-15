@@ -15,7 +15,7 @@ CPlayer_Skill_DrawSword_Loop::CPlayer_Skill_DrawSword_Loop(LPDIRECT3DDEVICE9 pGr
 
 HRESULT CPlayer_Skill_DrawSword_Loop::Initialize_State(CPlayer & Player)
 {
-	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DRAWSWORDLOOP);
+	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DrawSwordLoop);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
@@ -23,7 +23,7 @@ HRESULT CPlayer_Skill_DrawSword_Loop::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_Skill_DrawSword_Loop::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
-	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::DRAWSWORDLOOP)
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::DrawSwordLoop)
 	{
 		if (CInput_Device::GetInstance()->GetDIMouseState(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 		{
@@ -40,7 +40,7 @@ CPlayerState * CPlayer_Skill_DrawSword_Loop::Input_Keyboard(CPlayer & Player, co
 
 		else if (CInput_Device::GetInstance()->Get_DIMouseUp(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded(0.75f));
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.75f));
 				return CPlayer_Skill_DrawSword::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}

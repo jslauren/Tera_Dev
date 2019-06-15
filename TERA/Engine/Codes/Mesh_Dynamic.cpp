@@ -67,8 +67,6 @@ HRESULT CMesh_Dynamic::Ready_Mesh_Dynamic(const _tchar * pFilePath, const _tchar
 	if (FAILED(SetUp_CombinedMatrixPointer(m_pRootFrame)))
 		return E_FAIL;
 
-	//m_pSpineFrame = (D3DXFRAME*)Get_FrameDesc("Skirt_Dummy");
-
 	return NOERROR;
 }
 
@@ -135,21 +133,6 @@ HRESULT CMesh_Dynamic::Play_Animation(const _float & fTimeDelta, const _float fA
 		return E_FAIL;
 
 	m_pAniCtrl->Play_Animation(fTimeDelta * fAniSpeed);
-
-	//memcpy(&m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][0], _vec3(0.f, 0.f, 0.f), sizeof(_vec3));
-
-	//m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][0] = 0;
-	//m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][2] = 0;
-	//
-	//if (nullptr != m_pSpineFrame)
-	//{
-	//	_vec3	vTemp;
-	//	D3DXVec3TransformNormal(&vTemp, (_vec3*)&m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][0], &m_pSpineFrame->TransformationMatrix);
-
-	//	vTemp = -vTemp;
-
-	//	memcpy(&m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][0], &vTemp, sizeof(_vec3));
-	//}
 
 	Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot);
 

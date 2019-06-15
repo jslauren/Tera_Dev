@@ -14,8 +14,8 @@ private:
 public:	// Setter
 	void	Set_HeadFrame(D3DXFRAME* pFrame) { m_pHeadFrame = pFrame; }
 	void	Set_BodyFrame(D3DXFRAME* pFrame) { m_pBodyFrame = pFrame; }
-	void	Set_HandFrame(D3DXFRAME* pFrame) { m_pArmsFrame = pFrame; }
-	void	Set_LegFrame(D3DXFRAME* pFrame) { m_pLegsFrame = pFrame; }
+	void	Set_HandFrame(D3DXFRAME* pFrame) { m_pHandFrame = pFrame; }
+	void	Set_LegFrame(D3DXFRAME* pFrame) { m_pLegFrame = pFrame; }
 	void	Set_TailFrame(D3DXFRAME* pFrame) { m_pTailFrame = pFrame; }
 
 public:
@@ -36,8 +36,8 @@ private:
 	D3DXFRAME*					m_pRootFrame = nullptr;
 	D3DXFRAME*					m_pHeadFrame = nullptr;
 	D3DXFRAME*					m_pBodyFrame = nullptr;
-	D3DXFRAME*					m_pArmsFrame = nullptr;
-	D3DXFRAME*					m_pLegsFrame = nullptr;
+	D3DXFRAME*					m_pHandFrame = nullptr;
+	D3DXFRAME*					m_pLegFrame = nullptr;
 	D3DXFRAME*					m_pTailFrame = nullptr;
 
 	CAnimationCtrl*				m_pAniCtrl = nullptr;

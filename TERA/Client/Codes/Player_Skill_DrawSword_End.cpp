@@ -14,7 +14,7 @@ CPlayer_Skill_DrawSword_End::CPlayer_Skill_DrawSword_End(LPDIRECT3DDEVICE9 pGrap
 
 HRESULT CPlayer_Skill_DrawSword_End::Initialize_State(CPlayer & Player)
 {
-	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DRAWSWORDEND);
+	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DrawSwordEnd);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
@@ -22,9 +22,9 @@ HRESULT CPlayer_Skill_DrawSword_End::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_Skill_DrawSword_End::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
-	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::DRAWSWORDEND)
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::DrawSwordEnd)
 	{
-		if (Player.Get_Mesh()->IsAnimationEnded(0.85f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 		{
 			Player.Set_DrawSwordBtn(false);
 			m_iAniState = 2;

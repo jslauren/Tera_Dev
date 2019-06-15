@@ -14,7 +14,7 @@ CPlayer_KnockDown::CPlayer_KnockDown(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CPlayer_KnockDown::Initialize_State(CPlayer & Player)
 {
-	Player.Set_AniIndex(CPlayer::PLAYER_ANI::BREACTIONLAND3);
+	Player.Set_AniIndex(CPlayer::PLAYER_ANI::Hit_Land);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_PHYSICSSKILL);
 
 	return NOERROR;
@@ -22,9 +22,9 @@ HRESULT CPlayer_KnockDown::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_KnockDown::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
-	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::BREACTIONLAND3)
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Hit_Land)
 	{
-		if (Player.Get_Mesh()->IsAnimationEnded(0.85f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 			return CPlayer_Wake::Create(m_pGraphic_Device, Player, &m_iAniState);
 	}
 

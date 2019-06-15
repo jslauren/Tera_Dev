@@ -60,7 +60,7 @@ HRESULT CMesh_Dynamic_Bone::Ready_Mesh_Dynamic(const _tchar * pFilePath, const _
 	//D3DXMatrixRotationX(&m_matPivot, D3DXToRadian(180.0f));
 	D3DXMatrixIdentity(&m_matPivot);
 
-	if (FAILED(Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot, m_pHeadFrame, m_pBodyFrame, m_pArmsFrame, m_pLegsFrame, m_pTailFrame)))
+	if (FAILED(Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot, m_pHeadFrame, m_pBodyFrame, m_pHandFrame, m_pLegFrame, m_pTailFrame)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -93,7 +93,7 @@ HRESULT CMesh_Dynamic_Bone::Play_Animation(const _float & fTimeDelta, const _flo
 
 	m_pAniCtrl->Play_Animation(fTimeDelta * fAniSpeed);
 
-	Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot, m_pHeadFrame, m_pBodyFrame, m_pArmsFrame, m_pLegsFrame, m_pTailFrame);
+	Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot, m_pHeadFrame, m_pBodyFrame, m_pHandFrame, m_pLegFrame, m_pTailFrame);
 
 	return NOERROR;
 }
@@ -203,9 +203,7 @@ CComponent * CMesh_Dynamic_Bone::Clone(void * pArg)
 void CMesh_Dynamic_Bone::Free()
 {
 	if (false == m_isClone)
-	{
 		m_pLoader->DestroyFrame(m_pRootFrame);
-	}
 
 	Safe_Release(m_pLoader);
 	Safe_Release(m_pAniCtrl);

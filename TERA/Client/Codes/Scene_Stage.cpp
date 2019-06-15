@@ -294,17 +294,6 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Monster", CMonster::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	// For.GameObject_tiger
-	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_tiger", CMonster::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	// For.GameObject_TombStone
-	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_TombStone", CMonster::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	// For.GameObject_sylva
-	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_sylva", CMonster::Create(m_pGraphic_Device))))
-		return E_FAIL;
 
 	return NOERROR;
 }

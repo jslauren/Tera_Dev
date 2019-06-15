@@ -14,7 +14,7 @@ CPlayer_Skill_DrawSword::CPlayer_Skill_DrawSword(LPDIRECT3DDEVICE9 pGraphic_Devi
 
 HRESULT CPlayer_Skill_DrawSword::Initialize_State(CPlayer & Player)
 {
-	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DRAWSWORD);
+	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DrawSword);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
@@ -22,12 +22,12 @@ HRESULT CPlayer_Skill_DrawSword::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_Skill_DrawSword::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
-	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::DRAWSWORD)
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::DrawSword)
 	{
-		if (Player.Get_Mesh()->IsAnimationEnded(0.3f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.3f))
 			dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", -1))->Set_BoneMatrix(2);
 
-		if (Player.Get_Mesh()->IsAnimationEnded(0.85f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 			return CPlayer_Skill_DrawSword_End::Create(m_pGraphic_Device, Player, &m_iAniState);
 
 	}

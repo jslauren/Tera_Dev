@@ -183,7 +183,6 @@
     <ClInclude Include="..\Headers\Player_Skill_DrawSword_Loop.h" />
     <ClInclude Include="..\Headers\Player_Skill_DrawSword_Move.h" />
     <ClInclude Include="..\Headers\Player_Skill_FlatBlade.h" />
-    <ClInclude Include="..\Headers\Player_Skill_GaiaCrush.h" />
     <ClInclude Include="..\Headers\Player_Skill_HandySlash.h" />
     <ClInclude Include="..\Headers\Player_Skill_JawBreaker.h" />
     <ClInclude Include="..\Headers\Player_Skill_StingerBlade.h" />
@@ -226,7 +225,6 @@
     <ClCompile Include="..\Codes\Player_Skill_DrawSword_Loop.cpp" />
     <ClCompile Include="..\Codes\Player_Skill_DrawSword_Move.cpp" />
     <ClCompile Include="..\Codes\Player_Skill_FlatBlade.cpp" />
-    <ClCompile Include="..\codes\Player_Skill_GaiaCrush.cpp" />
     <ClCompile Include="..\Codes\Player_Skill_HandySlash.cpp" />
     <ClCompile Include="..\Codes\Player_Skill_JawBreaker.cpp" />
     <ClCompile Include="..\Codes\Player_Skill_StingerBlade.cpp" />

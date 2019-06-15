@@ -15,7 +15,7 @@ CPlayer_Skill_DrawSword_Charge::CPlayer_Skill_DrawSword_Charge(LPDIRECT3DDEVICE9
 
 HRESULT CPlayer_Skill_DrawSword_Charge::Initialize_State(CPlayer & Player)
 {
-	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DRAWSWORDCHARGE);
+	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DrawSwordCharge);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
@@ -23,23 +23,23 @@ HRESULT CPlayer_Skill_DrawSword_Charge::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_Skill_DrawSword_Charge::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
-	if (Player.Get_Mesh()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::DRAWSWORDCHARGE)
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::DrawSwordCharge)
 	{
 		if (CInput_Device::GetInstance()->GetDIMouseState(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded(0.2f))
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.2f))
 			{
 				CTransform* pWeaponTransformCom = dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", -1))->Get_TransformCom();
 
 				pWeaponTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(5.f, 5.f, 2.f));
 				pWeaponTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(0), D3DXToRadian(25), D3DXToRadian(-45));
 			}
-			if (Player.Get_Mesh()->IsAnimationEnded(0.85f))
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 				return CPlayer_Skill_DrawSword_Loop::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 		else
 		{
-			if (Player.Get_Mesh()->IsAnimationEnded(0.4f))
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.4f))
 			{
 				m_iAniState = 2;
 				Player.Set_DrawSwordBtn(false);
