@@ -5,6 +5,7 @@
 #include "Navigation.h"
 
 #include "Player_Idle.h"
+#include "Player_Skill_Tumbling.h"
 
 _USING(Client)
 
@@ -21,21 +22,26 @@ HRESULT CPlayer_Move::Initialize_State(CPlayer & Player)
 	return NOERROR;
 }
 
-CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void* pAgr)
+CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void* pArg)
 {
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_W) & 0x80)
 	{
-		//if (CInput_Device::GetInstance()->GetDIMouseState(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
-			//return CPlayer_Jump::Create(m_pGraphicDevice, Player);
+		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
+		{
+			// 이 친구는 Move 함수를 돌리기 위한 인자로 pArg를 넘기는 거라,
+			// 1이 아니고 0부터 시작한다.
+			m_iAniState = 0;
+			return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+		}
 
 		_uint		iCellIndx = 0;
 		// 여기서 Move함수의 스피드랑 Move_OnNavigation함수의 인자값인 fTimeDelta랑 값을 동기화 해줘야 안끼고 잘간다.
-		if (true == ((CNavigation*)(pAgr))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
+		if (true == ((CNavigation*)(pArg))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
 		{
 			Player.Get_TransformMove()->Move(0, 30.f, fTimeDelta);
 
 			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
-			((CNavigation*)(pAgr))->SetUp_CurrentIndex(iCellIndx);
+			((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
 		}
 
 		if (CInput_Device::GetInstance()->GetDIKeyState(DIK_A) & 0x80)
@@ -54,17 +60,20 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	}
 	else if (CInput_Device::GetInstance()->GetDIKeyState(DIK_S) & 0x80)
 	{
-		//if (Engine::Get_DIKeyDown(DIK_SPACE))
-		//	return CPlayer_Jump::Create(m_pGraphicDevice, Player);
+		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
+		{
+			m_iAniState = 1;
+			return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+		}
 		
 		_uint		iCellIndx = 0;
 		// 여기서 Move함수의 스피드랑 Move_OnNavigation함수의 인자값인 fTimeDelta랑 값을 동기화 해줘야 안끼고 잘간다.
-		if (true == ((CNavigation*)(pAgr))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
+		if (true == ((CNavigation*)(pArg))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
 		{
 			Player.Get_TransformMove()->Move(1, 30.f, fTimeDelta);
 
 			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
-			((CNavigation*)(pAgr))->SetUp_CurrentIndex(iCellIndx);
+			((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
 		}
 
 		if (CInput_Device::GetInstance()->GetDIKeyState(DIK_A) & 0x80)
@@ -83,17 +92,20 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	}
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_A) & 0x80)
 	{
-		/*if (Engine::Get_DIKeyDown(DIK_SPACE))
-			return CPlayer_Jump::Create(m_pGraphicDevice, Player);*/
+		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
+		{
+			m_iAniState = 2;
+			return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+		}
 
 		_uint		iCellIndx = 0;
 		// 여기서 Move함수의 스피드랑 Move_OnNavigation함수의 인자값인 fTimeDelta랑 값을 동기화 해줘야 안끼고 잘간다.
-		if (true == ((CNavigation*)(pAgr))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
+		if (true == ((CNavigation*)(pArg))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
 		{
 			Player.Get_TransformMove()->Move(2, 30.f, fTimeDelta);
 
 			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
-			((CNavigation*)(pAgr))->SetUp_CurrentIndex(iCellIndx);
+			((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
 		}
 
 		Player.Get_TransformRotation()->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(-90));
@@ -102,17 +114,20 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	}
 	else if (CInput_Device::GetInstance()->GetDIKeyState(DIK_D) & 0x80)
 	{
-		/*if (Engine::Get_DIKeyDown(DIK_SPACE))
-		return CPlayer_Jump::Create(m_pGraphicDevice, Player);*/
+		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
+		{
+			m_iAniState = 3;
+			return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+		}
 
 		_uint		iCellIndx = 0;
 		// 여기서 Move함수의 스피드랑 Move_OnNavigation함수의 인자값인 fTimeDelta랑 값을 동기화 해줘야 안끼고 잘간다.
-		if (true == ((CNavigation*)(pAgr))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
+		if (true == ((CNavigation*)(pArg))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
 		{
 			Player.Get_TransformMove()->Move(3, 30.f, fTimeDelta);
 
 			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
-			((CNavigation*)(pAgr))->SetUp_CurrentIndex(iCellIndx);
+			((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
 		}
 
 		Player.Get_TransformRotation()->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(90));

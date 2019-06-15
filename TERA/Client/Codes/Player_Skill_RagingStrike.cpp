@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\Headers\Player_Skill_StingerBlade.h"
+#include "..\Headers\Player_Skill_RagingStrike.h"
 #include "Player.h"
 #include "Input_Device.h"
 
@@ -7,22 +7,22 @@
 
 _USING(Client)
 
-CPlayer_Skill_StingerBlade::CPlayer_Skill_StingerBlade(LPDIRECT3DDEVICE9 pGraphic_Device)
+CPlayer_Skill_RagingStrike::CPlayer_Skill_RagingStrike(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CPlayerState(pGraphic_Device)
 {
 }
 
-HRESULT CPlayer_Skill_StingerBlade::Initialize_State(CPlayer & Player)
+HRESULT CPlayer_Skill_RagingStrike::Initialize_State(CPlayer & Player)
 {
-	Player.Set_AniIndex(CPlayer::PLAYER_ANI::StingerBlade);
+	Player.Set_AniIndex(CPlayer::PLAYER_ANI::RagingStrike);
 	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }
 
-CPlayerState * CPlayer_Skill_StingerBlade::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
+CPlayerState * CPlayer_Skill_RagingStrike::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
-	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::StingerBlade)
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::RagingStrike)
 	{
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.2f))
 			MovePlayerPosition(Player, 40.f, fTimeDelta, pArg, 0);
@@ -40,11 +40,11 @@ CPlayerState * CPlayer_Skill_StingerBlade::Input_Keyboard(CPlayer & Player, cons
 	return nullptr;
 }
 
-void CPlayer_Skill_StingerBlade::Update_State(CPlayer & Player, const float & fTimeDelta)
+void CPlayer_Skill_RagingStrike::Update_State(CPlayer & Player, const float & fTimeDelta)
 {
 }
 
-void CPlayer_Skill_StingerBlade::MovePlayerPosition(CPlayer & Player, _float fPlayerSpeed, const float & fTimeDelta, void * pArg, _int iMoveDir)
+void CPlayer_Skill_RagingStrike::MovePlayerPosition(CPlayer & Player, _float fPlayerSpeed, const float & fTimeDelta, void * pArg, _int iMoveDir)
 {
 	_uint		iCellIndx = 0;
 	if (true == ((CNavigation*)(pArg))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
@@ -56,9 +56,9 @@ void CPlayer_Skill_StingerBlade::MovePlayerPosition(CPlayer & Player, _float fPl
 	}
 }
 
-CPlayer_Skill_StingerBlade * CPlayer_Skill_StingerBlade::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer & Player, void * pArg)
+CPlayer_Skill_RagingStrike * CPlayer_Skill_RagingStrike::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer & Player, void * pArg)
 {
-	CPlayer_Skill_StingerBlade* pInstance = new CPlayer_Skill_StingerBlade(pGraphicDevice);
+	CPlayer_Skill_RagingStrike* pInstance = new CPlayer_Skill_RagingStrike(pGraphicDevice);
 
 	if (FAILED(pInstance->Initialize_State(Player)))
 		Safe_Release(pInstance);
@@ -66,7 +66,7 @@ CPlayer_Skill_StingerBlade * CPlayer_Skill_StingerBlade::Create(LPDIRECT3DDEVICE
 	return pInstance;
 }
 
-void CPlayer_Skill_StingerBlade::Free()
+void CPlayer_Skill_RagingStrike::Free()
 {
 	CPlayerState::Free();
 }

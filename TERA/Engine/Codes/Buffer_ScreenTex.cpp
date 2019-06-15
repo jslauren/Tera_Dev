@@ -19,7 +19,7 @@ HRESULT CBuffer_ScreenTex::Ready_VIBuffer()
 	m_iVtxSize = sizeof(VTXVIEWPORT);
 	m_iNumVertices = 4;
 
-	m_dwVtxFVF = D3DFVF_XYZRHW | D3DFVF_TEX1;
+	m_dwVtxFVF = D3DFVF_XYZ | D3DFVF_TEX1;
 	m_iNumPolygons = 2;
 
 	m_iIndexSize = sizeof(INDEX16);

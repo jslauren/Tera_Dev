@@ -154,6 +154,18 @@
     <Filter Include="03. Unit\Player\PlayerState\04. Skill\07. RagingStrike">
       <UniqueIdentifier>{163bf3be-0ecd-4935-8cea-341c60ff1827}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\06. Hit\Rolling">
+      <UniqueIdentifier>{dd19e4ec-b5ff-4381-9988-99a116789465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\04. Skill\09. Tumbling">
+      <UniqueIdentifier>{dfafa8a8-0bd6-4cb5-bdf8-d9342036817f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Player\PlayerState\06. Hit\High">
+      <UniqueIdentifier>{5d56c489-6e79-44d7-b359-37bc80c60700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. UI\UI\00. HpBoard">
+      <UniqueIdentifier>{3fc980c1-a50b-44da-a2cb-d62aba811fb2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -282,6 +294,18 @@
     <ClInclude Include="..\Headers\Player_Wake.h">
       <Filter>03. Unit\Player\PlayerState\06. Hit\Wake</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_RagingStrike.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\07. RagingStrike</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_HitRolling.h">
+      <Filter>03. Unit\Player\PlayerState\06. Hit\Rolling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_Tumbling.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\09. Tumbling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_HitHigh.h">
+      <Filter>03. Unit\Player\PlayerState\06. Hit\High</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -397,6 +421,18 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Player_Wake.cpp">
       <Filter>03. Unit\Player\PlayerState\06. Hit\Wake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_RagingStrike.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\07. RagingStrike</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_HitRolling.cpp">
+      <Filter>03. Unit\Player\PlayerState\06. Hit\Rolling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_Skill_Tumbling.cpp">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\09. Tumbling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Player_HitHigh.cpp">
+      <Filter>03. Unit\Player\PlayerState\06. Hit\High</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -12,12 +12,12 @@ public:
 	enum PLAYER_ANI	// ÃÑ 42°³ÀÇ ¸ð¼Ç
 	{
 		RageRunner, Hit_Wake, Hit_Loop, Hit_Land, Hit_Rolling, Hit_High, Combo1, Combo1R, Combo2, Combo2R,
-		Combo3, Combo3R, Combo4, CutHead, CuttingSlash, Death, DrawSwordCharge, DrawSwordLoop, 
-		DrawSwordMove, DrawSword, DrawSwordEnd, FlatBlade, Groggy, HandySlash, InWeapon, OutWeapon, JawBreaker, 
-		RagingStrike, Run_Battle, Hit, StingerBlade, Tumbling, Idle_Battle, Fall, JumpStart, JumpLoop, JumpEndLand, JumpEnd,
+		Combo3, Combo3R, Combo4, CutHead, CuttingSlash, Death, DrawSwordCharge, DrawSwordLoop, DrawSwordMove, 
+		DrawSword, DrawSwordEnd, FlatBlade, Groggy, HandySlash, InWeapon, OutWeapon, JawBreaker, RagingStrike,
+		Run_Battle, Hit, StingerBlade, Tumbling, Idle_Battle, Fall, JumpStart, JumpLoop, JumpEndLand, JumpEnd,
 		SitStart, SitLoop, SitEnd, Run, Idle, END
 	};
-	// Jump, Fall, Tumbling_, RagingStrike_, Groggy, Death, Hit_Rolling_
+	// Jump, Fall, Tumbling_, Groggy, Death
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CPlayer(const CPlayer& rhs);
@@ -28,11 +28,13 @@ public:	// Getter
 	const PLAYER_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
 	const _bool&		Get_DrawSwordBtnState() { return m_bIsDrawSwordPressed; }
 	CMesh_Dynamic_Bone*	Get_Mesh_Bone() { return m_pMeshCom_Bone; }
+	const _int&			Get_Direction() { return m_iDirection; }
 
 public:	// Setter
 	void			Set_AniIndex(const PLAYER_ANI& iIndex) { m_eAnimationIndex = iIndex; }
 	void			Set_OldAniIndex(const PLAYER_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
 	void			Set_DrawSwordBtn(_bool bPressed) { m_bIsDrawSwordPressed = bPressed; }
+	void			Set_Direction(_int iDir) { m_iDirection = iDir; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -63,6 +65,7 @@ private:
 	_bool			m_bTest = false;
 
 	_bool			m_bIsDrawSwordPressed = false;
+	_int			m_iDirection = 1;
 	
 private:
 	virtual HRESULT Add_Component();

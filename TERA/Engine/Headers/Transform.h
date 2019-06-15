@@ -34,6 +34,7 @@ public:
 
 	// 0, 1, 2, 3 - Up, Down, Left, Right
 	HRESULT	Move(_int iDirection, const _float& fSpeedPerSec, const _float& fTimeDelta);
+	HRESULT	Move(const _vec3* vPos, const _float& fSpeedPerSec, const _float& fTimeDelta);
 	HRESULT	Rotation_Axis(const _vec3& vAxis, const _float& fRadianPerSec, const _float& fTimeDelta);
 	HRESULT	Move_Target(const CTransform* pTransform, const _float& fSpeedPerSec, const _float& fTimeDelta);
 	HRESULT	Move_Target(const _vec3* pTargetPos, const _float& fSpeedPerSec, const _float& fTimeDelta, _bool* pFinish);

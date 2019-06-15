@@ -171,6 +171,8 @@
     <ClInclude Include="..\Headers\Player_AttackCombo.h" />
     <ClInclude Include="..\Headers\Player_AttackCombo_R.h" />
     <ClInclude Include="..\Headers\Player_Hit.h" />
+    <ClInclude Include="..\Headers\Player_HitHigh.h" />
+    <ClInclude Include="..\Headers\Player_HitRolling.h" />
     <ClInclude Include="..\Headers\Player_Idle.h" />
     <ClInclude Include="..\Headers\Player_KnockDown.h" />
     <ClInclude Include="..\Headers\Player_Move.h" />
@@ -185,7 +187,9 @@
     <ClInclude Include="..\Headers\Player_Skill_FlatBlade.h" />
     <ClInclude Include="..\Headers\Player_Skill_HandySlash.h" />
     <ClInclude Include="..\Headers\Player_Skill_JawBreaker.h" />
+    <ClInclude Include="..\Headers\Player_Skill_RagingStrike.h" />
     <ClInclude Include="..\Headers\Player_Skill_StingerBlade.h" />
+    <ClInclude Include="..\Headers\Player_Skill_Tumbling.h" />
     <ClInclude Include="..\Headers\Player_Wake.h" />
     <ClInclude Include="..\Headers\Player_WeaponState.h" />
     <ClInclude Include="..\Headers\Scene_Logo.h" />
@@ -213,6 +217,8 @@
     <ClCompile Include="..\Codes\Player_AttackCombo.cpp" />
     <ClCompile Include="..\Codes\Player_AttackCombo_R.cpp" />
     <ClCompile Include="..\Codes\Player_Hit.cpp" />
+    <ClCompile Include="..\Codes\Player_HitHigh.cpp" />
+    <ClCompile Include="..\Codes\Player_HitRolling.cpp" />
     <ClCompile Include="..\Codes\Player_Idle.cpp" />
     <ClCompile Include="..\Codes\Player_KnockDown.cpp" />
     <ClCompile Include="..\Codes\Player_Move.cpp" />
@@ -227,7 +233,9 @@
     <ClCompile Include="..\Codes\Player_Skill_FlatBlade.cpp" />
     <ClCompile Include="..\Codes\Player_Skill_HandySlash.cpp" />
     <ClCompile Include="..\Codes\Player_Skill_JawBreaker.cpp" />
+    <ClCompile Include="..\Codes\Player_Skill_RagingStrike.cpp" />
     <ClCompile Include="..\Codes\Player_Skill_StingerBlade.cpp" />
+    <ClCompile Include="..\Codes\Player_Skill_Tumbling.cpp" />
     <ClCompile Include="..\Codes\Player_Wake.cpp" />
     <ClCompile Include="..\Codes\Player_WeaponState.cpp" />
     <ClCompile Include="..\Codes\Scene_Logo.cpp" />

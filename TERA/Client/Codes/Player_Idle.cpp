@@ -10,10 +10,12 @@
 #include "Player_WeaponState.h"
 #include "Player_AttackCombo.h"
 #include "Player_Skill_CutHead.h"
-#include "Player_Skill_CuttingSlash.h"
+#include "Player_Skill_Tumbling.h"
 #include "Player_Skill_FlatBlade.h"
 #include "Player_Skill_HandySlash.h"
 #include "Player_Skill_JawBreaker.h"
+#include "Player_Skill_CuttingSlash.h"
+#include "Player_Skill_RagingStrike.h"
 #include "Player_Skill_StingerBlade.h"
 #include "Player_Skill_DrawSword_Charge.h"
 
@@ -210,6 +212,16 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 				return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
+	// [회피 기동 점프 스킬]
+	if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
+	{
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
+		{
+			m_iAniState = 0;
+			return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+		}
+
+	}
 	// [무기 발검, 착검]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_F) & 0x80)
 	{
@@ -298,17 +310,17 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 				return CPlayer_Skill_StingerBlade::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
-	//if (CInput_Device::GetInstance()->GetDIKeyState(DIK_7) & 0x80)
-	//{
-	//	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::WAIT)
-	//	{
-	//		if (Player.Get_Mesh_Bone()->IsAnimationEnded())
-	//		{
-	//			m_iAniState = 1;
-	//			return CPlayer_Skill_GaiaCrush::Create(m_pGraphic_Device, Player, &m_iAniState);
-	//		}
-	//	}
-	//}
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_7) & 0x80)
+	{
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
+		{
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
+			{
+				m_iAniState = 1;
+				return CPlayer_Skill_RagingStrike::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
+		}
+	}
 
 	return nullptr;
 }

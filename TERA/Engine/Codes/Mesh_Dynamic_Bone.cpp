@@ -93,6 +93,10 @@ HRESULT CMesh_Dynamic_Bone::Play_Animation(const _float & fTimeDelta, const _flo
 
 	m_pAniCtrl->Play_Animation(fTimeDelta * fAniSpeed);
 
+	// 애니메이션에 들어가있는 이동 값을 조져버리는 구문이다.
+	m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][0] = 0;
+	m_pRootFrame->pFrameFirstChild->TransformationMatrix.m[3][2] = 0;
+
 	Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot, m_pHeadFrame, m_pBodyFrame, m_pHandFrame, m_pLegFrame, m_pTailFrame);
 
 	return NOERROR;

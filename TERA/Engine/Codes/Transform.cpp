@@ -137,6 +137,26 @@ HRESULT CTransform::Move(_int iDirection, const _float & fSpeedPerSec, const _fl
 	return NOERROR;
 }
 
+HRESULT CTransform::Move(const _vec3 * vPos, const _float & fSpeedPerSec, const _float & fTimeDelta)
+{
+	// Feat.ÇüÁøÀÌ
+
+	if (nullptr == vPos)
+		return E_FAIL;
+
+	_vec3 vTemp;
+	vTemp = *D3DXVec3Normalize(&vTemp, vPos) * fSpeedPerSec * fTimeDelta;
+
+	_vec3	vPosition;
+	memcpy(&vPosition, &m_matWorld.m[STATE_POSITION][0], sizeof(_vec3));
+
+	vPosition += vTemp;
+
+	memcpy(&m_matWorld.m[STATE_POSITION][0], &vPosition, sizeof(_vec3));
+
+	return NOERROR;
+}
+
 //HRESULT CTransform::Set_Angle_X(const _float & fRadian)
 //{
 //	_matrix		matRot;
