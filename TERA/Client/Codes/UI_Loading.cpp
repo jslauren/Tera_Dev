@@ -29,7 +29,7 @@ HRESULT CUI_Loading::Ready_GameObject(void * pArg)
 
 	m_pTransformCom->Set_Scaling(2.f, 2.f, 2.f);
 
-	m_pTransformBarFrameCom->Set_Scaling( (g_iWinCX * 0.65f), (g_iWinCY * 0.08f), 0.f);
+	m_pTransformBarFrameCom->Set_Scaling((g_iWinCX * 0.65f), (g_iWinCY * 0.08f), 0.f);
 	m_pTransformBarFrameCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.f, -(g_iWinCY * 0.405f), 0.f));
 
 	m_pTransformBarFilterCom->Set_Scaling((g_iWinCX * 0.65f), (g_iWinCY * 0.08f), 0.f);

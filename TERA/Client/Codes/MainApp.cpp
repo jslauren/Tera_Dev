@@ -176,15 +176,15 @@ HRESULT CMainApp::Ready_Component_Prototype()
 
 	// 로딩 바 텍스쳐
 	// For.Component_Texture_Bar_Frame
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Bar_Frame", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Loading/Bar_Frame.png"))))
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Bar_Frame", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/Loading/Bar_Frame.png"))))
 		return E_FAIL;
 
 	// For.Component_Texture_Bar_Filter
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Bar_Filter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Loading/Bar_Filter.png"))))
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Bar_Filter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/Loading/Bar_Filter.png"))))
 		return E_FAIL;
 
 	// For.Component_Texture_Bar_Gauge
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Bar_Gauge", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Loading/Bar_Gauge.png"))))
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Bar_Gauge", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/Loading/Bar_Gauge.png"))))
 		return E_FAIL;
 	
 	// 로딩에 필요한 텍스쳐를 그리는데 필요한 일반 쉐이더

@@ -54,7 +54,7 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 	
-	m_iTotalRsrcNum = 47;
+	m_iTotalRsrcNum = 53;
 	m_iCurrentRsrcNum = 0;
 	m_iComplete = 0;
 
@@ -84,6 +84,37 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
+
+	// For.Component_Buffer_UI_Point_Board
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Point_Board", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Buffer_UI_HpFilter
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_HpFilter", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Buffer_UI_MpFilter
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_MpFilter", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Texture_UI_Point_Board
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_Point_Board", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/PlayerPoint/PlayerPoint.png"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Texture_UI_HpFilter
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_HpFilter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/PlayerPoint/HP_Filter.png"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Texture_UI_MpFilter
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_MpFilter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/PlayerPoint/MP_Filter.png"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
 
 	//// For.Component_Texture_Terrain
 	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Common_BG/Texture2D/CM_Floor_08_Diff.tga"))))

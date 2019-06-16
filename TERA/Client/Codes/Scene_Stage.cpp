@@ -9,6 +9,7 @@
 #include "Weapon.h"
 #include "Monster.h"
 #include "TerrainObject.h"
+#include "UI_PlayerPoint.h"
 
 #define	NEAR			0.2f
 #define FAR				1000.f
@@ -278,10 +279,6 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Terrain", CTerrain::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	//// For.GameObject_UI
-	//if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_UI", CUI::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
-
 	// For.GameObject_Player
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Player", CPlayer::Create(m_pGraphic_Device))))
 		return E_FAIL;
@@ -292,6 +289,10 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 
 	// For.GameObject_Monster
 	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Monster", CMonster::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_UI_PlayerPoint
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_PlayerPoint", CUI_PlayerPoint::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 
@@ -350,9 +351,8 @@ HRESULT CScene_Stage::Ready_Layer_Monster(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage::Ready_Layer_UI(const _tchar * pLayerTag)
 {
-	// For.UI
-	//if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_UI", SCENE_STAGE, pLayerTag)))
-	//	return E_FAIL;
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_PlayerPoint", SCENE_STATIC, pLayerTag)))
+		return E_FAIL;
 
 	return NOERROR;
 }
