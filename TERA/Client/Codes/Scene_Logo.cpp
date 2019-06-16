@@ -3,6 +3,7 @@
 #include "Scene_Stage.h"
 #include "Management.h"
 #include "Back_Logo.h"
+#include "UI_Loading.h"
 #include "Loading.h"
 
 _USING(Client)
@@ -29,7 +30,7 @@ HRESULT CScene_Logo::Ready_Scene()
 	m_pLoading = CLoading::Create(m_pGraphic_Device, SCENE_STAGE);
 	if (nullptr == m_pLoading)
 		return E_FAIL;
-
+	
 	return NOERROR;
 }
 
@@ -55,10 +56,10 @@ _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 				Safe_Release(pManagement);
 				return -1;
 			}
-		}
 
-		Safe_Release(pManagement);
-		return 0;
+			Safe_Release(pManagement);
+			return 0;
+		}
 	}
 
 	Safe_Release(pManagement);
@@ -82,14 +83,6 @@ HRESULT CScene_Logo::Ready_Component_Prototype()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
-	// For.Component_Buffer_TriCol
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_LOGO, L"Component_Buffer_TriCol", CBuffer_TriCol::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	//// For.Component_Buffer_RcCol
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_LOGO, L"Component_Buffer_RcCol", CBuffer_RcCol::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
-
 	return NOERROR;
 }
 
@@ -100,15 +93,21 @@ HRESULT CScene_Logo::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_LOGO, L"GameObject_BackLogo", CBack_Logo::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	if (FAILED(Add_Object_Prototype(SCENE_LOGO, L"GameObject_Loading", CUI_Loading::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
 HRESULT CScene_Logo::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
 	// For.Back_Logo
-	if (FAILED(Add_Object(SCENE_LOGO, L"GameObject_BackLogo", SCENE_LOGO, pLayerTag)))
-		return E_FAIL;
+	//if (FAILED(Add_Object(SCENE_LOGO, L"GameObject_BackLogo", SCENE_LOGO, pLayerTag)))
+	//	return E_FAIL;
 
+	if (FAILED(Add_Object(SCENE_LOGO, L"GameObject_Loading", SCENE_LOGO, pLayerTag)))
+		return E_FAIL;
+	
 	return NOERROR;
 }
 

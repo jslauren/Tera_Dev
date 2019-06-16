@@ -1,37 +1,35 @@
 #pragma once
 #include "Defines.h"
 #include "GameObject.h"
-
-_BEGIN(Engine)
-class CTransform;
-class CBuffer_RcTex; // 그리기를 위한 리소스로 정점 버퍼를 추가한다.
-class CRenderer; //백로고를 렌더그룹에 추가하기 위해.and Render함수를 호출할 수 있도록 
-class CShader;
-class CTexture;
-_END
+#include "Buffer_RcTex.h"
+#include "UI.h"
 
 _BEGIN(Client)
 
-class CBack_Logo final : public CGameObject
+class CBack_Logo final : public CUI
 {
 private:
 	explicit CBack_Logo(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CBack_Logo(const CBack_Logo& rhs);
 	virtual ~CBack_Logo() = default;
+
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);
 	virtual _int	Update_GameObject(const _float& fTimeDelta);
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
+
 private:
-	CTransform*		m_pTransformCom = nullptr;
-	CBuffer_RcTex*	m_pBufferCom = nullptr;
-	CRenderer*		m_pRendererCom = nullptr;
-	CTexture*		m_pTextureCom = nullptr;
-	CShader*		m_pShaderCom = nullptr;
+	virtual HRESULT			Add_Component();
+	virtual HRESULT			SetUp_ConstantTable(LPD3DXEFFECT pEffect);
+
 private:
-	HRESULT			Add_Component();
+	CBuffer_RcTex*			m_pBufferBGCom = nullptr;
+
+private:
+	_int					m_iLoadingProgressValue = 0;
+
 public:
 	static CBack_Logo*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

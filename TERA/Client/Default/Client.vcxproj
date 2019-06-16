@@ -198,6 +198,7 @@
     <ClInclude Include="..\Headers\Terrain.h" />
     <ClInclude Include="..\Headers\TerrainObject.h" />
     <ClInclude Include="..\Headers\UI.h" />
+    <ClInclude Include="..\Headers\UI_Loading.h" />
     <ClInclude Include="..\Headers\Unit.h" />
     <ClInclude Include="..\Headers\Weapon.h" />
     <ClInclude Include="Client.h" />
@@ -244,6 +245,7 @@
     <ClCompile Include="..\Codes\Terrain.cpp" />
     <ClCompile Include="..\Codes\TerrainObject.cpp" />
     <ClCompile Include="..\Codes\UI.cpp" />
+    <ClCompile Include="..\Codes\UI_Loading.cpp" />
     <ClCompile Include="..\Codes\Unit.cpp" />
     <ClCompile Include="..\Codes\Weapon.cpp" />
     <ClCompile Include="Client.cpp" />

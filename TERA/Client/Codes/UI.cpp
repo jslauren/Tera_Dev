@@ -47,17 +47,17 @@ HRESULT CUI::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
-	// For.Com_Buffer
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_UI", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
-		return E_FAIL;
-
 	// For.Com_Renderer
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
 	// For.Com_Shader
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Default", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
+
+	//// For.Com_Buffer
+	//if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_UI", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
+	//	return E_FAIL;
 
 	// 여기서 안하고 얘를 상속받는 자식 클래스에서 AddComponent에서 밑에 구문을 이름을 입맛에 따라 추가.
 	//// For.Com_Texture
@@ -78,7 +78,7 @@ void CUI::Free()
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pRendererCom);
-	Safe_Release(m_pBufferCom);
+//	Safe_Release(m_pBufferCom);
 
 	CGameObject::Free();
 }

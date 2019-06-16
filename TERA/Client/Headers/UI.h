@@ -12,7 +12,7 @@ _END
 
 _BEGIN(Client)
 
-class CUI final : public CGameObject
+class CUI : public CGameObject
 {
 protected:
 	explicit CUI(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -26,7 +26,7 @@ public:
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
 
-protected:
+public:
 	virtual HRESULT			Add_Component();
 	virtual HRESULT			SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 
@@ -35,7 +35,7 @@ protected:
 	CTexture*				m_pTextureCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;
 	CTransform*				m_pTransformCom = nullptr;
-	CBuffer_ScreenTex*		m_pBufferCom = nullptr;
+//	CBuffer_ScreenTex*		m_pBufferCom = nullptr;
 
 protected:
 	_bool					m_bIsAvailableSkill = true;

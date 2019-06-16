@@ -4,12 +4,12 @@
 _USING(Client)
 
 CBack_Logo::CBack_Logo(LPDIRECT3DDEVICE9 pGraphic_Device)
-	: CGameObject(pGraphic_Device)
+	: CUI(pGraphic_Device)
 {
 }
 
 CBack_Logo::CBack_Logo(const CBack_Logo & rhs)
-	: CGameObject(rhs)
+	: CUI(rhs)
 {
 }
 
@@ -23,8 +23,6 @@ HRESULT CBack_Logo::Ready_GameObject_Prototype()
 	return NOERROR;
 }
 
-// 실제 씬에서 사용할 객체가 호출하는 함수.
-// 원본객체 복제외에도 추가적인 셋팅이필요하면 여기서 셋팅해라.
 HRESULT CBack_Logo::Ready_GameObject(void* pArg)
 {
 	if (FAILED(Add_Component()))
@@ -56,7 +54,7 @@ _int CBack_Logo::LateUpdate_GameObject(const _float & fTimeDelta)
 
 HRESULT CBack_Logo::Render_GameObject()
 {
-	if (nullptr == m_pBufferCom ||
+	if (nullptr == m_pBufferBGCom ||
 		nullptr == m_pTextureCom ||
 		nullptr == m_pShaderCom)
 		return E_FAIL;
@@ -67,23 +65,15 @@ HRESULT CBack_Logo::Render_GameObject()
 
 	pEffect->AddRef();
 
-	_matrix			matTmp;
-	D3DXMatrixIdentity(&matTmp);
-
-	m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture");
-
-	pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
-	pEffect->SetMatrix("g_matView", &matTmp);
-	pEffect->SetMatrix("g_matProj", &matTmp);
+	if (FAILED(SetUp_ConstantTable(pEffect)))
+		return E_FAIL;
 
 	pEffect->Begin(nullptr, 0);
 	pEffect->BeginPass(0);
 
-	// 행렬 = 행렬 * 행렬
-	m_pBufferCom->Render_Buffer();
+	m_pBufferBGCom->Render_Buffer();
 
 	pEffect->EndPass();
-
 	pEffect->End();
 
 	Safe_Release(pEffect);
@@ -102,11 +92,11 @@ HRESULT CBack_Logo::Add_Component()
 		return E_FAIL;
 
 	// For.Com_Buffer
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_RcTex", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_Background", L"Com_Buffer", (CComponent**)&m_pBufferBGCom)))
 		return E_FAIL;
 
 	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Default", L"Com_Texture", (CComponent**)&m_pTextureCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Loading_Main", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	// For.Com_Shader
@@ -116,7 +106,29 @@ HRESULT CBack_Logo::Add_Component()
 	return NOERROR;
 }
 
-// 원본객체를 생성한다.
+HRESULT CBack_Logo::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
+{
+	if (nullptr == pEffect)
+		return E_FAIL;
+
+	pEffect->AddRef();
+
+	
+	_matrix		matTmp;
+	D3DXMatrixIdentity(&matTmp);
+
+	m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture");
+
+	pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
+	pEffect->SetMatrix("g_matView", &matTmp);
+	pEffect->SetMatrix("g_matProj", &matTmp);
+
+
+	Safe_Release(pEffect);
+
+	return NOERROR;
+}
+
 CBack_Logo * CBack_Logo::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
 	CBack_Logo* pInstance = new CBack_Logo(pGraphic_Device);
@@ -129,10 +141,6 @@ CBack_Logo * CBack_Logo::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 	return pInstance;
 }
 
-// this? : 
-// 1.멤버함수안에 존재. 
-// 2.멤버함수는 객체로부터 호출(객체.멤버함수(), 객체주소->멤버함수())
-// 3.멤버함수안에 존재하는 this는 멤버함수의 호출을 가능하게한 객체의 주소를 의미한다.
 CGameObject * CBack_Logo::Clone(void* pArg)
 {
 	CBack_Logo* pInstance = new CBack_Logo(*this);
@@ -148,11 +156,7 @@ CGameObject * CBack_Logo::Clone(void* pArg)
 
 void CBack_Logo::Free()
 {
-	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pTransformCom);
-	Safe_Release(m_pRendererCom);
-	Safe_Release(m_pBufferCom);
-	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pBufferBGCom);
 
-	CGameObject::Free();
+	CUI::Free();
 }

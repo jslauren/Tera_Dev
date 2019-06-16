@@ -17,7 +17,7 @@ public:
 	SCENEID Get_SceneID() const {
 		return m_eSceneID;
 	}
-	_uint Get_Complete() const {
+	_int Get_Complete() const {
 		return m_iComplete;
 	}
 public:
@@ -30,9 +30,15 @@ private:
 	HANDLE					m_hThread;
 	CRITICAL_SECTION		m_CS;
 	CComponent_Manager*		m_pComponent_Manager = nullptr;
-	_uint					m_iComplete;
+	_int					m_iComplete;
 private:
 	HRESULT Ready_Stage_Component();
+	void	CalculatedCompleteNumber();
+
+private:
+	_uint					m_iTotalRsrcNum = 0.f;
+	_uint					m_iCurrentRsrcNum = 0.f;
+
 
 public:
 	static CLoading* Create(LPDIRECT3DDEVICE9 pGraphic_Device, SCENEID eSceneID);

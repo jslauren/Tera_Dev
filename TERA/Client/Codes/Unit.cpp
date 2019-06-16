@@ -73,6 +73,7 @@ HRESULT CUnit::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 
 void CUnit::Free()
 {
+	Safe_Release(m_pFrustumCom);
 	Safe_Release(m_pNavigationCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);

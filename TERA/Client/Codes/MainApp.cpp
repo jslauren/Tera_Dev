@@ -148,18 +148,45 @@ HRESULT CMainApp::Ready_Component_Prototype()
 		return E_FAIL;
 	m_pRenderer->AddRef();
 
+	// [ 로딩 화면 리소스 ] //
+	// 로딩화면을 채울 텍스쳐를 위한 RcTex 로딩.
 	// For.Component_Buffer_RcTex
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_RcTex", CBuffer_RcTex::Create(m_pGraphic_Device))))
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_Background", CBuffer_RcTex::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// 로딩 텍스쳐 지정
 	// For.Component_Texture_Default
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Default", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Default.jpg"))))
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Loading_Main", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Tera_Main.tga"))))
 		return E_FAIL;
 
-	// For.Component_Buffer_UI
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI", CBuffer_ScreenTex::Create(m_pGraphic_Device))))
+	// 로딩 씬의 로딩 게이지를 위한 버퍼
+	// For.Component_Buffer_UI_Loading_Frame
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Bar_Frame", CBuffer_ScreenTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.Component_Buffer_UI_Loading_Filter
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Loading_Filter", CBuffer_ScreenTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.Component_Buffer_UI_Loading_Gauge
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Loading_Gauge", CBuffer_ScreenTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+
+	// 로딩 바 텍스쳐
+	// For.Component_Texture_Bar_Frame
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Bar_Frame", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Loading/Bar_Frame.png"))))
+		return E_FAIL;
+
+	// For.Component_Texture_Bar_Filter
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Bar_Filter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Loading/Bar_Filter.png"))))
+		return E_FAIL;
+
+	// For.Component_Texture_Bar_Gauge
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Bar_Gauge", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Loading/Bar_Gauge.png"))))
 		return E_FAIL;
 	
+	// 로딩에 필요한 텍스쳐를 그리는데 필요한 일반 쉐이더
 	// For.Component_Shader_Default
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Default", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Default.fx"))))
 		return E_FAIL;

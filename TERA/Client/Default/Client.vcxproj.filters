@@ -13,12 +13,6 @@
     <Filter Include="01. Scene">
       <UniqueIdentifier>{8733fcd0-32c4-428f-87f8-1e3fb6a39561}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\00. For.Logo">
-      <UniqueIdentifier>{2078fbe0-7a62-48f6-a798-157f3c6c199c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Scene\01. For.Stage">
-      <UniqueIdentifier>{e38794d8-7b02-423e-80f8-3673acc4cb64}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject">
       <UniqueIdentifier>{0480ca41-f451-4a35-97c7-234197d97560}</UniqueIdentifier>
     </Filter>
@@ -163,8 +157,14 @@
     <Filter Include="03. Unit\Player\PlayerState\06. Hit\High">
       <UniqueIdentifier>{5d56c489-6e79-44d7-b359-37bc80c60700}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. UI\UI\00. HpBoard">
+    <Filter Include="04. UI\UI\00. Loading">
       <UniqueIdentifier>{3fc980c1-a50b-44da-a2cb-d62aba811fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\01. Scene_Logo">
+      <UniqueIdentifier>{2078fbe0-7a62-48f6-a798-157f3c6c199c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\02. Scene_Stage">
+      <UniqueIdentifier>{e38794d8-7b02-423e-80f8-3673acc4cb64}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -190,13 +190,13 @@
       <Filter>98. Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Scene_Logo.h">
-      <Filter>01. Scene\00. For.Logo</Filter>
+      <Filter>01. Scene\01. Scene_Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Back_Logo.h">
       <Filter>02. GameObject\00. Logo\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Scene_Stage.h">
-      <Filter>01. Scene\01. For.Stage</Filter>
+      <Filter>01. Scene\02. Scene_Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Terrain.h">
       <Filter>02. GameObject\01. Stage\Terrain</Filter>
@@ -306,6 +306,9 @@
     <ClInclude Include="..\Headers\Player_HitHigh.h">
       <Filter>03. Unit\Player\PlayerState\06. Hit\High</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\UI_Loading.h">
+      <Filter>04. UI\UI\00. Loading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -318,13 +321,13 @@
       <Filter>00. MainApp</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Scene_Logo.cpp">
-      <Filter>01. Scene\00. For.Logo</Filter>
+      <Filter>01. Scene\01. Scene_Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Back_Logo.cpp">
       <Filter>02. GameObject\00. Logo\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Scene_Stage.cpp">
-      <Filter>01. Scene\01. For.Stage</Filter>
+      <Filter>01. Scene\02. Scene_Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Terrain.cpp">
       <Filter>02. GameObject\01. Stage\Terrain</Filter>
@@ -433,6 +436,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Player_HitHigh.cpp">
       <Filter>03. Unit\Player\PlayerState\06. Hit\High</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UI_Loading.cpp">
+      <Filter>04. UI\UI\00. Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
