@@ -14,12 +14,8 @@ private:
 	explicit CLoading(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CLoading() = default;
 public:
-	SCENEID Get_SceneID() const {
-		return m_eSceneID;
-	}
-	_int Get_Complete() const {
-		return m_iComplete;
-	}
+	SCENEID Get_SceneID() const { return m_eSceneID; }
+	_int	Get_Complete() const { return m_iComplete; }
 public:
 	HRESULT Ready_Loading(SCENEID eSceneID);
 public:
@@ -36,8 +32,8 @@ private:
 	void	CalculatedCompleteNumber();
 
 private:
-	_uint					m_iTotalRsrcNum = 0.f;
-	_uint					m_iCurrentRsrcNum = 0.f;
+	_uint	m_iTotalRsrcNum = 0.f;
+	_uint	m_iCurrentRsrcNum = 0.f;
 
 
 public:

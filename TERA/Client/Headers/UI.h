@@ -35,7 +35,6 @@ protected:
 	CTexture*				m_pTextureCom = nullptr;
 	CRenderer*				m_pRendererCom = nullptr;
 	CTransform*				m_pTransformCom = nullptr;
-//	CBuffer_ScreenTex*		m_pBufferCom = nullptr;
 
 protected:
 	_bool					m_bIsAvailableSkill = true;

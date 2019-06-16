@@ -8,6 +8,7 @@
 #include "Component_Manager.h"
 #include "Light_Manager.h"
 #include "KeyManager.h"
+#include "EventManager.h"
 
 _IMPLEMENT_SINGLETON(CManagement)
 
@@ -100,6 +101,9 @@ HRESULT CManagement::Render_Management()
 HRESULT CManagement::Release_Engine()
 {
 	// 객체들을 Release 할 때, 순서에 굉장히 유의하여야 한다.
+
+	if (0 != CEventManager::GetInstance()->DestroyInstance())
+		_MSGBOX("CEventManager Release Failed");
 
 	if (0 != CManagement::GetInstance()->DestroyInstance())
 		_MSGBOX("CManagement Release Failed");

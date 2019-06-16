@@ -1,9 +1,8 @@
 #pragma once
-#include "Defines.h"
-#include "GameObject.h"
-#include "Buffer_RcTex.h"
-#include "Buffer_ScreenTex.h"
 #include "UI.h"
+#include "Buffer_RcTex.h"
+#include "Loading.h"
+
 
 _BEGIN(Client)
 
@@ -13,6 +12,9 @@ public:
 	explicit CUI_Loading(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CUI_Loading(const CUI_Loading& rhs);
 	virtual ~CUI_Loading() = default;
+
+public:	// Setter
+	void			Set_LodingClass(CLoading* pLoading) { m_pLoading = pLoading; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -26,24 +28,27 @@ public:
 	virtual HRESULT	SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTargetTextureIdx = 1);
 
 private:
+	CLoading*			m_pLoading = nullptr;
+
 	CBuffer_RcTex*		m_pBufferBGCom = nullptr;
 
 	CTransform*			m_pTransformBarFrameCom = nullptr;
-	CBuffer_ScreenTex*	m_pBufferBarFrameCom = nullptr;
+	CBuffer_RcTex*		m_pBufferBarFrameCom = nullptr;
 	CTexture*			m_pTextureBarFrameCom = nullptr;
 
 	CTransform*			m_pTransformBarFilterCom = nullptr;
-	CBuffer_ScreenTex*	m_pBufferBarFilterCom = nullptr;
+	CBuffer_RcTex*		m_pBufferBarFilterCom = nullptr;
 	CTexture*			m_pTextureBarFilterCom = nullptr;
 
 	CTransform*			m_pTransformBarGaugeCom = nullptr;
-	CBuffer_ScreenTex*	m_pBufferBarGaugeCom = nullptr;
+	CBuffer_RcTex*		m_pBufferBarGaugeCom = nullptr;
 	CTexture*			m_pTextureBarGaugeCom = nullptr;
 
 private:
 	HRESULT			NullCheck();
 
 private:
+	CLoading*		pLoading = nullptr;
 	_int			m_iLoadingProgressValue = 0;
 
 public:

@@ -19,9 +19,6 @@
     <Filter Include="02. GameObject\00. Logo">
       <UniqueIdentifier>{e0e918e6-5b71-4cee-9554-f4110ffaa8f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\00. Logo\BackGround">
-      <UniqueIdentifier>{6bd77107-fa38-4059-ac48-41ff00312aa0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. Stage">
       <UniqueIdentifier>{64782ff4-382c-469c-9413-b9ee9625e749}</UniqueIdentifier>
     </Filter>
@@ -166,6 +163,12 @@
     <Filter Include="01. Scene\02. Scene_Stage">
       <UniqueIdentifier>{e38794d8-7b02-423e-80f8-3673acc4cb64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\00. Logo\BackGround // 안씀">
+      <UniqueIdentifier>{6bd77107-fa38-4059-ac48-41ff00312aa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. UI\UI\01. PlayerPoint%28Hp, Mp%29">
+      <UniqueIdentifier>{841545cb-0931-489d-8959-5b9bfb5cca90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -193,7 +196,7 @@
       <Filter>01. Scene\01. Scene_Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Back_Logo.h">
-      <Filter>02. GameObject\00. Logo\BackGround</Filter>
+      <Filter>02. GameObject\00. Logo\BackGround // 안씀</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Scene_Stage.h">
       <Filter>01. Scene\02. Scene_Stage</Filter>
@@ -309,6 +312,9 @@
     <ClInclude Include="..\Headers\UI_Loading.h">
       <Filter>04. UI\UI\00. Loading</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\UI_PlayerPoint.h">
+      <Filter>04. UI\UI\01. PlayerPoint%28Hp, Mp%29</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -324,7 +330,7 @@
       <Filter>01. Scene\01. Scene_Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Back_Logo.cpp">
-      <Filter>02. GameObject\00. Logo\BackGround</Filter>
+      <Filter>02. GameObject\00. Logo\BackGround // 안씀</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Scene_Stage.cpp">
       <Filter>01. Scene\02. Scene_Stage</Filter>
@@ -440,6 +446,9 @@
     <ClCompile Include="..\Codes\UI_Loading.cpp">
       <Filter>04. UI\UI\00. Loading</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\UI_PlayerPoint.cpp">
+      <Filter>04. UI\UI\01. PlayerPoint%28Hp, Mp%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -465,6 +474,9 @@
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx">
+      <Filter>97. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.fx">
       <Filter>97. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

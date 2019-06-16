@@ -7,6 +7,7 @@
 #include "Camera_Dynamic.h"
 #include "Camera_Static.h"
 #include "Component_Manager.h"
+#include "EventManager.h"
 #include "KeyManager.h"
 
 _USING(Client)
@@ -161,15 +162,15 @@ HRESULT CMainApp::Ready_Component_Prototype()
 
 	// 로딩 씬의 로딩 게이지를 위한 버퍼
 	// For.Component_Buffer_UI_Loading_Frame
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Bar_Frame", CBuffer_ScreenTex::Create(m_pGraphic_Device))))
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Bar_Frame", CBuffer_RcTex::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	// For.Component_Buffer_UI_Loading_Filter
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Loading_Filter", CBuffer_ScreenTex::Create(m_pGraphic_Device))))
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Loading_Filter", CBuffer_RcTex::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	// For.Component_Buffer_UI_Loading_Gauge
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Loading_Gauge", CBuffer_ScreenTex::Create(m_pGraphic_Device))))
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Loading_Gauge", CBuffer_RcTex::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 
@@ -188,7 +189,7 @@ HRESULT CMainApp::Ready_Component_Prototype()
 	
 	// 로딩에 필요한 텍스쳐를 그리는데 필요한 일반 쉐이더
 	// For.Component_Shader_Default
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_Default", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Default.fx"))))
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_UI", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_UI.fx"))))
 		return E_FAIL;
 
 	Safe_Release(pComponent_Manager);

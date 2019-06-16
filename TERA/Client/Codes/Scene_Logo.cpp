@@ -30,6 +30,9 @@ HRESULT CScene_Logo::Ready_Scene()
 	m_pLoading = CLoading::Create(m_pGraphic_Device, SCENE_STAGE);
 	if (nullptr == m_pLoading)
 		return E_FAIL;
+
+	// 로딩 정도를 보내주기 위한 구문
+	dynamic_cast<CUI_Loading*>(CObject_Manager::GetInstance()->Get_Object(SCENE_LOGO, L"Layer_BackGround"))->Set_LodingClass(m_pLoading);
 	
 	return NOERROR;
 }
@@ -69,11 +72,11 @@ _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 
 HRESULT CScene_Logo::Render_Scene()
 {
-	_tchar		szComplete[MAX_PATH];
+	//_tchar		szComplete[MAX_PATH];
 
-	wsprintf(szComplete, L"%d", m_pLoading->Get_Complete());
+	//wsprintf(szComplete, L"%d", m_pLoading->Get_Complete());
 
-	SetWindowText(g_hWnd, szComplete);
+	//SetWindowText(g_hWnd, szComplete);
 
 	return CScene::Render_Scene();
 }
@@ -88,11 +91,6 @@ HRESULT CScene_Logo::Ready_Component_Prototype()
 
 HRESULT CScene_Logo::Ready_GameObject_Prototype()
 {
-	// For.GameObject_BackLogo
-	// Engine Project의 Scene Class의 Add_Object_Prototype함수 호출
-	if (FAILED(Add_Object_Prototype(SCENE_LOGO, L"GameObject_BackLogo", CBack_Logo::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
 	if (FAILED(Add_Object_Prototype(SCENE_LOGO, L"GameObject_Loading", CUI_Loading::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
@@ -101,10 +99,6 @@ HRESULT CScene_Logo::Ready_GameObject_Prototype()
 
 HRESULT CScene_Logo::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
-	// For.Back_Logo
-	//if (FAILED(Add_Object(SCENE_LOGO, L"GameObject_BackLogo", SCENE_LOGO, pLayerTag)))
-	//	return E_FAIL;
-
 	if (FAILED(Add_Object(SCENE_LOGO, L"GameObject_Loading", SCENE_LOGO, pLayerTag)))
 		return E_FAIL;
 	

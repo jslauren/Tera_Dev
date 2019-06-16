@@ -52,12 +52,8 @@ HRESULT CUI::Add_Component()
 		return E_FAIL;
 
 	// For.Com_Shader
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_Default", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Shader_UI", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
-
-	//// For.Com_Buffer
-	//if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_UI", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
-	//	return E_FAIL;
 
 	// 여기서 안하고 얘를 상속받는 자식 클래스에서 AddComponent에서 밑에 구문을 이름을 입맛에 따라 추가.
 	//// For.Com_Texture
