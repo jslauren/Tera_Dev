@@ -169,6 +169,9 @@
     <Filter Include="04. UI\UI\01. PlayerPoint%28Hp, Mp%29">
       <UniqueIdentifier>{841545cb-0931-489d-8959-5b9bfb5cca90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. UI\UI\02. SkillBoard">
+      <UniqueIdentifier>{285d047b-d4d3-4f5c-a875-afa2bd7a786e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -315,6 +318,9 @@
     <ClInclude Include="..\Headers\UI_PlayerPoint.h">
       <Filter>04. UI\UI\01. PlayerPoint%28Hp, Mp%29</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\UI_SkillBoard.h">
+      <Filter>04. UI\UI\02. SkillBoard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -448,6 +454,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\UI_PlayerPoint.cpp">
       <Filter>04. UI\UI\01. PlayerPoint%28Hp, Mp%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UI_SkillBoard.cpp">
+      <Filter>04. UI\UI\02. SkillBoard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

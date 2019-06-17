@@ -114,7 +114,22 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_MpFilter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/PlayerPoint/MP_Filter.png"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
+	
+	// For.Component_Buffer_UI_SkillBoard
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_SkillBoard", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
+	// For.Component_Buffer_UI_SkillFilter
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_SkillFilter", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.Component_Texture_UI_SkillBoard
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_SkillBoard", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/SkillBoard/SkillBoard.png"))))
+		return E_FAIL;
+
+	// For.Component_Texture_UI_SkillFilter
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_SkillFilter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/SkillBoard/SkillFilter.png"))))
+		return E_FAIL;
 
 	//// For.Component_Texture_Terrain
 	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Common_BG/Texture2D/CM_Floor_08_Diff.tga"))))

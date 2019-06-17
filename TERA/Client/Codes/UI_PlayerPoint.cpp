@@ -138,8 +138,7 @@ HRESULT CUI_PlayerPoint::Add_Component()
 
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_UI_MpFilter", L"Com_TextureMpFilter", (CComponent**)&m_pTextureMpFilterCom)))
 		return E_FAIL;
-
-
+	
 	return NOERROR;
 }
 

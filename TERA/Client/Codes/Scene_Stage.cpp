@@ -10,6 +10,7 @@
 #include "Monster.h"
 #include "TerrainObject.h"
 #include "UI_PlayerPoint.h"
+#include "UI_SkillBoard.h"
 
 #define	NEAR			0.2f
 #define FAR				1000.f
@@ -295,6 +296,10 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_PlayerPoint", CUI_PlayerPoint::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_UI_SkillBoard
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_SkillBoard", CUI_SkillBoard::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 
 	return NOERROR;
 }
@@ -352,6 +357,9 @@ HRESULT CScene_Stage::Ready_Layer_Monster(const _tchar * pLayerTag)
 HRESULT CScene_Stage::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_PlayerPoint", SCENE_STATIC, pLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_SkillBoard", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;
