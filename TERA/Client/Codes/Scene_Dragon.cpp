@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Weapon.h"
 #include "Monster.h"
+#include "Arkus.h"
 #include "TerrainObject.h"
 #include "UI_PlayerPoint.h"
 #include "UI_SkillBoard.h"
@@ -47,10 +48,6 @@ HRESULT CScene_Dragon::Ready_Scene()
 	if (FAILED(Ready_MeshLoad()))
 		return E_FAIL;
 
-	// For.Layer_Camera
-	if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
-		return E_FAIL;
-
 	// For.Layer_Player
 	if (FAILED(Ready_Layer_Player(L"Layer_Player")))
 		return E_FAIL;
@@ -59,23 +56,33 @@ HRESULT CScene_Dragon::Ready_Scene()
 	if (FAILED(Ready_Layer_Weapon(L"Layer_Weapon")))
 		return E_FAIL;
 
-	// For.Layer_BackGround
-	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
-		return E_FAIL;
-
 	// For.Layer_Monster
 	if (FAILED(Ready_Layer_Monster(L"Layer_Monster")))
 		return E_FAIL;
 
+	// For.Layer_Camera
+	if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
+		return E_FAIL;
+
+	// For.Layer_BackGround
+	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
+		return E_FAIL;
+
+
 	// For.Layer_UI
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
+
+	SetCutSceneEvent();
 
 	return NOERROR;
 }
 
 _int CScene_Dragon::Update_Scene(const _float & fTimeDelta)
 {
+	if (m_bIsSceneFirstPlay == true)
+		dynamic_cast<CCamera_Dynamic*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 0))->DragonTrialCutSceneEvent();
+
 	return _int(CScene::Update_Scene(fTimeDelta));
 }
 
@@ -308,6 +315,10 @@ HRESULT CScene_Dragon::Ready_Component_Prototype()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
 		return E_FAIL;
 
+	// [Mesh]
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Mesh_Arkus", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Monster/Arkus/", L"Arkus_B.X"))))
+		return E_FAIL;
+
 	// [Collider]
 	// For.Component_Collider_AABB
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Collider_AABB", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_AABB))))
@@ -335,6 +346,10 @@ HRESULT CScene_Dragon::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_DRAGON, L"GameObject_SkyBox", CSkyBox_Dragon::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_Camera_Dynamic
+	if (FAILED(Add_Object_Prototype(SCENE_DRAGON, L"GameObject_Camera_Dynamic", CCamera_Dynamic::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	// For.GameObject_Camera_Static
 	if (FAILED(Add_Object_Prototype(SCENE_DRAGON, L"GameObject_Camera_Static", CCamera_Static::Create(m_pGraphic_Device))))
 		return E_FAIL;
@@ -343,22 +358,9 @@ HRESULT CScene_Dragon::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_DRAGON, L"GameObject_Terrain", CTerrain_Dragon::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	//// For.GameObject_Player
-	//if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Player", CPlayer::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
-
-	//// For.GameObject_Weapon
-	//if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Weapon", CWeapon::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
-
-	//// For.GameObject_UI_PlayerPoint
-	//if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_PlayerPoint", CUI_PlayerPoint::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
-
-	//// For.GameObject_UI_SkillBoard
-	//if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_SkillBoard", CUI_SkillBoard::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
-
+	// For.GameObject_Arkus
+	if (FAILED(Add_Object_Prototype(SCENE_DRAGON, L"GameObject_Arkus", CArkus::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -374,8 +376,16 @@ HRESULT CScene_Dragon::Ready_Layer_Player(const _tchar * pLayerTag)
 
 HRESULT CScene_Dragon::Ready_Layer_Weapon(const _tchar * pLayerTag)
 {
-	// For.Weapon
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Weapon", SCENE_STATIC, pLayerTag)))
+	//// For.Weapon
+	//if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Weapon", SCENE_STATIC, pLayerTag)))
+	//	return E_FAIL;
+
+	return NOERROR;
+}
+
+HRESULT CScene_Dragon::Ready_Layer_Monster(const _tchar * pLayerTag)
+{
+	if (FAILED(Add_Object(SCENE_DRAGON, L"GameObject_Arkus", SCENE_DRAGON, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -384,11 +394,12 @@ HRESULT CScene_Dragon::Ready_Layer_Weapon(const _tchar * pLayerTag)
 HRESULT CScene_Dragon::Ready_Layer_Camera(const _tchar * pLayerTag)
 {
 	// For.Camera_Dynamic
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Camera_Dynamic", SCENE_DRAGON, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 5, -5), _vec3(0, 0, 0), AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
+	if (FAILED(Add_Object(SCENE_DRAGON, L"GameObject_Camera_Dynamic", SCENE_DRAGON, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 5, -5), _vec3(0, 0, 0), AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
 		return E_FAIL;
 
+	_vec3 vMonsterPos = *dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
 	// For.Camera_Static
-	if (FAILED(Add_Object(SCENE_DRAGON, L"GameObject_Camera_Static", SCENE_DRAGON, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 5, -5), _vec3(0, 0, 0), AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
+	if (FAILED(Add_Object(SCENE_DRAGON, L"GameObject_Camera_Static", SCENE_DRAGON, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 0, -5), vMonsterPos, AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
 		return E_FAIL;
 
 	return NOERROR;
@@ -408,20 +419,21 @@ HRESULT CScene_Dragon::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	return NOERROR;
 }
 
-HRESULT CScene_Dragon::Ready_Layer_Monster(const _tchar * pLayerTag)
+HRESULT CScene_Dragon::Ready_Layer_UI(const _tchar * pLayerTag)
 {
+	//if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_PlayerPoint", SCENE_STATIC, pLayerTag)))
+	//	return E_FAIL;
+
+	//if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_SkillBoard", SCENE_STATIC, pLayerTag)))
+	//	return E_FAIL;
+
 	return NOERROR;
 }
 
-HRESULT CScene_Dragon::Ready_Layer_UI(const _tchar * pLayerTag)
+void CScene_Dragon::SetCutSceneEvent()
 {
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_PlayerPoint", SCENE_STATIC, pLayerTag)))
-		return E_FAIL;
-
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_SkillBoard", SCENE_STATIC, pLayerTag)))
-		return E_FAIL;
-
-	return NOERROR;
+	dynamic_cast<CCamera_Static*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 1))->Set_TurnOnStaticCam(false);
+	dynamic_cast<CCamera_Dynamic*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 0))->Set_TurnOnDynamicCam(true);
 }
 
 CScene_Dragon * CScene_Dragon::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

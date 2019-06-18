@@ -55,7 +55,6 @@ _int CCamera_Static::Update_GameObject(const _float & fTimeDelta)
 	m_fTimeDelta = fTimeDelta;
 
 	ChangeView();
-
 	TracingPlayer();
 
 	return _int();
@@ -65,7 +64,7 @@ _int CCamera_Static::LateUpdate_GameObject(const _float & fTimeDelta)
 {
 	SetUp_ViewMatrix();
 	SetUp_ProjectionMatrix();
-
+	
 	return _int();
 }
 
@@ -85,107 +84,118 @@ HRESULT CCamera_Static::Add_Component()
 
 HRESULT CCamera_Static::SetUp_ViewMatrix()
 {
-	if (nullptr == m_pTransformCom)
-		return E_FAIL;
+	if (m_bIsStaticCamOnAir == true)
+	{
+		if (nullptr == m_pTransformCom)
+			return E_FAIL;
 
-	_matrix matView = *m_pTransformCom->Compute_InverseWorldMatrixPointer();
+		_matrix matView = *m_pTransformCom->Compute_InverseWorldMatrixPointer();
 
-	Set_Transform(D3DTS_VIEW, &matView);
+		Set_Transform(D3DTS_VIEW, &matView);
+	}
 
 	return NOERROR;
 }
 
 HRESULT CCamera_Static::SetUp_ProjectionMatrix()
 {
-	_matrix matProj;
+	if (m_bIsStaticCamOnAir == true)
+	{
+		_matrix matProj;
 
-	D3DXMatrixPerspectiveFovLH(&matProj, m_CameraInfo.fFovY, m_CameraInfo.fAspect, m_CameraInfo.fNear, m_CameraInfo.fFar);
+		D3DXMatrixPerspectiveFovLH(&matProj, m_CameraInfo.fFovY, m_CameraInfo.fAspect, m_CameraInfo.fNear, m_CameraInfo.fFar);
 
-	Set_Transform(D3DTS_PROJECTION, &matProj);
+		Set_Transform(D3DTS_PROJECTION, &matProj);
+	}
 
 	return NOERROR;
 }
 
 void CCamera_Static::ChangeView()
 {
-	if (nullptr == m_pInput_Device)
-		return;
-
-	_long	dwMouseMove = 0;
-
-	_vec3	vCameraLook;
-	_vec3	vWorldYvalue = { 0.f, 1.f, 0.f };
-
-	vCameraLook = *m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK);
-
-	D3DXVec3Normalize(&vCameraLook, &vCameraLook);
-
-	_float fDotValue = D3DXVec3Dot(&vWorldYvalue, &vCameraLook);
-	
-	// 내적 한 값이 1 or -1 이면 vWorldYvalue 와 fDotValue가 딱 겹치는 것이다.
-	// 0이면 90도 이다.
-
-	if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_Y))
+	if (m_bIsStaticCamOnAir == true)
 	{
-		if (dwMouseMove < 0 && fDotValue < 0.1f)
-		{
-			// 마우스 커서를 일정영역 밑으로 내리면 카메라 줌아웃 하는 구문.
-			if (fDotValue < 0.1f && fDotValue > m_fDotValuePri)
-				fCameraDistance -= 0.01f;
+		if (nullptr == m_pInput_Device)
+			return;
 
-			m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
-		}
-		else if (dwMouseMove > 0 && fDotValue > -0.5f)
-		{
-			// 카메라 줌인 구문.
-			if (fDotValue < -0.5f && fDotValue < m_fDotValuePri)
-				fCameraDistance += 0.03f;
+		_long	dwMouseMove = 0;
 
-			m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
+		_vec3	vCameraLook;
+		_vec3	vWorldYvalue = { 0.f, 1.f, 0.f };
+
+		vCameraLook = *m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK);
+
+		D3DXVec3Normalize(&vCameraLook, &vCameraLook);
+
+		_float fDotValue = D3DXVec3Dot(&vWorldYvalue, &vCameraLook);
+
+		// 내적 한 값이 1 or -1 이면 vWorldYvalue 와 fDotValue가 딱 겹치는 것이다.
+		// 0이면 90도 이다.
+
+		if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_Y))
+		{
+			if (dwMouseMove < 0 && fDotValue < 0.1f)
+			{
+				// 마우스 커서를 일정영역 밑으로 내리면 카메라 줌아웃 하는 구문.
+				if (fDotValue < 0.1f && fDotValue > m_fDotValuePri)
+					fCameraDistance -= 0.01f;
+
+				m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
+			}
+			else if (dwMouseMove > 0 && fDotValue > -0.5f)
+			{
+				// 카메라 줌인 구문.
+				if (fDotValue < -0.5f && fDotValue < m_fDotValuePri)
+					fCameraDistance += 0.03f;
+
+				m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
+			}
 		}
+		if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_X))
+			m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(dwMouseMove) * 10.f, m_fTimeDelta);
+
+		POINT	ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
+
+		// 카메라 줌 인, 아웃을 하기위해 필요한 구문.
+		m_fDotValuePri = fDotValue;
+
+		ClientToScreen(g_hWnd, &ptMouse);
+		SetCursorPos(ptMouse.x, ptMouse.y);
 	}
-	if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_X))
-		m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(dwMouseMove) * 10.f, m_fTimeDelta);
-
-	POINT	ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
-	
-	// 카메라 줌 인, 아웃을 하기위해 필요한 구문.
-	m_fDotValuePri = fDotValue;
-
-	ClientToScreen(g_hWnd, &ptMouse);
-	SetCursorPos(ptMouse.x, ptMouse.y);
 }
 
 void CCamera_Static::TracingPlayer()
 {
-	CTransform*	vPlayerTransformCom = ((CTransform*)(CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Transform")));
-	
-	// 플레이어 포지션을 가져와서 카메라포지션 변수를 하나 만들어 넣어준다.
-	_vec3 vCameraPos = *vPlayerTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
+	if (m_bIsStaticCamOnAir == true)
+	{
+		CTransform*	vPlayerTransformCom = ((CTransform*)(CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Transform")));
 
-	_vec3 vCameraLook;
-	
+		// 플레이어 포지션을 가져와서 카메라포지션 변수를 하나 만들어 넣어준다.
+		_vec3 vCameraPos = *vPlayerTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
 
-	// 카메라의 Look 정보를 가져온 뒤
-	vCameraLook = *m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK);
+		_vec3 vCameraLook;
 
-	// 카메라의 Look의 방향을 반대로 바꾼 뒤, 내가 멀어지고 싶은 임의의 값을 fDistance를 통해 준다.
-	// 그걸 카메라의 포지션에 더해준다.
-	// 결국 플레이어의 포지션에서 부터 반대로 Distance값 만큼 멀어진 값이 카메라 포지션이 되는것이다.
 
-	//if (fCameraDistance > 3.8f)
-	//	fCameraDistance = 3.8f;
-	//
-	//if (fCameraDistance < 2.7f)
-	//	fCameraDistance = 2.7f;
+		// 카메라의 Look 정보를 가져온 뒤
+		vCameraLook = *m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK);
 
-	vCameraPos += (vCameraLook * -1) * fCameraDistance;
+		// 카메라의 Look의 방향을 반대로 바꾼 뒤, 내가 멀어지고 싶은 임의의 값을 fDistance를 통해 준다.
+		// 그걸 카메라의 포지션에 더해준다.
+		// 결국 플레이어의 포지션에서 부터 반대로 Distance값 만큼 멀어진 값이 카메라 포지션이 되는것이다.
 
-	vCameraPos.y += 10.f;
+		//if (fCameraDistance > 3.8f)
+		//	fCameraDistance = 3.8f;
+		//
+		//if (fCameraDistance < 2.7f)
+		//	fCameraDistance = 2.7f;
 
-	// 그 후, 그 값을 다시 내 포지션에 넣어준다.
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &vCameraPos);
+		vCameraPos += (vCameraLook * -1) * fCameraDistance;
 
+		vCameraPos.y += 10.f;
+
+		// 그 후, 그 값을 다시 내 포지션에 넣어준다.
+		m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &vCameraPos);
+	}
 }
 
 CCamera_Static * CCamera_Static::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

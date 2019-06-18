@@ -18,6 +18,11 @@ private:
 
 public:	// Getter
 	CTransform*		Get_TransformCom() { return m_pTransformCom; }
+	_bool			Get_PlayStaticCamInfo() { return m_bIsStaticCamOnAir; }
+
+public:	// Setter
+	void			Set_TurnOnStaticCam(_bool bButton) { m_bIsStaticCamOnAir = bButton; }
+
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);
@@ -37,6 +42,8 @@ private:
 	_float			m_fTimeDelta = 0.f;
 	_float			fCameraDistance = 32.f;
 	_float			m_fDotValuePri = 0.f;
+	_bool			m_bIsStaticCamOnAir = true;
+
 public:
 	static CCamera_Static*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

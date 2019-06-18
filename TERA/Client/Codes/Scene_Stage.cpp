@@ -91,6 +91,8 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 
 	if (GetKeyState('N') & 0x8000)
 	{
+		dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_AniIndex(CPlayer::PLAYER_ANI::Idle);
+
  		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Dragon::Create(m_pGraphic_Device), SCENE_DRAGON)))
 		{
 			Safe_Release(pManagement);
@@ -319,6 +321,10 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_SkyBox", CSkyBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_Camera_Dynamic
+	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Camera_Dynamic", CCamera_Dynamic::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	// For.GameObject_Camera_Static
 	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Camera_Static", CCamera_Static::Create(m_pGraphic_Device))))
 		return E_FAIL;
@@ -372,7 +378,7 @@ HRESULT CScene_Stage::Ready_Layer_Weapon(const _tchar * pLayerTag)
 HRESULT CScene_Stage::Ready_Layer_Camera(const _tchar * pLayerTag)
 {
 	// For.Camera_Dynamic
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Camera_Dynamic", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 5, -5), _vec3(0, 0, 0), AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
+	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Camera_Dynamic", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 5, -5), _vec3(0, 0, 0), AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
 		return E_FAIL;
 
 	// For.Camera_Static

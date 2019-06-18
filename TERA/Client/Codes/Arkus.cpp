@@ -1,76 +1,63 @@
 #include "stdafx.h"
-#include "..\Headers\Monster.h"
+#include "..\Headers\Arkus.h"
 #include "Object_Manager.h"
 #include "Light_Manager.h"
 
 _USING(Client)
 
-CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphic_Device)
+CArkus::CArkus(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CUnit(pGraphic_Device)
-//	, m_fFrame(0.f)
 {
 }
 
-CMonster::CMonster(const CMonster & rhs)
+CArkus::CArkus(const CArkus & rhs)
 	: CUnit(rhs)
-//	, m_fFrame(rhs.m_fFrame)
 {
 }
 
-// 원본객체에 필요한 데이터를 셋팅한다.
-HRESULT CMonster::Ready_GameObject_Prototype()
+HRESULT CArkus::Ready_GameObject_Prototype()
 {
-	// 파일입출력을 통해 객체의 정보를 셋팅한다.
 	if (FAILED(CGameObject::Ready_GameObject_Prototype()))
 		return E_FAIL;
 
 	return NOERROR;
 }
 
-// 실제 씬에서 사용할 객체가 호출하는 함수.
-// 원본객체 복제외에도 추가적인 셋팅이필요하면 여기서 셋팅해라.
-HRESULT CMonster::Ready_GameObject(void* pArg)
+HRESULT CArkus::Ready_GameObject(void * pArg)
 {
 	//tObjectMeshData = *((OBJECTMESHDATA*)pArg);
 
-	//if (FAILED(Add_Component()))
-	//	return E_FAIL;
+	if (FAILED(Add_Component()))
+		return E_FAIL;
 
-	//{
-	//	//_matrix matWorld = *(_matrix*)pArg;
+//	_matrix matWorld = *(_matrix*)pArg;
 
-	//	//m_pTransformCom->Set_Scaling(0.01f, 0.01f, 0.01f);
+	m_pTransformCom->Set_Scaling(0.4f, 0.4f, 0.4f);
+	m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(90.f), D3DXToRadian(0.f), D3DXToRadian(0.f));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(200.f, 0.f, 200.f));
+//	m_pTransformCom->Set_WorldMatrix(matWorld);
 
-	//	//m_pTransformCom->Set_WorldMatrix(matWorld);
-	//}
+//	m_pTransformCom->Set_WorldMatrix(tObjectMeshData.matWorld);
+//	m_pTransformCom->Set_WorldMatrix(((OBJECTMESHDATA*)pArg)->matWorld);
 
-	//m_pTransformCom->Set_Scaling(0.04f, 0.04f, 0.04f);
-
-	//m_pTransformCom->Set_WorldMatrix(tObjectMeshData.matWorld);
-
-	////m_pTransformCom->Set_WorldMatrix(((OBJECTMESHDATA*)pArg)->matWorld);
-
-	//m_pMeshCom->SetUp_AnimationSet(rand() % 10);
-
-	return NOERROR;
+	m_pMeshCom->SetUp_AnimationSet(1);
 }
 
-_int CMonster::Update_GameObject(const _float & fTimeDelta)
+_int CArkus::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
 
 	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_BodyCollider");
-
 	const CCollider* pWeaponCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Weapon", L"Com_WeaponCollider");
 
-	// 이걸 나중에 구 충돌로 바꾸자.
 	m_pColliderCom->Collision_OBB(pPlayerCollider);
+	m_pColliderCom->Collision_OBB(pWeaponCollider);
 
 	return _int();
 }
 
-_int CMonster::LateUpdate_GameObject(const _float & fTimeDelta)
+_int CArkus::LateUpdate_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pRendererCom)
 		return -1;
@@ -88,7 +75,7 @@ _int CMonster::LateUpdate_GameObject(const _float & fTimeDelta)
 	return _int();
 }
 
-HRESULT CMonster::Render_GameObject()
+HRESULT CArkus::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pTransformCom ||
@@ -139,42 +126,45 @@ HRESULT CMonster::Render_GameObject()
 	return NOERROR;
 }
 
-//HRESULT CMonster::Add_Component()
-//{
-//	// For.Com_Transform
-//	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
-//		return E_FAIL;
-//	
-//	// For.Com_Renderer
-//	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
-//		return E_FAIL;
-//
-//	// For.Com_Shader
-//	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
-//		return E_FAIL;
-//
-//	// 
-//	// For.Com_Mesh
-//	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, tObjectMeshData.strObjProtoTag.c_str(), L"Com_Mesh", (CComponent**)&m_pMeshCom)))
-//		return E_FAIL;
-//
-//	// For.Com_Collider
-//	CCollider::COLLIDERDESC		ColliderDesc;
-//	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
-//
-//	ColliderDesc.eType = CCollider::COLLIDERDESC::TYPE_TRANSFORM;
-//	ColliderDesc.pTransformMatrix = m_pTransformCom->Get_WorldMatrixPointer();
-//	ColliderDesc.pFrameMatrix = nullptr;
-//	ColliderDesc.vScale = _vec3(1.0f, 2.f, 1.f);
-//	ColliderDesc.vPivot = _vec3(0.0f, 1.f, 0.f);
-//
-//	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_AABB", L"Com_Collider", (CComponent**)&m_pColliderCom, &ColliderDesc)))
-//		return E_FAIL;
-//	
-//	return NOERROR;
-//}
+HRESULT CArkus::Add_Component()
+{
+	// For.Com_Transform
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
+		return E_FAIL;
+		
+	// For.Com_Renderer
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
+		return E_FAIL;
+	
+	// For.Com_Shader
+	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+		return E_FAIL;
 
-HRESULT CMonster::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
+	// For.Com_Mesh
+	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Mesh_Arkus", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+		return E_FAIL;
+	
+	// For.Com_Collider
+	CCollider::COLLIDERDESC		ColliderDesc;
+	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+	
+	ColliderDesc.eType = CCollider::COLLIDERDESC::TYPE_TRANSFORM;
+	ColliderDesc.pTransformMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	ColliderDesc.pFrameMatrix = nullptr;
+	ColliderDesc.vScale = _vec3(10.0f, 20.f, 10.f);
+	ColliderDesc.vPivot = _vec3(0.0f, 1.f, 0.f);
+	
+	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Collider_AABB", L"Com_Collider", (CComponent**)&m_pColliderCom, &ColliderDesc)))
+		return E_FAIL;
+
+	// For.Com_Frustum
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Frustum", L"Com_Frustum", (CComponent**)&m_pFrustumCom)))
+		return E_FAIL;
+		
+	return NOERROR;
+}
+
+HRESULT CArkus::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 {
 	if (nullptr == pEffect)
 		return E_FAIL;
@@ -212,39 +202,39 @@ HRESULT CMonster::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	return NOERROR;
 }
 
-// 원본객체를 생성한다.
-CMonster * CMonster::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+HRESULT CArkus::SetUp_HeightOnTerrain(_uint iIndex)
 {
-	CMonster* pInstance = new CMonster(pGraphic_Device);
+	CUnit::SetUp_HeightOnTerrain(1);
+
+	return NOERROR;
+}
+
+CArkus * CArkus::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+{
+	CArkus* pInstance = new CArkus(pGraphic_Device);
 
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
-		_MSGBOX("CMonster Created Failed");
+		_MSGBOX("CArkus Created Failed");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-CGameObject * CMonster::Clone(void* pArg)
+CGameObject * CArkus::Clone(void * pArg)
 {
-	CMonster* pInstance = new CMonster(*this);
+	CArkus* pInstance = new CArkus(*this);
 
 	if (FAILED(pInstance->Ready_GameObject(pArg)))
 	{
-		_MSGBOX("CMonster Created Failed");
+		_MSGBOX("CArkus Created Failed");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CMonster::Free()
+void CArkus::Free()
 {
-	//Safe_Release(m_pColliderCom);
-	//Safe_Release(m_pTransformCom);
-	//Safe_Release(m_pRendererCom);
-	//Safe_Release(m_pMeshCom);
-	//Safe_Release(m_pShaderCom);
-
 	CUnit::Free();
 }

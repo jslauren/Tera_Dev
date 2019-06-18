@@ -5,12 +5,12 @@
 
 _BEGIN(Client)
 
-class CMonster : public CUnit
+class CArkus final : public CUnit
 {
-protected:
-	explicit CMonster(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CMonster(const CMonster& rhs);
-	virtual ~CMonster() = default;
+public:
+	explicit CArkus(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CArkus(const CArkus& rhs);
+	virtual ~CArkus() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -20,17 +20,18 @@ public:
 	virtual HRESULT Render_GameObject();
 
 public:
-//	virtual HRESULT Add_Component();
-	virtual HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
-//	HRESULT			SetUp_HeightOnTerrain();
+	HRESULT			Add_Component();
+	HRESULT			SetUp_ConstantTable(LPD3DXEFFECT pEffect);
+	HRESULT			SetUp_HeightOnTerrain(_uint iIndex);
 
-protected:
+//protected:
 //	Engine::OBJECTMESHDATA tObjectMeshData;
 
 public:
-	static CMonster*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CArkus*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);
 	virtual void			Free();
+
 };
 
 _END

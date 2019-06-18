@@ -205,10 +205,6 @@ HRESULT CMainApp::Ready_GameObject_Prototype()
 		return E_FAIL;
 
 	pObject_Manager->AddRef();
-
-	// For.GameObject_Camera_Dynamic
-	if (FAILED(pObject_Manager->Add_Object_Prototype(SCENE_STATIC, L"GameObject_Camera_Dynamic", CCamera_Dynamic::Create(m_pGraphic_Device))))
-		return E_FAIL;
 		
 	Safe_Release(pObject_Manager);
 

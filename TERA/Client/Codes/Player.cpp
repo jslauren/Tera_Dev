@@ -44,6 +44,8 @@ HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
 		break;
 	}
 
+	m_pMeshCom_Bone->SetUp_AnimationSet(Idle);
+
 	return NOERROR;
 }
 

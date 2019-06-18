@@ -175,13 +175,16 @@
     <Filter Include="01. Scene\03. Scene_Draon%27s Trail">
       <UniqueIdentifier>{899e3560-ec6c-401f-814a-edb947d15d73}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. Dragon%27s Trail">
+    <Filter Include="03. Unit\Monster\Arkus">
+      <UniqueIdentifier>{3662dcba-0a02-4ca8-b327-ed7128219ae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Dragon%27s Trial">
       <UniqueIdentifier>{dc9f51d8-f6c5-4b27-b9bf-cfd66f5dea52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. Dragon%27s Trail\SkyBox">
+    <Filter Include="02. GameObject\02. Dragon%27s Trial\SkyBox">
       <UniqueIdentifier>{9bdf5e41-5f52-48d8-ac65-1f6f1323ce4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. Dragon%27s Trail\Terrain">
+    <Filter Include="02. GameObject\02. Dragon%27s Trial\Terrain">
       <UniqueIdentifier>{08d0019b-0bf6-4c00-92e0-6f83888c4fa8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -337,10 +340,13 @@
       <Filter>01. Scene\03. Scene_Draon%27s Trail</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Terrain_Dragon.h">
-      <Filter>02. GameObject\02. Dragon%27s Trail\Terrain</Filter>
+      <Filter>02. GameObject\02. Dragon%27s Trial\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\SkyBox_Dragon.h">
-      <Filter>02. GameObject\02. Dragon%27s Trail\SkyBox</Filter>
+      <Filter>02. GameObject\02. Dragon%27s Trial\SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Arkus.h">
+      <Filter>03. Unit\Monster\Arkus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -483,10 +489,13 @@
       <Filter>01. Scene\03. Scene_Draon%27s Trail</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\SkyBox_Dragon.cpp">
-      <Filter>02. GameObject\02. Dragon%27s Trail\SkyBox</Filter>
+      <Filter>02. GameObject\02. Dragon%27s Trial\SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Terrain_Dragon.cpp">
-      <Filter>02. GameObject\02. Dragon%27s Trail\Terrain</Filter>
+      <Filter>02. GameObject\02. Dragon%27s Trial\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Arkus.cpp">
+      <Filter>03. Unit\Monster\Arkus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
