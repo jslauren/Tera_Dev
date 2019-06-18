@@ -140,6 +140,12 @@ HRESULT CMainApp::Ready_Component_Prototype()
 
 	pComponent_Manager->AddRef();
 
+	// 로딩에 필요한 텍스쳐를 그리는데 필요한 일반 쉐이더
+	// 쉐이더는 왠만하면 가장 상단에 위치하는게 좋다.
+	// For.Component_Shader_Default
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_UI", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_UI.fx"))))
+		return E_FAIL;
+
 	// For.Component_Transform
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Transform", CTransform::Create(m_pGraphic_Device))))
 		return E_FAIL;
@@ -187,11 +193,6 @@ HRESULT CMainApp::Ready_Component_Prototype()
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Bar_Gauge", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/Loading/Bar_Gauge.png"))))
 		return E_FAIL;
 	
-	// 로딩에 필요한 텍스쳐를 그리는데 필요한 일반 쉐이더
-	// For.Component_Shader_Default
-	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Shader_UI", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_UI.fx"))))
-		return E_FAIL;
-
 	Safe_Release(pComponent_Manager);
 
 	return NOERROR;

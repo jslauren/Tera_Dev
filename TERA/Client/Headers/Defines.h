@@ -8,7 +8,7 @@ const float g_fRate_Immediate = 0.0f;
 const unsigned int g_iWinCX = 1280;
 const unsigned int g_iWinCY = 720;
 
-enum SCENEID { SCENE_STATIC, SCENE_LOGO, SCENE_STAGE, SCENE_BOSS, SCENE_END };
+enum SCENEID { SCENE_STATIC, SCENE_LOGO, SCENE_STAGE, SCENE_DRAGON, SCENE_BOSS, SCENE_END };
 
 extern HINSTANCE g_hInst;
 extern HWND g_hWnd;

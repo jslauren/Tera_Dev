@@ -45,6 +45,7 @@ public:
 
 public:	// Setter
 	void			Set_ActionID(const ACTION_ID& eActionID) { m_eCurActionID = eActionID; }
+	void			Set_StanceID(const STANCE_ID& eStanceID) { m_eCurStanceID = eStanceID; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();

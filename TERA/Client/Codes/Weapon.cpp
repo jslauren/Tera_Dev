@@ -221,7 +221,7 @@ HRESULT CWeapon::Add_Component()
 	//	&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, &m_matWorld, nullptr, _vec3(0.2f, 0.2f, 1.5f), _vec3(0.0f, 0.f, -0.75f)))))
 	//	return E_FAIL;
 
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_OBB", L"Com_Collider", (CComponent**)&m_pColliderCom,
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_OBB", L"Com_WeaponCollider", (CComponent**)&m_pColliderCom,
 		&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, &m_matWorld, nullptr, _vec3(2.5f, 13.f, 1.f), _vec3(0.0f, 6.f, 0.f)))))
 		return E_FAIL;
 

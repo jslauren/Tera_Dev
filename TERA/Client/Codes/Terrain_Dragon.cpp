@@ -1,20 +1,20 @@
 #include "stdafx.h"
-#include "..\Headers\Terrain.h"
+#include "..\Headers\Terrain_Dragon.h"
 #include "Light_Manager.h"
 
 _USING(Client)
 
-CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
+CTerrain_Dragon::CTerrain_Dragon(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject(pGraphic_Device)
 {
 }
 
-CTerrain::CTerrain(const CTerrain & rhs)
+CTerrain_Dragon::CTerrain_Dragon(const CTerrain_Dragon & rhs)
 	: CGameObject(rhs)
 {
 }
 
-HRESULT CTerrain::Ready_GameObject_Prototype()
+HRESULT CTerrain_Dragon::Ready_GameObject_Prototype()
 {
 	if (FAILED(CGameObject::Ready_GameObject_Prototype()))
 		return E_FAIL;
@@ -22,7 +22,7 @@ HRESULT CTerrain::Ready_GameObject_Prototype()
 	return NOERROR;
 }
 
-HRESULT CTerrain::Ready_GameObject(void* pArg)
+HRESULT CTerrain_Dragon::Ready_GameObject(void* pArg)
 {
 	_float fDetailValue = *(_float*)pArg;
 	m_vDetail *= fDetailValue;
@@ -41,7 +41,7 @@ HRESULT CTerrain::Ready_GameObject(void* pArg)
 	return NOERROR;
 }
 
-_int CTerrain::Update_GameObject(const _float & fTimeDelta)
+_int CTerrain_Dragon::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
@@ -49,7 +49,7 @@ _int CTerrain::Update_GameObject(const _float & fTimeDelta)
 	return _int();
 }
 
-_int CTerrain::LateUpdate_GameObject(const _float & fTimeDelta)
+_int CTerrain_Dragon::LateUpdate_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pRendererCom)
 		return -1;
@@ -60,7 +60,7 @@ _int CTerrain::LateUpdate_GameObject(const _float & fTimeDelta)
 	return _int();
 }
 
-HRESULT CTerrain::Render_GameObject()
+HRESULT CTerrain_Dragon::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pTransformCom ||
@@ -92,14 +92,14 @@ HRESULT CTerrain::Render_GameObject()
 	return NOERROR;
 }
 
-HRESULT CTerrain::Add_Component()
+HRESULT CTerrain_Dragon::Add_Component()
 {
 	// For.Com_Transform
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
 		return E_FAIL;
 
 	// For.Com_Buffer
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Buffer_Terrain", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Buffer_Terrain", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
 		return E_FAIL;
 
 	// For.Com_Renderer
@@ -107,17 +107,17 @@ HRESULT CTerrain::Add_Component()
 		return E_FAIL;
 
 	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Texture_Terrain", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	// For.Com_Shader
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Terrain", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Shader_Terrain", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	return NOERROR;
 }
 
-HRESULT CTerrain::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
+HRESULT CTerrain_Dragon::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 {
 	if (nullptr == pEffect)
 		return E_FAIL;
@@ -158,32 +158,32 @@ HRESULT CTerrain::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	return NOERROR;
 }
 
-CTerrain * CTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CTerrain_Dragon * CTerrain_Dragon::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-	CTerrain* pInstance = new CTerrain(pGraphic_Device);
+	CTerrain_Dragon* pInstance = new CTerrain_Dragon(pGraphic_Device);
 
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
-		_MSGBOX("CTerrain Created Failed");
+		_MSGBOX("CTerrain_Dragon Created Failed");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-CGameObject * CTerrain::Clone(void* pArg)
+CGameObject * CTerrain_Dragon::Clone(void* pArg)
 {
-	CTerrain* pInstance = new CTerrain(*this);
+	CTerrain_Dragon* pInstance = new CTerrain_Dragon(*this);
 
 	if (FAILED(pInstance->Ready_GameObject(pArg)))
 	{
-		_MSGBOX("CTerrain Created Failed");
+		_MSGBOX("CTerrain_Dragon Created Failed");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CTerrain::Free()
+void CTerrain_Dragon::Free()
 {
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);

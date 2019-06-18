@@ -21,6 +21,32 @@ CPlayer::CPlayer(const CPlayer & rhs)
 {
 }
 
+HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
+{
+	// For.Com_Navigation
+	_uint		iIndex = 0;
+
+	Safe_Release(m_pNavigationCom);
+
+	switch (eScene)
+	{
+	case SCENE_STAGE:
+		if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Navigation_Stage", L"Com_Navigation_Stage", (CComponent**)&m_pNavigationCom, &iIndex)))
+			return E_FAIL;
+		break;
+
+	case SCENE_DRAGON:
+		if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Navigation_Dragon", L"Com_Navigation_Dragon", (CComponent**)&m_pNavigationCom, &iIndex)))
+			return E_FAIL;
+		break;
+
+	case SCENE_BOSS:
+		break;
+	}
+
+	return NOERROR;
+}
+
 HRESULT CPlayer::Ready_GameObject_Prototype()
 {
 	if (FAILED(CGameObject::Ready_GameObject_Prototype()))
@@ -296,7 +322,7 @@ HRESULT CPlayer::Add_Component()
 		return E_FAIL;
 
 	// For.Com_BodyCollider
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_OBB", L"Com_BodyCollider", (CComponent**)&m_pColliderCom,
+	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_AABB", L"Com_BodyCollider", (CComponent**)&m_pColliderCom,
 		&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, m_pTransformCom->Get_WorldMatrixPointer(), nullptr,
 			_vec3(7.5f, 12.f, 8.5f), _vec3(0.0f, 6.f, 0.f)))))
 		return E_FAIL;
@@ -308,8 +334,12 @@ HRESULT CPlayer::Add_Component()
 
 	// For.Com_Navigation
 	_uint		iIndex = 0;
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Navigation_Stage", L"Com_Navigation", (CComponent**)&m_pNavigationCom, &iIndex)))
-		return E_FAIL;
+
+	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Navigation_Stage", L"Com_Navigation", (CComponent**)&m_pNavigationCom, &iIndex)))
+	//	return E_FAIL;
+
+	//if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Navigation_Dragon", L"Com_Navigation", (CComponent**)&m_pNavigationCom, &iIndex)))
+	//	return E_FAIL;
 
 	return NOERROR;
 }

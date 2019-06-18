@@ -35,6 +35,7 @@ public:	// Setter
 	void			Set_OldAniIndex(const PLAYER_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
 	void			Set_DrawSwordBtn(_bool bPressed) { m_bIsDrawSwordPressed = bPressed; }
 	void			Set_Direction(_int iDir) { m_iDirection = iDir; }
+	HRESULT			Set_Navigation_Component(SCENEID eScene);
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();

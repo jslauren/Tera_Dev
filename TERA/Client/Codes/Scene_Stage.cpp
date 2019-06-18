@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Scene_Stage.h"
+#include "Scene_Dragon.h"
+#include "Management.h"
 #include "Camera_Dynamic.h"
 #include "Camera_Static.h"
 #include "Light_Manager.h"
@@ -81,6 +83,28 @@ _int CScene_Stage::Update_Scene(const _float & fTimeDelta)
 
 _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 {
+	CManagement*	pManagement = CManagement::GetInstance();
+	if (nullptr == pManagement)
+		return -1;
+
+	pManagement->AddRef();
+
+	if (GetKeyState('N') & 0x8000)
+	{
+ 		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Dragon::Create(m_pGraphic_Device), SCENE_DRAGON)))
+		{
+			Safe_Release(pManagement);
+			return -1;
+		}
+
+		dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(SCENE_DRAGON);
+
+		Safe_Release(pManagement);
+		return 0;
+	}
+
+	Safe_Release(pManagement);
+
 	return _int(CScene::LateUpdate_Scene(fTimeDelta));
 }
 
@@ -206,23 +230,46 @@ HRESULT CScene_Stage::Ready_MeshLoad()
 					return E_FAIL;
 			}
 
-
 			// 오브젝트 정보 추가.
 			if (nullptr == CObject_Manager::GetInstance()->Find_Object_Prototype(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str()))
 			{
 				if (FAILED(Add_Object_Prototype(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), CTerrainObject::Create(m_pGraphic_Device))))
 					return E_FAIL;
 			}
-			//if (FAILED(Add_Object(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), SCENE_STAGE, L"Layer_TerrainData", (void*)tObjMeshData.strComProtoTag.c_str())))
-			//	return E_FAIL;
 
 			if (FAILED(Add_Object(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), SCENE_STAGE, L"Layer_TerrainData", &tObjMeshData)))
 				return E_FAIL;
 		}
 		else
 		{
-			// For.Monster
-			if (FAILED(Add_Object(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), SCENE_STAGE, L"Layer_Monster", (void*)tObjMeshData.matWorld)))
+			// 컴포넌트 정보 추가.
+			if (nullptr == m_pComponent_Manager->Find_Component_Prototype(SCENE_STAGE, tObjMeshData.strComProtoTag.c_str()))
+			{
+				if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, tObjMeshData.strComProtoTag.c_str(), CMesh_Dynamic::Create(m_pGraphic_Device, tObjMeshData.strFullPath.c_str(), strXfileName.c_str()))))
+					return E_FAIL;
+			}
+
+			// 오브젝트 정보 추가.
+			if (nullptr == CObject_Manager::GetInstance()->Find_Object_Prototype(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str()))
+			{
+				if (lstrcmp(tObjMeshData.strObjProtoTag.c_str(), L"몬스터 X파일 이름") == 0)
+				{
+					//if (FAILED(Add_Object_Prototype(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), /*해당 몬스터 클래스명*/::Create(m_pGraphic_Device))))
+					//	return E_FAIL;
+				}
+				if (lstrcmp(tObjMeshData.strObjProtoTag.c_str(), L"몬스터 X파일 이름") == 0)
+				{
+					//if (FAILED(Add_Object_Prototype(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), /*해당 몬스터 클래스명*/::Create(m_pGraphic_Device))))
+					//	return E_FAIL;
+				}
+				if (lstrcmp(tObjMeshData.strObjProtoTag.c_str(), L"몬스터 X파일 이름") == 0)
+				{
+					//if (FAILED(Add_Object_Prototype(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), /*해당 몬스터 클래스명*/::Create(m_pGraphic_Device))))
+					//	return E_FAIL;
+				}
+			}
+			
+			if (FAILED(Add_Object(SCENE_STAGE, tObjMeshData.strObjProtoTag.c_str(), SCENE_STAGE, L"Layer_Monster", &tObjMeshData)))
 				return E_FAIL;
 		}
 	}
@@ -244,7 +291,7 @@ HRESULT CScene_Stage::Ready_LightInfo()
 	ZeroMemory(&LightInfo, sizeof(D3DLIGHT9));
 
 	LightInfo.Type = D3DLIGHT_DIRECTIONAL;
-	LightInfo.Direction = _vec3(1.f, -1.f, 1.f);
+	LightInfo.Direction = _vec3(1.f, -1.f, 0.f);
 	LightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	LightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	LightInfo.Specular = D3DXCOLOR(0.f, 0.f, 0.f, 0.f);
@@ -386,11 +433,11 @@ void CScene_Stage::Free()
 	if (FAILED(m_pObject_Manager->Clear_Object(SCENE_STAGE)))
 		return;
 
-	if (FAILED(m_pObject_Manager->Clear_Prototype(SCENE_STAGE)))
-		return;
+	//if (FAILED(m_pObject_Manager->Clear_Prototype(SCENE_STAGE)))
+	//	return;
 
-	if (FAILED(m_pComponent_Manager->Clear_Component_Prototype(SCENE_STAGE)))
-		return;
+	//if (FAILED(m_pComponent_Manager->Clear_Component_Prototype(SCENE_STAGE)))
+	//	return;
 
 	CScene::Free();
 }

@@ -58,7 +58,7 @@ HRESULT CUnit::SetUp_HeightOnTerrain(_uint iIndex)
 	// 플레이어의 Y값과 이 지형의 Y값을 비교해서, 점프를 구현하면 된다.
 	_float	fY = pBufferCom->Compute_HeightOnBuffer(m_pTransformCom);
 
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->x, fY + 0.5f, m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->z));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->x, fY /*+ 0.5f*/, m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->z));
 
 	Safe_Release(pObject_Manager);
 

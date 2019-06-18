@@ -31,15 +31,25 @@ HRESULT CMonster::Ready_GameObject_Prototype()
 // 원본객체 복제외에도 추가적인 셋팅이필요하면 여기서 셋팅해라.
 HRESULT CMonster::Ready_GameObject(void* pArg)
 {
-	_matrix matWorld = *(_matrix*)pArg;
-
+	tObjectMeshData = *((OBJECTMESHDATA*)pArg);
 
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(0.01f, 0.01f, 0.01f);
+	{
+		//_matrix matWorld = *(_matrix*)pArg;
 
-	m_pTransformCom->Set_WorldMatrix(matWorld);
+		//m_pTransformCom->Set_Scaling(0.01f, 0.01f, 0.01f);
+
+		//m_pTransformCom->Set_WorldMatrix(matWorld);
+	}
+
+	m_pTransformCom->Set_Scaling(0.04f, 0.04f, 0.04f);
+
+	m_pTransformCom->Set_WorldMatrix(tObjectMeshData.matWorld);
+
+	//m_pTransformCom->Set_WorldMatrix(((OBJECTMESHDATA*)pArg)->matWorld);
+
 	m_pMeshCom->SetUp_AnimationSet(rand() % 10);
 
 	return NOERROR;
@@ -52,8 +62,9 @@ _int CMonster::Update_GameObject(const _float & fTimeDelta)
 
 	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_BodyCollider");
 
-	//const CCollider* pWeaponCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Collider", 1);
+	const CCollider* pWeaponCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Weapon", L"Com_WeaponCollider");
 
+	// 이걸 나중에 구 충돌로 바꾸자.
 	m_pColliderCom->Collision_OBB(pPlayerCollider);
 
 	return _int();
@@ -128,84 +139,38 @@ HRESULT CMonster::Render_GameObject()
 	return NOERROR;
 }
 
-HRESULT CMonster::Add_Component()
-{
-	// For.Com_Transform
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
-		return E_FAIL;
-
-	// For.Com_Mesh
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Mesh_Monster", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
-		return E_FAIL;
-
-	// For.Com_Renderer
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
-		return E_FAIL;
-
-	// For.Com_Shader
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
-		return E_FAIL;
-
-	// For.Com_Collider
-	CCollider::COLLIDERDESC		ColliderDesc;
-	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
-
-	ColliderDesc.eType = CCollider::COLLIDERDESC::TYPE_TRANSFORM;
-	ColliderDesc.pTransformMatrix = m_pTransformCom->Get_WorldMatrixPointer();
-	ColliderDesc.pFrameMatrix = nullptr;
-	ColliderDesc.vScale = _vec3(1.0f, 2.f, 1.f);
-	ColliderDesc.vPivot = _vec3(0.0f, 1.f, 0.f);
-
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_AABB", L"Com_Collider", (CComponent**)&m_pColliderCom, &ColliderDesc)))
-		return E_FAIL;
-	
-	return NOERROR;
-}
-
-//HRESULT CMonster::SetUp_HeightOnTerrain()
+//HRESULT CMonster::Add_Component()
 //{
-//	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
-//
-//	if (nullptr == pObject_Manager)
+//	// For.Com_Transform
+//	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_Transform", (CComponent**)&m_pTransformCom)))
 //		return E_FAIL;
-//	pObject_Manager->AddRef();
-//
-//	// 인덱스 1번으로 해야함.
-//	CBuffer_Terrain* pBufferCom = (CBuffer_Terrain*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_BackGround", L"Com_Buffer", 1);
-//	if (nullptr == pBufferCom)
+//	
+//	// For.Com_Renderer
+//	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
 //		return E_FAIL;
 //
-//	_float	fY = pBufferCom->Compute_HeightOnBuffer(m_pTransformCom);
-//
-//	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->x, fY + 0.5f, m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->z));
-//
-//	Safe_Release(pObject_Manager);
-//
-//	return NOERROR;
-//}
-
-//HRESULT CMonster::SetUp_BillBoard()
-//{
-//	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
-//
-//	if (nullptr == pObject_Manager)
-//		return E_FAIL;
-//	pObject_Manager->AddRef();
-//
-//	CTransform* pCamTransformCom = (CTransform*)pObject_Manager->Get_Component(SCENE_STAGE, L"Layer_Camera", L"Com_Transform", 0);
-//	if (nullptr == pCamTransformCom)
+//	// For.Com_Shader
+//	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 //		return E_FAIL;
 //
-//	// 카메라의 월드행렬 == 뷰스페이스 변환행렬 역행렬
-//	m_pTransformCom->Set_StateInfo(CTransform::STATE_RIGHT
-//		, pCamTransformCom->Get_StateInfo(CTransform::STATE_RIGHT));
-//	//m_pTransformCom->Set_StateInfo(CTransform::STATE_UP
-//	//	, pCamTransformCom->Get_StateInfo(CTransform::STATE_UP));
-//	m_pTransformCom->Set_StateInfo(CTransform::STATE_LOOK
-//		, pCamTransformCom->Get_StateInfo(CTransform::STATE_LOOK));
+//	// 
+//	// For.Com_Mesh
+//	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, tObjectMeshData.strObjProtoTag.c_str(), L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+//		return E_FAIL;
 //
-//	Safe_Release(pObject_Manager);
+//	// For.Com_Collider
+//	CCollider::COLLIDERDESC		ColliderDesc;
+//	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
 //
+//	ColliderDesc.eType = CCollider::COLLIDERDESC::TYPE_TRANSFORM;
+//	ColliderDesc.pTransformMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+//	ColliderDesc.pFrameMatrix = nullptr;
+//	ColliderDesc.vScale = _vec3(1.0f, 2.f, 1.f);
+//	ColliderDesc.vPivot = _vec3(0.0f, 1.f, 0.f);
+//
+//	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_AABB", L"Com_Collider", (CComponent**)&m_pColliderCom, &ColliderDesc)))
+//		return E_FAIL;
+//	
 //	return NOERROR;
 //}
 
