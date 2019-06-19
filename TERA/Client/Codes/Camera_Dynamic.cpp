@@ -3,6 +3,8 @@
 #include "Input_Device.h"
 #include "Management.h"
 #include "Scene_Dragon.h"
+#include "Camera_Static.h"
+#include "SkyBox_Dragon.h"
 #include "Layer.h"
 #include "Arkus.h"
 #include "Player.h"
@@ -187,13 +189,32 @@ void CCamera_Dynamic::CutSceneEvent()
 	}
 }
 
+void CCamera_Dynamic::EndCutSceneEvent()
+{
+	// 컷 신 이벤트가 종료됨을 설정한다.
+	m_bIsCutSceneEventEnded = true;
+	// 컷 신 이벤트가 종료되며, 다이나믹 카메라의 방송을 중지한다.
+	m_bIsDynamicCamOnAir = false;
+	// 다이나믹 카메라의 방송을 중지하는 동시에, 플레이어를 찍고있는 스태틱 카메라의 방송을 시작한다.
+	dynamic_cast<CCamera_Static*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 1))->Set_TurnOnStaticCam(true);
+	// 컷 신 이벤트 중, 즉 다이나믹 카메라가 방송중일때는 플레이어의 키조작이 불가능하게 조취했는데,
+	// 이를 풀어준다.
+	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_CutSceneInfo(false);
+	
+	// 해당하는 각 씬의 스카이박스 포지션 정보를 기본값인 다이나믹 카메라에서 스태틱 카메라로 변경해 준다.
+	if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_DRAGON)
+		dynamic_cast<CSkyBox_Dragon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_BackGround"))->Set_CameraNumber(1);
+
+}
+
 void CCamera_Dynamic::DragonTrialCutSceneEvent()
 {
 	CMesh_Dynamic*		ArkusMeshCom = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"))->Get_Mesh();
 	_vec3				vArkusPos = *dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
 	CArkus::ARKUS_ANI	eArkusCurrentAni = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"))->Get_AniIndex();
 
-	if (m_fCameraHeight > 50)
+	if (eArkusCurrentAni == CArkus::ARKUS_ANI::Apperance01 &&
+		m_fCameraHeight > 50)
 	{
 		m_fCameraHeight -= (m_fTimeDelta * 20.f);
 	}
@@ -201,21 +222,23 @@ void CCamera_Dynamic::DragonTrialCutSceneEvent()
 	if (ArkusMeshCom->IsAnimationEnded(9.f))
 		m_bIsAnimationEneded = true;
 
-	if (m_bIsAnimationEneded == true &&
-		eArkusCurrentAni == CArkus::ARKUS_ANI::Apperance01)
+	if (eArkusCurrentAni == CArkus::ARKUS_ANI::Apperance02)
 	{
-		m_fCameraDistance -= m_fTimeDelta * 30.f;;
+		m_fCameraDistance -= m_fTimeDelta * 35.f;
+
+		if (m_fCameraDistance < 175.f)
+		{
+			m_bCameraShaking = !m_bCameraShaking;
+
+			if (m_bCameraShaking == true)
+				m_fCameraHeight += m_fTimeDelta * 150;
+			else if (m_bCameraShaking == false)
+				m_fCameraHeight -= m_fTimeDelta * 150;
+		}
 	}
 
-	if (m_fCameraDistance < 50.f)
-	{
-		m_bIsCutSceneEventEnded = true;
-	}
-
-
-
-	//if (m_fCameraDistance > 100)
-	//	m_fCameraDistance -= m_fTimeDelta * 30.f;
+	if (eArkusCurrentAni == CArkus::ARKUS_ANI::Idle)
+		EndCutSceneEvent();
 
 	// 여기다가 카메라 동선 if문으로 주욱주욱 추가하자.
 }

@@ -37,6 +37,9 @@ HRESULT CPlayer_Idle::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void* pAgr)
 {
+	if (dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_CutSceneInfo() == true)
+		return nullptr;
+
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_Q) & 0x80)
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
@@ -240,7 +243,7 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 			}
 		}
 	}
-	// [ 앉기, 서기]
+	// [앉기, 서기]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_R) & 0x80)
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle)
@@ -252,7 +255,7 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 			}
 		}
 	}
-	// [ 테스트]
+	// [테스트]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_T) & 0x80)
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)

@@ -43,20 +43,7 @@ _int CSkyBox_Dragon::LateUpdate_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pRendererCom)
 		return -1;
 
-	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
-
-	if (nullptr == pObject_Manager)
-		return -1;
-
-	pObject_Manager->AddRef();
-
-	CTransform*	pCameraTransform = (CTransform*)pObject_Manager->Get_Component(SCENE_DRAGON, L"Layer_Camera", L"Com_Transform", 1);
-	if (nullptr == pCameraTransform)
-		return -1;
-
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, pCameraTransform->Get_StateInfo(CTransform::STATE_POSITION));
-
-	Safe_Release(pObject_Manager);
+	Set_CameraChoice();
 
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_PRIORITY, this)))
 		return -1;
@@ -94,6 +81,37 @@ HRESULT CSkyBox_Dragon::Render_GameObject()
 	Safe_Release(pEffect);
 
 	return NOERROR;
+}
+
+void CSkyBox_Dragon::Set_CameraChoice()
+{
+	CObject_Manager*	pObject_Manager = CObject_Manager::GetInstance();
+
+	if (nullptr == pObject_Manager)
+		return;
+
+	pObject_Manager->AddRef();
+
+	CTransform*	pCameraTransform = nullptr;
+
+	// 이 Drangon's Trial Scene은 컷신 이벤트가 있기때문에,
+	// 다이나믹 카메라를 사용하므로, Default 값으로 다이나믹 카메라를 설정 하였으며,
+	// 다이나믹 카메라의 포지션 값을 스카이박스에 넣어준다.
+
+	// 이 후, 컷신 이벤트가 종료되면 다시 스태틱 카메라로 돌아가기 때문에,
+	// 외부에서 컷신 이벤트가 종료되었을 때, 이 함수를 불러 스태틱 카메라의 정보를 셋팅 해준다.
+	if (m_iCameraChoiceNum == 0)
+		pCameraTransform = (CTransform*)pObject_Manager->Get_Component(SCENE_DRAGON, L"Layer_Camera", L"Com_Transform", 0);
+	
+	else if(m_iCameraChoiceNum == 1)
+		pCameraTransform = (CTransform*)pObject_Manager->Get_Component(SCENE_DRAGON, L"Layer_Camera", L"Com_Transform", 1);
+
+	if (nullptr == pCameraTransform)
+		return;
+
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, pCameraTransform->Get_StateInfo(CTransform::STATE_POSITION));
+
+	Safe_Release(pObject_Manager);
 }
 
 HRESULT CSkyBox_Dragon::Add_Component()
@@ -139,39 +157,6 @@ HRESULT CSkyBox_Dragon::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	return NOERROR;
 }
 
-//HRESULT CSkyBox_Dragon::SetUp_RenderState()
-//{
-//
-//	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-//	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-//	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
-//
-//	// 큐브버퍼의 각면은 바깥방향을 바라보고 있게끔 작업. 
-//	// 카메라는 큐브안에 존재. 큐브 각면의 뒷면을 바라보는 효과.
-//	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CW);
-//	CGameObject::Set_RenderState(D3DRS_LIGHTING, FALSE);
-//
-//	// 스카이박스의 픽셀 깊이를 깊이버퍼에 저장하지 않는다.
-//	// 스카이박스 이후에 그려지는 픽세륻르은 스카이박스 픽셀깊이와 비교할 수 없다. 때문에 무조건 이후그려지는 애들이 덮고 그린다.
-//	CGameObject::Set_RenderState(D3DRS_ZWRITEENABLE, FALSE);
-//
-//	return NOERROR;
-//}
-//
-//HRESULT CSkyBox_Dragon::Release_RenderState()
-//{
-//	CGameObject::Set_SamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_NONE);
-//	CGameObject::Set_SamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_NONE);
-//	CGameObject::Set_SamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_NONE);
-//
-//	CGameObject::Set_RenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-//	CGameObject::Set_RenderState(D3DRS_ZWRITEENABLE, TRUE);
-//	CGameObject::Set_RenderState(D3DRS_LIGHTING, TRUE);
-//
-//	return NOERROR;
-//}
-
-// 원본객체를 생성한다.
 CSkyBox_Dragon * CSkyBox_Dragon::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
 	CSkyBox_Dragon* pInstance = new CSkyBox_Dragon(pGraphic_Device);

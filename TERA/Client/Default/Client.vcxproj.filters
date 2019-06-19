@@ -187,6 +187,33 @@
     <Filter Include="02. GameObject\02. Dragon%27s Trial\Terrain">
       <UniqueIdentifier>{08d0019b-0bf6-4c00-92e0-6f83888c4fa8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState">
+      <UniqueIdentifier>{7d502dc0-d7c5-4da3-b58b-056dc1772246}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState\00. Idle">
+      <UniqueIdentifier>{5932fef0-7cf7-4014-9ea5-1f2392892690}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState\01. Apperance">
+      <UniqueIdentifier>{5b875ceb-af4b-4400-8d7e-bc1b69c19d61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState\02. Run">
+      <UniqueIdentifier>{b6afcb94-6744-4f6c-9d86-ee4118ad1067}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState\03. Attack">
+      <UniqueIdentifier>{ddc1ace3-be8e-47df-8078-69a43683ed1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState\04. Rush">
+      <UniqueIdentifier>{28107c60-3506-4a7f-843a-fec8d4a170a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState\05. JumpEvasion">
+      <UniqueIdentifier>{b41a1c09-e02e-4460-b6e2-389e020e0071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState\06. Hit">
+      <UniqueIdentifier>{2ff54805-3972-49c3-837d-f3e86b20ea04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState\07. Death">
+      <UniqueIdentifier>{22ec3c25-c517-4f09-8164-569f65e38b99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -348,6 +375,15 @@
     <ClInclude Include="..\Headers\Arkus.h">
       <Filter>03. Unit\Monster\Arkus</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\ArkusState.h">
+      <Filter>03. Unit\Monster\Arkus\ArkusState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Arkus_Idle.h">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\00. Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Arkus_Apperance.h">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\01. Apperance</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -496,6 +532,15 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Arkus.cpp">
       <Filter>03. Unit\Monster\Arkus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\ArkusState.cpp">
+      <Filter>03. Unit\Monster\Arkus\ArkusState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Arkus_Idle.cpp">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\00. Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Arkus_Apperance.cpp">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\01. Apperance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -64,9 +64,7 @@ CPlayer_Sit * CPlayer_Sit::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer & Pl
 		Player.Set_AniIndex(CPlayer::PLAYER_ANI::SitStart);
 
 	else if ((*(_int*)(pArg) == 2))
-	{
 		Player.Set_AniIndex(CPlayer::PLAYER_ANI::SitLoop);
-	}
 
 	else if ((*(_int*)(pArg) == 3))
 		Player.Set_AniIndex(CPlayer::PLAYER_ANI::SitEnd);

@@ -93,7 +93,7 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 	{
 		dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_AniIndex(CPlayer::PLAYER_ANI::Idle);
 
- 		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Dragon::Create(m_pGraphic_Device), SCENE_DRAGON)))
+		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Dragon::Create(m_pGraphic_Device), SCENE_DRAGON)))
 		{
 			Safe_Release(pManagement);
 			return -1;
@@ -439,11 +439,11 @@ void CScene_Stage::Free()
 	if (FAILED(m_pObject_Manager->Clear_Object(SCENE_STAGE)))
 		return;
 
-	//if (FAILED(m_pObject_Manager->Clear_Prototype(SCENE_STAGE)))
-	//	return;
+	if (FAILED(m_pObject_Manager->Clear_Prototype(SCENE_STAGE)))
+		return;
 
-	//if (FAILED(m_pComponent_Manager->Clear_Component_Prototype(SCENE_STAGE)))
-	//	return;
+	if (FAILED(m_pComponent_Manager->Clear_Component_Prototype(SCENE_STAGE)))
+		return;
 
 	CScene::Free();
 }

@@ -2,6 +2,12 @@
 #include "..\Headers\Arkus.h"
 #include "Object_Manager.h"
 #include "Light_Manager.h"
+#include "Layer.h"
+#include "Input_Device.h"
+#include "ArkusState.h"
+
+#include "Arkus_Apperance.h"
+#include "Arkus_Idle.h"
 
 _USING(Client)
 
@@ -44,6 +50,10 @@ HRESULT CArkus::Ready_GameObject(void * pArg)
 	m_eAnimationIndex = Apperance01;
 	m_eOldAnimationIndex = End;
 	m_eCurActionID = ACTION_READY;
+
+	int iIdleState = 1;
+	m_pState = CArkus_Apperance::Create(m_pGraphic_Device, *this, &iIdleState);
+
 }
 
 _int CArkus::Update_GameObject(const _float & fTimeDelta)
@@ -51,11 +61,9 @@ _int CArkus::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
-	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_BodyCollider");
-	const CCollider* pWeaponCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Weapon", L"Com_WeaponCollider");
+	m_fTimeDelta = fTimeDelta;
 
-	m_pColliderCom->Collision_OBB(pPlayerCollider);
-	m_pColliderCom->Collision_OBB(pWeaponCollider);
+	AI();
 
 	return _int();
 }
@@ -70,7 +78,11 @@ _int CArkus::LateUpdate_GameObject(const _float & fTimeDelta)
 	//if (FAILED(SetUp_HeightOnTerrain(1)))
 	//	return -1;
 
-	m_fTimeDelta = fTimeDelta;
+	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_BodyCollider");
+	const CCollider* pWeaponCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Weapon", L"Com_WeaponCollider");
+
+	m_pColliderCom->Collision_OBB(pPlayerCollider);
+	m_pColliderCom->Collision_OBB(pWeaponCollider);
 
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
 		return -1;
@@ -214,18 +226,22 @@ HRESULT CArkus::SetUp_HeightOnTerrain(_uint iIndex)
 
 void CArkus::AI()
 {
-	if (m_pMeshCom->IsAnimationEnded() &&
-		m_pMeshCom->Get_NowPlayAniIndex() == ARKUS_ANI::Apperance01)
+	CArkusState* pState = m_pState->Input_State(*this, m_fTimeDelta, 0, m_pNavigationCom);
+
+	if (nullptr != pState)
 	{
-		if (m_pMeshCom->IsAnimationEnded(8.5f))
-		{
-			m_eAnimationIndex = Idle;
-			m_pMeshCom->SetUp_AnimationSet(Idle);
-		}
+		Safe_Release(m_pState);
+		m_pState = pState;
 	}
 
 	if (true == m_pMeshCom->IsAnimationEnded() || m_eOldAnimationIndex != m_eAnimationIndex)
+	{
 		m_pMeshCom->SetUp_AnimationSet(m_eAnimationIndex);
+	}
+
+	m_eOldAnimationIndex = m_eAnimationIndex;
+
+	m_pState->Update_State(*this, m_fTimeDelta);
 }
 
 CArkus * CArkus::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -255,5 +271,7 @@ CGameObject * CArkus::Clone(void * pArg)
 
 void CArkus::Free()
 {
+	Safe_Release(m_pState);
+
 	CUnit::Free();
 }

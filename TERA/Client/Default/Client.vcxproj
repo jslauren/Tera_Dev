@@ -160,6 +160,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Headers\Arkus.h" />
+    <ClInclude Include="..\Headers\ArkusState.h" />
+    <ClInclude Include="..\Headers\Arkus_Apperance.h" />
+    <ClInclude Include="..\Headers\Arkus_Idle.h" />
     <ClInclude Include="..\Headers\Back_Logo.h" />
     <ClInclude Include="..\Headers\Camera_Dynamic.h" />
     <ClInclude Include="..\Headers\Camera_Static.h" />
@@ -214,6 +217,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Codes\Arkus.cpp" />
+    <ClCompile Include="..\Codes\ArkusState.cpp" />
+    <ClCompile Include="..\Codes\Arkus_Apperance.cpp" />
+    <ClCompile Include="..\Codes\Arkus_Idle.cpp" />
     <ClCompile Include="..\Codes\Back_Logo.cpp" />
     <ClCompile Include="..\Codes\Camera_Dynamic.cpp" />
     <ClCompile Include="..\Codes\Camera_Static.cpp" />

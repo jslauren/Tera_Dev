@@ -18,7 +18,10 @@ private:
 	explicit CSkyBox_Dragon(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CSkyBox_Dragon(const CSkyBox_Dragon& rhs);
 	virtual ~CSkyBox_Dragon() = default;
-public:
+
+public:	// Setter
+	// 0¹ø = ´ÙÀÌ³ª¹Í, 1¹ø = ½ºÅÂÆ½
+	void			Set_CameraNumber(_uint iCameraNum) { m_iCameraChoiceNum = iCameraNum; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -31,10 +34,14 @@ private:
 	CBuffer_CubeTex*	m_pBufferCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
 	CTexture*			m_pTextureCom = nullptr;
-	CShader*				m_pShaderCom = nullptr;
+	CShader*			m_pShaderCom = nullptr;
+private:
+	_uint				m_iCameraChoiceNum = 0;
 private:
 	HRESULT Add_Component();
 	HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
+
+	void	Set_CameraChoice();
 public:
 	static CSkyBox_Dragon*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

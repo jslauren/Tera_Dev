@@ -72,6 +72,8 @@ HRESULT CScene_Dragon::Ready_Scene()
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
 
+	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(200.f, 0.f, 200.f));
+
 	SetCutSceneEvent();
 
 	return NOERROR;
@@ -436,6 +438,8 @@ void CScene_Dragon::SetCutSceneEvent()
 {
 	dynamic_cast<CCamera_Static*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 1))->Set_TurnOnStaticCam(false);
 	dynamic_cast<CCamera_Dynamic*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 0))->Set_TurnOnDynamicCam(true);
+	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_CutSceneInfo(true);
+
 }
 
 CScene_Dragon * CScene_Dragon::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

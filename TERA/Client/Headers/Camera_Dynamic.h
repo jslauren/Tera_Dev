@@ -46,6 +46,7 @@ private:
 	void			TracingTarget();
 	void			KeyInput();
 	void			CutSceneEvent();
+	void			EndCutSceneEvent();
 
 private:
 	_float			m_fTimeDelta = 0.f;
@@ -56,6 +57,7 @@ private:
 	SCENEID			m_eCurrentScene = SCENE_STAGE;
 	_bool			m_bIsCutSceneEventEnded = false;
 	_bool			m_bIsAnimationEneded = false;
+	_bool			m_bCameraShaking = false;
 
 public:
 	static CCamera_Dynamic*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
