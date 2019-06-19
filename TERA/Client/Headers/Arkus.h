@@ -5,8 +5,26 @@
 
 _BEGIN(Client)
 
+class CArkusState;
 class CArkus final : public CUnit
 {
+public:
+	enum ARKUS_ANI	// ÃÑ 14°³ÀÇ ¸ð¼Ç
+	{
+		Idle, Apperance01, Run_Battle, RoundAtk02, RoundAtk01,
+		MoveAtkStart, MoveAtkLoop, MoveAtkEnd, JumpEvasion,
+		HeavyAtk02, Groggy, Hit, Death, Atk01, Apperance02, End
+	};
+
+public:	// Getter
+	const ARKUS_ANI&	Get_AniIndex() { return m_eAnimationIndex; }
+	const ARKUS_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
+	CMesh_Dynamic*		Get_Mesh() { return m_pMeshCom; }
+
+public:	// Setter
+	void			Set_AniIndex(const ARKUS_ANI& iIndex) { m_eAnimationIndex = iIndex; }
+	void			Set_OldAniIndex(const ARKUS_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
+
 public:
 	explicit CArkus(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CArkus(const CArkus& rhs);
@@ -24,8 +42,17 @@ public:
 	HRESULT			SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 	HRESULT			SetUp_HeightOnTerrain(_uint iIndex);
 
+	void			AI();
+
 //protected:
 //	Engine::OBJECTMESHDATA tObjectMeshData;
+
+private:
+	CArkusState*	m_pState = nullptr;
+
+private:
+	ARKUS_ANI		m_eAnimationIndex = Idle;
+	ARKUS_ANI		m_eOldAnimationIndex = Idle;
 
 public:
 	static CArkus*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);

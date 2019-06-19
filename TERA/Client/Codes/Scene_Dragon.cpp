@@ -68,7 +68,6 @@ HRESULT CScene_Dragon::Ready_Scene()
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
 		return E_FAIL;
 
-
 	// For.Layer_UI
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
@@ -81,7 +80,10 @@ HRESULT CScene_Dragon::Ready_Scene()
 _int CScene_Dragon::Update_Scene(const _float & fTimeDelta)
 {
 	if (m_bIsSceneFirstPlay == true)
-		dynamic_cast<CCamera_Dynamic*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 0))->DragonTrialCutSceneEvent();
+	{
+		dynamic_cast<CCamera_Dynamic*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 0))->Set_CurrentScene(SCENE_DRAGON);
+		m_bIsSceneFirstPlay = false;
+	}
 
 	return _int(CScene::Update_Scene(fTimeDelta));
 }
@@ -199,7 +201,7 @@ HRESULT CScene_Dragon::Ready_MeshLoad()
 
 		tObjMeshData.strFullPath = szTextTemp;
 
-//		m_MapMeshData.emplace(ObjectName, tObjMeshData);
+		//		m_MapMeshData.emplace(ObjectName, tObjMeshData);
 
 		if (0 == dwByte)
 			break;
@@ -251,7 +253,7 @@ HRESULT CScene_Dragon::Ready_MeshLoad()
 					//	return E_FAIL;
 				}
 			}
-			
+
 			if (FAILED(Add_Object(SCENE_DRAGON, tObjMeshData.strObjProtoTag.c_str(), SCENE_DRAGON, L"Layer_Monster", &tObjMeshData)))
 				return E_FAIL;
 		}
@@ -465,5 +467,3 @@ void CScene_Dragon::Free()
 
 	CScene::Free();
 }
-
-

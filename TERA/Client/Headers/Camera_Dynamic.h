@@ -22,6 +22,7 @@ public:	// Getter
 
 public:	// Setter
 	void			Set_TurnOnDynamicCam(_bool bButton) { m_bIsDynamicCamOnAir = bButton; }
+	void			Set_CurrentScene(SCENEID eCurrentScene) { m_eCurrentScene = eCurrentScene; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -36,6 +37,7 @@ public:
 private:
 	CTransform*		m_pTransformCom = nullptr;
 	CInput_Device*	m_pInput_Device = nullptr;
+
 private:
 	HRESULT			Add_Component();
 	HRESULT			SetUp_ViewMatrix();
@@ -43,11 +45,17 @@ private:
 	
 	void			TracingTarget();
 	void			KeyInput();
+	void			CutSceneEvent();
+
 private:
 	_float			m_fTimeDelta = 0.f;
 	_float			m_fCameraDistance = 200.f;
-	_float			m_fCameraHeight = 20.f;
+	_float			m_fCameraHeight = 200.f;
 	_bool			m_bIsDynamicCamOnAir = false;
+
+	SCENEID			m_eCurrentScene = SCENE_STAGE;
+	_bool			m_bIsCutSceneEventEnded = false;
+	_bool			m_bIsAnimationEneded = false;
 
 public:
 	static CCamera_Dynamic*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);

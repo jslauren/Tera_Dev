@@ -40,7 +40,10 @@ HRESULT CArkus::Ready_GameObject(void * pArg)
 //	m_pTransformCom->Set_WorldMatrix(tObjectMeshData.matWorld);
 //	m_pTransformCom->Set_WorldMatrix(((OBJECTMESHDATA*)pArg)->matWorld);
 
-	m_pMeshCom->SetUp_AnimationSet(1);
+	m_pMeshCom->SetUp_AnimationSet(Apperance01);
+	m_eAnimationIndex = Apperance01;
+	m_eOldAnimationIndex = End;
+	m_eCurActionID = ACTION_READY;
 }
 
 _int CArkus::Update_GameObject(const _float & fTimeDelta)
@@ -207,6 +210,22 @@ HRESULT CArkus::SetUp_HeightOnTerrain(_uint iIndex)
 	CUnit::SetUp_HeightOnTerrain(1);
 
 	return NOERROR;
+}
+
+void CArkus::AI()
+{
+	if (m_pMeshCom->IsAnimationEnded() &&
+		m_pMeshCom->Get_NowPlayAniIndex() == ARKUS_ANI::Apperance01)
+	{
+		if (m_pMeshCom->IsAnimationEnded(8.5f))
+		{
+			m_eAnimationIndex = Idle;
+			m_pMeshCom->SetUp_AnimationSet(Idle);
+		}
+	}
+
+	if (true == m_pMeshCom->IsAnimationEnded() || m_eOldAnimationIndex != m_eAnimationIndex)
+		m_pMeshCom->SetUp_AnimationSet(m_eAnimationIndex);
 }
 
 CArkus * CArkus::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

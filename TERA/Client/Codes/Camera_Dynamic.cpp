@@ -4,6 +4,7 @@
 #include "Management.h"
 #include "Scene_Dragon.h"
 #include "Layer.h"
+#include "Arkus.h"
 #include "Player.h"
 
 _USING(Client)
@@ -59,6 +60,8 @@ _int CCamera_Dynamic::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pInput_Device)
 		return -1;
+
+	CutSceneEvent();
 
 	m_fTimeDelta = fTimeDelta;
 
@@ -161,24 +164,58 @@ void CCamera_Dynamic::KeyInput()
 	if (GetKeyState('L') & 0x8000)
 		m_pTransformCom->Move(3, 10.f, m_fTimeDelta);
 
-	_long			dwMouseMove = 0;
+	//_long			dwMouseMove = 0;
 
-	if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_Y))
-		m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 10.f, m_fTimeDelta);
+	//if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_Y))
+	//	m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 10.f, m_fTimeDelta);
 
-	if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_X))
-		m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(dwMouseMove) * 10.f, m_fTimeDelta);
+	//if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_X))
+	//	m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(dwMouseMove) * 10.f, m_fTimeDelta);
 
-	POINT			ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
+	//POINT			ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
 
 	//ClientToScreen(g_hWnd, &ptMouse);
 	//SetCursorPos(ptMouse.x, ptMouse.y);
 }
 
+void CCamera_Dynamic::CutSceneEvent()
+{
+	if (m_bIsCutSceneEventEnded == false)
+	{
+		if (m_eCurrentScene == SCENE_DRAGON)
+			DragonTrialCutSceneEvent();
+	}
+}
+
 void CCamera_Dynamic::DragonTrialCutSceneEvent()
 {
-	if (m_fCameraDistance > 100)
-		m_fCameraDistance -= m_fTimeDelta * 30.f;
+	CMesh_Dynamic*		ArkusMeshCom = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"))->Get_Mesh();
+	_vec3				vArkusPos = *dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+	CArkus::ARKUS_ANI	eArkusCurrentAni = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"))->Get_AniIndex();
+
+	if (m_fCameraHeight > 50)
+	{
+		m_fCameraHeight -= (m_fTimeDelta * 20.f);
+	}
+
+	if (ArkusMeshCom->IsAnimationEnded(9.f))
+		m_bIsAnimationEneded = true;
+
+	if (m_bIsAnimationEneded == true &&
+		eArkusCurrentAni == CArkus::ARKUS_ANI::Apperance01)
+	{
+		m_fCameraDistance -= m_fTimeDelta * 30.f;;
+	}
+
+	if (m_fCameraDistance < 50.f)
+	{
+		m_bIsCutSceneEventEnded = true;
+	}
+
+
+
+	//if (m_fCameraDistance > 100)
+	//	m_fCameraDistance -= m_fTimeDelta * 30.f;
 
 	// 여기다가 카메라 동선 if문으로 주욱주욱 추가하자.
 }

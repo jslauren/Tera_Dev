@@ -1,6 +1,5 @@
 #pragma once
 #include "Unit.h"
-#include "KeyManager.h"
 #include "Weapon.h"
 
 _BEGIN(Client)
