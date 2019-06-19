@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Weapon.h"
 #include "Object_Manager.h"
+#include "Management.h"
 #include "Light_Manager.h"
 
 #define WEAPON_SCALING	0.7f
@@ -82,6 +83,8 @@ _int CWeapon::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
+
+	CollisionCheck();
 
 	return _int();
 }
@@ -221,7 +224,8 @@ HRESULT CWeapon::Add_Component()
 	//	&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, &m_matWorld, nullptr, _vec3(0.2f, 0.2f, 1.5f), _vec3(0.0f, 0.f, -0.75f)))))
 	//	return E_FAIL;
 
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_OBB", L"Com_WeaponCollider", (CComponent**)&m_pColliderCom,
+	// For.Com_Collider
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_OBB", L"Com_WeaponCollider", (CComponent**)&m_pColliderCom,
 		&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, &m_matWorld, nullptr, _vec3(2.5f, 13.f, 1.f), _vec3(0.0f, 6.f, 0.f)))))
 		return E_FAIL;
 
@@ -288,6 +292,17 @@ HRESULT CWeapon::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	Safe_Release(pEffect);
 
 	return NOERROR;
+}
+
+void CWeapon::CollisionCheck()
+{
+	if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_DRAGON)
+	{
+		// 원래 여기 for문 돌면서 Get_Component 마지막 인자인 index ++ 해서 순회 하는 방식으로 가야함.
+		const CCollider* pArkusCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Body");
+
+		m_pColliderCom->Collision_OBB(pArkusCollider);
+	}
 }
 
 CWeapon * CWeapon::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

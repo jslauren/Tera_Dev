@@ -63,6 +63,7 @@ _int CArkus::Update_GameObject(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
+	CollisionCheck();
 	AI();
 
 	return _int();
@@ -78,7 +79,7 @@ _int CArkus::LateUpdate_GameObject(const _float & fTimeDelta)
 	//if (FAILED(SetUp_HeightOnTerrain(1)))
 	//	return -1;
 
-	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_BodyCollider");
+	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
 	const CCollider* pWeaponCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Weapon", L"Com_WeaponCollider");
 
 	m_pColliderCom->Collision_OBB(pPlayerCollider);
@@ -136,7 +137,13 @@ HRESULT CArkus::Render_GameObject()
 
 	Safe_Release(pEffect);
 
+	// [콜라이더 렌더]
 	m_pColliderCom->Render_Collider();
+	m_pColliderHeadCom->Render_Collider();
+	m_pColliderNeckCom->Render_Collider();
+	m_pColliderTail01Com->Render_Collider();
+	m_pColliderTail02Com->Render_Collider();
+	m_pColliderTail03Com->Render_Collider();
 
 	return NOERROR;
 }
@@ -159,18 +166,59 @@ HRESULT CArkus::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Mesh_Arkus", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
 		return E_FAIL;
 	
-	// For.Com_Collider
-	CCollider::COLLIDERDESC		ColliderDesc;
-	ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
-	
-	ColliderDesc.eType = CCollider::COLLIDERDESC::TYPE_TRANSFORM;
-	ColliderDesc.pTransformMatrix = m_pTransformCom->Get_WorldMatrixPointer();
-	ColliderDesc.pFrameMatrix = nullptr;
-	ColliderDesc.vScale = _vec3(10.0f, 20.f, 10.f);
-	ColliderDesc.vPivot = _vec3(0.0f, 1.f, 0.f);
-	
-	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Collider_AABB", L"Com_Collider", (CComponent**)&m_pColliderCom, &ColliderDesc)))
+	//// For.Com_Collider
+	//CCollider::COLLIDERDESC		ColliderDesc;
+	//ZeroMemory(&ColliderDesc, sizeof(CCollider::COLLIDERDESC));
+	//
+	//ColliderDesc.eType = CCollider::COLLIDERDESC::TYPE_TRANSFORM;
+	//ColliderDesc.pTransformMatrix = m_pTransformCom->Get_WorldMatrixPointer();
+	//ColliderDesc.pFrameMatrix = nullptr;
+	//ColliderDesc.vScale = _vec3(10.0f, 20.f, 10.f);
+	//ColliderDesc.vPivot = _vec3(0.0f, 1.f, 0.f);
+
+	// [콜라이더 부위 별 추가]
+	// For.Com_Collider_Arkus_Body
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_AABB", L"Com_Collider_Arkus_Body", 
+		(CComponent**)&m_pColliderCom, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME,
+		m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Bip01-Spine")->CombinedTransformationMatrix)
+		, _vec3(45.f, 30.f, 30.f), _vec3(0.f, -10.f, -3.f)))))
 		return E_FAIL;
+
+	// For.Com_Collider_Arkus_Head
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_OBB", L"Com_Collider_Arkus_Head",
+		(CComponent**)&m_pColliderHeadCom, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME,
+			m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Bip01-Head")->CombinedTransformationMatrix)
+			, _vec3(20.f, 15.f, 15.f), _vec3(10.f, 0.f, 0.f)))))
+		return E_FAIL;
+
+	// For.Com_Collider_Arkus_Neck
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_OBB", L"Com_Collider_Arkus_Neck",
+		(CComponent**)&m_pColliderNeckCom, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME,
+			m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Bip01-Neck1")->CombinedTransformationMatrix)
+			, _vec3(22.f, 15.f, 15.f), _vec3(3.f, 0.f, 0.f)))))
+		return E_FAIL;
+
+	// For.Com_Collider_Arkus_Tail01
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_OBB", L"Com_Collider_Arkus_Tail01",
+		(CComponent**)&m_pColliderTail01Com, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME,
+			m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Bip01-Tail1")->CombinedTransformationMatrix)
+			, _vec3(20.f, 20.f, 20.f), _vec3(0.f, 5.f, -5.f)))))
+		return E_FAIL;
+	
+	// For.Com_Collider_Arkus_Tail02
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_OBB", L"Com_Collider_Arkus_Tail02",
+		(CComponent**)&m_pColliderTail02Com, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME,
+			m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Bip01-Tail3")->CombinedTransformationMatrix)
+			, _vec3(20.f, 20.f, 20.f), _vec3(-10.f, 0.f, 0.f)))))
+		return E_FAIL;
+
+	// For.Com_Collider_Arkus_Tail03
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_OBB", L"Com_Collider_Arkus_Tail03",
+		(CComponent**)&m_pColliderTail03Com, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME,
+			m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Bip01-TailNub")->CombinedTransformationMatrix)
+			, _vec3(20.f, 20.f, 20.f), _vec3(0.f, 0.f, 0.f)))))
+		return E_FAIL;
+
 
 	// For.Com_Frustum
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Frustum", L"Com_Frustum", (CComponent**)&m_pFrustumCom)))
@@ -224,6 +272,22 @@ HRESULT CArkus::SetUp_HeightOnTerrain(_uint iIndex)
 	return NOERROR;
 }
 
+void CArkus::CollisionCheck()
+{
+	// Static으로 있는 플레이어 레이어에서 Com_Player_Collider라는 콜라이더를 가져오겠다.
+	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
+	const CCollider* pWeaponCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Weapon", L"Com_WeaponCollider");
+
+	// 초록색
+	m_pColliderCom->Collision_OBB(pPlayerCollider);
+	// 빨간색
+
+	// 초록색
+	m_pColliderCom->Collision_OBB(pWeaponCollider);
+	// 빨간색
+
+}
+
 void CArkus::AI()
 {
 	CArkusState* pState = m_pState->Input_State(*this, m_fTimeDelta, 0, m_pNavigationCom);
@@ -271,7 +335,13 @@ CGameObject * CArkus::Clone(void * pArg)
 
 void CArkus::Free()
 {
-	Safe_Release(m_pState);
+	Safe_Release(m_pColliderHeadCom);
+	Safe_Release(m_pColliderNeckCom);
+	Safe_Release(m_pColliderTail01Com);
+	Safe_Release(m_pColliderTail02Com);
+	Safe_Release(m_pColliderTail03Com);
 
+	Safe_Release(m_pState);
+	
 	CUnit::Free();
 }

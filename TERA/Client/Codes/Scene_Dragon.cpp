@@ -72,7 +72,7 @@ HRESULT CScene_Dragon::Ready_Scene()
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
 
-	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(200.f, 0.f, 200.f));
+	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_TransformMove()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(200.f, 0.f, 0.f));
 
 	SetCutSceneEvent();
 

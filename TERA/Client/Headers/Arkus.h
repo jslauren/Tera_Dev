@@ -41,11 +41,18 @@ public:
 	HRESULT			Add_Component();
 	HRESULT			SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 	HRESULT			SetUp_HeightOnTerrain(_uint iIndex);
-
+	
+	void			CollisionCheck();
 	void			AI();
 
 //protected:
 //	Engine::OBJECTMESHDATA tObjectMeshData;
+private:
+	CCollider*		m_pColliderHeadCom = nullptr;
+	CCollider*		m_pColliderNeckCom = nullptr;
+	CCollider*		m_pColliderTail01Com = nullptr;
+	CCollider*		m_pColliderTail02Com = nullptr;
+	CCollider*		m_pColliderTail03Com = nullptr;
 
 private:
 	CArkusState*	m_pState = nullptr;

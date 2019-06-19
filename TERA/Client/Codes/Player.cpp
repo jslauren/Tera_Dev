@@ -2,6 +2,7 @@
 #include "..\Headers\Player.h"
 #include "Object_Manager.h"
 #include "Light_Manager.h"
+#include "Management.h"
 #include "Player_Idle.h"
 #include "Player_Move.h"
 #include "Layer.h"
@@ -97,13 +98,13 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	KeyInput();
 	
 	//// 이 부분은 추후에 인벤토리 구현 시 참고할 구문이다.
+
 	//if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_8))
 	//{
 	//	if (m_bTest == false)
 	//	{
 	//		Safe_Release(m_pMeshCom_Body);
 	//		m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Body2");
-
 	//		m_pMeshCom_Bone->Set_BodyFrame(m_pMeshCom_Body->GetRootFrame());
 	//	}
 	//	else
@@ -120,6 +121,8 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	m_pTransformCom->Set_WorldMatrix((*m_pTransformRotateCom->Get_WorldMatrixPointer()) * (*m_pTransformMoveCom->Get_WorldMatrixPointer()));
 
 //	Compute_HeightOnNavi();
+	
+	CollisionCheck();
 
 	return _int();
 }
@@ -314,7 +317,6 @@ HRESULT CPlayer::Add_Component()
 	if (nullptr == m_pMeshCom_Tail)
 		return E_FAIL;
 
-
 	// For.Com_Renderer
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
@@ -323,25 +325,11 @@ HRESULT CPlayer::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
-	// For.Com_BodyCollider
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_AABB", L"Com_BodyCollider", (CComponent**)&m_pColliderCom,
+	// For.Com_PlayerCollider
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_AABB", L"Com_Player_Collider", (CComponent**)&m_pColliderCom,
 		&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, m_pTransformCom->Get_WorldMatrixPointer(), nullptr,
 			_vec3(7.5f, 12.f, 8.5f), _vec3(0.0f, 6.f, 0.f)))))
 		return E_FAIL;
-
-	//// For.Com_HandCollider
-	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Collider_Sphere", L"Com_HandCollider", (CComponent**)&m_pHandColliderCom, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME, m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Body_rFingerMidTop")->CombinedTransformationMatrix)
-	//	, _vec3(0.3f, 0.3f, 0.3f), _vec3(0.f, 0.f, 0.f)))))
-	//	return E_FAIL;
-
-	// For.Com_Navigation
-	_uint		iIndex = 0;
-
-	//if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Navigation_Stage", L"Com_Navigation", (CComponent**)&m_pNavigationCom, &iIndex)))
-	//	return E_FAIL;
-
-	//if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Navigation_Dragon", L"Com_Navigation", (CComponent**)&m_pNavigationCom, &iIndex)))
-	//	return E_FAIL;
 
 	return NOERROR;
 }
@@ -462,6 +450,18 @@ void CPlayer::Compute_HeightOnNavi()
 	pPlayerPos.y = fDist;
 
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &pPlayerPos);
+}
+
+void CPlayer::CollisionCheck()
+{
+	if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_DRAGON)
+	{
+		// 원래 여기 for문 돌면서 Get_Component 마지막 인자인 index ++ 해서 순회 하는 방식으로 가야함.
+		const CCollider* pArkusCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Body");
+
+		m_pColliderCom->Collision_AABB(pArkusCollider);
+	}
+
 }
 
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

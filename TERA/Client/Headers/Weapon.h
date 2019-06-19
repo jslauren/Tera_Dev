@@ -48,6 +48,8 @@ private:
 	HRESULT			SetUp_HeightOnTerrain();
 	HRESULT			SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 
+	void			CollisionCheck();
+
 public:
 	static CWeapon*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);
