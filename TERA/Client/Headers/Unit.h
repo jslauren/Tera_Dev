@@ -82,8 +82,6 @@ protected:
 	_float			m_fAniSpeed = 1.f;
 	_float			m_fTimeDelta = 1.f;
 	_bool			m_bIsRun = false;
-	_bool			m_bIsJumped = false;
-	_float			m_fJumpTime = 0.f;
 
 public:
 	virtual CGameObject*	Clone(void* pArg = nullptr) = 0;

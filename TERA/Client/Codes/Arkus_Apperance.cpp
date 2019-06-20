@@ -3,7 +3,7 @@
 #include "Arkus.h"
 #include "Input_Device.h"
 
-#include "Arkus_Idle.h"
+#include "Arkus_Rush.h"
 
 _USING(Client)
 
@@ -14,7 +14,7 @@ CArkus_Apperance::CArkus_Apperance(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CArkus_Apperance::Initialize_State(CArkus & Arkus)
 {
-	Arkus.Set_AniIndex(CArkus::ARKUS_ANI::Apperance02);
+	//Arkus.Set_AniIndex(CArkus::ARKUS_ANI::Apperance01);
 	Arkus.Set_ActionID(CArkus::ACTION_ID::ACTION_READY);
 
 	return NOERROR;
@@ -32,10 +32,10 @@ CArkusState * CArkus_Apperance::Input_State(CArkus & Arkus, const float & fTimeD
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Apperance02)
 	{
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.9f))
 		{
 			m_iAniState = 1;
-			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+			return CArkus_Rush::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}
 	}
 

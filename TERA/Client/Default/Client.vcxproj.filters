@@ -384,6 +384,12 @@
     <ClInclude Include="..\Headers\Arkus_Apperance.h">
       <Filter>03. Unit\Monster\Arkus\ArkusState\01. Apperance</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Arkus_Rush.h">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\04. Rush</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Arkus_Run.h">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\02. Run</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -541,6 +547,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Arkus_Apperance.cpp">
       <Filter>03. Unit\Monster\Arkus\ArkusState\01. Apperance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Arkus_Rush.cpp">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\04. Rush</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Arkus_Run.cpp">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\02. Run</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

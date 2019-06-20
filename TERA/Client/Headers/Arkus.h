@@ -20,6 +20,7 @@ public:	// Getter
 	const ARKUS_ANI&	Get_AniIndex() { return m_eAnimationIndex; }
 	const ARKUS_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
 	CMesh_Dynamic*		Get_Mesh() { return m_pMeshCom; }
+	_bool				Get_CollisionPartCheck(_uint iPartNum) { return m_bCollisionPartsCheck[iPartNum]; }
 
 public:	// Setter
 	void			Set_AniIndex(const ARKUS_ANI& iIndex) { m_eAnimationIndex = iIndex; }
@@ -43,6 +44,7 @@ public:
 	HRESULT			SetUp_HeightOnTerrain(_uint iIndex);
 	
 	void			CollisionCheck();
+	void			ViewChanage();
 	void			AI();
 
 //protected:
@@ -52,6 +54,7 @@ private:
 	CCollider*		m_pColliderNeckCom = nullptr;
 	CCollider*		m_pColliderTail01Com = nullptr;
 	CCollider*		m_pColliderTail02Com = nullptr;
+	CCollider*		m_pColliderAtkAreaCom = nullptr;
 
 private:
 	CArkusState*	m_pState = nullptr;
@@ -61,8 +64,10 @@ private:
 	ARKUS_ANI		m_eOldAnimationIndex = Idle;
 
 private:
-	_bool			m_bCollisionPartsCheck[6];
+	_bool			m_bCollisionPartsCheck[7];
 	_bool			m_bCollisionCheck = false;
+	_vec3			m_vPlayerDir;
+	_float			m_fDirAngle = 0.f;
 
 public:
 	static CArkus*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);

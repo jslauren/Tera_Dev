@@ -25,6 +25,7 @@ CPlayer::CPlayer(const CPlayer & rhs)
 HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
 {
 	// For.Com_Navigation
+	// 씬 별 네비게이션 컴포넌트 셋팅 부분.
 	_uint		iIndex = 0;
 
 	Safe_Release(m_pNavigationCom);
@@ -63,7 +64,6 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	// 파츠가 추가되면 여기에 추가되는거 추가해줘
 	m_pMeshCom_Bone->Set_HeadFrame(m_pMeshCom_Head->GetRootFrame());
 	m_pMeshCom_Bone->Set_BodyFrame(m_pMeshCom_Body->GetRootFrame());
 	m_pMeshCom_Bone->Set_HandFrame(m_pMeshCom_Hand->GetRootFrame());

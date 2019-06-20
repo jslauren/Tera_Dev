@@ -39,7 +39,8 @@ HRESULT CArkus::Ready_GameObject(void * pArg)
 //	_matrix matWorld = *(_matrix*)pArg;
 
 	m_pTransformCom->Set_Scaling(0.4f, 0.4f, 0.4f);
-	m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(90.f), D3DXToRadian(0.f), D3DXToRadian(0.f));
+//	m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(90.f), D3DXToRadian(0.f), D3DXToRadian(0.f));
+	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(90.f));
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(200.f, 0.f, 200.f));
 //	m_pTransformCom->Set_WorldMatrix(matWorld);
 
@@ -62,6 +63,8 @@ _int CArkus::Update_GameObject(const _float & fTimeDelta)
 		return -1;
 
 	m_fTimeDelta = fTimeDelta;
+
+	ViewChanage();
 
 	CollisionCheck();
 	AI();
@@ -143,6 +146,7 @@ HRESULT CArkus::Render_GameObject()
 	m_pColliderNeckCom->Render_Collider();
 	m_pColliderTail01Com->Render_Collider();
 	m_pColliderTail02Com->Render_Collider();
+	m_pColliderAtkAreaCom->Render_Collider();
 
 	return NOERROR;
 }
@@ -216,6 +220,18 @@ HRESULT CArkus::Add_Component()
 			, _vec3(fTail02Scale, fTail02Scale, fTail02Scale), _vec3(0.f, 0.f, 8.f)))))
 		return E_FAIL;
 
+	_float fColliderAttackAreaScale = 150.f;
+	// For.Com_Collider_Arkus_Attack_Area
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_Sphere", L"Com_Collider_Arkus_Attack_Area",
+		(CComponent**)&m_pColliderAtkAreaCom,&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM,	m_pTransformCom->Get_WorldMatrixPointer(),
+		nullptr, _vec3(fColliderAttackAreaScale, fColliderAttackAreaScale, fColliderAttackAreaScale), _vec3(0.0f, 0.f, 0.f)))))
+		return E_FAIL;
+
+	// For.Com_Navigation_Dragon
+	_uint	iIndex = 0;
+	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Navigation_Dragon", L"Com_Navigation_Dragon", (CComponent**)&m_pNavigationCom, &iIndex)))
+		return E_FAIL;
+
 	// For.Com_Frustum
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Frustum", L"Com_Frustum", (CComponent**)&m_pFrustumCom)))
 		return E_FAIL;
@@ -271,7 +287,11 @@ HRESULT CArkus::SetUp_HeightOnTerrain(_uint iIndex)
 void CArkus::CollisionCheck()
 {
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
-	
+	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
+
+	if (m_pColliderAtkAreaCom->Collision_Sphere(pPlayerCollider))
+		m_bCollisionPartsCheck[6] = true;
+
 	if (pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle &&
 		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle_Battle &&
 		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit &&
@@ -298,7 +318,7 @@ void CArkus::CollisionCheck()
 		m_pColliderNeckCom->Collision_Sphere(pPlayerCollider);
 		m_pColliderTail01Com->Collision_Sphere(pPlayerCollider);
 		m_pColliderTail02Com->Collision_Sphere(pPlayerCollider);
-
+		
 		{
 			if (m_pColliderCom->Collision_Sphere(pWeaponCollider01) == true)
 				m_bCollisionPartsCheck[0] = true;
@@ -365,8 +385,18 @@ void CArkus::CollisionCheck()
 			if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider04) == true)
 				m_bCollisionPartsCheck[4] = true;
 		}
+		//{
+		//	if (m_pColliderAtkAreaCom->Collision_Sphere(pWeaponCollider01) == true)
+		//		m_bCollisionPartsCheck[5] = true;
+		//	if (m_pColliderAtkAreaCom->Collision_Sphere(pWeaponCollider02) == true)
+		//		m_bCollisionPartsCheck[5] = true;
+		//	if (m_pColliderAtkAreaCom->Collision_Sphere(pWeaponCollider03) == true)
+		//		m_bCollisionPartsCheck[5] = true;
+		//	if (m_pColliderAtkAreaCom->Collision_Sphere(pWeaponCollider04) == true)
+		//		m_bCollisionPartsCheck[5] = true;
+		//}
 
-		for (size_t i = 0; i < 5; ++i)
+		for (size_t i = 0; i < 6; ++i)
 		{
 			if (m_bCollisionPartsCheck[i] == false)
 				m_bCollisionCheck = false;
@@ -374,6 +404,35 @@ void CArkus::CollisionCheck()
 				m_bCollisionCheck = true;
 		}
 	}
+}
+
+void CArkus::ViewChanage()
+{
+	_vec3 vArkusRight, vArkusUp, vArkusLook, vDir, vPlayerPos;
+
+	vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+	
+	vDir = vPlayerPos - *m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
+	D3DXVec3Normalize(&vDir, &vDir);
+
+	vArkusRight = *m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT);
+	vArkusUp	= *m_pTransformCom->Get_StateInfo(CTransform::STATE_UP);
+	vArkusLook	= *m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK);
+
+	_float fAngle = 0.f;
+	fAngle = D3DXVec3Dot(&vArkusRight, &vDir);
+
+	if (fAngle < 0.f)
+	{
+		m_fDirAngle = D3DXVec3Dot(&vArkusLook, &vDir);
+		m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(m_fDirAngle), m_fTimeDelta * 270.f);
+	}
+	else if (fAngle > 0.f)
+	{
+		m_fDirAngle = D3DXVec3Dot(&vArkusLook, &vDir);
+		m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(-m_fDirAngle), m_fTimeDelta * 270.f);
+	}
+	
 }
 
 void CArkus::AI()
@@ -427,6 +486,7 @@ void CArkus::Free()
 	Safe_Release(m_pColliderNeckCom);
 	Safe_Release(m_pColliderTail01Com);
 	Safe_Release(m_pColliderTail02Com);
+	Safe_Release(m_pColliderAtkAreaCom);
 
 	Safe_Release(m_pState);
 	

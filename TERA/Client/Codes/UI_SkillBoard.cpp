@@ -29,6 +29,9 @@ HRESULT CUI_SkillBoard::Ready_GameObject(void * pArg)
 	m_pTransformSkillBoardCom->Set_Scaling((g_iWinCX * 0.68f), (g_iWinCY * 0.15f), 0.f);
 	m_pTransformSkillBoardCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.f, -(g_iWinCY * 0.4f), 0.f));
 
+	m_pTransformSkillFilterCom->Set_Scaling((g_iWinCX * 0.01f), (g_iWinCY * 0.15f), 0.f);
+	m_pTransformSkillFilterCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.f, -(g_iWinCY * 0.4f), 0.f));
+
 	return NOERROR;
 }
 
@@ -81,9 +84,9 @@ HRESULT CUI_SkillBoard::Render_GameObject()
 	//		return E_FAIL;
 
 	//	pEffect->Begin(nullptr, 0);
-	//	pEffect->BeginPass(0);
+	//	pEffect->BeginPass(2);
 
-	//	m_pBufferHpFilterCom->Render_Buffer();
+	//	m_pBufferSkillFilterCom->Render_Buffer();
 
 	//	pEffect->EndPass();
 	//	pEffect->End();
@@ -139,6 +142,15 @@ HRESULT CUI_SkillBoard::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iT
 		pEffect->SetMatrix("g_matWorld", m_pTransformSkillBoardCom->Get_WorldMatrixPointer());
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
+	}
+	else if (2 == iTargetTextureIdx)
+	{
+		m_pTextureSkillBoardCom->SetUp_OnShader(pEffect, "g_BaseTexture");
+
+		pEffect->SetMatrix("g_matWorld", m_pTransformSkillBoardCom->Get_WorldMatrixPointer());
+		pEffect->SetMatrix("g_matView", &matTmp);
+		pEffect->SetMatrix("g_matProj", &matProj);
+		pEffect->SetFloat("g_fCoolTimeDegree", _float(45.f));
 	}
 
 	Safe_Release(pEffect);

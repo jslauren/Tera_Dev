@@ -7,8 +7,8 @@ class CArkusState;
 class CArkus_Apperance : public CArkusState
 {
 public:
-	CArkus_Apperance(LPDIRECT3DDEVICE9 pGraphic_Device);
-	~CArkus_Apperance() = default;
+	explicit CArkus_Apperance(LPDIRECT3DDEVICE9 pGraphic_Device);
+	virtual ~CArkus_Apperance() = default;
 
 public:
 	virtual HRESULT				Initialize_State(CArkus& Arkus);
