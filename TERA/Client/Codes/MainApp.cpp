@@ -8,7 +8,8 @@
 #include "Camera_Static.h"
 #include "Component_Manager.h"
 #include "EventManager.h"
-#include "KeyManager.h"
+#include "Input_Device.h"
+#include "Object_Manager.h"
 
 _USING(Client)
 

@@ -19,8 +19,6 @@ STDMETHODIMP CHierarchyLoader::CreateFrame(LPCSTR Name, LPD3DXFRAME * ppNewFrame
 			return E_FAIL;
 	}
 
-	// 여기에 변환 행렬들의 초기화 구문 추가.
-
 	*ppNewFrame = pNewFrame;
 
 	return NOERROR;
@@ -28,8 +26,6 @@ STDMETHODIMP CHierarchyLoader::CreateFrame(LPCSTR Name, LPD3DXFRAME * ppNewFrame
 
 STDMETHODIMP CHierarchyLoader::CreateMeshContainer(LPCSTR Name, CONST D3DXMESHDATA * pMeshData, CONST D3DXMATERIAL * pMaterials, CONST D3DXEFFECTINSTANCE * pEffectInstances, DWORD NumMaterials, CONST DWORD * pAdjacency, LPD3DXSKININFO pSkinInfo, LPD3DXMESHCONTAINER * ppNewMeshContainer)
 {
-	// 이부분은 통째로 인터넷에 있는걸 가져다 쓰자.
-
 	D3DXMESHCONTAINER_DERIVED*	pNewMeshContainer = new D3DXMESHCONTAINER_DERIVED;
 	ZeroMemory(pNewMeshContainer, sizeof(D3DXMESHCONTAINER_DERIVED));
 

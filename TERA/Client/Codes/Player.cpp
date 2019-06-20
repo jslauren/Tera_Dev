@@ -325,10 +325,11 @@ HRESULT CPlayer::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
+	_float fColliderScale = 12.f;
 	// For.Com_PlayerCollider
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_AABB", L"Com_Player_Collider", (CComponent**)&m_pColliderCom,
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_Sphere", L"Com_Player_Collider", (CComponent**)&m_pColliderCom,
 		&CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_TRANSFORM, m_pTransformCom->Get_WorldMatrixPointer(), nullptr,
-			_vec3(7.5f, 12.f, 8.5f), _vec3(0.0f, 6.f, 0.f)))))
+			_vec3(fColliderScale, fColliderScale, fColliderScale), _vec3(0.0f, 5.f, 0.f)))))
 		return E_FAIL;
 
 	return NOERROR;
@@ -456,10 +457,60 @@ void CPlayer::CollisionCheck()
 {
 	if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_DRAGON)
 	{
-		// 원래 여기 for문 돌면서 Get_Component 마지막 인자인 index ++ 해서 순회 하는 방식으로 가야함.
-		const CCollider* pArkusCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Body");
+		const CCollider* pArkusColliderBody = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Body");
+		const CCollider* pArkusColliderHead = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Head");
+		const CCollider* pArkusColliderNeck = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Neck");
+		const CCollider* pArkusColliderTail01 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Tail01");
+		const CCollider* pArkusColliderTail02 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Tail02");
 
-		m_pColliderCom->Collision_AABB(pArkusCollider);
+		//m_pColliderCom->Collision_OBB(pArkusColliderBody);
+		//m_pColliderCom->Collision_OBB(pArkusColliderHead);
+		//m_pColliderCom->Collision_OBB(pArkusColliderNeck);
+		//m_pColliderCom->Collision_OBB(pArkusColliderTail01);
+		//m_pColliderCom->Collision_OBB(pArkusColliderTail02);
+		//m_pColliderCom->Collision_OBB(pArkusColliderTail03);
+
+		if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true ||
+			m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true ||
+			m_pColliderCom->Collision_Sphere(pArkusColliderNeck) == true ||
+			m_pColliderCom->Collision_Sphere(pArkusColliderTail01) == true ||
+			m_pColliderCom->Collision_Sphere(pArkusColliderTail02) == true)
+		{
+			m_bCollisionCheck = true;
+		}
+		else
+			m_bCollisionCheck = false;
+
+		//if (m_pColliderCom->Collision_OBB(pArkusColliderBody) == true)
+		//	m_bCollisionCheck[0] = true;
+		//else if (m_pColliderCom->Collision_OBB(pArkusColliderHead) == true)
+		//	m_bCollisionCheck[1] = true;
+		//else if (m_pColliderCom->Collision_OBB(pArkusColliderNeck) == true)
+		//	m_bCollisionCheck[2] = true;
+		//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail01) == true)
+		//	m_bCollisionCheck[3] = true;
+		//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail02) == true)
+		//	m_bCollisionCheck[4] = true;
+		//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail03) == true)
+		//	m_bCollisionCheck[5] = true;
+		
+		_uint	iCellIndx = 0;
+		if (m_bCollisionCheck == true)
+		{
+			_float fRadius = m_pColliderCom->Get_Radius();
+
+			if (true == m_pNavigationCom->Move_OnNavigation(m_pTransformMoveCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformMoveCom->Get_StateInfo(CTransform::STATE_LOOK), fRadius * m_fTimeDelta, &iCellIndx))
+			{
+				_vec3 vInverseView = (*m_pColliderCom->Get_LookDistance());
+				vInverseView.y = 0;
+
+				m_pTransformMoveCom->Move(&vInverseView, fRadius, m_fTimeDelta);
+
+				/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
+				m_pNavigationCom->SetUp_CurrentIndex(iCellIndx);
+			}
+		}
+
 	}
 
 }

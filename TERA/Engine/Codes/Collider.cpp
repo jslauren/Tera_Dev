@@ -1,6 +1,7 @@
 #include "..\Headers\Collider.h"
 #include "Shader.h"
 #include "Transform.h"
+#include "Input_Device.h"
 
 CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CComponent(pGraphic_Device)
@@ -15,6 +16,7 @@ CCollider::CCollider(const CCollider & rhs)
 	, m_vMin(rhs.m_vMin)
 	, m_vMax(rhs.m_vMax)
 	, m_pOBBDesc(rhs.m_pOBBDesc)
+	, m_bIsRendering(rhs.m_bIsRendering)
 {
 	Safe_AddRef(m_pShader);
 	Safe_AddRef(m_pMesh);
@@ -93,8 +95,7 @@ HRESULT CCollider::Render_Collider()
 	_matrix		matTransform = *m_ColliderDesc.pTransformMatrix;
 
 	// 객체의 월드 행렬의 스케일정보, 회전정보 삭제.
-	if (TYPE_AABB == m_eType ||
-		TYPE_SPHERE == m_eType)
+	if (TYPE_AABB == m_eType)
 
 	{
 		// 뼈행렬 * 객체의 월드행렬의 결과행렬의 스케일정보, 회전정보 삭제.
@@ -107,7 +108,8 @@ HRESULT CCollider::Render_Collider()
 	}
 
 	// 객체의 월드 행렬의 스케일정보 삭제.
-	else if (TYPE_OBB == m_eType)
+	else if (TYPE_OBB == m_eType ||
+		TYPE_SPHERE == m_eType)
 	{
 		// 뼈행렬 * 객체의 월드행렬의 결과행렬의 스케일정보 삭제.
 		if (COLLIDERDESC::TYPE_FRAME == m_ColliderDesc.eType)
@@ -137,7 +139,12 @@ HRESULT CCollider::Render_Collider()
 	pEffect->Begin(nullptr, 0);
 	pEffect->BeginPass(0);
 
-	m_pMesh->DrawSubset(0);
+	// Feat.슬기
+	if(CInput_Device::GetInstance()->GetDIKeyState(DIK_C) & 0x80)
+		m_bIsRendering = !m_bIsRendering;
+
+	if(m_bIsRendering == true)
+		m_pMesh->DrawSubset(0);
 
 	pEffect->EndPass();
 	pEffect->End();
@@ -258,7 +265,29 @@ _bool CCollider::Collision_OBB(const CCollider * pTargetCollider)
 	return _bool(true);
 }
 
+_bool CCollider::Collision_Sphere(const CCollider * pTargetCollider)
+{
+	m_isColl = false;
 
+	_float	fDistance = 0.f;
+	_vec3	vSourPos, vDestPos;
+
+	memcpy(&vSourPos, &m_matWorld.m[3][0], sizeof(_vec3));
+	memcpy(&vDestPos, &pTargetCollider->m_matWorld.m[3][0], sizeof(_vec3));
+
+	m_vLookDistance = vSourPos - vDestPos;
+	fDistance = D3DXVec3Length(&(vSourPos - vDestPos));
+
+	m_fRadius = (m_ColliderDesc.vScale.x + pTargetCollider->m_ColliderDesc.vScale.x) / 2;
+
+	if (m_fRadius < fDistance)
+		return false;
+	else
+	{
+		m_isColl = true;
+		return true;
+	}
+}
 
 HRESULT CCollider::Make_Collider_BoundingBox()
 {

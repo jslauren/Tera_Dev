@@ -27,6 +27,8 @@ private: // For.FPS
 	_uint	m_iRenderCnt = 0;
 	_float	m_fTimeAcc = 0.f;
 	_tchar	m_szFPS[128] = L"";
+
+	_bool	m_bRenderlingCheck = false;
 private:
 	HRESULT Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _uint& iWinCX, const _uint& iWinCY);
 //	HRESULT Ready_Render_State();

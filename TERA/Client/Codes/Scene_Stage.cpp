@@ -8,6 +8,7 @@
 #include "SkyBox.h"
 #include "Terrain.h"
 #include "Player.h"
+#include "Arkus.h"
 #include "Weapon.h"
 #include "Monster.h"
 #include "TerrainObject.h"
@@ -92,7 +93,7 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 	if (GetKeyState('N') & 0x8000)
 	{
 		dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_AniIndex(CPlayer::PLAYER_ANI::Idle);
-		//dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(200.f, 0.f, 0.f));
+		dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon"))->Set_BoneMatrix(1);
 
 		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Dragon::Create(m_pGraphic_Device), SCENE_DRAGON)))
 		{

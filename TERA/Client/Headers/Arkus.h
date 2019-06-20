@@ -52,7 +52,6 @@ private:
 	CCollider*		m_pColliderNeckCom = nullptr;
 	CCollider*		m_pColliderTail01Com = nullptr;
 	CCollider*		m_pColliderTail02Com = nullptr;
-	CCollider*		m_pColliderTail03Com = nullptr;
 
 private:
 	CArkusState*	m_pState = nullptr;
@@ -60,6 +59,10 @@ private:
 private:
 	ARKUS_ANI		m_eAnimationIndex = Idle;
 	ARKUS_ANI		m_eOldAnimationIndex = Idle;
+
+private:
+	_bool			m_bCollisionPartsCheck[6];
+	_bool			m_bCollisionCheck = false;
 
 public:
 	static CArkus*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);

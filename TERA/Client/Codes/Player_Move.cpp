@@ -26,6 +26,8 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 {
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_W) & 0x80)
 	{
+		Player.Set_MeshDirection(CPlayer::MESHDIR_FRONT);
+
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
 			// 이 친구는 Move 함수를 돌리기 위한 인자로 pArg를 넘기는 거라,
@@ -60,6 +62,8 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	}
 	else if (CInput_Device::GetInstance()->GetDIKeyState(DIK_S) & 0x80)
 	{
+		Player.Set_MeshDirection(CPlayer::MESHDIR_BACK);
+
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
 			m_iAniState = 1;
@@ -92,6 +96,8 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	}
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_A) & 0x80)
 	{
+		Player.Set_MeshDirection(CPlayer::MESHDIR_LEFT);
+
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
 			m_iAniState = 2;
@@ -114,6 +120,8 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	}
 	else if (CInput_Device::GetInstance()->GetDIKeyState(DIK_D) & 0x80)
 	{
+		Player.Set_MeshDirection(CPlayer::MESHDIR_RIGHT);
+
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
 			m_iAniState = 3;

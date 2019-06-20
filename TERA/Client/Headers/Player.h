@@ -16,7 +16,11 @@ public:
 		Run_Battle, Hit, StingerBlade, Tumbling, Idle_Battle, Fall, JumpStart, JumpLoop, JumpEndLand, JumpEnd,
 		SitStart, SitLoop, SitEnd, Run, Idle, END
 	};
-	// Jump, Fall, Tumbling_, Groggy, Death
+	// Jump, Fall, Groggy, Death
+	enum MESH_DIR
+	{
+		MESHDIR_FRONT, MESHDIR_BACK, MESHDIR_LEFT, MESHDIR_RIGHT, MESHDIR_END
+	};
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CPlayer(const CPlayer& rhs);
@@ -29,7 +33,8 @@ public:	// Getter
 	CMesh_Dynamic_Bone*	Get_Mesh_Bone() { return m_pMeshCom_Bone; }
 	const _int&			Get_Direction() { return m_iDirection; }
 	const _bool&		Get_CutSceneInfo() { return m_bIsCutSceneEvent; }
-
+	const _bool&		Get_CollisionCheckWhether() { return m_bCollisionCheck; }
+	
 public:	// Setter
 	void			Set_AniIndex(const PLAYER_ANI& iIndex) { m_eAnimationIndex = iIndex; }
 	void			Set_OldAniIndex(const PLAYER_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
@@ -37,6 +42,7 @@ public:	// Setter
 	void			Set_Direction(_int iDir) { m_iDirection = iDir; }
 	HRESULT			Set_Navigation_Component(SCENEID eScene);
 	void			Set_CutSceneInfo(_bool bButton) { m_bIsCutSceneEvent = bButton; }
+	void			Set_MeshDirection(MESH_DIR eDir) { m_eCurrentMeshDir = eDir; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -70,7 +76,11 @@ private:
 	_int			m_iDirection = 1;
 
 	_bool			m_bIsCutSceneEvent = false;
-	
+	_bool			m_bCollisionCheck = false;
+//	_bool			m_bCollisionCheck[6];
+
+	MESH_DIR		m_eCurrentMeshDir = MESHDIR_FRONT;
+
 private:
 	virtual HRESULT Add_Component();
 	virtual HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);

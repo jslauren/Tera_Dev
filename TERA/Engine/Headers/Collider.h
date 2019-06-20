@@ -50,10 +50,16 @@ private:
 	explicit CCollider(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CCollider(const CCollider& rhs);
 	virtual ~CCollider() = default;
-public:
+public:	// Getter
 	const _vec3* Get_Min() const { return &m_vMin; }
 	const _vec3* Get_Max() const { return &m_vMax; }
 	const _matrix* Get_WorldMatrix() const { return &m_matWorld; }
+	const _float Get_Radius() const { return m_fRadius; }
+	const _vec3* Get_LookDistance() const { return &m_vLookDistance; }
+
+public:	// Setter
+	void	Set_ColliderRenderling(_bool bButton) { m_bIsRendering = bButton; }
+
 public:
 	HRESULT Ready_Collider_Prototype(CCollider::TYPE eType);
 	HRESULT Ready_Collider(COLLIDERDESC* pArg);
@@ -61,12 +67,18 @@ public:
 public:
 	_bool Collision_AABB(const CCollider* pTargetCollider);
 	_bool Collision_OBB(const CCollider* pTargetCollider);
+	_bool Collision_Sphere(const CCollider* pTargetCollider);
+
 private:
 	LPD3DXMESH		m_pMesh = nullptr;
 	TYPE			m_eType = TYPE_END;
 	COLLIDERDESC	m_ColliderDesc;
 	CShader*		m_pShader = nullptr;
 	_bool			m_isColl = false;
+	_float			m_fRadius = 0.f;
+	_vec3			m_vLookDistance;
+	_bool			m_bIsRendering = false;
+
 private:
 	_vec3			m_vMin, m_vMax;
 	_matrix			m_matWorld;
