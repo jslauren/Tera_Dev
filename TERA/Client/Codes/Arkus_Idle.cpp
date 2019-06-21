@@ -25,16 +25,18 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 {
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Idle)
 	{
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
+		if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATKAREA) == false)
 		{
-			if (Arkus.Get_CollisionPartCheck(6) != true)
+			if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 				return CArkus_Run::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 			//else if (Arkus.Get_CollisionPartCheck(6) == true)
 			//	return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}
+		else
+			return nullptr;
 	}
-	else
-		return nullptr;
+
+	return nullptr;
 }
 
 void CArkus_Idle::Update_State(CArkus & Arkus, const float & fTimeDelta)

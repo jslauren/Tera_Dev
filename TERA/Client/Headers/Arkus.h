@@ -15,12 +15,17 @@ public:
 		MoveAtkStart, MoveAtkLoop, MoveAtkEnd, JumpEvasion,
 		HeavyAtk02, Groggy, Hit, Death, Atk01, Apperance02, End
 	};
+	enum ARKUS_COLLISION
+	{
+		COLL_BOOY, COLL_HEAD, COLL_NECK, 
+		COLL_TAIL01, COLL_TAIL02, COLL_ATKAREA, COLL_END
+	};
 
 public:	// Getter
 	const ARKUS_ANI&	Get_AniIndex() { return m_eAnimationIndex; }
 	const ARKUS_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
 	CMesh_Dynamic*		Get_Mesh() { return m_pMeshCom; }
-	_bool				Get_CollisionPartCheck(_uint iPartNum) { return m_bCollisionPartsCheck[iPartNum]; }
+	_bool				Get_CollisionPartCheck(ARKUS_COLLISION eCollisionPart) { return m_bCollisionPart[eCollisionPart]; }
 
 public:	// Setter
 	void			Set_AniIndex(const ARKUS_ANI& iIndex) { m_eAnimationIndex = iIndex; }
@@ -64,10 +69,19 @@ private:
 	ARKUS_ANI		m_eOldAnimationIndex = Idle;
 
 private:
-	_bool			m_bCollisionPartsCheck[7];
-	_bool			m_bCollisionCheck = false;
 	_vec3			m_vPlayerDir;
 	_float			m_fDirAngle = 0.f;
+	
+	_bool			m_bCollisionCheck = false;
+
+	_bool			m_bCollisionPart[COLL_END];
+
+	_bool			m_bCollisionBody = false;
+	_bool			m_bCollisionHead = false;
+	_bool			m_bCollisionNeck = false;
+	_bool			m_bCollisionTail01 = false;
+	_bool			m_bCollisionTail02 = false;
+	_bool			m_bCollisionAttackArea = false;
 
 public:
 	static CArkus*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);

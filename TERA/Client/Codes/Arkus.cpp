@@ -66,8 +66,8 @@ _int CArkus::Update_GameObject(const _float & fTimeDelta)
 
 	ViewChanage();
 
-	CollisionCheck();
 	AI();
+	CollisionCheck();
 
 	return _int();
 }
@@ -290,7 +290,9 @@ void CArkus::CollisionCheck()
 	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
 
 	if (m_pColliderAtkAreaCom->Collision_Sphere(pPlayerCollider))
-		m_bCollisionPartsCheck[6] = true;
+		m_bCollisionPart[COLL_ATKAREA] = true;
+	else // 빌어먹을 이 else 문 하나 안써서 몇시간을 날려먹은거냐 ㅡㅡ
+		m_bCollisionPart[COLL_ATKAREA] = false;
 
 	if (pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle &&
 		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle_Battle &&
@@ -307,7 +309,7 @@ void CArkus::CollisionCheck()
 		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Run_Battle)
 	{
 		// Static으로 있는 플레이어 레이어에서 Com_Player_Collider라는 콜라이더를 가져오겠다.
-		const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
+		//const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
 		const CCollider* pWeaponCollider01 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Weapon", L"Com_WeaponCollider01");
 		const CCollider* pWeaponCollider02 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Weapon", L"Com_WeaponCollider02");
 		const CCollider* pWeaponCollider03 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Weapon", L"Com_WeaponCollider03");
@@ -321,69 +323,69 @@ void CArkus::CollisionCheck()
 		
 		{
 			if (m_pColliderCom->Collision_Sphere(pWeaponCollider01) == true)
-				m_bCollisionPartsCheck[0] = true;
+				m_bCollisionPart[COLL_BOOY] = true;
 
-			if (m_pColliderCom->Collision_Sphere(pWeaponCollider02) == true)
-				m_bCollisionPartsCheck[0] = true;
+			else if (m_pColliderCom->Collision_Sphere(pWeaponCollider02) == true)
+				m_bCollisionPart[COLL_BOOY] = true;
 
-			if (m_pColliderCom->Collision_Sphere(pWeaponCollider03) == true)
-				m_bCollisionPartsCheck[0] = true;
+			else if (m_pColliderCom->Collision_Sphere(pWeaponCollider03) == true)
+				m_bCollisionPart[COLL_BOOY] = true;
 
-			if (m_pColliderCom->Collision_Sphere(pWeaponCollider04) == true)
-				m_bCollisionPartsCheck[0] = true;
+			else if (m_pColliderCom->Collision_Sphere(pWeaponCollider04) == true)
+				m_bCollisionPart[COLL_BOOY] = true;
 		}
 		{
 			if (m_pColliderHeadCom->Collision_Sphere(pWeaponCollider01) == true)
-				m_bCollisionPartsCheck[1] = true;
+				m_bCollisionPart[COLL_HEAD] = true;
 
-			if (m_pColliderHeadCom->Collision_Sphere(pWeaponCollider02) == true)
-				m_bCollisionPartsCheck[1] = true;
+			else if (m_pColliderHeadCom->Collision_Sphere(pWeaponCollider02) == true)
+				m_bCollisionPart[COLL_HEAD] = true;
 
-			if (m_pColliderHeadCom->Collision_Sphere(pWeaponCollider03) == true)
-				m_bCollisionPartsCheck[1] = true;
+			else if (m_pColliderHeadCom->Collision_Sphere(pWeaponCollider03) == true)
+				m_bCollisionPart[COLL_HEAD] = true;
 
-			if (m_pColliderHeadCom->Collision_Sphere(pWeaponCollider04) == true)
-				m_bCollisionPartsCheck[1] = true;
+			else if (m_pColliderHeadCom->Collision_Sphere(pWeaponCollider04) == true)
+				m_bCollisionPart[COLL_HEAD] = true;
 		}
 		{
 			if (m_pColliderNeckCom->Collision_Sphere(pWeaponCollider01) == true)
-				m_bCollisionPartsCheck[2] = true;
+				m_bCollisionPart[COLL_NECK] = true;
 
-			if (m_pColliderNeckCom->Collision_Sphere(pWeaponCollider02) == true)
-				m_bCollisionPartsCheck[2] = true;
+			else if (m_pColliderNeckCom->Collision_Sphere(pWeaponCollider02) == true)
+				m_bCollisionPart[COLL_NECK] = true;
 
-			if (m_pColliderNeckCom->Collision_Sphere(pWeaponCollider03) == true)
-				m_bCollisionPartsCheck[2] = true;
+			else if (m_pColliderNeckCom->Collision_Sphere(pWeaponCollider03) == true)
+				m_bCollisionPart[COLL_NECK] = true;
 
-			if (m_pColliderNeckCom->Collision_Sphere(pWeaponCollider04) == true)
-				m_bCollisionPartsCheck[2] = true;
+			else if (m_pColliderNeckCom->Collision_Sphere(pWeaponCollider04) == true)
+				m_bCollisionPart[COLL_NECK] = true;
 
 		}
 		{
 			if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider01) == true)
-				m_bCollisionPartsCheck[3] = true;
+				m_bCollisionPart[COLL_TAIL01] = true;
 
-			if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider02) == true)
-				m_bCollisionPartsCheck[3] = true;
+			else if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider02) == true)
+				m_bCollisionPart[COLL_TAIL01] = true;
 
-			if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider03) == true)
-				m_bCollisionPartsCheck[3] = true;
+			else if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider03) == true)
+				m_bCollisionPart[COLL_TAIL01] = true;
 
-			if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider04) == true)
-				m_bCollisionPartsCheck[3] = true;
+			else if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider04) == true)
+				m_bCollisionPart[COLL_TAIL01] = true;
 		}
 		{
-			if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider01) == true)
-				m_bCollisionPartsCheck[4] = true;
+			if (m_pColliderTail02Com->Collision_Sphere(pWeaponCollider01) == true)
+				m_bCollisionPart[COLL_TAIL02] = true;
 
-			if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider02) == true)
-				m_bCollisionPartsCheck[4] = true;
+			else if (m_pColliderTail02Com->Collision_Sphere(pWeaponCollider02) == true)
+				m_bCollisionPart[COLL_TAIL02] = true;
 
-			if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider03) == true)
-				m_bCollisionPartsCheck[4] = true;
+			else if (m_pColliderTail02Com->Collision_Sphere(pWeaponCollider03) == true)
+				m_bCollisionPart[COLL_TAIL02] = true;
 
-			if (m_pColliderTail01Com->Collision_Sphere(pWeaponCollider04) == true)
-				m_bCollisionPartsCheck[4] = true;
+			else if (m_pColliderTail02Com->Collision_Sphere(pWeaponCollider04) == true)
+				m_bCollisionPart[COLL_TAIL02] = true;
 		}
 		//{
 		//	if (m_pColliderAtkAreaCom->Collision_Sphere(pWeaponCollider01) == true)
@@ -396,13 +398,13 @@ void CArkus::CollisionCheck()
 		//		m_bCollisionPartsCheck[5] = true;
 		//}
 
-		for (size_t i = 0; i < 6; ++i)
+		for (size_t i = 0; i < COLL_ATKAREA; ++i)
 		{
-			if (m_bCollisionPartsCheck[i] == false)
-				m_bCollisionCheck = false;
+			if (m_bCollisionPart[i] == true)
+				m_bCollisionCheck == true;
 			else
-				m_bCollisionCheck = true;
-		}
+				m_bCollisionCheck == false;
+		}		
 	}
 }
 

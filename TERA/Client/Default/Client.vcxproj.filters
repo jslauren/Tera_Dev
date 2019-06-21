@@ -390,6 +390,9 @@
     <ClInclude Include="..\Headers\Arkus_Run.h">
       <Filter>03. Unit\Monster\Arkus\ArkusState\02. Run</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Arkus_Attack.h">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\03. Attack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -553,6 +556,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Arkus_Run.cpp">
       <Filter>03. Unit\Monster\Arkus\ArkusState\02. Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Arkus_Attack.cpp">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\03. Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -35,7 +35,7 @@ CArkusState * CArkus_Rush::Input_State(CArkus & Arkus, const float & fTimeDelta,
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 		{
-			if (Arkus.Get_CollisionPartCheck(6) == true)
+			if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATKAREA) == true)
 			{
 				m_iAniState = 3;
 				return CArkus_Rush::Create(m_pGraphic_Device, Arkus, &m_iAniState);
@@ -49,10 +49,7 @@ CArkusState * CArkus_Rush::Input_State(CArkus & Arkus, const float & fTimeDelta,
 		MovePlayerPosition(Arkus, 30.f, fTimeDelta, pArg, 0);
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
-		{
-			m_iAniState = 2;
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-		}
 	}
 
 	return nullptr;

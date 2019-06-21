@@ -3,6 +3,7 @@
 #include "Arkus.h"
 #include "Input_Device.h"
 
+#include "Arkus_Idle.h"
 //#include "Arkus_Attack.h"
 
 _USING(Client)
@@ -20,14 +21,16 @@ HRESULT CArkus_Run::Initialize_State(CArkus & Arkus)
 	return NOERROR;
 }
 
-CArkusState * CArkus_Run::Input_State(CArkus & Arkus, const float & fTimeDelta, BYTE KeyID, void * pAgr)
+CArkusState * CArkus_Run::Input_State(CArkus & Arkus, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Run_Battle)
 	{
+		MovePlayerPosition(Arkus, 40.f, fTimeDelta, pArg, 0);
+
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
 		{
-			m_iAniState = 1;
-		//	return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+			if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATKAREA) == true)
+				return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);	// 어택으로 변경해야함.
 		}
 		else
 			return nullptr;
