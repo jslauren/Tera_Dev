@@ -31,7 +31,7 @@ CArkusState * CArkus_Rush::Input_State(CArkus & Arkus, const float & fTimeDelta,
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::MoveAtkLoop)
 	{
-		MovePlayerPosition(Arkus, 40.f, fTimeDelta, pArg, 0);
+		MoveArkusPosition(Arkus, 40.f, fTimeDelta, pArg, 0);
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 		{
@@ -46,7 +46,7 @@ CArkusState * CArkus_Rush::Input_State(CArkus & Arkus, const float & fTimeDelta,
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
 	{
-		MovePlayerPosition(Arkus, 30.f, fTimeDelta, pArg, 0);
+		MoveArkusPosition(Arkus, 30.f, fTimeDelta, pArg, 0);
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
@@ -59,7 +59,7 @@ void CArkus_Rush::Update_State(CArkus & Arkus, const float & fTimeDelta)
 {
 }
 
-void CArkus_Rush::MovePlayerPosition(CArkus & Arkus, const _float fArkusSpeed, const _float & fTimeDelta, void * pArg, _int iMoveDir)
+void CArkus_Rush::MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float & fTimeDelta, void * pArg, _int iMoveDir)
 {
 	_uint		iCellIndx = 0;
 	if (true == ((CNavigation*)(pArg))->Move_OnNavigation(Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))

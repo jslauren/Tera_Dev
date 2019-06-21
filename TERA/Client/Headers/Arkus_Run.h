@@ -16,7 +16,7 @@ public:
 	virtual void			Update_State(CArkus& Arkus, const float& fTimeDelta);
 
 private:
-	void					MovePlayerPosition(CArkus & Arkus, const _float fArkusSpeed, const _float& fTimeDelta, void * pArg, _int iMoveDir);
+	void					MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float& fTimeDelta, void * pArg, _int iMoveDir);
 
 public:
 	static CArkus_Run*		Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus& Arkus, void* pArg = nullptr);

@@ -24,6 +24,7 @@ HRESULT CArkus_Attack::Initialize_State(CArkus & Arkus)
 CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
 	CCamera_Static* pCamera_Static = dynamic_cast<CCamera_Static*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 1));
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
 
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::RoundAtk01)
 	{
@@ -84,6 +85,16 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 				}
 			}
 		}
+		// 바람 부는 모션일 때, 플레이어 포지션 뒤로 밀기.
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.425f))
+		{
+			if (pPlayer->Get_DamageEventEndInfo() == false)
+				pPlayer->DamageEvent(35.f);
+		}
+		// 더이상 밀고 싶지 않아.
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.65f))
+			pPlayer->Set_DamageEventEndInfo(true);
+
 		// 애니메이션이 이 정도 시간 진척이 되었다면, 
 		// 돌아갈 준비가 모두 완료 되었다.
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.7f))
@@ -97,27 +108,37 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 				// 모든 불 변수 값을 초기 값으로 되돌려 준다.
 				pCamera_Static->Set_CameraModInfo(true);
 				pCamera_Static->Set_CameraBackTimeInfo(false);
+				pPlayer->Set_DamageEventEndInfo(false);
 
 				pCamera_Static->Set_CameraDistance(30.f);
 				pCamera_Static->Set_CameraHeightValue(10.f);
 
+				m_iAniState = 1;
 				return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 			}
 		}
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::FlyAtk02Start)
 	{
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.8f))
+			m_IsFlyAtk02StartMove = true;
+
+		if(m_IsFlyAtk02StartMove == true)
+			MoveArkusPosition(Arkus, 45.f, fTimeDelta, pArg, 0);
+
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.8f))
 		{
-			m_iAniState = 7;
+			//m_IsFlyAtk02StartMove = false;
+			m_iAniState = 3;
 			return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::FlyAtk02End)
 	{
-		MovePlayerPosition(Arkus, 40.f, fTimeDelta, pArg, 0);
+		//if (Arkus.Get_Mesh()->IsAnimationEnded(0.35f))
+			MoveArkusPosition(Arkus, 45.f, fTimeDelta, pArg, 0);
 
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.9f))
 		{
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}
@@ -135,7 +156,7 @@ void CArkus_Attack::Update_State(CArkus & Arkus, const float & fTimeDelta)
 {
 }
 
-void CArkus_Attack::MovePlayerPosition(CArkus & Arkus, const _float fArkusSpeed, const _float & fTimeDelta, void * pArg, _int iMoveDir)
+void CArkus_Attack::MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float & fTimeDelta, void * pArg, _int iMoveDir)
 {
 	_uint		iCellIndx = 0;
 	if (true == ((CNavigation*)(pArg))->Move_OnNavigation(Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
@@ -162,16 +183,16 @@ CArkus_Attack * CArkus_Attack::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus &
 		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::RoundAtk02);
 
 	else if ((*(_int*)(pArg) == 3))
-		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::Atk01);
+		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::FlyAtk02End);
 
 	else if ((*(_int*)(pArg) == 4))
-		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::HeavyAtk02);
+		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::Atk01);
 
 	else if ((*(_int*)(pArg) == 5))
-		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::FlyAtk01);
+		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::HeavyAtk02);
 
 	else if ((*(_int*)(pArg) == 6))
-		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::FlyAtk02Start);
+		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::FlyAtk01);
 
 	else if ((*(_int*)(pArg) == 7))
 		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::FlyAtk02Start);

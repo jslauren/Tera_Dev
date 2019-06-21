@@ -214,6 +214,9 @@
     <Filter Include="03. Unit\Monster\Arkus\ArkusState\07. Death">
       <UniqueIdentifier>{22ec3c25-c517-4f09-8164-569f65e38b99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Unit\Monster\Monster%28안씀%29">
+      <UniqueIdentifier>{f1b47a60-3532-4891-927a-11149197cab2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -260,9 +263,6 @@
     </ClInclude>
     <ClInclude Include="..\Headers\SkyBox.h">
       <Filter>02. GameObject\01. Stage\SkyBox</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Headers\Monster.h">
-      <Filter>03. Unit\Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Weapon.h">
       <Filter>03. Unit\Player\Weapon</Filter>
@@ -393,6 +393,9 @@
     <ClInclude Include="..\Headers\Arkus_Attack.h">
       <Filter>03. Unit\Monster\Arkus\ArkusState\03. Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Monster.h">
+      <Filter>03. Unit\Monster\Monster%28안씀%29</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -427,9 +430,6 @@
     </ClCompile>
     <ClCompile Include="..\Codes\SkyBox.cpp">
       <Filter>02. GameObject\01. Stage\SkyBox</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Codes\Monster.cpp">
-      <Filter>03. Unit\Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\Weapon.cpp">
       <Filter>03. Unit\Player\Weapon</Filter>
@@ -559,6 +559,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Arkus_Attack.cpp">
       <Filter>03. Unit\Monster\Arkus\ArkusState\03. Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Monster.cpp">
+      <Filter>03. Unit\Monster\Monster%28안씀%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -34,7 +34,8 @@ public:	// Getter
 	const _int&			Get_Direction() { return m_iDirection; }
 	const _bool&		Get_CutSceneInfo() { return m_bIsCutSceneEvent; }
 	const _bool&		Get_CollisionCheckWhether() { return m_bCollisionCheck; }
-	
+	const _bool&		Get_DamageEventEndInfo() { return m_bDamageEventEndInfo; }
+
 public:	// Setter
 	void			Set_AniIndex(const PLAYER_ANI& iIndex) { m_eAnimationIndex = iIndex; }
 	void			Set_OldAniIndex(const PLAYER_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
@@ -42,7 +43,7 @@ public:	// Setter
 	void			Set_Direction(_int iDir) { m_iDirection = iDir; }
 	HRESULT			Set_Navigation_Component(SCENEID eScene);
 	void			Set_CutSceneInfo(_bool bButton) { m_bIsCutSceneEvent = bButton; }
-	void			Set_MeshDirection(MESH_DIR eDir) { m_eCurrentMeshDir = eDir; }
+	void			Set_DamageEventEndInfo(_bool bButton) { m_bDamageEventEndInfo = bButton; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -50,6 +51,9 @@ public:
 	virtual _int	Update_GameObject(const _float& fTimeDelta);
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
+
+public:
+	void			DamageEvent(_float fSpeed);
 
 private:
 	CPlayerState*			m_pState = nullptr;
@@ -77,9 +81,8 @@ private:
 
 	_bool			m_bIsCutSceneEvent = false;
 	_bool			m_bCollisionCheck = false;
-//	_bool			m_bCollisionCheck[6];
 
-	MESH_DIR		m_eCurrentMeshDir = MESHDIR_FRONT;
+	_bool			m_bDamageEventEndInfo = false;
 
 private:
 	virtual HRESULT Add_Component();

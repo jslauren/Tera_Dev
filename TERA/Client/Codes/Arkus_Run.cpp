@@ -26,7 +26,7 @@ CArkusState * CArkus_Run::Input_State(CArkus & Arkus, const float & fTimeDelta, 
 {
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Run_Battle)
 	{
-		MovePlayerPosition(Arkus, 40.f, fTimeDelta, pArg, 0);
+		MoveArkusPosition(Arkus, 40.f, fTimeDelta, pArg, 0);
 
 		srand((unsigned)time(NULL));
 
@@ -34,7 +34,7 @@ CArkusState * CArkus_Run::Input_State(CArkus & Arkus, const float & fTimeDelta, 
 		{
 			if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATKAREA) == true)
 			{
-				m_iAniState = 5;// rand() % 8 + 2;
+				m_iAniState = 7; // rand() % 5 + 4;
 				return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 			}
 		}
@@ -49,7 +49,7 @@ void CArkus_Run::Update_State(CArkus & Arkus, const float & fTimeDelta)
 {
 }
 
-void CArkus_Run::MovePlayerPosition(CArkus & Arkus, const _float fArkusSpeed, const _float & fTimeDelta, void * pArg, _int iMoveDir)
+void CArkus_Run::MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float & fTimeDelta, void * pArg, _int iMoveDir)
 {
 	_uint		iCellIndx = 0;
 	if (true == ((CNavigation*)(pArg))->Move_OnNavigation(Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))

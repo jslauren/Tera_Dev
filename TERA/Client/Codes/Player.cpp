@@ -274,6 +274,21 @@ HRESULT CPlayer::Render_GameObject()
 	return NOERROR;
 }
 
+void CPlayer::DamageEvent(_float fSpeed)
+{
+	_uint		iCellIndx = 0;
+	if (true == m_pNavigationCom->Move_OnNavigation(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * m_fTimeDelta, &iCellIndx))
+	{
+		_vec3 vLookInverse = *m_pTransformMoveCom->Get_StateInfo(CTransform::STATE_LOOK);
+		vLookInverse = vLookInverse * -1;
+
+		m_pTransformMoveCom->Move(&vLookInverse, fSpeed, m_fTimeDelta);
+
+		/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
+		m_pNavigationCom->SetUp_CurrentIndex(iCellIndx);
+	}
+}
+
 HRESULT CPlayer::Add_Component()
 {
 	// For.Com_Transform
