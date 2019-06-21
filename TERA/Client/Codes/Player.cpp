@@ -6,6 +6,7 @@
 #include "Player_Idle.h"
 #include "Player_Move.h"
 #include "Layer.h"
+#include "Arkus.h"
 #include "Input_Device.h"
 
 #define PLAYER_SCALING	0.33f
@@ -470,16 +471,23 @@ void CPlayer::CollisionCheck()
 		//m_pColliderCom->Collision_OBB(pArkusColliderTail02);
 		//m_pColliderCom->Collision_OBB(pArkusColliderTail03);
 
-		if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true ||
-			m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true ||
-			m_pColliderCom->Collision_Sphere(pArkusColliderNeck) == true ||
-			m_pColliderCom->Collision_Sphere(pArkusColliderTail01) == true ||
-			m_pColliderCom->Collision_Sphere(pArkusColliderTail02) == true)
+		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+
+		if (pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Idle &&
+			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Hit &&
+			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Run_Battle)
 		{
-			m_bCollisionCheck = true;
+			if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true ||
+				m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true ||
+				m_pColliderCom->Collision_Sphere(pArkusColliderNeck) == true ||
+				m_pColliderCom->Collision_Sphere(pArkusColliderTail01) == true ||
+				m_pColliderCom->Collision_Sphere(pArkusColliderTail02) == true)
+			{
+				m_bCollisionCheck = true;
+			}
+			else
+				m_bCollisionCheck = false;
 		}
-		else
-			m_bCollisionCheck = false;
 
 		//if (m_pColliderCom->Collision_OBB(pArkusColliderBody) == true)
 		//	m_bCollisionCheck[0] = true;

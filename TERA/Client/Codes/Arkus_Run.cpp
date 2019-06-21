@@ -2,9 +2,10 @@
 #include "..\Headers\Arkus_Run.h"
 #include "Arkus.h"
 #include "Input_Device.h"
+#include "Time.h"
 
-#include "Arkus_Idle.h"
-//#include "Arkus_Attack.h"
+//#include "Arkus_Idle.h"
+#include "Arkus_Attack.h"
 
 _USING(Client)
 
@@ -27,10 +28,15 @@ CArkusState * CArkus_Run::Input_State(CArkus & Arkus, const float & fTimeDelta, 
 	{
 		MovePlayerPosition(Arkus, 40.f, fTimeDelta, pArg, 0);
 
+		srand((unsigned)time(NULL));
+
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
 		{
 			if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATKAREA) == true)
-				return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);	// 어택으로 변경해야함.
+			{
+				m_iAniState = 5;// rand() % 8 + 2;
+				return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+			}
 		}
 		else
 			return nullptr;

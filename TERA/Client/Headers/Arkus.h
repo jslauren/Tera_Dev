@@ -11,7 +11,8 @@ class CArkus final : public CUnit
 public:
 	enum ARKUS_ANI	// ÃÑ 14°³ÀÇ ¸ð¼Ç
 	{
-		Idle, Apperance01, Run_Battle, RoundAtk02, RoundAtk01,
+		AlmostDead, FlyAtk02End, FlyAtk02Start, FlyAtk01, Idle, 
+		Apperance01, Run_Battle, RoundAtk02, RoundAtk01,
 		MoveAtkStart, MoveAtkLoop, MoveAtkEnd, JumpEvasion,
 		HeavyAtk02, Groggy, Hit, Death, Atk01, Apperance02, End
 	};

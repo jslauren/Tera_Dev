@@ -19,9 +19,17 @@ private:
 public:	// Getter
 	CTransform*		Get_TransformCom() { return m_pTransformCom; }
 	_bool			Get_PlayStaticCamInfo() { return m_bIsStaticCamOnAir; }
+	_float			Get_CemeraDistance() { return m_fCameraDistance; }
+	_float			Get_CameraHeightValue() { return m_fCameraHeightValue; }
+	_bool			Get_CameraModInfo() { return m_bCameraModOn; }
+	_bool			Get_CameraBackTimeInfo() { return m_bCameraBackTime; }
 
 public:	// Setter
 	void			Set_TurnOnStaticCam(_bool bButton) { m_bIsStaticCamOnAir = bButton; }
+	void			Set_CameraDistance(_float fDistance) { m_fCameraDistance = fDistance; }
+	void			Set_CameraHeightValue(_float fHeight) { m_fCameraHeightValue = fHeight; }
+	void			Set_CameraModInfo(_bool bButton) { m_bCameraModOn = bButton; }
+	void			Set_CameraBackTimeInfo(_bool bButton) { m_bCameraBackTime = bButton; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -40,9 +48,12 @@ private:
 	void			TracingPlayer();
 private:
 	_float			m_fTimeDelta = 0.f;
-	_float			fCameraDistance = 32.f;
+	_float			m_fCameraDistance = 30.f;
+	_float			m_fCameraHeightValue = 10.f;
 	_float			m_fDotValuePri = 0.f;
 	_bool			m_bIsStaticCamOnAir = true;
+	_bool			m_bCameraModOn = true;
+	_bool			m_bCameraBackTime = false;
 
 public:
 	static CCamera_Static*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);

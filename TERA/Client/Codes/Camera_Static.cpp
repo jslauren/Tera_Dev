@@ -138,7 +138,7 @@ void CCamera_Static::ChangeView()
 			{
 				// 마우스 커서를 일정영역 밑으로 내리면 카메라 줌아웃 하는 구문.
 				if (fDotValue < 0.1f && fDotValue > m_fDotValuePri)
-					fCameraDistance -= 0.01f;
+					m_fCameraDistance -= 0.01f;
 
 				m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
 			}
@@ -146,7 +146,7 @@ void CCamera_Static::ChangeView()
 			{
 				// 카메라 줌인 구문.
 				if (fDotValue < -0.5f && fDotValue < m_fDotValuePri)
-					fCameraDistance += 0.03f;
+					m_fCameraDistance += 0.03f;
 
 				m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
 			}
@@ -189,9 +189,9 @@ void CCamera_Static::TracingPlayer()
 		//if (fCameraDistance < 2.7f)
 		//	fCameraDistance = 2.7f;
 
-		vCameraPos += (vCameraLook * -1) * fCameraDistance;
+		vCameraPos += (vCameraLook * -1) * m_fCameraDistance;
 
-		vCameraPos.y += 10.f;
+		vCameraPos.y += m_fCameraHeightValue;
 
 		// 그 후, 그 값을 다시 내 포지션에 넣어준다.
 		m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &vCameraPos);

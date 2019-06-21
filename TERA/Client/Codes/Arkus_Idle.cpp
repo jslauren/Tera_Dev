@@ -4,7 +4,7 @@
 #include "Input_Device.h"
 
 #include "Arkus_Run.h"
-//#include "Arkuss_Attack.h"
+#include "Arkus_Attack.h"
 
 _USING(Client)
 
@@ -29,8 +29,11 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 		{
 			if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 				return CArkus_Run::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-			//else if (Arkus.Get_CollisionPartCheck(6) == true)
-			//	return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+		}
+		else if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATKAREA) == true)
+		{
+			if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
+				return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}
 		else
 			return nullptr;
