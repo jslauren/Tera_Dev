@@ -20,7 +20,7 @@ HRESULT CArkus_Apperance::Initialize_State(CArkus & Arkus)
 	return NOERROR;
 }
 
-CArkusState * CArkus_Apperance::Input_State(CArkus & Arkus, const float & fTimeDelta, BYTE KeyID, void * pAgr)
+CArkusState * CArkus_Apperance::Input_State(CArkus & Arkus, const float & fTimeDelta, BYTE KeyID, void * pArg)
 {
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Apperance01)
 	{
@@ -32,7 +32,7 @@ CArkusState * CArkus_Apperance::Input_State(CArkus & Arkus, const float & fTimeD
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Apperance02)
 	{
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.9f))
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.98f))
 		{
 			m_iAniState = 1;
 			return CArkus_Rush::Create(m_pGraphic_Device, Arkus, &m_iAniState);

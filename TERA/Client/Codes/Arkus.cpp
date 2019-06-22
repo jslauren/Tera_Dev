@@ -40,7 +40,7 @@ HRESULT CArkus::Ready_GameObject(void * pArg)
 
 	m_pTransformCom->Set_Scaling(0.4f, 0.4f, 0.4f);
 //	m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(90.f), D3DXToRadian(0.f), D3DXToRadian(0.f));
-	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(90.f));
+	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(180.f));
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(200.f, 0.f, 200.f));
 //	m_pTransformCom->Set_WorldMatrix(matWorld);
 
@@ -67,7 +67,8 @@ _int CArkus::Update_GameObject(const _float & fTimeDelta)
 	ViewChanage();
 
 	AI();
-	CollisionCheck();
+	CollisionCheck_Attack_Area();
+	//CollisionCheck();
 
 	return _int();
 }
@@ -79,7 +80,8 @@ _int CArkus::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	Compute_ViewZ(m_pTransformCom);
 
-	//if (FAILED(SetUp_HeightOnTerrain(1)))
+
+	//if (FAILED(SetUp_HeightOnTerrain(1)))   
 	//	return -1;
 
 	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
@@ -284,15 +286,15 @@ HRESULT CArkus::SetUp_HeightOnTerrain(_uint iIndex)
 	return NOERROR;
 }
 
-void CArkus::CollisionCheck()
+_bool CArkus::CollisionCheck()
 {
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
 	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
 
-	if (m_pColliderAtkAreaCom->Collision_Sphere(pPlayerCollider))
-		m_bCollisionPart[COLL_ATTACK_AREA] = true;
-	else // 빌어먹을 이 else 문 하나 안써서 몇시간을 날려먹은거냐 ㅡㅡ
-		m_bCollisionPart[COLL_ATTACK_AREA] = false;
+	//if (m_pColliderAtkAreaCom->Collision_Sphere(pPlayerCollider))
+	//	m_bCollisionPart[COLL_ATTACK_AREA] = true;
+	//else // 빌어먹을 이 else 문 하나 안써서 몇시간을 날려먹은거냐 ㅡㅡ
+	//	m_bCollisionPart[COLL_ATTACK_AREA] = false;
 
 	if (pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle &&
 		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle_Battle &&
@@ -401,38 +403,75 @@ void CArkus::CollisionCheck()
 		for (size_t i = 0; i < COLL_ATTACK_AREA; ++i)
 		{
 			if (m_bCollisionPart[i] == true)
-				m_bCollisionCheck == true;
+			{
+				m_bCollisionCheck = true;
+				break;
+			}
 			else
-				m_bCollisionCheck == false;
+				m_bCollisionCheck = false;
 		}		
 	}
+	if (m_bCollisionCheck == true)
+	{
+		for (size_t i = 0; i < COLL_ATTACK_AREA; ++i)
+		{
+			m_bCollisionPart[i] = false;
+		}
+		m_bCollisionCheck = false;
+		return true;
+	}
+
+	else if (m_bCollisionCheck == false)
+		return false;
+
+}
+
+void CArkus::CollisionCheck_Attack_Area()
+{
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
+	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
+
+	if (m_pColliderAtkAreaCom->Collision_Sphere(pPlayerCollider))
+		m_bCollisionPart[COLL_ATTACK_AREA] = true;
+	else // 빌어먹을 이 else 문 하나 안써서 몇시간을 날려먹은거냐 ㅡㅡ
+		m_bCollisionPart[COLL_ATTACK_AREA] = false;
 }
 
 void CArkus::ViewChanage()
 {
-	_vec3 vArkusRight, vArkusUp, vArkusLook, vDir, vPlayerPos;
+	_vec3 vArkusRight, vArkusUp, vArkusLook, vDir, vPlayerPos, vArkusPos;
 
 	vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
-	
-	vDir = vPlayerPos - *m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
+	vArkusPos = *m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
+
+	vDir = vPlayerPos - vArkusPos;
+
+	vDir.y = 0;
+
 	D3DXVec3Normalize(&vDir, &vDir);
 
 	vArkusRight = *m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT);
 	vArkusUp	= *m_pTransformCom->Get_StateInfo(CTransform::STATE_UP);
 	vArkusLook	= *m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK);
 
+	D3DXVec3Normalize(&vArkusRight, &vArkusRight);
+	D3DXVec3Normalize(&vArkusLook, &vArkusLook);
+
 	_float fAngle = 0.f;
 	fAngle = D3DXVec3Dot(&vArkusRight, &vDir);
 
+	m_fDirAngle = D3DXVec3Dot(&vArkusLook, &vDir);
+	m_fDirAngle = acosf(m_fDirAngle);
+
 	if (fAngle < 0.f)
 	{
-		m_fDirAngle = D3DXVec3Dot(&vArkusLook, &vDir);
-		m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(m_fDirAngle), m_fTimeDelta * 270.f);
+		if(m_fDirAngle > 0.02f)
+			m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(-m_fDirAngle), 1.f);
 	}
 	else if (fAngle > 0.f)
 	{
-		m_fDirAngle = D3DXVec3Dot(&vArkusLook, &vDir);
-		m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(-m_fDirAngle), m_fTimeDelta * 270.f);
+		if (m_fDirAngle > 0.02f)
+			m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(m_fDirAngle), 1.f);
 	}
 	
 }

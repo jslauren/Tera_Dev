@@ -214,7 +214,7 @@ void CCamera_Dynamic::DragonTrialCutSceneEvent()
 	CArkus::ARKUS_ANI	eArkusCurrentAni = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"))->Get_AniIndex();
 
 	if (eArkusCurrentAni == CArkus::ARKUS_ANI::Apperance01 &&
-		m_fCameraHeight > 40)
+		m_fCameraHeight > 30)
 	{
 		m_fCameraHeight -= (m_fTimeDelta * 20.f);
 	}

@@ -147,9 +147,9 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::FlyAtk02End)
 	{
-		MoveArkusPosition(Arkus, 90.f, fTimeDelta, pArg, 0);
+		MoveArkusPosition(Arkus, 60.f, fTimeDelta, pArg, 0);
 
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.9f))
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::MoveAtkStart)

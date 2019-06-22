@@ -366,11 +366,20 @@ HRESULT CTransform::Rotation_Axis(const _vec3 & vAxis, const _float & fRadianPer
 	memcpy(&vRight, &m_matWorld.m[STATE_RIGHT][0], sizeof(_vec3));
 	D3DXVec3TransformNormal(&vRight, &vRight, &matRot);
 
+	if (D3DXVec3Length(&vRight) <= 0)
+		return NOERROR;
+
 	memcpy(&vUp, &m_matWorld.m[STATE_UP][0], sizeof(_vec3));
 	D3DXVec3TransformNormal(&vUp, &vUp, &matRot);
 
+	if (D3DXVec3Length(&vUp) <= 0)
+		return NOERROR;
+
 	memcpy(&vLook, &m_matWorld.m[STATE_LOOK][0], sizeof(_vec3));
 	D3DXVec3TransformNormal(&vLook, &vLook, &matRot);
+
+	if (D3DXVec3Length(&vLook) <= 0)
+		return NOERROR;
 
 	memcpy(&m_matWorld.m[STATE_RIGHT][0], &vRight, sizeof(_vec3));
 	memcpy(&m_matWorld.m[STATE_UP][0], &vUp, sizeof(_vec3));

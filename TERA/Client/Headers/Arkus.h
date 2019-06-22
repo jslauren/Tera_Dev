@@ -26,6 +26,7 @@ public:	// Getter
 	const ARKUS_ANI&	Get_AniIndex() { return m_eAnimationIndex; }
 	const ARKUS_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
 	CMesh_Dynamic*		Get_Mesh() { return m_pMeshCom; }
+	_bool				Get_CollisionCheck() { return m_bCollisionCheck; }
 	_bool				Get_CollisionPartCheck(ARKUS_COLLISION eCollisionPart) { return m_bCollisionPart[eCollisionPart]; }
 
 public:	// Setter
@@ -49,12 +50,11 @@ public:
 	HRESULT			SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 	HRESULT			SetUp_HeightOnTerrain(_uint iIndex);
 	
-	void			CollisionCheck();
+	_bool			CollisionCheck();
+	void			CollisionCheck_Attack_Area();
 	void			ViewChanage();
 	void			AI();
 
-//protected:
-//	Engine::OBJECTMESHDATA tObjectMeshData;
 private:
 	CCollider*		m_pColliderHeadCom = nullptr;
 	CCollider*		m_pColliderNeckCom = nullptr;
@@ -75,7 +75,7 @@ private:
 	
 	_bool			m_bCollisionCheck = false;
 
-	_bool			m_bCollisionPart[COLL_END];
+	_bool			m_bCollisionPart[COLL_END] = { false, false, false, false, false, false };
 
 	_bool			m_bCollisionBody = false;
 	_bool			m_bCollisionHead = false;

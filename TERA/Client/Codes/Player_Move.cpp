@@ -28,10 +28,13 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
-			// 이 친구는 Move 함수를 돌리기 위한 인자로 pArg를 넘기는 거라,
-			// 1이 아니고 0부터 시작한다.
-			m_iAniState = 0;
-			return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Run_Battle)
+			{
+				// 이 친구는 Move 함수를 돌리기 위한 인자로 pArg를 넘기는 거라,
+				// 1이 아니고 0부터 시작한다.
+				m_iAniState = 0;
+				return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
 		}
 
 		_uint		iCellIndx = 0;
@@ -62,8 +65,11 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
-			m_iAniState = 1;
-			return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Run_Battle)
+			{
+				m_iAniState = 1;
+				return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
 		}
 		
 		_uint		iCellIndx = 0;
@@ -94,8 +100,11 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
-			m_iAniState = 2;
-			return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Run_Battle)
+			{
+				m_iAniState = 2;
+				return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
 		}
 
 		_uint		iCellIndx = 0;
@@ -116,8 +125,11 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
-			m_iAniState = 3;
-			return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Run_Battle)
+			{
+				m_iAniState = 3;
+				return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
 		}
 
 		_uint		iCellIndx = 0;

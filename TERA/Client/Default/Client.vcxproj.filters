@@ -211,11 +211,17 @@
     <Filter Include="03. Unit\Monster\Arkus\ArkusState\06. Hit">
       <UniqueIdentifier>{2ff54805-3972-49c3-837d-f3e86b20ea04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. Unit\Monster\Arkus\ArkusState\07. Death">
-      <UniqueIdentifier>{22ec3c25-c517-4f09-8164-569f65e38b99}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Unit\Monster\Monster%28안씀%29">
       <UniqueIdentifier>{f1b47a60-3532-4891-927a-11149197cab2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState\08. AlmostDead">
+      <UniqueIdentifier>{22ec3c25-c517-4f09-8164-569f65e38b99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState\07. Groggy">
+      <UniqueIdentifier>{5fd934f3-a735-48d0-af08-059a2852a2f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\Monster\Arkus\ArkusState\09. Death">
+      <UniqueIdentifier>{1bd546cc-140a-4bab-be4c-0918312d81ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -399,6 +405,18 @@
     <ClInclude Include="..\Headers\Arkus_JumpEvasion.h">
       <Filter>03. Unit\Monster\Arkus\ArkusState\05. JumpEvasion</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Arkus_Hit.h">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\06. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Arkus_Groggy.h">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\07. Groggy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Arkus_AlmostDead.h">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\08. AlmostDead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Arkus_Death.h">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\09. Death</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -568,6 +586,18 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Arkus_JumpEvasion.cpp">
       <Filter>03. Unit\Monster\Arkus\ArkusState\05. JumpEvasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Arkus_Hit.cpp">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\06. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Arkus_Groggy.cpp">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\07. Groggy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Arkus_AlmostDead.cpp">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\08. AlmostDead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Arkus_Death.cpp">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\09. Death</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

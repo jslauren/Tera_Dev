@@ -58,8 +58,8 @@ HRESULT CMesh_Dynamic::Ready_Mesh_Dynamic(const _tchar * pFilePath, const _tchar
 
 	Safe_Release(pAniCtrl);
 
-	//D3DXMatrixRotationX(&m_matPivot, D3DXToRadian(180.0f));
 	D3DXMatrixIdentity(&m_matPivot);
+	D3DXMatrixRotationY(&m_matPivot, D3DXToRadian(-90.0f));
 
 	if (FAILED(Update_CombinedTransformationMatrix(m_pRootFrame, &m_matPivot)))
 		return E_FAIL;

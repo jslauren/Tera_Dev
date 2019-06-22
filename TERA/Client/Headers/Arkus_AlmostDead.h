@@ -4,11 +4,11 @@
 _BEGIN(Client)
 
 class CArkusState;
-class CArkus_Apperance : public CArkusState
+class CArkus_AlmostDead : public CArkusState
 {
 public:
-	explicit CArkus_Apperance(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual ~CArkus_Apperance() = default;
+	explicit CArkus_AlmostDead(LPDIRECT3DDEVICE9 pGraphic_Device);
+	virtual ~CArkus_AlmostDead() = default;
 
 public:
 	virtual HRESULT				Initialize_State(CArkus& Arkus);
@@ -16,7 +16,7 @@ public:
 	virtual void				Update_State(CArkus& Arkus, const float& fTimeDelta);
 
 public:
-	static CArkus_Apperance*	Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus& Arkus, void* pArg = nullptr);
+	static CArkus_AlmostDead*	Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus& Arkus, void* pArg = nullptr);
 	virtual void				Free();
 
 };

@@ -161,8 +161,12 @@
   <ItemGroup>
     <ClInclude Include="..\Headers\Arkus.h" />
     <ClInclude Include="..\Headers\ArkusState.h" />
+    <ClInclude Include="..\Headers\Arkus_AlmostDead.h" />
     <ClInclude Include="..\Headers\Arkus_Apperance.h" />
     <ClInclude Include="..\Headers\Arkus_Attack.h" />
+    <ClInclude Include="..\Headers\Arkus_Death.h" />
+    <ClInclude Include="..\Headers\Arkus_Groggy.h" />
+    <ClInclude Include="..\Headers\Arkus_Hit.h" />
     <ClInclude Include="..\Headers\Arkus_Idle.h" />
     <ClInclude Include="..\Headers\Arkus_JumpEvasion.h" />
     <ClInclude Include="..\Headers\Arkus_Run.h" />
@@ -222,8 +226,12 @@
   <ItemGroup>
     <ClCompile Include="..\Codes\Arkus.cpp" />
     <ClCompile Include="..\Codes\ArkusState.cpp" />
+    <ClCompile Include="..\Codes\Arkus_AlmostDead.cpp" />
     <ClCompile Include="..\Codes\Arkus_Apperance.cpp" />
     <ClCompile Include="..\Codes\Arkus_Attack.cpp" />
+    <ClCompile Include="..\Codes\Arkus_Death.cpp" />
+    <ClCompile Include="..\Codes\Arkus_Groggy.cpp" />
+    <ClCompile Include="..\Codes\Arkus_Hit.cpp" />
     <ClCompile Include="..\Codes\Arkus_Idle.cpp" />
     <ClCompile Include="..\Codes\Arkus_JumpEvasion.cpp" />
     <ClCompile Include="..\Codes\Arkus_Run.cpp" />

@@ -82,7 +82,7 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	int iIdleState = 1;
 	m_pState = CPlayer_Idle::Create(m_pGraphic_Device, *this, &iIdleState);
 
-	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
+//	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
 
 	return NOERROR;
 }
@@ -476,7 +476,7 @@ void CPlayer::Compute_HeightOnNavi()
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &pPlayerPos);
 }
 
-void CPlayer::CollisionCheck()
+_bool CPlayer::CollisionCheck()
 {
 	if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_DRAGON)
 	{
@@ -497,7 +497,10 @@ void CPlayer::CollisionCheck()
 
 		if (pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Idle &&
 			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Hit &&
-			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Run_Battle)
+			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Run_Battle &&
+			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::JumpEvasion &&
+			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Groggy &&
+			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Death)
 		{
 			if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true ||
 				m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true ||
@@ -542,6 +545,15 @@ void CPlayer::CollisionCheck()
 		}
 
 	}
+
+	if (m_bCollisionCheck == true)
+	{
+		m_bCollisionCheck = false;
+		return true;
+	}
+
+	else if (m_bCollisionCheck == false)
+		return false;
 
 }
 

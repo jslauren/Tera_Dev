@@ -91,7 +91,7 @@ private:
 	void			ViewChanage();
 	void			KeyInput();
 	void			Compute_HeightOnNavi();
-	void			CollisionCheck();
+	_bool			CollisionCheck();
 
 public:
 	static CPlayer*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);
