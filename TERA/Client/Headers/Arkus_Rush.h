@@ -12,7 +12,7 @@ public:
 
 public:
 	virtual HRESULT			Initialize_State(CArkus& Arkus);
-	virtual CArkusState*	Input_State(CArkus& Arkus, const float& fTimeDelta, BYTE KeyID, void* pAgr);
+	virtual CArkusState*	Input_State(CArkus& Arkus, const float& fTimeDelta, BYTE KeyID, void* pArg);
 	virtual void			Update_State(CArkus& Arkus, const float& fTimeDelta);
 
 private:

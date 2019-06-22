@@ -48,6 +48,9 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::FlyAtk01)
 	{
+		// 이 공격일때는 카메라의 수동 조작을 막기 위한 구문.
+		pCamera_Static->Set_CameraCtrlAvaliableInfo(false);
+
 		// 카메라 제어.
 		if (pCamera_Static->Get_CameraModInfo() == true)
 		{
@@ -112,7 +115,8 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 
 				pCamera_Static->Set_CameraDistance(30.f);
 				pCamera_Static->Set_CameraHeightValue(10.f);
-
+				pCamera_Static->Set_CameraCtrlAvaliableInfo(true);
+				
 				m_iAniState = 1;
 				return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 			}
@@ -171,8 +175,6 @@ void CArkus_Attack::MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, 
 		
 		if (iMoveDir == 0)
 			vDir = vPlayerPos - *Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
-		else if (iMoveDir == 1)
-			vDir = (*Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION));
 
 		Arkus.Get_Transform()->Move(&vDir, fArkusSpeed, fTimeDelta);
 

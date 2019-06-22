@@ -164,6 +164,7 @@
     <ClInclude Include="..\Headers\Arkus_Apperance.h" />
     <ClInclude Include="..\Headers\Arkus_Attack.h" />
     <ClInclude Include="..\Headers\Arkus_Idle.h" />
+    <ClInclude Include="..\Headers\Arkus_JumpEvasion.h" />
     <ClInclude Include="..\Headers\Arkus_Run.h" />
     <ClInclude Include="..\Headers\Arkus_Rush.h" />
     <ClInclude Include="..\Headers\Back_Logo.h" />
@@ -224,6 +225,7 @@
     <ClCompile Include="..\Codes\Arkus_Apperance.cpp" />
     <ClCompile Include="..\Codes\Arkus_Attack.cpp" />
     <ClCompile Include="..\Codes\Arkus_Idle.cpp" />
+    <ClCompile Include="..\Codes\Arkus_JumpEvasion.cpp" />
     <ClCompile Include="..\Codes\Arkus_Run.cpp" />
     <ClCompile Include="..\Codes\Arkus_Rush.cpp" />
     <ClCompile Include="..\Codes\Back_Logo.cpp" />

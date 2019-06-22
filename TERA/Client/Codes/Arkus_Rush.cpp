@@ -35,7 +35,7 @@ CArkusState * CArkus_Rush::Input_State(CArkus & Arkus, const float & fTimeDelta,
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 		{
-			if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATKAREA) == true)
+			if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATTACK_AREA) == true)
 			{
 				m_iAniState = 3;
 				return CArkus_Rush::Create(m_pGraphic_Device, Arkus, &m_iAniState);

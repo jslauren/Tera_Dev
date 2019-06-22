@@ -5,6 +5,7 @@
 
 #include "Arkus_Run.h"
 #include "Arkus_Attack.h"
+#include "Arkus_JumpEvasion.h"
 
 _USING(Client)
 
@@ -27,17 +28,18 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 {
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Idle)
 	{
-		if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATKAREA) == false)
+		if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATTACK_AREA) == false)
 		{
 			if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 				return CArkus_Run::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}
-		else if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATKAREA) == true)
+		else if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATTACK_AREA) == true)
 		{
 			if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 			{
 				m_iAniState = 6;// rand() % 5 + 4;
 				return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+				//return CArkus_JumpEvasion::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 			}
 		}
 		else

@@ -348,9 +348,6 @@
     <ClInclude Include="..\Headers\Player_HitRolling.h">
       <Filter>03. Unit\Player\PlayerState\06. Hit\Rolling</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Player_Skill_Tumbling.h">
-      <Filter>03. Unit\Player\PlayerState\04. Skill\09. Tumbling</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\Player_HitHigh.h">
       <Filter>03. Unit\Player\PlayerState\06. Hit\High</Filter>
     </ClInclude>
@@ -395,6 +392,12 @@
     </ClInclude>
     <ClInclude Include="..\Headers\Monster.h">
       <Filter>03. Unit\Monster\Monster%28안씀%29</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Skill_Tumbling.h">
+      <Filter>03. Unit\Player\PlayerState\04. Skill\09. Tumbling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Arkus_JumpEvasion.h">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\05. JumpEvasion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -562,6 +565,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Monster.cpp">
       <Filter>03. Unit\Monster\Monster%28안씀%29</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Arkus_JumpEvasion.cpp">
+      <Filter>03. Unit\Monster\Arkus\ArkusState\05. JumpEvasion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -23,6 +23,7 @@ public:	// Getter
 	_float			Get_CameraHeightValue() { return m_fCameraHeightValue; }
 	_bool			Get_CameraModInfo() { return m_bCameraModOn; }
 	_bool			Get_CameraBackTimeInfo() { return m_bCameraBackTime; }
+	_bool			Get_CameraCtrlAvaliableInfo() { return m_bIsCameraCtrlAvailable; }
 
 public:	// Setter
 	void			Set_TurnOnStaticCam(_bool bButton) { m_bIsStaticCamOnAir = bButton; }
@@ -30,6 +31,7 @@ public:	// Setter
 	void			Set_CameraHeightValue(_float fHeight) { m_fCameraHeightValue = fHeight; }
 	void			Set_CameraModInfo(_bool bButton) { m_bCameraModOn = bButton; }
 	void			Set_CameraBackTimeInfo(_bool bButton) { m_bCameraBackTime = bButton; }
+	void			Set_CameraCtrlAvaliableInfo(_bool bButton) { m_bIsCameraCtrlAvailable = bButton; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -54,6 +56,7 @@ private:
 	_bool			m_bIsStaticCamOnAir = true;
 	_bool			m_bCameraModOn = true;
 	_bool			m_bCameraBackTime = false;
+	_bool			m_bIsCameraCtrlAvailable = true;
 
 public:
 	static CCamera_Static*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);

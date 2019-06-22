@@ -3,6 +3,7 @@
 #include "Input_Device.h"
 #include "Layer.h"
 #include "Player.h"
+#include "Arkus.h"
 
 _USING(Client)
 
@@ -153,6 +154,28 @@ void CCamera_Static::ChangeView()
 		}
 		if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_X))
 			m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(dwMouseMove) * 10.f, m_fTimeDelta);
+
+		// Arkus 공중공격 시, 카메라 제어를 수동으로 하기 때문에
+		// 그 타이밍에 수동 제어를 막으려고 만들어 놓은 불 변수.
+		if (m_bIsCameraCtrlAvailable == true)
+		{
+			if (0 < m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_WHEEL))
+			{
+				if (m_fCameraDistance <= 60.f)
+					m_fCameraDistance += (15.f);
+
+				if (m_fCameraHeightValue <= 20.f)
+					m_fCameraHeightValue += (5.f);
+			}
+			else if (0 > m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_WHEEL))
+			{
+				if (m_fCameraDistance >= 30.f)
+					m_fCameraDistance -= (15.f);
+
+				if (m_fCameraHeightValue >= 10.f)
+					m_fCameraHeightValue -= (5.f);
+			}
+		}
 
 		POINT	ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
 

@@ -290,9 +290,9 @@ void CArkus::CollisionCheck()
 	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
 
 	if (m_pColliderAtkAreaCom->Collision_Sphere(pPlayerCollider))
-		m_bCollisionPart[COLL_ATKAREA] = true;
+		m_bCollisionPart[COLL_ATTACK_AREA] = true;
 	else // 빌어먹을 이 else 문 하나 안써서 몇시간을 날려먹은거냐 ㅡㅡ
-		m_bCollisionPart[COLL_ATKAREA] = false;
+		m_bCollisionPart[COLL_ATTACK_AREA] = false;
 
 	if (pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle &&
 		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle_Battle &&
@@ -398,7 +398,7 @@ void CArkus::CollisionCheck()
 		//		m_bCollisionPartsCheck[5] = true;
 		//}
 
-		for (size_t i = 0; i < COLL_ATKAREA; ++i)
+		for (size_t i = 0; i < COLL_ATTACK_AREA; ++i)
 		{
 			if (m_bCollisionPart[i] == true)
 				m_bCollisionCheck == true;
