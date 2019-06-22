@@ -276,7 +276,12 @@ HRESULT CPlayer::Render_GameObject()
 
 void CPlayer::DamageEvent(_float fSpeed)
 {
-	if (m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::Tumbling)
+	if (m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::Tumbling &&
+		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSwordCharge &&
+		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSwordLoop &&
+		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSwordMove &&
+		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSword &&
+		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSwordEnd)
 	{
 		_uint		iCellIndx = 0;
 		if (true == m_pNavigationCom->Move_OnNavigation(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * m_fTimeDelta, &iCellIndx))
@@ -548,6 +553,7 @@ _bool CPlayer::CollisionCheck()
 
 	if (m_bCollisionCheck == true)
 	{
+		// 이걸 안해주면 계속 밀린다 ㅈ된다.
 		m_bCollisionCheck = false;
 		return true;
 	}

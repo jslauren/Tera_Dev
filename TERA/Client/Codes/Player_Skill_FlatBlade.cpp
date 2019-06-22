@@ -4,6 +4,7 @@
 #include "Input_Device.h"
 
 #include "Player_Idle.h"
+#include "Player_KnockDown.h"
 
 _USING(Client)
 
@@ -32,8 +33,14 @@ CPlayerState * Player_Skill_FlatBlade::Input_Keyboard(CPlayer & Player, const fl
 
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.9f))
 		{
-			m_iAniState = 2;
-			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
+			if (Player.CollisionCheck() == true)
+				return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+
+			else if (Player.CollisionCheck() == false)
+			{
+				m_iAniState = 2;
+				return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
 		}
 	}
 

@@ -97,7 +97,7 @@ CPlayerState * CPlayer_Skill_DrawSword_Move::Input_Keyboard(CPlayer & Player, co
 		}
 	}
 
-	return nullptr;
+	return CPlayer_Skill_DrawSword_Loop::Create(m_pGraphic_Device, Player, &m_iAniState);
 }
 
 void CPlayer_Skill_DrawSword_Move::Update_State(CPlayer & Player, const float & fTimeDelta)

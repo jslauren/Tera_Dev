@@ -41,7 +41,7 @@ HRESULT CArkus::Ready_GameObject(void * pArg)
 	m_pTransformCom->Set_Scaling(0.4f, 0.4f, 0.4f);
 //	m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(90.f), D3DXToRadian(0.f), D3DXToRadian(0.f));
 	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(180.f));
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(200.f, 0.f, 200.f));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(250.f, 0.f, 380.f));
 //	m_pTransformCom->Set_WorldMatrix(matWorld);
 
 //	m_pTransformCom->Set_WorldMatrix(tObjectMeshData.matWorld);
@@ -308,7 +308,8 @@ _bool CArkus::CollisionCheck()
 		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::DrawSwordLoop &&
 		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::DrawSwordMove &&
 		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Run &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Run_Battle)
+		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Run_Battle &&
+		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Tumbling)
 	{
 		// Static으로 있는 플레이어 레이어에서 Com_Player_Collider라는 콜라이더를 가져오겠다.
 		//const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");

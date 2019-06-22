@@ -72,7 +72,8 @@ HRESULT CScene_Dragon::Ready_Scene()
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
 
-	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_TransformMove()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(200.f, 0.f, 0.f));
+	// Dragon's Trial Scene에 들어가면, 플레이어의 위치를 변경해준다.
+	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_TransformMove()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(250.f, 0.f, 50.f));
 
 	SetCutSceneEvent();
 

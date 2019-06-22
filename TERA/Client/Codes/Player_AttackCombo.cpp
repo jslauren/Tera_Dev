@@ -5,6 +5,7 @@
 
 #include "Player_Idle.h"
 #include "Player_AttackCombo_R.h"
+#include "Player_KnockDown.h"
 
 _USING(Client)
 
@@ -28,32 +29,56 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 		{
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 			{
-				m_iAniState = 2;
-				return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
+				if (Player.CollisionCheck() == true)
+					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+
+				else if (Player.CollisionCheck() == false)
+				{
+					m_iAniState = 2;
+					return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 			}
 		}
 		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
 		{
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 			{
-				m_iAniState = 3;
-				return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
+				if (Player.CollisionCheck() == true)
+					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+
+				else if (Player.CollisionCheck() == false)
+				{
+					m_iAniState = 3;
+					return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 			}
 		}
 		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
 		{
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 			{
-				m_iAniState = 4;
-				return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
+				if (Player.CollisionCheck() == true)
+					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+
+				else if (Player.CollisionCheck() == false)
+				{
+					m_iAniState = 4;
+					return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 			}
 		}
 		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo4)
 		{
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 			{
-				m_iAniState = 2;
-				return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
+				if (Player.CollisionCheck() == true)
+					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+
+				else if (Player.CollisionCheck() == false)
+				{
+					m_iAniState = 2;
+					return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 			}
 		}
 	}
@@ -66,8 +91,14 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.8f))
 			{
-				m_iAniState = 1;
-				return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+				if (Player.CollisionCheck() == true)
+					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+
+				else if (Player.CollisionCheck() == false)
+				{
+					m_iAniState = 1;
+					return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 			}
 		}
 		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
@@ -76,8 +107,14 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.8f))
 			{
-				m_iAniState = 2;
-				return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+				if (Player.CollisionCheck() == true)
+					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+
+				else if (Player.CollisionCheck() == false)
+				{
+					m_iAniState = 2;
+					return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 			}
 		}
 		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
@@ -86,8 +123,14 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.99f))
 			{
-				m_iAniState = 3;
-				return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+				if (Player.CollisionCheck() == true)
+					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+
+				else if (Player.CollisionCheck() == false)
+				{
+					m_iAniState = 3;
+					return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 			}
 		}
 		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo4)
@@ -96,8 +139,14 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 			{
-				m_iAniState = 2;
-				return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
+				if (Player.CollisionCheck() == true)
+					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+
+				else if (Player.CollisionCheck() == false)
+				{
+					m_iAniState = 2;
+					return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 			}
 		}
 	}

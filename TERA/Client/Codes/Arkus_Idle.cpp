@@ -44,9 +44,9 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 		{
 			if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 			{
-			//	m_iAniState = rand() % 5 + 4;
-			//	return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-				return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+				m_iAniState = rand() % 5 + 4;
+				return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+			//	return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 
 				//if (EnemyPositionCheck(Arkus) == true)
 				//{
