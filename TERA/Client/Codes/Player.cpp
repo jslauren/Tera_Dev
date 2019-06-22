@@ -276,16 +276,23 @@ HRESULT CPlayer::Render_GameObject()
 
 void CPlayer::DamageEvent(_float fSpeed)
 {
-	_uint		iCellIndx = 0;
-	if (true == m_pNavigationCom->Move_OnNavigation(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * m_fTimeDelta, &iCellIndx))
+	if (m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::Tumbling)
 	{
-		_vec3 vLookInverse = *m_pTransformMoveCom->Get_StateInfo(CTransform::STATE_LOOK);
-		vLookInverse = vLookInverse * -1;
+		_uint		iCellIndx = 0;
+		if (true == m_pNavigationCom->Move_OnNavigation(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * m_fTimeDelta, &iCellIndx))
+		{
+			CArkus* pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+			_vec3 vArkusPosition = *pArkus->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
 
-		m_pTransformMoveCom->Move(&vLookInverse, fSpeed, m_fTimeDelta);
+			_vec3 vDir = (*m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)) - vArkusPosition;
 
-		/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
-		m_pNavigationCom->SetUp_CurrentIndex(iCellIndx);
+			D3DXVec3Normalize(&vDir, &vDir);
+
+			m_pTransformMoveCom->Move(&vDir, fSpeed, m_fTimeDelta);
+
+			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
+			m_pNavigationCom->SetUp_CurrentIndex(iCellIndx);
+		}
 	}
 }
 

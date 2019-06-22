@@ -34,7 +34,7 @@ CArkusState * CArkus_Run::Input_State(CArkus & Arkus, const float & fTimeDelta, 
 		{
 			if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATKAREA) == true)
 			{
-				m_iAniState = 7; // rand() % 5 + 4;
+				m_iAniState = 6;// rand() % 5 + 4;
 				return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 			}
 		}

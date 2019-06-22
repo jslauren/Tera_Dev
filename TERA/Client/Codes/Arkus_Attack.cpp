@@ -120,28 +120,33 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::FlyAtk02Start)
 	{
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.8f))
-			m_IsFlyAtk02StartMove = true;
+		//if (Arkus.Get_Mesh()->IsAnimationEnded(0.2f))
+		//	m_IsFlyAtk02StartMove = true;
+		//if(m_IsFlyAtk02StartMove == true)
+		//	MoveArkusPosition(Arkus, 40.f, fTimeDelta, pArg, 0);
+		//if (Arkus.Get_Mesh()->IsAnimationEnded(0.975f))
+		//{
+		//	m_IsFlyAtk02StartMove = false;
+		//	m_iAniState = 3;
+		//	return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+		//}
+		//if (Arkus.Get_Mesh()->IsAnimationEnded(0.2f))
+		//	m_IsFlyAtk02StartMove = true;
+		//if (m_IsFlyAtk02StartMove == true)
+		//	MoveArkusPosition(Arkus, 40.f, fTimeDelta, pArg, 0);
 
-		if(m_IsFlyAtk02StartMove == true)
-			MoveArkusPosition(Arkus, 45.f, fTimeDelta, pArg, 0);
-
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.8f))
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.975f))
 		{
-			//m_IsFlyAtk02StartMove = false;
 			m_iAniState = 3;
 			return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::FlyAtk02End)
 	{
-		//if (Arkus.Get_Mesh()->IsAnimationEnded(0.35f))
-			MoveArkusPosition(Arkus, 45.f, fTimeDelta, pArg, 0);
+		MoveArkusPosition(Arkus, 90.f, fTimeDelta, pArg, 0);
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.9f))
-		{
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-		}
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::MoveAtkStart)
 	{
@@ -163,7 +168,11 @@ void CArkus_Attack::MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, 
 	{
 		_vec3 vPlayerPos, vDir;
 		vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
-		vDir = vPlayerPos - *Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+		
+		if (iMoveDir == 0)
+			vDir = vPlayerPos - *Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+		else if (iMoveDir == 1)
+			vDir = (*Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION));
 
 		Arkus.Get_Transform()->Move(&vDir, fArkusSpeed, fTimeDelta);
 

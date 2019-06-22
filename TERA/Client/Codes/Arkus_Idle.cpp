@@ -18,6 +18,8 @@ HRESULT CArkus_Idle::Initialize_State(CArkus & Arkus)
 	Arkus.Set_AniIndex(CArkus::ARKUS_ANI::Idle);
 	Arkus.Set_ActionID(CArkus::ACTION_ID::ACTION_IDLE);
 
+	Arkus.ViewChanage();
+
 	return NOERROR;
 }
 
@@ -34,7 +36,7 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 		{
 			if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 			{
-				m_iAniState = 7; // rand() % 5 + 4;
+				m_iAniState = 6;// rand() % 5 + 4;
 				return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 			}
 		}

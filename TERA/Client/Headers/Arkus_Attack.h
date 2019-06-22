@@ -16,7 +16,7 @@ public:
 	virtual void			Update_State(CArkus& Arkus, const float& fTimeDelta);
 
 private:
-	void					MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float& fTimeDelta, void * pArg, _int iMoveDir);
+	void					MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float& fTimeDelta, void * pArg, _int iMoveDir = 0);
 
 private:
 	_bool					m_IsFlyAtk02StartMove = false;
