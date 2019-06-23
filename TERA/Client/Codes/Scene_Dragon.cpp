@@ -103,7 +103,7 @@ HRESULT CScene_Dragon::Render_Scene()
 
 HRESULT CScene_Dragon::Ready_TerrainLoad()
 {
-	const wstring& wstrPath = L"../../Data/Dragon_Trial.Map";
+	const wstring& wstrPath = L"../../Data/Arena.Map";
 
 	HANDLE		hFile = CreateFile(wstrPath.c_str(),
 		GENERIC_READ,
@@ -150,7 +150,7 @@ HRESULT CScene_Dragon::Ready_TerrainLoad()
 
 HRESULT CScene_Dragon::Ready_MeshLoad()
 {
-	const wstring& wstrPath = L"../../Data/Dragon_Trial.MeshDat";
+	const wstring& wstrPath = L"../../Data/Arena.MeshDat";
 
 	HANDLE		hFile = CreateFile(wstrPath.c_str(),
 		GENERIC_READ,

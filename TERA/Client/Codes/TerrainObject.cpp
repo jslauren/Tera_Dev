@@ -2,6 +2,7 @@
 #include "..\Headers\TerrainObject.h"
 #include "Object_Manager.h"
 #include "Light_Manager.h"
+#include "Management.h"
 
 _USING(Client)
 
@@ -108,17 +109,32 @@ HRESULT CTerrainObject::Add_Component(void* pArg)
 
 	//_tchar* pStrArg = static_cast<_tchar*>(pArg);
 	
-	// For.Com_TerrainData
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, ((OBJECTMESHDATA*)pArg)->strComProtoTag.c_str(), L"Com_Mesh", (CComponent**)&m_pMeshCom)))
-		return E_FAIL;
-
 	// For.Com_Renderer
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Renderer", L"Com_Renderer", (CComponent**)&m_pRendererCom)))
 		return E_FAIL;
 
-	// For.Com_Shader
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
-		return E_FAIL;
+	// SCENE_STAGE 을 준비하려면 SCENE_LOGO가 현재 씬이 맞다.
+	// 다음 씬을 준비하기위해 이전 씬의 조건을 검사하자.
+	if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_LOGO)
+	{
+		// For.Com_TerrainData
+		if (FAILED(CGameObject::Add_Component(SCENE_STAGE, ((OBJECTMESHDATA*)pArg)->strComProtoTag.c_str(), L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+			return E_FAIL;
+
+		// For.Com_Shader
+		if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+			return E_FAIL;
+	}
+	else if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_STAGE)
+	{
+		// For.Com_TerrainData
+		if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, ((OBJECTMESHDATA*)pArg)->strComProtoTag.c_str(), L"Com_Mesh", (CComponent**)&m_pMeshCom)))
+			return E_FAIL;
+
+		// For.Com_Shader
+		if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+			return E_FAIL;
+	}
 
 	return NOERROR;
 }

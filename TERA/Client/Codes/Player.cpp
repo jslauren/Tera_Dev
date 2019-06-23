@@ -121,7 +121,7 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 
 	m_pTransformCom->Set_WorldMatrix((*m_pTransformRotateCom->Get_WorldMatrixPointer()) * (*m_pTransformMoveCom->Get_WorldMatrixPointer()));
 
-//	Compute_HeightOnNavi();
+	Compute_HeightOnNavi();
 	
 	CollisionCheck();
 
