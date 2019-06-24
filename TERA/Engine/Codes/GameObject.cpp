@@ -124,14 +124,12 @@ _bool CGameObject::Picking(HWND hWnd, CTransform * pTransform, LPD3DXBASEMESH pM
 
 	pClonedMesh->GetVertexBuffer(&pVB);
 	pClonedMesh->GetIndexBuffer(&pIB);
-	//_int iNumPolygons = pClonedMesh->GetNumFaces();
 
 	_vec3 vPos[3];
-
+	_vec3 vOutTemp;
 	WORD* pIndices;
 	VTX* pVertices;
-	//_bool bPass = false;
-	//_float fMinDist = 9999999999.f;
+
 	pIB->Lock(0, 0, (void**)&pIndices, 0);
 	pVB->Lock(0, 0, (void**)&pVertices, 0);
 

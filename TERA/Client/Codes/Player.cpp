@@ -39,6 +39,7 @@ HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
 		break;
 
 	case SCENE_DRAGON:
+		iIndex = 9;
 		if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Navigation_Dragon", L"Com_Navigation_Dragon", (CComponent**)&m_pNavigationCom, &iIndex)))
 			return E_FAIL;
 		break;

@@ -73,7 +73,7 @@ HRESULT CScene_Dragon::Ready_Scene()
 		return E_FAIL;
 
 	// Dragon's Trial Scene에 들어가면, 플레이어의 위치를 변경해준다.
-	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_TransformMove()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(250.f, 0.f, 50.f));
+	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_TransformMove()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(230.f, 0.f, 50.f));
 
 	SetCutSceneEvent();
 
@@ -339,7 +339,7 @@ HRESULT CScene_Dragon::Ready_Component_Prototype()
 
 	// [Navigation]
 	// For.Component_Navigation_Stage
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Navigation_Dragon", CNavigation::Create(m_pGraphic_Device, L"../../Data/Dragon_Trial.NaviDat"))))
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Navigation_Dragon", CNavigation::Create(m_pGraphic_Device, L"../../Data/Arena.NaviDat"))))
 		return E_FAIL;
 
 	return NOERROR;

@@ -149,7 +149,7 @@ _float CNavigation::Compute_HeightOnNavi(_vec3 * _pPlayerPos)
 
 	_vec3* pPlayerPos = _pPlayerPos;
 
-	pPlayerPos->y = 0;
+	pPlayerPos->y = 20;
 
 	D3DXIntersectTri(&vPoint[0], &vPoint[1], &vPoint[2], pPlayerPos, &_vec3(0.f, -1.f, 0.f), &fU, &fV, &fDist);
 

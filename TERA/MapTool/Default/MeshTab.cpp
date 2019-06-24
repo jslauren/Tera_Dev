@@ -646,6 +646,7 @@ HRESULT CMeshTab::Make_Navigation()
 
 	// For.Mesh_Picking Variable
 	_vec3 vPos;
+	_vec3 vPosOut;
 	_bool bIsPicked = false;
 	_float fFinalDist;
 	_float fMinDist = 9999999999.f;
@@ -661,15 +662,18 @@ HRESULT CMeshTab::Make_Navigation()
 		
 		for (auto Object : pLayer->Get_ObjectList())
 		{
-			if (true == dynamic_cast<CStaticObject*>(Object)->Picking(g_WinhWnd, dynamic_cast<CStaticObject*>(Object)->GetTransformCom(), dynamic_cast<CStaticObject*>(Object)->GetMeshCom()->Get_BaseMesh(), &vPos, &fFinalDist))
+			if (true == dynamic_cast<CStaticObject*>(Object)->Picking(g_WinhWnd, dynamic_cast<CStaticObject*>(Object)->GetTransformCom(), dynamic_cast<CStaticObject*>(Object)->GetMeshCom()->Get_BaseMesh(), &vPosOut, &fFinalDist))
 			{
 				if (fFinalDist <= fMinDist)
+				{
 					fMinDist = fFinalDist;
+					vPos = vPosOut;
+				}
 
 				bIsPicked = true;
 			}
 		}		
-	}
+	} 
 
 	if (bIsPicked == true)
 	{
@@ -681,8 +685,11 @@ HRESULT CMeshTab::Make_Navigation()
 			{
 				fCompareLength = D3DXVec3Length(&(vPos - PairSecond));
 
-				if(fNaviDotCompareValue >= fCompareLength)
-					vPos = Pair.second[0];
+				if (fNaviDotCompareValue >= fCompareLength)
+				{
+					if (vecPos.size() == 2)
+						vPos = Pair.second[0];
+				}
 			}
 		}
 		
@@ -728,7 +735,7 @@ HRESULT CMeshTab::Make_Navigation()
 	}
 	
 	// 만약 해당하는게 없다면, 해당 위치의 Terrain과 피킹을 한다.
-	if (true == pTerrain->Picking(g_WinhWnd, pTerrainTransform, &vPos))
+	else if (true == pTerrain->Picking(g_WinhWnd, pTerrainTransform, &vPos))
 	{
 		_float fCompareLength = 0.f;
 
@@ -745,7 +752,9 @@ HRESULT CMeshTab::Make_Navigation()
 				// 근처에 위치한 정점이 되므로,
 				// 기존에 위치한 정점의 포지션 값을 새롭게 찍으려는 정점의 포지션값에 복사해준다.
 				if (fNaviDotCompareValue >= fCompareLength)
+				{
 					vPos = PairSecond;
+				}
 
 				// 이러면 네비메쉬를 찍을 때, 근접한 정점에 피킹을 하면 그 근접한 정점의 포지션으로 새로운 정점이 찍히게 된다.
 			}

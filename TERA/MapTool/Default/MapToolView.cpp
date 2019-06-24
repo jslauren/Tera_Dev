@@ -97,12 +97,14 @@ void CMapToolView::OnDraw(CDC* /*pDC*/)
 	m_pGraphicDevice->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, D3DXCOLOR(0.f, 0.f, 1.f, 1.f), 1.f, 0);
 	m_pGraphicDevice->BeginScene();
 
-	// For the Junsikkkkkkkkkkkkkkkkkkk!!!!!
-	m_pManagement->Render_Management();
-
 	//렌더 컴포넌트의 렌더 수행
 	if (FAILED(m_pRenderer->Render_RenderGroup()))
 		return;
+
+	// For the Junsikkkkkkkkkkkkkkkkkkk!!!!!
+	// 이 구문이 	if (FAILED(m_pRenderer->Render_RenderGroup())) 이 구문보다
+	// 밑에 있어야지만, 네비메쉬 색깔을 제어할 수 있다.
+	m_pManagement->Render_Management();
 
 	m_pGraphicDevice->EndScene();
 	m_pGraphicDevice->Present(nullptr, nullptr, 0, nullptr);
