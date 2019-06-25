@@ -4,6 +4,7 @@
 #include "Input_Device.h"
 
 #include "Arkus_Rush.h"
+#include "Arkus_Attack.h"
 
 _USING(Client)
 

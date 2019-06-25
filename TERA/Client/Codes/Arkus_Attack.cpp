@@ -32,7 +32,11 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 	//		Arkus.ViewChanage();
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
+		{
+		//	Arkus.Get_Mesh()->Play_Animation(0.f);
+			Arkus.Get_Mesh()->ChangePivot(_vec3(0.f, 0.f, 0.f));
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+		}
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::RoundAtk02)
 	{
@@ -189,7 +193,10 @@ CArkus_Attack * CArkus_Attack::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus &
 	_vec3 vDir = vPlayerPos - vArkusPos;
 
 	if (*(_int*)(pArg) == 1)
+	{
+		Arkus.Get_Mesh()->ChangePivot(_vec3(180.f, 0.f, 0.f));
 		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::RoundAtk01);
+	}
 
 	else if ((*(_int*)(pArg) == 2))
 		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::RoundAtk02);

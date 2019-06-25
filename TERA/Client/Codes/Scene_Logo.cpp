@@ -2,6 +2,7 @@
 #include "..\Headers\Scene_Logo.h"
 #include "Player.h"
 #include "Scene_Stage.h"
+#include "Scene_Loading.h"
 #include "Management.h"
 #include "Back_Logo.h"
 #include "UI_Loading.h"
@@ -16,6 +17,9 @@ CScene_Logo::CScene_Logo(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CScene_Logo::Ready_Scene()
 {
+	if (FAILED(Ready_Loading()))
+		return E_FAIL;
+
 	// 로고씬에서 사용할 원형컴포넌트들의 생성.
 	if (FAILED(Ready_Component_Prototype()))
 		return E_FAIL;
@@ -94,16 +98,16 @@ HRESULT CScene_Logo::Ready_Component_Prototype()
 
 HRESULT CScene_Logo::Ready_GameObject_Prototype()
 {
-	if (FAILED(Add_Object_Prototype(SCENE_LOGO, L"GameObject_Loading", CUI_Loading::Create(m_pGraphic_Device))))
-		return E_FAIL;
+	//if (FAILED(Add_Object_Prototype(SCENE_LOGO, L"GameObject_Loading", CUI_Loading::Create(m_pGraphic_Device))))
+	//	return E_FAIL;
 
 	return NOERROR;
 }
 
 HRESULT CScene_Logo::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
-	if (FAILED(Add_Object(SCENE_LOGO, L"GameObject_Loading", SCENE_LOGO, pLayerTag)))
-		return E_FAIL;
+	//if (FAILED(Add_Object(SCENE_LOGO, L"GameObject_Loading", SCENE_LOGO, pLayerTag)))
+	//	return E_FAIL;
 	
 	return NOERROR;
 }

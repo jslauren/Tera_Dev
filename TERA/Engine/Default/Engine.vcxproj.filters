@@ -134,7 +134,7 @@
       <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Player\Loader_Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\Mesh_Dynamic.h">
-      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Player</Filter>
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Normal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

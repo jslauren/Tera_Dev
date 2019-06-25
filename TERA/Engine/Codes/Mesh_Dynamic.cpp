@@ -148,6 +148,18 @@ _bool CMesh_Dynamic::IsAnimationEnded(_double fCtrlEndTime)
 	return m_pAniCtrl->IsAnimationEnded(fCtrlEndTime);
 }
 
+HRESULT CMesh_Dynamic::ChangePivot(_vec3 vAngle)
+{
+	D3DXQUATERNION quatRot;
+	D3DXMATRIX matRot;
+	D3DXQuaternionRotationYawPitchRoll(&quatRot, D3DXToRadian(0.f + vAngle.x), D3DXToRadian(0.f + vAngle.y), 0.f);
+	D3DXMatrixRotationQuaternion(&matRot, &quatRot);
+
+	m_matPivot *= matRot;
+
+	return NOERROR;
+}
+
 HRESULT CMesh_Dynamic::ChangePivot(_vec3 vState, _float fDegree)
 {
 	_matrix matPivot;

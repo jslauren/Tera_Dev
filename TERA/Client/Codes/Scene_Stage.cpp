@@ -76,7 +76,8 @@ HRESULT CScene_Stage::Ready_Scene()
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
 
-	CManagement::set
+	// 여기서 현재 씬을 정해준다.
+	CManagement::GetInstance()->Set_CurrentScene(SCENE_STAGE);
 
 	return NOERROR;
 }
@@ -103,7 +104,7 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 		pPlayer->Get_NaviMesh()->SetUp_CurrentIndex(0);
 		dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon"))->Set_BoneMatrix(1);
 
-		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Loading::Create(m_pGraphic_Device), SCENE_LOADING)))
+		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Loading::Create(m_pGraphic_Device), SCENE_DRAGON)))
 		{
 			Safe_Release(pManagement);
 			return -1;

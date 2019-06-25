@@ -28,7 +28,9 @@ public:
 	HRESULT Play_Animation(const _float& fTimeDelta, const _float fAniSpeed = 1.f);
 public:
 	_bool	IsAnimationEnded(_double fCtrlEndTime = 0.f);
+	HRESULT ChangePivot(_vec3 vAngle);
 	HRESULT ChangePivot(_vec3 vState, _float fDegree);
+
 private:
 	CHierarchyLoader*		m_pLoader = nullptr;
 	D3DXFRAME*				m_pRootFrame = nullptr;

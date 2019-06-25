@@ -105,6 +105,7 @@ HRESULT CArkus::Render_GameObject()
 		nullptr == m_pColliderCom)
 		return E_FAIL;
 
+//	m_pMeshCom->Play_Animation(0.f);
 	m_pMeshCom->Play_Animation(m_fTimeDelta);
 
 	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();

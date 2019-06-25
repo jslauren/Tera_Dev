@@ -39,7 +39,7 @@ HRESULT CMainApp::Ready_MainApp()	// Initialize_MainApp
 
 	// 씬 셋팅
 	// 어떤 씬을 게임 시작시에 실행 할 지 열거체로 넣어준다.
-	if (FAILED(Ready_Scene(SCENE_LOADING)))
+	if (FAILED(Ready_Scene(SCENE_LOGO)))
 		return E_FAIL;
 
 	return NOERROR;
