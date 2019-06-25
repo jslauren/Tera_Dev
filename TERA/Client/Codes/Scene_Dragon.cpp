@@ -319,7 +319,7 @@ HRESULT CScene_Dragon::Ready_Component_Prototype()
 		return E_FAIL;
 
 	// [Mesh]
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Mesh_Arkus", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Monster/Arkus/", L"Arkus.X"))))
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Mesh_Arkus", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Monster/Arkus/", L"Arkus_B.X"))))
 		return E_FAIL;
 
 	// [Collider]

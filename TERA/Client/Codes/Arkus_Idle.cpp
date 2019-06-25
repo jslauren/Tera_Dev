@@ -29,24 +29,24 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 {
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Idle)
 	{
-		if (Arkus.Get_PlayerFrontInfo() == false)
-		{
-			if (Arkus.Get_TurnRightInfo() == true)
-			{
-				m_iAniState = 1;
-				return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-			}
-			else if (Arkus.Get_TurnRightInfo() == false)
-			{
-				m_iAniState = 2;
-				return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-			}
-		}
-		else if (Arkus.Get_PlayerFrontInfo() == true)
+		//if (Arkus.Get_PlayerFrontInfo() == false)
+		//{
+		//	if (Arkus.Get_TurnRightInfo() == true)
+		//	{
+		//		m_iAniState = 1;
+		//		return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+		//	}
+		//	else if (Arkus.Get_TurnRightInfo() == false)
+		//	{
+		//		m_iAniState = 2;
+		//		return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+		//	}
+		//}
+		if (Arkus.Get_PlayerFrontInfo() == true)
 		{
 			if (Arkus.CollisionCheck() == true)
 			{
-				if (Arkus.Get_Mesh()->IsAnimationEnded(0.45f))
+				if (Arkus.Get_Mesh()->IsAnimationEnded(0.15f))
 					return CArkus_Hit::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 			}
 
@@ -61,26 +61,6 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 				{
 					m_iAniState = rand() % 5 + 4;
 					return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-					//	return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-
-					//if (EnemyPositionCheck(Arkus) == true)
-					//{
-					//	m_iAniState = rand() % 5 + 4;
-					//	return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-					//}
-					//else if (EnemyPositionCheck(Arkus) == false)
-					//{
-					//	if (m_bIsTurnRight == true)
-					//	{
-					//		m_iAniState = 1;
-					//		return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-					//	}
-					//	else if (m_bIsTurnRight == false)
-					//	{
-					//		m_iAniState = 2;
-					//		return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-					//	}
-					//}
 				}
 			}
 			else
@@ -93,8 +73,8 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 
 void CArkus_Idle::Update_State(CArkus & Arkus, const float & fTimeDelta)
 {
-	//if (Arkus.Get_PlayerFrontInfo() == true)
-	//	Arkus.ViewChanage();
+	if (Arkus.Get_PlayerFrontInfo() == true)
+		Arkus.ViewChanage();
 
 	Arkus.EnemyPositionCheck();
 

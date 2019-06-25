@@ -28,32 +28,35 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::RoundAtk01)
 	{
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.37f))
-			Arkus.ViewChanage();
+	//	if (Arkus.Get_Mesh()->IsAnimationEnded(0.37f))
+	//		Arkus.ViewChanage();
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::RoundAtk02)
 	{
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.37f))
-			Arkus.ViewChanage();
+	//	if (Arkus.Get_Mesh()->IsAnimationEnded(0.37f))
+	//		Arkus.ViewChanage();
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 	}
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Atk01)
 	{
+		Arkus.ViewChanage();
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::HeavyAtk02)
 	{
+		Arkus.ViewChanage();
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::FlyAtk01)
 	{
+		Arkus.ViewChanage();
 		// 이 공격일때는 카메라의 수동 조작을 막기 위한 구문.
 		pCamera_Static->Set_CameraCtrlAvaliableInfo(false);
 
@@ -131,21 +134,6 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::FlyAtk02Start)
 	{
-		//if (Arkus.Get_Mesh()->IsAnimationEnded(0.2f))
-		//	m_IsFlyAtk02StartMove = true;
-		//if(m_IsFlyAtk02StartMove == true)
-		//	MoveArkusPosition(Arkus, 40.f, fTimeDelta, pArg, 0);
-		//if (Arkus.Get_Mesh()->IsAnimationEnded(0.975f))
-		//{
-		//	m_IsFlyAtk02StartMove = false;
-		//	m_iAniState = 3;
-		//	return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-		//}
-		//if (Arkus.Get_Mesh()->IsAnimationEnded(0.2f))
-		//	m_IsFlyAtk02StartMove = true;
-		//if (m_IsFlyAtk02StartMove == true)
-		//	MoveArkusPosition(Arkus, 40.f, fTimeDelta, pArg, 0);
-
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.975f))
 		{
 			m_iAniState = 3;
@@ -170,7 +158,8 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 
 void CArkus_Attack::Update_State(CArkus & Arkus, const float & fTimeDelta)
 {
-//	Arkus.EnemyPositionCheck();
+	Arkus.EnemyPositionCheck();
+//	Arkus.ViewChanage();
 }
 
 void CArkus_Attack::MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float & fTimeDelta, void * pArg, _int iMoveDir)
@@ -200,16 +189,10 @@ CArkus_Attack * CArkus_Attack::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus &
 	_vec3 vDir = vPlayerPos - vArkusPos;
 
 	if (*(_int*)(pArg) == 1)
-	{
-		Arkus.Get_Transform()->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(45));
 		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::RoundAtk01);
-	}
 
 	else if ((*(_int*)(pArg) == 2))
-	{
-		Arkus.Get_Transform()->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(45));
 		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::RoundAtk02);
-	}
 
 	else if ((*(_int*)(pArg) == 3))
 		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::FlyAtk02End);
