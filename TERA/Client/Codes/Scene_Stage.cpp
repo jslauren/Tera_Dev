@@ -15,6 +15,7 @@
 #include "UI_PlayerPoint.h"
 #include "UI_SkillBoard.h"
 #include "UI_Loading.h"
+#include "Scene_Loading.h"
 
 #define	NEAR			0.2f
 #define FAR				1000.f
@@ -75,6 +76,8 @@ HRESULT CScene_Stage::Ready_Scene()
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
 
+	CManagement::set
+
 	return NOERROR;
 }
 
@@ -99,12 +102,17 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 		pPlayer->Get_TransformMove()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(250.f, 0.f, 50.f));
 		pPlayer->Get_NaviMesh()->SetUp_CurrentIndex(0);
 		dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon"))->Set_BoneMatrix(1);
-		
-		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Dragon::Create(m_pGraphic_Device), SCENE_DRAGON)))
+
+		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Loading::Create(m_pGraphic_Device), SCENE_LOADING)))
 		{
 			Safe_Release(pManagement);
 			return -1;
 		}
+		//if (FAILED(pManagement->SetUp_CurrentScene(CScene_Dragon::Create(m_pGraphic_Device), SCENE_DRAGON)))
+		//{
+		//	Safe_Release(pManagement);
+		//	return -1;
+		//}
 
 		dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(SCENE_DRAGON);
 
@@ -434,6 +442,7 @@ CScene_Stage * CScene_Stage::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 		_MSGBOX("CScene_Stage Created Failed");
 		Safe_Release(pInstance);
 	}
+
 	return pInstance;
 }
 

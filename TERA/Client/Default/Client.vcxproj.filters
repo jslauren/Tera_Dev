@@ -223,6 +223,9 @@
     <Filter Include="03. Unit\Monster\Arkus\ArkusState\09. Death">
       <UniqueIdentifier>{1bd546cc-140a-4bab-be4c-0918312d81ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Scene\98. Scene_Loading">
+      <UniqueIdentifier>{856590a0-42fb-4716-a7d3-17d3e49d2307}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -417,6 +420,9 @@
     <ClInclude Include="..\Headers\Arkus_Death.h">
       <Filter>03. Unit\Monster\Arkus\ArkusState\09. Death</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Scene_Loading.h">
+      <Filter>01. Scene\98. Scene_Loading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -598,6 +604,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Arkus_Death.cpp">
       <Filter>03. Unit\Monster\Arkus\ArkusState\09. Death</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Scene_Loading.cpp">
+      <Filter>01. Scene\98. Scene_Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

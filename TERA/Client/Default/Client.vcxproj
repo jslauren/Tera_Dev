@@ -205,6 +205,7 @@
     <ClInclude Include="..\Headers\Player_Wake.h" />
     <ClInclude Include="..\Headers\Player_WeaponState.h" />
     <ClInclude Include="..\Headers\Scene_Dragon.h" />
+    <ClInclude Include="..\Headers\Scene_Loading.h" />
     <ClInclude Include="..\Headers\Scene_Logo.h" />
     <ClInclude Include="..\Headers\Scene_Stage.h" />
     <ClInclude Include="..\Headers\SkyBox.h" />
@@ -269,6 +270,7 @@
     <ClCompile Include="..\Codes\Player_Wake.cpp" />
     <ClCompile Include="..\Codes\Player_WeaponState.cpp" />
     <ClCompile Include="..\Codes\Scene_Dragon.cpp" />
+    <ClCompile Include="..\Codes\Scene_Loading.cpp" />
     <ClCompile Include="..\Codes\Scene_Logo.cpp" />
     <ClCompile Include="..\Codes\Scene_Stage.cpp" />
     <ClCompile Include="..\Codes\SkyBox.cpp" />

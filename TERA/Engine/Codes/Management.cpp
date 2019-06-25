@@ -33,6 +33,10 @@ HRESULT CManagement::SetUp_CurrentScene(CScene * pScene, const _uint& iCurrentSc
 
 	// 받아온 씬을 현재 씬으로 셋팅(동기화)한다.
 	m_pCurrentScene = pScene;
+
+	if(m_iCurrentSceneIndex != 0)
+		m_iPreSceneIndex = m_iCurrentSceneIndex;
+
 	// 인덱스도 
 	m_iCurrentSceneIndex = iCurrentSceneIndex;
 

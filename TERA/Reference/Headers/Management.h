@@ -19,6 +19,7 @@ private:
 	virtual ~CManagement() = default;
 public:
 	_uint			Get_CurrentScene() { return m_iCurrentSceneIndex; }
+	_uint			Get_PreScene() { return m_iPreSceneIndex; }
 public:
 	HRESULT			SetUp_CurrentScene(CScene* pScene, const _uint& iCurrentSceneIndex = 0);
 public:
@@ -28,7 +29,8 @@ public:
 	static HRESULT	Release_Engine();
 private:
 	CScene*			m_pCurrentScene = nullptr;
-	_uint			m_iCurrentSceneIndex = 0;
+	_uint			m_iCurrentSceneIndex = 5;
+	_uint			m_iPreSceneIndex = 5;
 public:
 	virtual void	Free();
 };

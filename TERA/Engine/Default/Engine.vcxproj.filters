@@ -106,9 +106,6 @@
     <ClInclude Include="..\Headers\Mesh_Static.h">
       <Filter>01. Utility\02. Component\Component\Mesh\Static</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Mesh_Dynamic.h">
-      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Normal</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\HierarchyLoader.h">
       <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Normal\Loader_Normal</Filter>
     </ClInclude>
@@ -135,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="..\Headers\HierarchyLoader_Player.h">
       <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Player\Loader_Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Mesh_Dynamic.h">
+      <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

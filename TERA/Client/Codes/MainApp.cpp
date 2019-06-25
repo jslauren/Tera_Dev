@@ -10,6 +10,8 @@
 #include "EventManager.h"
 #include "Input_Device.h"
 #include "Object_Manager.h"
+#include "Scene_Loading.h"
+#include "Scene_Stage.h"
 
 _USING(Client)
 
@@ -37,7 +39,7 @@ HRESULT CMainApp::Ready_MainApp()	// Initialize_MainApp
 
 	// 씬 셋팅
 	// 어떤 씬을 게임 시작시에 실행 할 지 열거체로 넣어준다.
-	if (FAILED(Ready_Scene(SCENE_LOGO)))
+	if (FAILED(Ready_Scene(SCENE_LOADING)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -224,13 +226,23 @@ HRESULT CMainApp::Ready_Scene(SCENEID eID)
 	CScene*		pScene = nullptr;
 
 	// Ready_MainApp에서 선택한 씬으로 Switch분기를 나눠 해당 씬을 생성한다.
+
 	switch (eID)
 	{
+	case SCENE_STATIC:
+		break;
 	case SCENE_LOGO:
 		pScene = CScene_Logo::Create(m_pGraphic_Device);
 		break;
 	case SCENE_STAGE:
-		// pScene = CScene_Logo::Create(m_pGraphic_Device);
+		pScene = CScene_Stage::Create(m_pGraphic_Device);
+		break;
+	case SCENE_DRAGON:
+		break;
+	case SCENE_BOSS:
+		break;
+	case SCENE_LOADING:
+		pScene = CScene_Loading::Create(m_pGraphic_Device);
 		break;
 	}
 
@@ -239,7 +251,7 @@ HRESULT CMainApp::Ready_Scene(SCENEID eID)
 
 	// (m_pManagement)씬 매니저는 현재 생성된 씬을 가지고 있어야 하므로,
 	// 현재 내가 열거체로 선택하고 생성한 씬을 씬 매니저와 동기화
-	if (FAILED(m_pManagement->SetUp_CurrentScene(pScene, SCENE_LOGO)))
+	if (FAILED(m_pManagement->SetUp_CurrentScene(pScene, eID)))
 		return E_FAIL;
 
 	return NOERROR;
