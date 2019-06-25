@@ -19,6 +19,7 @@ public:
 	virtual HRESULT Render_Scene();
 private:
 	CLoading*		m_pLoading = nullptr;
+	SCENEID			m_eScene;
 private:
 	// 이 씬에서 사용할 객체들의 Initialize 작업을 위한 멤버함수 선언이다.
 	HRESULT Ready_Component_Prototype();

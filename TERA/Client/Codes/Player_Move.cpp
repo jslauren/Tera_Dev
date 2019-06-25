@@ -4,7 +4,9 @@
 #include "Input_Device.h"
 #include "Navigation.h"
 
+#include "Player_Hit.h"
 #include "Player_Idle.h"
+#include "Player_KnockDown.h"
 #include "Player_Skill_Tumbling.h"
 
 _USING(Client)
@@ -24,6 +26,24 @@ HRESULT CPlayer_Move::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void* pArg)
 {
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Run_Battle)
+	{
+		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+
+		if (Player.CollisionCheck() == true)
+		{
+			if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+				pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+				pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+				pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+			{
+				return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
+			else
+				return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+		}
+	}
+
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_W) & 0x80)
 	{
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))

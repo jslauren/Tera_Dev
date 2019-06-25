@@ -145,7 +145,7 @@ private:
 	_int						iNaviMapCount = 0;
 	_int						iNaviRootTreeCount = 1;
 	_int						iNaviChildTreeCount = 1;
-	_float						fNaviDotCompareValue = 1.f;
+	_float						fNaviDotCompareValue = 5.f;
 	vector<_vec3>				vecPos;
 	map<_int, vector<_vec3>>	mapNaviMesh;
 private:

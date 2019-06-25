@@ -4,6 +4,7 @@
 
 _BEGIN(Client)
 
+class CLoading;
 class CScene_Dragon final : public CScene
 {
 private:
@@ -16,11 +17,14 @@ public:
 	virtual _int	LateUpdate_Scene(const _float& fTimeDelta);
 	virtual HRESULT Render_Scene();
 private:
+	CLoading*		m_pLoading = nullptr;
+private:
 	HRESULT	Ready_TerrainLoad();
 	HRESULT	Ready_MeshLoad();
 	HRESULT Ready_LightInfo();
 	HRESULT Ready_Component_Prototype();
 	HRESULT Ready_GameObject_Prototype();
+	HRESULT Ready_Layer_Loading(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Player(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Weapon(const _tchar* pLayerTag);
 	HRESULT Ready_Layer_Monster(const _tchar* pLayerTag);

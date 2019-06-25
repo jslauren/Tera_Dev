@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Input_Device.h"
 
+#include "Player_Hit.h"
 #include "Player_Idle.h"
 #include "Player_KnockDown.h"
 
@@ -34,8 +35,19 @@ CPlayerState * CPlayer_Skill_RagingStrike::Input_Keyboard(CPlayer & Player, cons
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.9f))
 		{
 			if (Player.CollisionCheck() == true)
-				return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+			{
+				CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
 
+				if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+					pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+					pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+					pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+				{
+					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
+				else
+					return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
 			else if (Player.CollisionCheck() == false)
 			{
 				m_iAniState = 2;

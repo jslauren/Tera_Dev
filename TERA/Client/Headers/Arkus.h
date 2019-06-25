@@ -28,10 +28,14 @@ public:	// Getter
 	CMesh_Dynamic*		Get_Mesh() { return m_pMeshCom; }
 	_bool				Get_CollisionCheck() { return m_bCollisionCheck; }
 	_bool				Get_CollisionPartCheck(ARKUS_COLLISION eCollisionPart) { return m_bCollisionPart[eCollisionPart]; }
+	_bool				Get_PlayerFrontInfo() { return m_bIsPlayerFront; }
+	_bool				Get_TurnRightInfo() { return m_bIsTurnRight; }
 
 public:	// Setter
 	void			Set_AniIndex(const ARKUS_ANI& iIndex) { m_eAnimationIndex = iIndex; }
 	void			Set_OldAniIndex(const ARKUS_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
+	void			Set_PlayerFrontInfo(_bool bButton) { m_bIsPlayerFront = bButton; }
+	void			Set_TurnRightInfo(_bool bButton) { m_bIsTurnRight = bButton; }
 
 public:
 	explicit CArkus(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -54,6 +58,8 @@ public:
 	void			CollisionCheck_Attack_Area();
 	void			ViewChanage();
 	void			AI();
+	_bool			EnemyPositionCheck();
+	void			LookChangeToPlayer(_bool bPtoM);
 
 private:
 	CCollider*		m_pColliderHeadCom = nullptr;
@@ -83,6 +89,9 @@ private:
 	_bool			m_bCollisionTail01 = false;
 	_bool			m_bCollisionTail02 = false;
 	_bool			m_bCollisionAttackArea = false;
+
+	_bool			m_bIsPlayerFront = true;
+	_bool			m_bIsTurnRight = false;
 
 public:
 	static CArkus*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);

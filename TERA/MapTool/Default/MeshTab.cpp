@@ -686,10 +686,7 @@ HRESULT CMeshTab::Make_Navigation()
 				fCompareLength = D3DXVec3Length(&(vPos - PairSecond));
 
 				if (fNaviDotCompareValue >= fCompareLength)
-				{
-					if (vecPos.size() == 2)
-						vPos = Pair.second[0];
-				}
+					vPos = PairSecond;
 			}
 		}
 		
@@ -752,9 +749,7 @@ HRESULT CMeshTab::Make_Navigation()
 				// 근처에 위치한 정점이 되므로,
 				// 기존에 위치한 정점의 포지션 값을 새롭게 찍으려는 정점의 포지션값에 복사해준다.
 				if (fNaviDotCompareValue >= fCompareLength)
-				{
 					vPos = PairSecond;
-				}
 
 				// 이러면 네비메쉬를 찍을 때, 근접한 정점에 피킹을 하면 그 근접한 정점의 포지션으로 새로운 정점이 찍히게 된다.
 			}
@@ -834,7 +829,7 @@ void CMeshTab::Render_Navigation()
 		}
 		_matrix		matIdentity;
 
-		m_pLine->SetWidth(7.f);
+		m_pLine->SetWidth(5.f);
 		m_pLine->DrawTransform(vPoint, 4, D3DXMatrixIdentity(&matIdentity), D3DXCOLOR(1.f, 0.f, 0.f, 1.f));
 	}
 }

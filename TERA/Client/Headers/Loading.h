@@ -29,6 +29,7 @@ private:
 	_int					m_iComplete;
 private:
 	HRESULT Ready_Stage_Component();
+	HRESULT Ready_Dragon_Component();
 	void	CalculatedCompleteNumber();
 
 private:

@@ -37,7 +37,8 @@ _uint CLoading::Thread_Main(void * pArg)
 	case SCENE_STAGE:
 		hr = pLoading->Ready_Stage_Component();
 		break;
-	case SCENE_BOSS:
+	case SCENE_DRAGON:
+		hr = pLoading->Ready_Dragon_Component();
 		break;
 	}
 
@@ -322,6 +323,72 @@ HRESULT CLoading::Ready_Stage_Component()
 	// [Frustum]
 	// For.Component_Frustum
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Frustum", CFrustum::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	return NOERROR;
+}
+
+HRESULT CLoading::Ready_Dragon_Component()
+{
+	if (nullptr == m_pComponent_Manager)
+		return E_FAIL;
+
+	m_iTotalRsrcNum = 10;
+	m_iCurrentRsrcNum = 0;
+	m_iComplete = 0;
+
+	// [Shader]
+	// For.Component_Shader_Sky 
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Shader_Sky", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Sky.fx"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Shader_Terrain
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Shader_Terrain", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Terrain.fx"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Shader_Mesh
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Shader_Mesh", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Mesh.fx"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// [Buffer & Texture]
+	// For.Component_Buffer_CubeBox
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Buffer_CubeBox", CBuffer_CubeTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Texture_SkyBox
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// [Mesh]
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Mesh_Arkus", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Monster/Arkus/", L"Arkus.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// [Collider]
+	// For.Component_Collider_AABB
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Collider_AABB", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_AABB))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Collider_OBB
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Collider_OBB", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_OBB))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Collider_Sphere
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Collider_Sphere", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_SPHERE))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// [Navigation]
+	// For.Component_Navigation_Stage
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Navigation_Dragon", CNavigation::Create(m_pGraphic_Device, L"../../Data/Arena.NaviDat"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 

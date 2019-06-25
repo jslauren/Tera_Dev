@@ -28,17 +28,23 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::RoundAtk01)
 	{
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.37f))
+			Arkus.ViewChanage();
+
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::RoundAtk02)
 	{
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.37f))
+			Arkus.ViewChanage();
+
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 	}
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Atk01)
 	{
-		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::HeavyAtk02)
@@ -91,8 +97,11 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 		// 바람 부는 모션일 때, 플레이어 포지션 뒤로 밀기.
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.425f))
 		{
-			if (pPlayer->Get_DamageEventEndInfo() == false)
-				pPlayer->DamageEvent(35.f);
+			if (Arkus.Get_PlayerFrontInfo() == true)
+			{
+				if (pPlayer->Get_DamageEventEndInfo() == false)
+					pPlayer->DamageEvent(35.f);
+			}
 		}
 		// 더이상 밀고 싶지 않아.
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.65f))
@@ -116,10 +125,8 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 				pCamera_Static->Set_CameraDistance(30.f);
 				pCamera_Static->Set_CameraHeightValue(10.f);
 				pCamera_Static->Set_CameraCtrlAvaliableInfo(true);
-				
-				m_iAniState = 1;
-				return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 			}
+			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::FlyAtk02Start)
@@ -163,6 +170,7 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 
 void CArkus_Attack::Update_State(CArkus & Arkus, const float & fTimeDelta)
 {
+//	Arkus.EnemyPositionCheck();
 }
 
 void CArkus_Attack::MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float & fTimeDelta, void * pArg, _int iMoveDir)
@@ -187,11 +195,21 @@ CArkus_Attack * CArkus_Attack::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus &
 {
 	CArkus_Attack* pInstance = new CArkus_Attack(pGraphicDevice);
 
+	_vec3 vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+	_vec3 vArkusPos = *Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+	_vec3 vDir = vPlayerPos - vArkusPos;
+
 	if (*(_int*)(pArg) == 1)
+	{
+		Arkus.Get_Transform()->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(45));
 		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::RoundAtk01);
+	}
 
 	else if ((*(_int*)(pArg) == 2))
+	{
+		Arkus.Get_Transform()->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(45));
 		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::RoundAtk02);
+	}
 
 	else if ((*(_int*)(pArg) == 3))
 		Arkus.Set_AniIndex(CArkus::ARKUS_ANI::FlyAtk02End);

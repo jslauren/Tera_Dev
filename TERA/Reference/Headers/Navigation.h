@@ -14,6 +14,7 @@ private:
 	virtual ~CNavigation() = default;
 public:
 	HRESULT SetUp_CurrentIndex(_uint iIndex) { m_iCurrentIndex = iIndex; return NOERROR; }
+	void	SetUp_CurrentIndexLoop(_vec3 vPos);
 public:
 	virtual HRESULT Ready_Component_Prototype(const _tchar* pFilePath);
 	virtual HRESULT Ready_Component(void* pArg);

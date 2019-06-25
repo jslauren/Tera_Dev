@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Input_Device.h"
 
+#include "Player_Hit.h"
 #include "Player_Idle.h"
 #include "Player_AttackCombo_R.h"
 #include "Player_KnockDown.h"
@@ -23,6 +24,8 @@ HRESULT CPlayer_AttackCombo::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void * pAgr)
 {
+	CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+
 	if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
@@ -30,7 +33,17 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 			{
 				if (Player.CollisionCheck() == true)
-					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+				{
+					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					{
+						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+					else
+						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 
 				else if (Player.CollisionCheck() == false)
 				{
@@ -44,7 +57,17 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 			{
 				if (Player.CollisionCheck() == true)
-					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+				{
+					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					{
+						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+					else
+						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 
 				else if (Player.CollisionCheck() == false)
 				{
@@ -58,7 +81,17 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 			{
 				if (Player.CollisionCheck() == true)
-					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+				{
+					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					{
+						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+					else
+						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 
 				else if (Player.CollisionCheck() == false)
 				{
@@ -72,7 +105,17 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 			{
 				if (Player.CollisionCheck() == true)
-					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+				{
+					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					{
+						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+					else
+						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 
 				else if (Player.CollisionCheck() == false)
 				{
@@ -92,8 +135,17 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.8f))
 			{
 				if (Player.CollisionCheck() == true)
-					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
-
+				{
+					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					{
+						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+					else
+						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 				else if (Player.CollisionCheck() == false)
 				{
 					m_iAniState = 1;
@@ -108,8 +160,17 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.8f))
 			{
 				if (Player.CollisionCheck() == true)
-					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
-
+				{
+					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					{
+						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+					else
+						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 				else if (Player.CollisionCheck() == false)
 				{
 					m_iAniState = 2;
@@ -124,8 +185,17 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.99f))
 			{
 				if (Player.CollisionCheck() == true)
-					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
-
+				{
+					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					{
+						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+					else
+						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 				else if (Player.CollisionCheck() == false)
 				{
 					m_iAniState = 3;
@@ -140,8 +210,17 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 			{
 				if (Player.CollisionCheck() == true)
-					return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
-
+				{
+					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					{
+						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+					else
+						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
 				else if (Player.CollisionCheck() == false)
 				{
 					m_iAniState = 2;

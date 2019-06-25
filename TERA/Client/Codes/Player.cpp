@@ -39,7 +39,7 @@ HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
 		break;
 
 	case SCENE_DRAGON:
-		iIndex = 9;
+		iIndex = 0;
 		if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Navigation_Dragon", L"Com_Navigation_Dragon", (CComponent**)&m_pNavigationCom, &iIndex)))
 			return E_FAIL;
 		break;
@@ -277,6 +277,7 @@ HRESULT CPlayer::Render_GameObject()
 
 void CPlayer::DamageEvent(_float fSpeed)
 {
+	
 	if (m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::Tumbling &&
 		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSwordCharge &&
 		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSwordLoop &&
@@ -284,16 +285,17 @@ void CPlayer::DamageEvent(_float fSpeed)
 		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSword &&
 		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSwordEnd)
 	{
+
+		CArkus* pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+		_vec3 vArkusPosition = *pArkus->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+
+		_vec3 vDir = (*m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)) - vArkusPosition;
+
+		D3DXVec3Normalize(&vDir, &vDir);
+
 		_uint		iCellIndx = 0;
-		if (true == m_pNavigationCom->Move_OnNavigation(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * m_fTimeDelta, &iCellIndx))
+		if (true == m_pNavigationCom->Move_OnNavigation(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), &vDir, fSpeed * m_fTimeDelta, &iCellIndx))
 		{
-			CArkus* pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
-			_vec3 vArkusPosition = *pArkus->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
-
-			_vec3 vDir = (*m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)) - vArkusPosition;
-
-			D3DXVec3Normalize(&vDir, &vDir);
-
 			m_pTransformMoveCom->Move(&vDir, fSpeed, m_fTimeDelta);
 
 			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
@@ -475,8 +477,11 @@ void CPlayer::KeyInput()
 void CPlayer::Compute_HeightOnNavi()
 {
 	_vec3	pPlayerPos = *m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
+	
+	m_pNavigationCom->SetUp_CurrentIndexLoop(pPlayerPos);
+	
 	_float fDist = m_pNavigationCom->Compute_HeightOnNavi(&pPlayerPos);
-
+	
 	pPlayerPos.y = fDist;
 
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &pPlayerPos);
@@ -486,70 +491,71 @@ _bool CPlayer::CollisionCheck()
 {
 	if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_DRAGON)
 	{
-		const CCollider* pArkusColliderBody = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Body");
-		const CCollider* pArkusColliderHead = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Head");
-		const CCollider* pArkusColliderNeck = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Neck");
-		const CCollider* pArkusColliderTail01 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Tail01");
-		const CCollider* pArkusColliderTail02 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Tail02");
-
-		//m_pColliderCom->Collision_OBB(pArkusColliderBody);
-		//m_pColliderCom->Collision_OBB(pArkusColliderHead);
-		//m_pColliderCom->Collision_OBB(pArkusColliderNeck);
-		//m_pColliderCom->Collision_OBB(pArkusColliderTail01);
-		//m_pColliderCom->Collision_OBB(pArkusColliderTail02);
-		//m_pColliderCom->Collision_OBB(pArkusColliderTail03);
-
 		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
 
-		if (pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Idle &&
-			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Hit &&
-			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Run_Battle &&
-			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::JumpEvasion &&
-			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Groggy &&
-			pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Death)
+		if (pArkus->EnemyPositionCheck() == true)
 		{
-			if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true ||
-				m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true ||
-				m_pColliderCom->Collision_Sphere(pArkusColliderNeck) == true ||
-				m_pColliderCom->Collision_Sphere(pArkusColliderTail01) == true ||
-				m_pColliderCom->Collision_Sphere(pArkusColliderTail02) == true)
+			const CCollider* pArkusColliderBody = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Body");
+			const CCollider* pArkusColliderHead = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Head");
+			const CCollider* pArkusColliderNeck = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Neck");
+			const CCollider* pArkusColliderTail01 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Tail01");
+			const CCollider* pArkusColliderTail02 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Tail02");
+
+			//m_pColliderCom->Collision_OBB(pArkusColliderBody);
+			//m_pColliderCom->Collision_OBB(pArkusColliderHead);
+			//m_pColliderCom->Collision_OBB(pArkusColliderNeck);
+			//m_pColliderCom->Collision_OBB(pArkusColliderTail01);
+			//m_pColliderCom->Collision_OBB(pArkusColliderTail02);
+			//m_pColliderCom->Collision_OBB(pArkusColliderTail03);
+
+			if (pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Idle &&
+				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Hit &&
+				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Run_Battle &&
+				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::JumpEvasion &&
+				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Groggy &&
+				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Death)
 			{
-				m_bCollisionCheck = true;
+				if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true ||
+					m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true ||
+					m_pColliderCom->Collision_Sphere(pArkusColliderNeck) == true ||
+					m_pColliderCom->Collision_Sphere(pArkusColliderTail01) == true ||
+					m_pColliderCom->Collision_Sphere(pArkusColliderTail02) == true)
+				{
+					m_bCollisionCheck = true;
+				}
+				else
+					m_bCollisionCheck = false;
 			}
-			else
-				m_bCollisionCheck = false;
-		}
 
-		//if (m_pColliderCom->Collision_OBB(pArkusColliderBody) == true)
-		//	m_bCollisionCheck[0] = true;
-		//else if (m_pColliderCom->Collision_OBB(pArkusColliderHead) == true)
-		//	m_bCollisionCheck[1] = true;
-		//else if (m_pColliderCom->Collision_OBB(pArkusColliderNeck) == true)
-		//	m_bCollisionCheck[2] = true;
-		//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail01) == true)
-		//	m_bCollisionCheck[3] = true;
-		//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail02) == true)
-		//	m_bCollisionCheck[4] = true;
-		//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail03) == true)
-		//	m_bCollisionCheck[5] = true;
-		
-		_uint	iCellIndx = 0;
-		if (m_bCollisionCheck == true)
-		{
-			_float fRadius = m_pColliderCom->Get_Radius();
+			//if (m_pColliderCom->Collision_OBB(pArkusColliderBody) == true)
+			//	m_bCollisionCheck[0] = true;
+			//else if (m_pColliderCom->Collision_OBB(pArkusColliderHead) == true)
+			//	m_bCollisionCheck[1] = true;
+			//else if (m_pColliderCom->Collision_OBB(pArkusColliderNeck) == true)
+			//	m_bCollisionCheck[2] = true;
+			//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail01) == true)
+			//	m_bCollisionCheck[3] = true;
+			//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail02) == true)
+			//	m_bCollisionCheck[4] = true;
+			//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail03) == true)
+			//	m_bCollisionCheck[5] = true;
 
-			if (true == m_pNavigationCom->Move_OnNavigation(m_pTransformMoveCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformMoveCom->Get_StateInfo(CTransform::STATE_LOOK), fRadius * m_fTimeDelta, &iCellIndx))
+			_uint	iCellIndx = 0;
+			if (m_bCollisionCheck == true)
 			{
+				_float fRadius = m_pColliderCom->Get_Radius();
 				_vec3 vInverseView = (*m_pColliderCom->Get_LookDistance());
 				vInverseView.y = 0;
 
-				m_pTransformMoveCom->Move(&vInverseView, fRadius, m_fTimeDelta);
+				if (true == m_pNavigationCom->Move_OnNavigation(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), &vInverseView, fRadius * m_fTimeDelta, &iCellIndx))
+				{
+					m_pTransformMoveCom->Move(&vInverseView, fRadius, m_fTimeDelta);
 
-				/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
-				m_pNavigationCom->SetUp_CurrentIndex(iCellIndx);
+					/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
+					m_pNavigationCom->SetUp_CurrentIndex(iCellIndx);
+				}
 			}
 		}
-
 	}
 
 	if (m_bCollisionCheck == true)

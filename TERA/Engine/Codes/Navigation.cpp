@@ -15,6 +15,20 @@ CNavigation::CNavigation(const CNavigation & rhs)
 		Safe_AddRef(pCell);
 }
 
+void CNavigation::SetUp_CurrentIndexLoop(_vec3 vPos)
+{
+	CCell::EDGE		eEdge;
+
+	for (size_t i = 0; i < m_vecCell.size(); ++i)
+	{
+		if (true == m_vecCell[i]->isIn(&vPos, &eEdge))
+		{
+			m_iCurrentIndex = i;
+			return;
+		}
+	}
+}
+
 HRESULT CNavigation::Ready_Component_Prototype(const _tchar* pFilePath)
 {
 	HANDLE hFile = CreateFile(pFilePath,
@@ -147,11 +161,12 @@ _float CNavigation::Compute_HeightOnNavi(_vec3 * _pPlayerPos)
 
 	_float	fU, fV, fDist;
 
-	_vec3* pPlayerPos = _pPlayerPos;
+	_vec3 pPlayerPos = *_pPlayerPos;
 
-	pPlayerPos->y = 20;
+	pPlayerPos.y = 10;
 
-	D3DXIntersectTri(&vPoint[0], &vPoint[1], &vPoint[2], pPlayerPos, &_vec3(0.f, -1.f, 0.f), &fU, &fV, &fDist);
+	if(true == D3DXIntersectTri(&vPoint[0], &vPoint[1], &vPoint[2], &pPlayerPos, &_vec3(0.f, -1.f, 0.f), &fU, &fV, &fDist))
+		fDist = 10 - fDist;
 
 	return _float(fDist);
 }

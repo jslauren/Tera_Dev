@@ -41,7 +41,7 @@ HRESULT CArkus::Ready_GameObject(void * pArg)
 	m_pTransformCom->Set_Scaling(0.4f, 0.4f, 0.4f);
 //	m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(90.f), D3DXToRadian(0.f), D3DXToRadian(0.f));
 	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(180.f));
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(250.f, 0.f, 380.f));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(250.f, 0.f, 350.f));
 //	m_pTransformCom->Set_WorldMatrix(matWorld);
 
 //	m_pTransformCom->Set_WorldMatrix(tObjectMeshData.matWorld);
@@ -64,7 +64,8 @@ _int CArkus::Update_GameObject(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
-	ViewChanage();
+//	ViewChanage();
+	EnemyPositionCheck();
 
 	AI();
 	CollisionCheck_Attack_Area();
@@ -467,12 +468,12 @@ void CArkus::ViewChanage()
 	if (fAngle < 0.f)
 	{
 		if(m_fDirAngle > 0.02f)
-			m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(-m_fDirAngle), 1.f);
+			m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(m_fDirAngle), 1.f);
 	}
 	else if (fAngle > 0.f)
 	{
 		if (m_fDirAngle > 0.02f)
-			m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(m_fDirAngle), 1.f);
+			m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(-m_fDirAngle), 1.f);
 	}
 	
 }
@@ -492,9 +493,85 @@ void CArkus::AI()
 		m_pMeshCom->SetUp_AnimationSet(m_eAnimationIndex);
 	}
 
+	//if (m_eOldAnimationIndex == CArkus::ARKUS_ANI::RoundAtk01 ||
+	//	m_eOldAnimationIndex == CArkus::ARKUS_ANI::RoundAtk02)
+	//{
+	//	LookChangeToPlayer();
+	//}
+
 	m_eOldAnimationIndex = m_eAnimationIndex;
 
 	m_pState->Update_State(*this, m_fTimeDelta);
+}
+
+_bool CArkus::EnemyPositionCheck()
+{
+	_vec3 vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+
+	_vec3 vDir = vPlayerPos - (*m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION));
+	D3DXVec3Normalize(&vDir, &vDir);
+
+	_vec3 vArkusView = (*m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK));
+	D3DXVec3Normalize(&vArkusView, &vArkusView);
+
+	_float fDegree = D3DXVec3Dot(&vDir, &(vArkusView));
+
+	// 플레이어가 앞에 있으면,
+	if (fDegree > 0.f)
+	{
+		m_bIsPlayerFront = true;
+		return true;
+	}
+
+	// 뒤에 있으면,
+	else if (fDegree <= 0.f)
+	{
+		m_bIsPlayerFront = false;
+
+		fDegree = D3DXVec3Dot(&vDir, m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT));
+
+		if (fDegree < 0)
+			m_bIsTurnRight = false;
+
+		else if (fDegree > 0)
+			m_bIsTurnRight = true;
+
+		return false;
+	}
+}
+
+void CArkus::LookChangeToPlayer(_bool bPtoM)
+{
+	_vec3 vArkusRight, vArkusUp, vArkusLook, vDir, vPlayerPos, vArkusPos;
+
+	vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+	vArkusPos = *m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
+	vArkusRight = *m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT);
+	vArkusUp = *m_pTransformCom->Get_StateInfo(CTransform::STATE_UP);
+	vArkusLook = *m_pTransformCom->Get_StateInfo(CTransform::STATE_LOOK);
+
+	if (bPtoM == true)
+		vDir = vArkusPos - vPlayerPos;
+	else if(bPtoM == false)
+		vDir = vPlayerPos - vArkusPos;
+	
+	_float fRightScale, fUpScale, fLookScale;
+
+	fRightScale = D3DXVec3Length(&vArkusRight);
+	fUpScale = D3DXVec3Length(&vArkusUp);
+	fLookScale = D3DXVec3Length(&vArkusLook);
+
+	D3DXVec3Cross(&vArkusRight, &_vec3(0.f, 1.f, 0.f), &vDir);
+	D3DXVec3Cross(&vArkusUp, &vDir, &vArkusRight);
+
+	D3DXVec3Normalize(&vArkusRight, &vArkusRight);
+	D3DXVec3Normalize(&vArkusUp, &vArkusUp);
+	D3DXVec3Normalize(&vDir, &vDir);
+
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_RIGHT, &(vArkusRight * fRightScale));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_UP, &(vArkusUp * fUpScale));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_LOOK, &(vDir * fLookScale));
+
 }
 
 CArkus * CArkus::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

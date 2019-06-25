@@ -48,8 +48,14 @@ CArkusState * CArkus_Rush::Input_State(CArkus & Arkus, const float & fTimeDelta,
 	{
 		MoveArkusPosition(Arkus, 30.f, fTimeDelta, pArg, 0);
 
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
+			m_bIsViewChangeAvaliable = false;
+
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
+		{
+			m_bIsViewChangeAvaliable = true;
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+		}
 	}
 
 	return nullptr;
@@ -57,6 +63,11 @@ CArkusState * CArkus_Rush::Input_State(CArkus & Arkus, const float & fTimeDelta,
 
 void CArkus_Rush::Update_State(CArkus & Arkus, const float & fTimeDelta)
 {
+	if (Arkus.Get_PlayerFrontInfo() == true)
+	{
+		if (m_bIsViewChangeAvaliable == true)
+			Arkus.ViewChanage();
+	}
 }
 
 void CArkus_Rush::MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float & fTimeDelta, void * pArg, _int iMoveDir)

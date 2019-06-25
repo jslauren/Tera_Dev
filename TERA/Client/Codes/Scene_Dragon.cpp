@@ -12,6 +12,7 @@
 #include "TerrainObject.h"
 #include "UI_PlayerPoint.h"
 #include "UI_SkillBoard.h"
+#include "UI_Loading.h"
 
 #define	NEAR			0.2f
 #define FAR				1000.f
@@ -71,9 +72,6 @@ HRESULT CScene_Dragon::Ready_Scene()
 	// For.Layer_UI
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
-
-	// Dragon's Trial Scene에 들어가면, 플레이어의 위치를 변경해준다.
-	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_TransformMove()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(230.f, 0.f, 50.f));
 
 	SetCutSceneEvent();
 
@@ -321,7 +319,7 @@ HRESULT CScene_Dragon::Ready_Component_Prototype()
 		return E_FAIL;
 
 	// [Mesh]
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Mesh_Arkus", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Monster/Arkus/", L"Arkus_B.X"))))
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Mesh_Arkus", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Monster/Arkus/", L"Arkus.X"))))
 		return E_FAIL;
 
 	// [Collider]
@@ -370,21 +368,21 @@ HRESULT CScene_Dragon::Ready_GameObject_Prototype()
 	return NOERROR;
 }
 
+HRESULT CScene_Dragon::Ready_Layer_Loading(const _tchar * pLayerTag)
+{
+	if (FAILED(Add_Object_Prototype(SCENE_BOSS, L"GameObject_Loading", CUI_Loading::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	return NOERROR;
+}
+
 HRESULT CScene_Dragon::Ready_Layer_Player(const _tchar * pLayerTag)
 {
-	//// For.Player
-	//if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Player", SCENE_STATIC, pLayerTag)))
-	//	return E_FAIL;
-
 	return NOERROR;
 }
 
 HRESULT CScene_Dragon::Ready_Layer_Weapon(const _tchar * pLayerTag)
 {
-	//// For.Weapon
-	//if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Weapon", SCENE_STATIC, pLayerTag)))
-	//	return E_FAIL;
-
 	return NOERROR;
 }
 
@@ -420,7 +418,6 @@ HRESULT CScene_Dragon::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	if (FAILED(Add_Object(SCENE_DRAGON, L"GameObject_Terrain", SCENE_DRAGON, pLayerTag, (void*)&m_fDetail)))
 		return E_FAIL;
 
-
 	return NOERROR;
 }
 
@@ -440,7 +437,6 @@ void CScene_Dragon::SetCutSceneEvent()
 	dynamic_cast<CCamera_Static*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 1))->Set_TurnOnStaticCam(false);
 	dynamic_cast<CCamera_Dynamic*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 0))->Set_TurnOnDynamicCam(true);
 	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_CutSceneInfo(true);
-
 }
 
 CScene_Dragon * CScene_Dragon::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

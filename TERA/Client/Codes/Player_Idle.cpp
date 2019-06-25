@@ -37,6 +37,24 @@ HRESULT CPlayer_Idle::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void* pAgr)
 {
+	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
+	{
+		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+
+		if (Player.CollisionCheck() == true)
+		{
+			if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+				pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+				pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+				pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+			{
+				return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
+			else
+				return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+		}
+	}
+
 	if (dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_CutSceneInfo() == true)
 		return nullptr;
 

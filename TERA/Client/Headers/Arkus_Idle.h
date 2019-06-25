@@ -15,12 +15,6 @@ public:
 	virtual CArkusState*	Input_State(CArkus& Arkus, const float& fTimeDelta, BYTE KeyID, void* pAgr);
 	virtual void			Update_State(CArkus& Arkus, const float& fTimeDelta);
 
-private:
-	_bool					EnemyPositionCheck(CArkus& Arkus);
-	
-private:
-	_bool					m_bIsTurnRight = false;
-
 public:
 	static CArkus_Idle*		Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus& Arkus, void* pArg = nullptr);
 	virtual void			Free();

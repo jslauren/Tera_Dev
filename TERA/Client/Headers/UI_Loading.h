@@ -14,7 +14,7 @@ public:
 	virtual ~CUI_Loading() = default;
 
 public:	// Setter
-	void			Set_LodingClass(CLoading* pLoading) { m_pLoading = pLoading; }
+	void	Set_LodingClass(CLoading* pLoading) { m_pLoading = pLoading; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();

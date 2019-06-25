@@ -14,6 +14,7 @@
 #include "TerrainObject.h"
 #include "UI_PlayerPoint.h"
 #include "UI_SkillBoard.h"
+#include "UI_Loading.h"
 
 #define	NEAR			0.2f
 #define FAR				1000.f
@@ -88,13 +89,17 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 	if (nullptr == pManagement)
 		return -1;
 
+	CPlayer*	pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
+
 	pManagement->AddRef();
 
 	if (GetKeyState('N') & 0x8000)
 	{
-		dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_AniIndex(CPlayer::PLAYER_ANI::Idle);
+		pPlayer->Set_AniIndex(CPlayer::PLAYER_ANI::Idle);
+		pPlayer->Get_TransformMove()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(250.f, 0.f, 50.f));
+		pPlayer->Get_NaviMesh()->SetUp_CurrentIndex(0);
 		dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon"))->Set_BoneMatrix(1);
-
+		
 		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Dragon::Create(m_pGraphic_Device), SCENE_DRAGON)))
 		{
 			Safe_Release(pManagement);
