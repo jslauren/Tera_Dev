@@ -468,12 +468,12 @@ void CArkus::ViewChanage()
 	if (fAngle < 0.f)
 	{
 		if(m_fDirAngle > 0.02f)
-			m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(m_fDirAngle), 1.f);
+			m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(-m_fDirAngle), 1.f);
 	}
 	else if (fAngle > 0.f)
 	{
 		if (m_fDirAngle > 0.02f)
-			m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(-m_fDirAngle), 1.f);
+			m_pTransformCom->Rotation_Axis(vArkusUp, D3DXToRadian(m_fDirAngle), 1.f);
 	}
 	
 }
