@@ -84,6 +84,7 @@ private:
 	_bool			m_bCollisionCheck = false;
 
 	_bool			m_bDamageEventEndInfo = false;
+	_bool			m_bIsNavigationRender = false;
 
 private:
 	virtual HRESULT Add_Component();

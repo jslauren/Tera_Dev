@@ -50,6 +50,10 @@ HRESULT CScene_Dragon::Ready_Scene()
 	if (FAILED(Ready_MeshLoad()))
 		return E_FAIL;
 
+	// For.Layer_UI
+	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
+		return E_FAIL;
+
 	// For.Layer_Player
 	if (FAILED(Ready_Layer_Player(L"Layer_Player")))
 		return E_FAIL;
@@ -57,7 +61,7 @@ HRESULT CScene_Dragon::Ready_Scene()
 	// For.Layer_Weapon
 	if (FAILED(Ready_Layer_Weapon(L"Layer_Weapon")))
 		return E_FAIL;
-
+	
 	// For.Layer_Monster
 	if (FAILED(Ready_Layer_Monster(L"Layer_Monster")))
 		return E_FAIL;
@@ -69,11 +73,7 @@ HRESULT CScene_Dragon::Ready_Scene()
 	// For.Layer_BackGround
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
 		return E_FAIL;
-
-	// For.Layer_UI
-	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
-		return E_FAIL;
-
+	
 	SetCutSceneEvent();
 
 	return NOERROR;
@@ -320,12 +320,21 @@ HRESULT CScene_Dragon::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_DRAGON, L"GameObject_Terrain", CTerrain_Dragon::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_UI_BossPoint
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_BossPoint", CUI_BossPoint::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	// For.GameObject_Arkus
 	if (FAILED(Add_Object_Prototype(SCENE_DRAGON, L"GameObject_Arkus", CArkus::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	// For.GameObject_UI_BossPoint
-	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_BossPoint", CUI_BossPoint::Create(m_pGraphic_Device))))
+
+	return NOERROR;
+}
+
+HRESULT CScene_Dragon::Ready_Layer_UI(const _tchar * pLayerTag)
+{
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_BossPoint", SCENE_DRAGON, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -371,14 +380,6 @@ HRESULT CScene_Dragon::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 	// For.Terrain
 	if (FAILED(Add_Object(SCENE_DRAGON, L"GameObject_Terrain", SCENE_DRAGON, pLayerTag, (void*)&m_fDetail)))
-		return E_FAIL;
-
-	return NOERROR;
-}
-
-HRESULT CScene_Dragon::Ready_Layer_UI(const _tchar * pLayerTag)
-{
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_BossPoint", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;

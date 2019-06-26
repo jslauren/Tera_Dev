@@ -42,6 +42,10 @@ _int CUI_BossPoint::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
+	m_fTimeDelta = fTimeDelta;
+
+	CutSceneEvent();
+
 	return _int();
 }
 
@@ -60,41 +64,44 @@ HRESULT CUI_BossPoint::Render_GameObject()
 {
 	if (CManagement::GetInstance()->Get_CurrentScene() != SCENE_LOADING)
 	{
-		if (FAILED(NullCheck()))
-			return E_FAIL;
-
-		LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
-		if (nullptr == pEffect)
-			return E_FAIL;
-
-		pEffect->AddRef();
-
-
-		if (FAILED(SetUp_ConstantTable(pEffect)))
-			return E_FAIL;
-
-		pEffect->Begin(nullptr, 0);
-		pEffect->BeginPass(0);
-
-		m_pBufferPointBoardCom->Render_Buffer();
-
-		pEffect->EndPass();
-		pEffect->End();
-
+		if (m_bIsHpRender == true)
 		{
-			if (FAILED(SetUp_ConstantTable(pEffect, 2)))
+			if (FAILED(NullCheck()))
+				return E_FAIL;
+
+			LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
+			if (nullptr == pEffect)
+				return E_FAIL;
+
+			pEffect->AddRef();
+
+
+			if (FAILED(SetUp_ConstantTable(pEffect)))
 				return E_FAIL;
 
 			pEffect->Begin(nullptr, 0);
-			pEffect->BeginPass(3);
+			pEffect->BeginPass(0);
 
-			m_pBufferHpCom->Render_Buffer();
+			m_pBufferPointBoardCom->Render_Buffer();
 
 			pEffect->EndPass();
 			pEffect->End();
-		}
 
-		Safe_Release(pEffect);
+			{
+				if (FAILED(SetUp_ConstantTable(pEffect, 2)))
+					return E_FAIL;
+
+				pEffect->Begin(nullptr, 0);
+				pEffect->BeginPass(3);
+
+				m_pBufferHpCom->Render_Buffer();
+
+				pEffect->EndPass();
+				pEffect->End();
+			}
+
+			Safe_Release(pEffect);
+		}
 	}
 
 	return NOERROR;
@@ -189,6 +196,19 @@ HRESULT CUI_BossPoint::NullCheck()
 		return E_FAIL;
 
 	return NOERROR;
+}
+
+void CUI_BossPoint::CutSceneEvent()
+{
+	if (m_bIsCutSceneStart == true)
+	{
+		m_bIsHpRender = true;
+
+		m_fHpValue += (m_fTimeDelta * 0.35);
+
+		if (m_fHpValue >= 1)
+			m_bIsCutSceneStart = false;
+	}
 }
 
 CUI_BossPoint * CUI_BossPoint::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

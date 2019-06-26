@@ -6,6 +6,8 @@
 #include "Arkus_Rush.h"
 #include "Arkus_Attack.h"
 
+#include "UI_BossPoint.h"
+
 _USING(Client)
 
 CArkus_Apperance::CArkus_Apperance(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -27,6 +29,8 @@ CArkusState * CArkus_Apperance::Input_State(CArkus & Arkus, const float & fTimeD
 	{
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
 		{
+			dynamic_cast<CUI_BossPoint*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_UI"))->Set_CutSceneStart(true);
+
 			m_iAniState = 2;
 			return CArkus_Apperance::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}

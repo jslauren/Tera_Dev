@@ -98,7 +98,7 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 
 	pManagement->AddRef();
 
-	if (GetKeyState('N') & 0x8000)
+	if (GetKeyState('P') & 0x8000)
 	{
 		HRESULT		hr;
 		if (S_OK == (hr = (pManagement->SetUp_CurrentScene(CScene_Loading::Create(m_pGraphic_Device, SCENE_DRAGON), SCENE_LOADING))))

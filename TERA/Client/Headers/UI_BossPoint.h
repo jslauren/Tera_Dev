@@ -15,6 +15,7 @@ public: // Geter
 
 public:	// Setter
 	void	Set_HPValue(_int iValue) { m_fHpValue = iValue; }
+	void	Set_CutSceneStart(_bool bButton) { m_bIsCutSceneStart = bButton; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -38,9 +39,14 @@ private:
 
 private:
 	HRESULT				NullCheck();
+	void				CutSceneEvent();
 
 private:
-	_float				m_fHpValue = 100.f;
+	_float				m_fTimeDelta = 0.f;
+	_float				m_fHpValue = 0.f;
+
+	_bool				m_bIsCutSceneStart = false;
+	_bool				m_bIsHpRender = false;
 
 public:
 	static CUI_BossPoint*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);

@@ -99,6 +99,9 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 
 	KeyInput();
 	
+	if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_N))
+		m_bIsNavigationRender = !m_bIsNavigationRender;
+
 	//// 이 부분은 추후에 인벤토리 구현 시 참고할 구문이다.
 
 	//if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_8))
@@ -117,8 +120,6 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	//	}
 	//	m_bTest = !m_bTest;
 	//}
-
-	//m_pMeshCom_Bone->Play_Animation(fTimeDelta, m_fAniSpeed);
 
 	m_pTransformCom->Set_WorldMatrix((*m_pTransformRotateCom->Get_WorldMatrixPointer()) * (*m_pTransformMoveCom->Get_WorldMatrixPointer()));
 
@@ -272,7 +273,8 @@ HRESULT CPlayer::Render_GameObject()
 		m_pColliderCom->Render_Collider();
 
 		// 네비메쉬 렌더
-		m_pNavigationCom->Render_Navigation();
+		if (m_bIsNavigationRender == true)
+			m_pNavigationCom->Render_Navigation();
 	}
 
 	return NOERROR;

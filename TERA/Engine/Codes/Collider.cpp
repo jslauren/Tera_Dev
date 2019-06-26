@@ -140,7 +140,7 @@ HRESULT CCollider::Render_Collider()
 	pEffect->BeginPass(0);
 
 	// Feat.½½±â
-	if(CInput_Device::GetInstance()->GetDIKeyState(DIK_C) & 0x80)
+	if(CInput_Device::GetInstance()->Get_DIKeyDown(DIK_C))
 		m_bIsRendering = !m_bIsRendering;
 
 	if(m_bIsRendering == true)
