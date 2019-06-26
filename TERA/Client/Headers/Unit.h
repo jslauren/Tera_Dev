@@ -31,21 +31,26 @@ protected:
 	explicit CUnit(const CUnit& rhs);
 	virtual ~CUnit() = default;
 
-public:	// Getter
+public:	
 	const ACTION_ID&	Get_ActionID() const { return m_eCurActionID; }
 	const UNIT_ID&		Get_UnitID() const { return m_eUnitID; }
 	const STANCE_ID&	Get_StanceID() const { return m_eCurStanceID; }
 
-public:
+public: // Getter
 	CTransform*		Get_Transform() { return m_pTransformCom; }
 	CTransform*		Get_TransformRotation() { return m_pTransformRotateCom; }
 	CTransform*		Get_TransformMove() { return m_pTransformMoveCom; }
 	CMesh_Dynamic*	Get_Mesh() { return m_pMeshCom; }
 	CNavigation*	Get_NaviMesh() { return m_pNavigationCom; }
 
+	_float			Get_HP() { return m_fHP; }
+	_float			Get_MP() { return m_fMP; }
+
 public:	// Setter
 	void			Set_ActionID(const ACTION_ID& eActionID) { m_eCurActionID = eActionID; }
 	void			Set_StanceID(const STANCE_ID& eStanceID) { m_eCurStanceID = eStanceID; }
+	void			Set_HP(_float fDamageValue) { m_fHP -= fDamageValue; }
+	void			Set_MP(_float fDamageValue) { m_fMP -= fDamageValue; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -82,6 +87,9 @@ protected:
 	_float			m_fAniSpeed = 1.f;
 	_float			m_fTimeDelta = 1.f;
 	_bool			m_bIsRun = false;
+
+	_float			m_fHP = 100.f;
+	_float			m_fMP = 100.f;
 
 public:
 	virtual CGameObject*	Clone(void* pArg = nullptr) = 0;

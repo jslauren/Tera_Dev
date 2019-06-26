@@ -56,6 +56,10 @@ HRESULT CScene_Stage::Ready_Scene()
 	if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
 		return E_FAIL;
 
+	// For.Layer_UI
+	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
+		return E_FAIL;
+
 	// For.Layer_Player
 	if (FAILED(Ready_Layer_Player(L"Layer_Player")))
 		return E_FAIL;
@@ -70,10 +74,6 @@ HRESULT CScene_Stage::Ready_Scene()
 
 	// For.Layer_Monster
 	if (FAILED(Ready_Layer_Monster(L"Layer_Monster")))
-		return E_FAIL;
-
-	// For.Layer_UI
-	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
 
 	// 여기서 현재 씬을 정해준다.
@@ -368,6 +368,30 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	return NOERROR;
 }
 
+HRESULT CScene_Stage::Ready_Layer_Camera(const _tchar * pLayerTag)
+{
+	// For.Camera_Dynamic
+	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Camera_Dynamic", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 5, -5), _vec3(0, 0, 0), AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
+		return E_FAIL;
+
+	// For.Camera_Static
+	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Camera_Static", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 5, -5), _vec3(0, 0, 0), AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
+		return E_FAIL;
+
+	return NOERROR;
+}
+
+HRESULT CScene_Stage::Ready_Layer_UI(const _tchar * pLayerTag)
+{
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_PlayerPoint", SCENE_STATIC, pLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_SkillBoard", SCENE_STATIC, pLayerTag)))
+		return E_FAIL;
+
+	return NOERROR;
+}
+
 HRESULT CScene_Stage::Ready_Layer_Player(const _tchar * pLayerTag)
 {
 	// For.Player
@@ -386,19 +410,6 @@ HRESULT CScene_Stage::Ready_Layer_Weapon(const _tchar * pLayerTag)
 	return NOERROR;
 }
 
-HRESULT CScene_Stage::Ready_Layer_Camera(const _tchar * pLayerTag)
-{
-	// For.Camera_Dynamic
-	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Camera_Dynamic", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 5, -5), _vec3(0, 0, 0), AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
-		return E_FAIL;
-
-	// For.Camera_Static
-	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Camera_Static", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0, 5, -5), _vec3(0, 0, 0), AXIS_Y, FOV(60.0f), ASPECT, NEAR, FAR))))
-		return E_FAIL;
-
-	return NOERROR;
-}
-
 HRESULT CScene_Stage::Ready_Layer_BackGround(const _tchar* pLayerTag)
 {
 	// For.SkyBox
@@ -409,23 +420,11 @@ HRESULT CScene_Stage::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Terrain", SCENE_STAGE, pLayerTag, (void*)&m_fDetail)))
 		return E_FAIL;
 
-
 	return NOERROR;
 }
 
 HRESULT CScene_Stage::Ready_Layer_Monster(const _tchar * pLayerTag)
 {
-	return NOERROR;
-}
-
-HRESULT CScene_Stage::Ready_Layer_UI(const _tchar * pLayerTag)
-{
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_PlayerPoint", SCENE_STATIC, pLayerTag)))
-		return E_FAIL;
-
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_SkillBoard", SCENE_STATIC, pLayerTag)))
-		return E_FAIL;
-
 	return NOERROR;
 }
 

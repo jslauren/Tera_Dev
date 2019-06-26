@@ -85,6 +85,10 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 
 //	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
 
+	// [ 플레이어 HP, MP 값 셋팅 ] //
+	m_fHP = 10686.f;
+	m_fHP = 3250.f;
+
 	return NOERROR;
 }
 

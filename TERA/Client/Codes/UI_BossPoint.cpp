@@ -164,7 +164,7 @@ HRESULT CUI_BossPoint::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTa
 		pEffect->SetMatrix("g_matWorld", m_pTransformHpCom->Get_WorldMatrixPointer());
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
-		pEffect->SetFloat("g_fHPValue", (m_fHpValue));
+		pEffect->SetFloat("g_fBossHPValue", (m_fHpValue));
 	}
 
 	Safe_Release(pEffect);

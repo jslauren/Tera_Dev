@@ -26,16 +26,21 @@ private:
 	CBuffer_RcTex*		m_pBufferPointBoardCom = nullptr;
 	CTexture*			m_pTexturePointBoardCom = nullptr;
 
-	CTransform*			m_pTransformHpFilterCom = nullptr;
-	CBuffer_RcTex*		m_pBufferHpFilterCom = nullptr;
-	CTexture*			m_pTextureHpFilterCom = nullptr;
+	CTransform*			m_pTransformHpCom = nullptr;
+	CBuffer_RcTex*		m_pBufferHpCom = nullptr;
+	CTexture*			m_pTextureHpCom = nullptr;
 
-	CTransform*			m_pTransformMpFilterCom = nullptr;
-	CBuffer_RcTex*		m_pBufferMpFilterCom = nullptr;
-	CTexture*			m_pTextureMpFilterCom = nullptr;
+	CTransform*			m_pTransformMpCom = nullptr;
+	CBuffer_RcTex*		m_pBufferMpCom = nullptr;
+	CTexture*			m_pTextureMpCom = nullptr;
 
 private:
 	HRESULT				NullCheck();
+	void				PointCalculater(_bool bIsHP, _float fCurrentValue);
+
+private:
+	_uint				m_fHP = 10686.f;
+	_uint				m_fMP = 3250.f;
 
 public:
 	static CUI_PlayerPoint*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);

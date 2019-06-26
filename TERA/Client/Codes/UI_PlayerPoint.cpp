@@ -2,6 +2,7 @@
 #include "..\Headers\UI_PlayerPoint.h"
 #include "Management.h"
 #include "Camera_Dynamic.h"
+#include "Player.h"
 
 _USING(Client)
 
@@ -29,7 +30,13 @@ HRESULT CUI_PlayerPoint::Ready_GameObject(void * pArg)
 		return E_FAIL;
 
 	m_pTransformPointBoardCom->Set_Scaling((g_iWinCX * 0.68f), (g_iWinCY * 0.15f), 0.f);
-	m_pTransformPointBoardCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.f, -(g_iWinCY * 0.305f), 0.f));
+	m_pTransformPointBoardCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-(g_iWinCX * 0.f), -(g_iWinCY * 0.305f), 0.f));
+
+	m_pTransformHpCom->Set_Scaling((g_iWinCX * 0.34f), (g_iWinCY * 0.075f), 0.f);
+	m_pTransformHpCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-(g_iWinCX * 0.115), -(g_iWinCY * 0.305f), 0.f));
+
+	m_pTransformMpCom->Set_Scaling((g_iWinCX * 0.34f), (g_iWinCY * 0.075f), 0.f);
+	m_pTransformMpCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.105), -(g_iWinCY * 0.305f), 0.f));
 
 	return NOERROR;
 }
@@ -86,32 +93,31 @@ HRESULT CUI_PlayerPoint::Render_GameObject()
 		pEffect->EndPass();
 		pEffect->End();
 
+		{
+			if (FAILED(SetUp_ConstantTable(pEffect, 2)))
+				return E_FAIL;
 
-		//{
-		//	if (FAILED(SetUp_ConstantTable(pEffect, 1)))
-		//		return E_FAIL;
+			pEffect->Begin(nullptr, 0);
+			pEffect->BeginPass(4);
 
-		//	pEffect->Begin(nullptr, 0);
-		//	pEffect->BeginPass(0);
+			m_pBufferHpCom->Render_Buffer();
 
-		//	m_pBufferHpFilterCom->Render_Buffer();
+			pEffect->EndPass();
+			pEffect->End();
+		}
 
-		//	pEffect->EndPass();
-		//	pEffect->End();
-		//}
+		{
+			if (FAILED(SetUp_ConstantTable(pEffect, 3)))
+				return E_FAIL;
 
-		//{
-		//	if (FAILED(SetUp_ConstantTable(pEffect, 2)))
-		//		return E_FAIL;
+			pEffect->Begin(nullptr, 0);
+			pEffect->BeginPass(5);
 
-		//	pEffect->Begin(nullptr, 0);
-		//	pEffect->BeginPass(0);
+			m_pBufferMpCom->Render_Buffer();
 
-		//	m_pBufferMpFilterCom->Render_Buffer();
-
-		//	pEffect->EndPass();
-		//	pEffect->End();
-		//}
+			pEffect->EndPass();
+			pEffect->End();
+		}
 
 		Safe_Release(pEffect);
 	}
@@ -127,30 +133,30 @@ HRESULT CUI_PlayerPoint::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_TransformPointBoard", (CComponent**)&m_pTransformPointBoardCom)))
 		return E_FAIL;
 
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_TransformHpFilter", (CComponent**)&m_pTransformHpFilterCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_TransformHpFilter", (CComponent**)&m_pTransformHpCom)))
 		return E_FAIL;
 
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_TransformMpFilter", (CComponent**)&m_pTransformMpFilterCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_TransformMpFilter", (CComponent**)&m_pTransformMpCom)))
 		return E_FAIL;
 
 	// For.Com_Buffer
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_UI_Point_Board", L"Com_BufferPoint_Board", (CComponent**)&m_pBufferPointBoardCom)))
 		return E_FAIL;
 
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_UI_HpFilter", L"Com_BufferHpFilter", (CComponent**)&m_pBufferHpFilterCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_UI_Hp", L"Com_BufferHpFilter", (CComponent**)&m_pBufferHpCom)))
 		return E_FAIL;
 
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_UI_MpFilter", L"Com_BufferMpFilter", (CComponent**)&m_pBufferMpFilterCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_UI_Mp", L"Com_BufferMpFilter", (CComponent**)&m_pBufferMpCom)))
 		return E_FAIL;
 
 	// For.Com_Texture
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_UI_Point_Board", L"Com_TexturePoint_Board", (CComponent**)&m_pTexturePointBoardCom)))
 		return E_FAIL;
 
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_UI_HpFilter", L"Com_TextureHpFilter", (CComponent**)&m_pTextureHpFilterCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_UI_Hp", L"Com_TextureHpFilter", (CComponent**)&m_pTextureHpCom)))
 		return E_FAIL;
 
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_UI_MpFilter", L"Com_TextureMpFilter", (CComponent**)&m_pTextureMpFilterCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_UI_Mp", L"Com_TextureMpFilter", (CComponent**)&m_pTextureMpCom)))
 		return E_FAIL;
 	
 	return NOERROR;
@@ -160,6 +166,8 @@ HRESULT CUI_PlayerPoint::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint i
 {
 	if (nullptr == pEffect)
 		return E_FAIL;
+
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
 
 	pEffect->AddRef();
 
@@ -178,7 +186,29 @@ HRESULT CUI_PlayerPoint::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint i
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
 	}
+	else if (2 == iTargetTextureIdx)
+	{
+		m_pTextureHpCom->SetUp_OnShader(pEffect, "g_BaseTexture");
 
+		pEffect->SetMatrix("g_matWorld", m_pTransformHpCom->Get_WorldMatrixPointer());
+		pEffect->SetMatrix("g_matView", &matTmp);
+		pEffect->SetMatrix("g_matProj", &matProj);
+
+		PointCalculater(true, pPlayer->Get_HP());
+		pEffect->SetFloat("g_fBossHPValue", (m_fHP));
+	}
+	else if (3 == iTargetTextureIdx)
+	{
+		m_pTextureMpCom->SetUp_OnShader(pEffect, "g_BaseTexture");
+
+		pEffect->SetMatrix("g_matWorld", m_pTransformMpCom->Get_WorldMatrixPointer());
+		pEffect->SetMatrix("g_matView", &matTmp);
+		pEffect->SetMatrix("g_matProj", &matProj);
+
+		PointCalculater(false, pPlayer->Get_MP());
+
+		pEffect->SetFloat("g_fBossHPValue", (m_fMP));
+	}
 	Safe_Release(pEffect);
 
 	return NOERROR;
@@ -201,26 +231,39 @@ HRESULT CUI_PlayerPoint::NullCheck()
 	if (nullptr == m_pTexturePointBoardCom)
 		return E_FAIL;
 
-	if (nullptr == m_pTransformHpFilterCom)
+	if (nullptr == m_pTransformHpCom)
 		return E_FAIL;
 
-	if (nullptr == m_pBufferHpFilterCom)
+	if (nullptr == m_pBufferHpCom)
 		return E_FAIL;
 
-	if (nullptr == m_pTextureHpFilterCom)
+	if (nullptr == m_pTextureHpCom)
 		return E_FAIL;
 
-	if (nullptr == m_pTransformMpFilterCom)
+	if (nullptr == m_pTransformMpCom)
 		return E_FAIL;
 
-	if (nullptr == m_pBufferMpFilterCom)
+	if (nullptr == m_pBufferMpCom)
 		return E_FAIL;
 
-	if (nullptr == m_pTextureMpFilterCom)
+	if (nullptr == m_pTextureMpCom)
 		return E_FAIL;
 
 
 	return NOERROR;
+}
+
+void CUI_PlayerPoint::PointCalculater(_bool bIsHP, _float fCurrentValue)
+{
+	if (fCurrentValue == 10686.f || fCurrentValue == 3250.f)
+		return;
+
+	if (bIsHP == true)
+		m_fHP = 100 * (m_fHP - fCurrentValue) / 10686.f * 0.01;
+
+	else if (bIsHP == false)
+		m_fMP = 100 * (m_fHP - fCurrentValue) / 3250.f * 0.01;
+
 }
 
 CUI_PlayerPoint * CUI_PlayerPoint::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -254,13 +297,13 @@ void CUI_PlayerPoint::Free()
 	Safe_Release(m_pBufferPointBoardCom);
 	Safe_Release(m_pTexturePointBoardCom);
 
-	Safe_Release(m_pTransformHpFilterCom);
-	Safe_Release(m_pBufferHpFilterCom);
-	Safe_Release(m_pTextureHpFilterCom);
+	Safe_Release(m_pTransformHpCom);
+	Safe_Release(m_pBufferHpCom);
+	Safe_Release(m_pTextureHpCom);
 
-	Safe_Release(m_pTransformMpFilterCom);
-	Safe_Release(m_pBufferMpFilterCom);
-	Safe_Release(m_pTextureMpFilterCom);
+	Safe_Release(m_pTransformMpCom);
+	Safe_Release(m_pBufferMpCom);
+	Safe_Release(m_pTextureMpCom);
 
 	CUI::Free();
 }
