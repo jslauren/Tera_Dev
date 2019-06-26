@@ -93,13 +93,13 @@ HRESULT CLoading::Ready_Stage_Component()
 		return E_FAIL;
 	CalculatedCompleteNumber();
 
-	// For.Component_Buffer_UI_HpFilter
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_HpFilter", CBuffer_RcTex::Create(m_pGraphic_Device))))
+	// For.Component_Buffer_UI_Hp
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Hp", CBuffer_RcTex::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 
-	// For.Component_Buffer_UI_MpFilter
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_MpFilter", CBuffer_RcTex::Create(m_pGraphic_Device))))
+	// For.Component_Buffer_UI_Mp
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Mp", CBuffer_RcTex::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 
@@ -108,13 +108,13 @@ HRESULT CLoading::Ready_Stage_Component()
 		return E_FAIL;
 	CalculatedCompleteNumber();
 
-	// For.Component_Texture_UI_HpFilter
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_HpFilter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/PlayerPoint/HP_Filter.png"))))
+	// For.Component_Texture_UI_Hp
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_Hp", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/PlayerPoint/HP.png"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 
-	// For.Component_Texture_UI_MpFilter
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_MpFilter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/PlayerPoint/MP_Filter.png"))))
+	// For.Component_Texture_UI_Mp
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_Mp", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/PlayerPoint/MP.png"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 	
