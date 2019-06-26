@@ -20,9 +20,11 @@ private:
 public:
 	_uint			Get_CurrentScene() { return m_iCurrentSceneIndex; }
 	_uint			Get_PreScene() { return m_iPreSceneIndex; }
+	_uint			Get_FirstLoadingInfo() { return m_bIsFirstLoading; }
 public:
 	HRESULT			SetUp_CurrentScene(CScene* pScene, const _uint& iCurrentSceneIndex = 0);
 	void			Set_CurrentScene(_uint _iCurentSceneIndex) { m_iCurrentSceneIndex = _iCurentSceneIndex; }
+	void			Set_FirstLoadingInfo(_bool bButton) { m_bIsFirstLoading = bButton; }
 public:
 	HRESULT			Ready_Management(const _uint& iMaxNumScene);
 	_int			Update_Management(const _float& fTimeDelta);
@@ -32,6 +34,7 @@ private:
 	CScene*			m_pCurrentScene = nullptr;
 	_uint			m_iCurrentSceneIndex = 1;
 	_uint			m_iPreSceneIndex = 1;
+	_bool			m_bIsFirstLoading = true;
 public:
 	virtual void	Free();
 };

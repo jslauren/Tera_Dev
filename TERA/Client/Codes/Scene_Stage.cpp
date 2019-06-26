@@ -78,6 +78,7 @@ HRESULT CScene_Stage::Ready_Scene()
 
 	// 여기서 현재 씬을 정해준다.
 	CManagement::GetInstance()->Set_CurrentScene(SCENE_STAGE);
+	CManagement::GetInstance()->Set_FirstLoadingInfo(false);
 
 	return NOERROR;
 }

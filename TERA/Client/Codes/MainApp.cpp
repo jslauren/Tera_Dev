@@ -170,6 +170,10 @@ HRESULT CMainApp::Ready_Component_Prototype()
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Loading_Main", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Tera_Main.tga"))))
 		return E_FAIL;
 
+	// For.Component_Texture_Loading_Sub
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_Loading_Sub", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/Loading/LoadingTexture/Loading_%d.tga", 10))))
+		return E_FAIL;
+
 	// 로딩 씬의 로딩 게이지를 위한 버퍼
 	// For.Component_Buffer_UI_Loading_Frame
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Bar_Frame", CBuffer_RcTex::Create(m_pGraphic_Device))))
@@ -183,6 +187,9 @@ HRESULT CMainApp::Ready_Component_Prototype()
 	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Loading_Gauge", CBuffer_RcTex::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.Component_Buffer_UI_Loading
+	if (FAILED(pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Loading", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	// 로딩 바 텍스쳐
 	// For.Component_Texture_Bar_Frame

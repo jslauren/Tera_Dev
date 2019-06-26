@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Headers\UI_Loading.h"
 #include "Loading.h"
+#include "Management.h"
+#include "Time.h"
 
 _USING(Client)
 
@@ -133,6 +135,9 @@ HRESULT CUI_Loading::Add_Component()
 	CUI::Add_Component();
 
 	// For.Com_Transform
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_TransformLoading", (CComponent**)&m_pTransformLoadingCom)))
+		return E_FAIL;
+
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Transform", L"Com_TransformBarFrame", (CComponent**)&m_pTransformBarFrameCom)))
 		return E_FAIL;
 
@@ -146,6 +151,9 @@ HRESULT CUI_Loading::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_Background", L"Com_Buffer", (CComponent**)&m_pBufferBGCom)))
 		return E_FAIL;
 
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_UI_Loading", L"Com_BufferLoading", (CComponent**)&m_pBufferLoadingCom)))
+		return E_FAIL;
+
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Buffer_UI_Bar_Frame", L"Com_BufferBarFrame", (CComponent**)&m_pBufferBarFrameCom)))
 		return E_FAIL;
 
@@ -157,6 +165,9 @@ HRESULT CUI_Loading::Add_Component()
 
 	// For.Com_Texture
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Loading_Main", L"Com_Texture", (CComponent**)&m_pTextureCom)))
+		return E_FAIL;
+
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Loading_Sub", L"Com_TextureLoading", (CComponent**)&m_pTextureLoadingCom)))
 		return E_FAIL;
 
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_Bar_Frame", L"Com_TextureBarFrame", (CComponent**)&m_pTextureBarFrameCom)))
@@ -176,6 +187,8 @@ HRESULT CUI_Loading::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTarg
 	if (nullptr == pEffect)
 		return E_FAIL;
 
+	srand((unsigned)time(NULL));
+
 	pEffect->AddRef();
 
 	_matrix		matTmp, matProj;
@@ -187,8 +200,12 @@ HRESULT CUI_Loading::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTarg
 
 	if (1 == iTargetTextureIdx)
 	{
-		m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture");
+		if (CManagement::GetInstance()->Get_FirstLoadingInfo() == true)
+			m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture");
 
+		else if (CManagement::GetInstance()->Get_FirstLoadingInfo() == false)
+			m_pTextureLoadingCom->SetUp_OnShader(pEffect, "g_BaseTexture", rand() % 10);
+		
 		pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matTmp);
@@ -295,14 +312,17 @@ CGameObject * CUI_Loading::Clone(void * pArg)
 void CUI_Loading::Free()
 {
 	Safe_Release(m_pBufferBGCom);
+	Safe_Release(m_pBufferLoadingCom);
 	Safe_Release(m_pBufferBarFrameCom);
 	Safe_Release(m_pBufferBarFilterCom);
 	Safe_Release(m_pBufferBarGaugeCom);
 
+	Safe_Release(m_pTransformLoadingCom);
 	Safe_Release(m_pTransformBarFrameCom);
 	Safe_Release(m_pTransformBarFilterCom);
 	Safe_Release(m_pTransformBarGaugeCom);
 
+	Safe_Release(m_pTextureLoadingCom);
 	Safe_Release(m_pTextureBarFrameCom);
 	Safe_Release(m_pTextureBarFilterCom);
 	Safe_Release(m_pTextureBarGaugeCom);

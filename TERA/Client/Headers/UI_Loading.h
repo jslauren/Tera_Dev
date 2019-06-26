@@ -35,6 +35,10 @@ private:
 //	CLoading*			m_pLoading = nullptr;
 
 	CBuffer_RcTex*		m_pBufferBGCom = nullptr;
+	
+	CTransform*			m_pTransformLoadingCom = nullptr;
+	CBuffer_RcTex*		m_pBufferLoadingCom = nullptr;
+	CTexture*			m_pTextureLoadingCom = nullptr;
 
 	CTransform*			m_pTransformBarFrameCom = nullptr;
 	CBuffer_RcTex*		m_pBufferBarFrameCom = nullptr;
