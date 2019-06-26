@@ -226,6 +226,9 @@
     <Filter Include="01. Scene\98. Scene_Loading">
       <UniqueIdentifier>{856590a0-42fb-4716-a7d3-17d3e49d2307}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. UI\UI\03. BossPoint">
+      <UniqueIdentifier>{c8762d13-19e3-41a6-a292-af6e6c9d0fea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -423,6 +426,9 @@
     <ClInclude Include="..\Headers\Scene_Loading.h">
       <Filter>01. Scene\98. Scene_Loading</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\UI_BossPoint.h">
+      <Filter>04. UI\UI\03. BossPoint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -607,6 +613,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\Scene_Loading.cpp">
       <Filter>01. Scene\98. Scene_Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UI_BossPoint.cpp">
+      <Filter>04. UI\UI\03. BossPoint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

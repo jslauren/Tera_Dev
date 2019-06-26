@@ -57,7 +57,7 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 	
-	m_iTotalRsrcNum = 57;
+	m_iTotalRsrcNum = 61;
 	m_iCurrentRsrcNum = 0;
 	m_iComplete = 0;
 
@@ -128,6 +128,16 @@ HRESULT CLoading::Ready_Stage_Component()
 		return E_FAIL;
 	CalculatedCompleteNumber();
 
+	// For.Component_Buffer_UI_Point_Boss_Board
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Point_Boss_Board", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Buffer_UI_Boss_Hp
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Boss_Hp", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
 	// For.Component_Texture_UI_SkillBoard
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_SkillBoard", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/SkillBoard/SkillBoard.png"))))
 		return E_FAIL;
@@ -135,6 +145,16 @@ HRESULT CLoading::Ready_Stage_Component()
 
 	// For.Component_Texture_UI_SkillFilter
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_SkillFilter", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/SkillBoard/SkillFilter.png"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Texture_UI_Point_Boss_Board
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_Point_Boss_Board", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/BossPoint/Boss_HP_Bar.png"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Texture_UI_Boss_Hp
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_Boss_Hp", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/BossPoint/Boss_Hp.png"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 

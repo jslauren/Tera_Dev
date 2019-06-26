@@ -214,6 +214,7 @@
     <ClInclude Include="..\Headers\TerrainObject.h" />
     <ClInclude Include="..\Headers\Terrain_Dragon.h" />
     <ClInclude Include="..\Headers\UI.h" />
+    <ClInclude Include="..\Headers\UI_BossPoint.h" />
     <ClInclude Include="..\Headers\UI_Loading.h" />
     <ClInclude Include="..\Headers\UI_PlayerPoint.h" />
     <ClInclude Include="..\Headers\UI_SkillBoard.h" />
@@ -279,6 +280,7 @@
     <ClCompile Include="..\Codes\TerrainObject.cpp" />
     <ClCompile Include="..\Codes\Terrain_Dragon.cpp" />
     <ClCompile Include="..\Codes\UI.cpp" />
+    <ClCompile Include="..\Codes\UI_BossPoint.cpp" />
     <ClCompile Include="..\Codes\UI_Loading.cpp" />
     <ClCompile Include="..\Codes\UI_PlayerPoint.cpp" />
     <ClCompile Include="..\Codes\UI_SkillBoard.cpp" />

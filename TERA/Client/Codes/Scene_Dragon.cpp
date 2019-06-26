@@ -11,6 +11,7 @@
 #include "Arkus.h"
 #include "TerrainObject.h"
 #include "UI_PlayerPoint.h"
+#include "UI_BossPoint.h"
 #include "UI_SkillBoard.h"
 #include "UI_Loading.h"
 
@@ -323,6 +324,10 @@ HRESULT CScene_Dragon::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_DRAGON, L"GameObject_Arkus", CArkus::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_UI_BossPoint
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_BossPoint", CUI_BossPoint::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
@@ -373,6 +378,9 @@ HRESULT CScene_Dragon::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 HRESULT CScene_Dragon::Ready_Layer_UI(const _tchar * pLayerTag)
 {
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_BossPoint", SCENE_STATIC, pLayerTag)))
+		return E_FAIL;
+
 	return NOERROR;
 }
 

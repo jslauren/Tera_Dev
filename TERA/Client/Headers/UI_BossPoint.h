@@ -3,12 +3,18 @@
 
 _BEGIN(Client)
 
-class CUI_PlayerPoint final : public CUI
+class CUI_BossPoint final : public CUI
 {
 public:
-	explicit CUI_PlayerPoint(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CUI_PlayerPoint(const CUI_PlayerPoint& rhs);
-	virtual ~CUI_PlayerPoint() = default;
+	explicit CUI_BossPoint(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CUI_BossPoint(const CUI_BossPoint& rhs);
+	virtual ~CUI_BossPoint() = default;
+
+public: // Geter
+	_int	Get_HPValue() { return m_fHpValue; }
+
+public:	// Setter
+	void	Set_HPValue(_int iValue) { m_fHpValue = iValue; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -26,19 +32,18 @@ private:
 	CBuffer_RcTex*		m_pBufferPointBoardCom = nullptr;
 	CTexture*			m_pTexturePointBoardCom = nullptr;
 
-	CTransform*			m_pTransformHpFilterCom = nullptr;
-	CBuffer_RcTex*		m_pBufferHpFilterCom = nullptr;
-	CTexture*			m_pTextureHpFilterCom = nullptr;
-
-	CTransform*			m_pTransformMpFilterCom = nullptr;
-	CBuffer_RcTex*		m_pBufferMpFilterCom = nullptr;
-	CTexture*			m_pTextureMpFilterCom = nullptr;
+	CTransform*			m_pTransformHpCom = nullptr;
+	CBuffer_RcTex*		m_pBufferHpCom = nullptr;
+	CTexture*			m_pTextureHpCom = nullptr;
 
 private:
 	HRESULT				NullCheck();
 
+private:
+	_float				m_fHpValue = 100.f;
+
 public:
-	static CUI_PlayerPoint*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CUI_BossPoint*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*		Clone(void * pArg = nullptr) override;
 	virtual void				Free();
 

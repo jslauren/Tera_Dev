@@ -204,7 +204,7 @@ HRESULT CUI_Loading::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTarg
 			m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture");
 
 		else if (CManagement::GetInstance()->Get_FirstLoadingInfo() == false)
-			m_pTextureLoadingCom->SetUp_OnShader(pEffect, "g_BaseTexture", rand() % 10);
+			m_pTextureLoadingCom->SetUp_OnShader(pEffect, "g_BaseTexture", rand() % 10); // 이미지를 랜덤으로 변경해줌.
 		
 		pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
 		pEffect->SetMatrix("g_matView", &matTmp);

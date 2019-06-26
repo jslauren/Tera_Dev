@@ -76,20 +76,20 @@ _int CScene_Loading::LateUpdate_Scene(const _float & fTimeDelta)
 			}
 		}
 		// 보통 씬 전환은 별도의 키 입력 없이 자동으로 이루어진다.
-		else if (m_eCurrentScene == SCENE_STAGE)
-		{
-			// 이 부분에 추가.
-			if (FAILED(pManagement->SetUp_CurrentScene(CScene_Stage::Create(m_pGraphic_Device), SCENE_DRAGON)))
-			{
-				Safe_Release(pManagement);
-				return -1;
-			}
+		//else if (m_eCurrentScene == SCENE_STAGE)
+		//{
+		//	// 이 부분에 추가.
+		//	if (FAILED(pManagement->SetUp_CurrentScene(CScene_Stage::Create(m_pGraphic_Device), SCENE_DRAGON)))
+		//	{
+		//		Safe_Release(pManagement);
+		//		return -1;
+		//	}
 
-			dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(SCENE_DRAGON);
+		//	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(SCENE_DRAGON);
 
-			Safe_Release(pManagement);
-			return 0;
-		}
+		//	Safe_Release(pManagement);
+		//	return 0;
+		//}
 		else if (m_eCurrentScene == SCENE_DRAGON)
 		{
 			//// [ 이 부분에 추가 씬 전환 시 필요한 값들을 셋팅해준다 ] ////
@@ -104,13 +104,13 @@ _int CScene_Loading::LateUpdate_Scene(const _float & fTimeDelta)
 			// 씬 전환 완료 후, 무기의 위치를 지정해주는 구문.
 			dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon"))->Set_BoneMatrix(1);
 
-			if (FAILED(pManagement->SetUp_CurrentScene(CScene_Dragon::Create(m_pGraphic_Device), m_eCurrentScene)))
+			if (FAILED(pManagement->SetUp_CurrentScene(CScene_Dragon::Create(m_pGraphic_Device), SCENE_DRAGON)))
 			{
 				Safe_Release(pManagement);
 				return -1;
 			}
 
-			dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(m_eCurrentScene);
+			dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(SCENE_DRAGON);
 
 			Safe_Release(pManagement);
 			return 0;

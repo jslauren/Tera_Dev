@@ -41,7 +41,7 @@ HRESULT CArkus::Ready_GameObject(void * pArg)
 	m_pTransformCom->Set_Scaling(0.4f, 0.4f, 0.4f);
 //	m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(90.f), D3DXToRadian(0.f), D3DXToRadian(0.f));
 	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(180.f));
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(250.f, 0.f, 350.f));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(160.f, 0.f, 180.f));
 //	m_pTransformCom->Set_WorldMatrix(matWorld);
 
 //	m_pTransformCom->Set_WorldMatrix(tObjectMeshData.matWorld);

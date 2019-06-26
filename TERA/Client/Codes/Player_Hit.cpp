@@ -27,7 +27,7 @@ CPlayerState * CPlayer_Hit::Input_Keyboard(CPlayer & Player, const float & fTime
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.2f))
 			dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", -1))->Set_BoneMatrix(3);
 
-		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.9f))
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.35f))
 		{
 			m_iAniState = 2;
 			return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
