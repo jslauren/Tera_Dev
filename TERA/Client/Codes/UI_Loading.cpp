@@ -217,7 +217,7 @@ HRESULT CUI_Loading::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTarg
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
 
-		m_iLoadingProgressValue = m_pLoading->Get_Complete();
+		//m_iLoadingProgressValue = m_pLoading->Get_Complete();
 		pEffect->SetFloat("g_fLoadingValue", (m_iLoadingProgressValue * 0.01));
 	}
 

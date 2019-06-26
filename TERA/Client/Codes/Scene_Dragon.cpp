@@ -296,49 +296,7 @@ HRESULT CScene_Dragon::Ready_LightInfo()
 
 HRESULT CScene_Dragon::Ready_Component_Prototype()
 {
-	// [Shader]
-	// For.Component_Shader_Sky 
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Shader_Sky", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Sky.fx"))))
-		return E_FAIL;
-
-	// For.Component_Shader_Terrain
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Shader_Terrain", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Terrain.fx"))))
-		return E_FAIL;
-
-	// For.Component_Shader_Mesh
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Shader_Mesh", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Mesh.fx"))))
-		return E_FAIL;
-
-	// [Buffer & Texture]
-	// For.Component_Buffer_CubeBox
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Buffer_CubeBox", CBuffer_CubeTex::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	// For.Component_Texture_SkyBox
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
-		return E_FAIL;
-
-	// [Mesh]
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Mesh_Arkus", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Monster/Arkus/", L"Arkus_B.X"))))
-		return E_FAIL;
-
-	// [Collider]
-	// For.Component_Collider_AABB
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Collider_AABB", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_AABB))))
-		return E_FAIL;
-
-	// For.Component_Collider_OBB
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Collider_OBB", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_OBB))))
-		return E_FAIL;
-
-	// For.Component_Collider_Sphere
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Collider_Sphere", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_SPHERE))))
-		return E_FAIL;
-
-	// [Navigation]
-	// For.Component_Navigation_Stage
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Navigation_Dragon", CNavigation::Create(m_pGraphic_Device, L"../../Data/Arena.NaviDat"))))
-		return E_FAIL;
+	// 로딩 쓰레드로 가버림 헿
 
 	return NOERROR;
 }
@@ -363,14 +321,6 @@ HRESULT CScene_Dragon::Ready_GameObject_Prototype()
 
 	// For.GameObject_Arkus
 	if (FAILED(Add_Object_Prototype(SCENE_DRAGON, L"GameObject_Arkus", CArkus::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	return NOERROR;
-}
-
-HRESULT CScene_Dragon::Ready_Layer_Loading(const _tchar * pLayerTag)
-{
-	if (FAILED(Add_Object_Prototype(SCENE_BOSS, L"GameObject_Loading", CUI_Loading::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return NOERROR;
@@ -423,12 +373,6 @@ HRESULT CScene_Dragon::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 HRESULT CScene_Dragon::Ready_Layer_UI(const _tchar * pLayerTag)
 {
-	//if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_PlayerPoint", SCENE_STATIC, pLayerTag)))
-	//	return E_FAIL;
-
-	//if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_SkillBoard", SCENE_STATIC, pLayerTag)))
-	//	return E_FAIL;
-
 	return NOERROR;
 }
 

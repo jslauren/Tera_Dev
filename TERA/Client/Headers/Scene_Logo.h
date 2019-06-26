@@ -16,8 +16,6 @@ public:
 	virtual _int	LateUpdate_Scene(const _float& fTimeDelta);
 	virtual HRESULT Render_Scene();
 private:
-	CLoading*		m_pLoading = nullptr;
-private:
 	HRESULT Ready_Component_Prototype();
 	HRESULT Ready_GameObject_Prototype();
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);

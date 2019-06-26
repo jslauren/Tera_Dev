@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\UI_SkillBoard.h"
+#include "Management.h"
+#include "Camera_Dynamic.h"
 
 _USING(Client)
 
@@ -56,41 +58,52 @@ _int CUI_SkillBoard::LateUpdate_GameObject(const _float & fTimeDelta)
 
 HRESULT CUI_SkillBoard::Render_GameObject()
 {
-	if (FAILED(NullCheck()))
-		return E_FAIL;
+	if (CManagement::GetInstance()->Get_CurrentScene() != SCENE_LOADING)
+	{
+		// 드래곤 씬에서 다이나믹 카메라로 방송중일때는 렌더하지 않는다.
+		if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_DRAGON &&
+			dynamic_cast<CCamera_Dynamic*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera"))->Get_PlayDynamicCamInfo() == true)
+		{
+			return NOERROR;
+		}
 
-	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
-	if (nullptr == pEffect)
-		return E_FAIL;
 
-	pEffect->AddRef();
+		if (FAILED(NullCheck()))
+			return E_FAIL;
+
+		LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
+		if (nullptr == pEffect)
+			return E_FAIL;
+
+		pEffect->AddRef();
 
 
-	if (FAILED(SetUp_ConstantTable(pEffect)))
-		return E_FAIL;
+		if (FAILED(SetUp_ConstantTable(pEffect)))
+			return E_FAIL;
 
-	pEffect->Begin(nullptr, 0);
-	pEffect->BeginPass(0);
+		pEffect->Begin(nullptr, 0);
+		pEffect->BeginPass(0);
 
-	m_pBufferSkillBoardCom->Render_Buffer();
+		m_pBufferSkillBoardCom->Render_Buffer();
 
-	pEffect->EndPass();
-	pEffect->End();
+		pEffect->EndPass();
+		pEffect->End();
 
-	Safe_Release(pEffect);
+		Safe_Release(pEffect);
 
-	//{
-	//	if (FAILED(SetUp_ConstantTable(pEffect, 1)))
-	//		return E_FAIL;
+		//{
+		//	if (FAILED(SetUp_ConstantTable(pEffect, 1)))
+		//		return E_FAIL;
 
-	//	pEffect->Begin(nullptr, 0);
-	//	pEffect->BeginPass(2);
+		//	pEffect->Begin(nullptr, 0);
+		//	pEffect->BeginPass(2);
 
-	//	m_pBufferSkillFilterCom->Render_Buffer();
+		//	m_pBufferSkillFilterCom->Render_Buffer();
 
-	//	pEffect->EndPass();
-	//	pEffect->End();
-	//}
+		//	pEffect->EndPass();
+		//	pEffect->End();
+		//}
+	}
 }
 
 HRESULT CUI_SkillBoard::Add_Component()

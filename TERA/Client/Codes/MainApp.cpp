@@ -12,6 +12,7 @@
 #include "Object_Manager.h"
 #include "Scene_Loading.h"
 #include "Scene_Stage.h"
+#include "UI_Loading.h"
 
 _USING(Client)
 
@@ -208,6 +209,9 @@ HRESULT CMainApp::Ready_GameObject_Prototype()
 		return E_FAIL;
 
 	pObject_Manager->AddRef();
+
+	if (FAILED(pObject_Manager->Add_Object_Prototype(SCENE_STATIC, L"GameObject_Loading", CUI_Loading::Create(m_pGraphic_Device))))
+		return E_FAIL;
 		
 	Safe_Release(pObject_Manager);
 
@@ -241,9 +245,9 @@ HRESULT CMainApp::Ready_Scene(SCENEID eID)
 		break;
 	case SCENE_BOSS:
 		break;
-	case SCENE_LOADING:
-		pScene = CScene_Loading::Create(m_pGraphic_Device);
-		break;
+	//case SCENE_LOADING:
+	//	pScene = CScene_Loading::Create(m_pGraphic_Device, eID);
+	//	break;
 	}
 
 	if (nullptr == pScene)

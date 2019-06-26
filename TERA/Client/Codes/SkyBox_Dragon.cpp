@@ -121,7 +121,7 @@ HRESULT CSkyBox_Dragon::Add_Component()
 		return E_FAIL;
 
 	// For.Com_Buffer
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Buffer_CubeBox", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Buffer_CubeBox", L"Com_Buffer", (CComponent**)&m_pBufferCom)))
 		return E_FAIL;
 
 	// For.Com_Renderer
@@ -129,11 +129,11 @@ HRESULT CSkyBox_Dragon::Add_Component()
 		return E_FAIL;
 
 	// For.Com_Texture
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Texture_SkyBox", L"Com_Texture", (CComponent**)&m_pTextureCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Texture_SkyBox", L"Com_Texture", (CComponent**)&m_pTextureCom)))
 		return E_FAIL;
 
 	// For.Com_Shader
-	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Sky", L"Com_Shader", (CComponent**)&m_pShaderCom)))
+	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Shader_Sky", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
 	return NOERROR;

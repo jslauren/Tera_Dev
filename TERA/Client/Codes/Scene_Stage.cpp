@@ -99,23 +99,17 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 
 	if (GetKeyState('N') & 0x8000)
 	{
-		pPlayer->Set_AniIndex(CPlayer::PLAYER_ANI::Idle);
-		pPlayer->Get_TransformMove()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(250.f, 0.f, 50.f));
-		pPlayer->Get_NaviMesh()->SetUp_CurrentIndex(0);
-		dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon"))->Set_BoneMatrix(1);
-
-		if (FAILED(pManagement->SetUp_CurrentScene(CScene_Loading::Create(m_pGraphic_Device), SCENE_DRAGON)))
+		HRESULT		hr;
+		if (S_OK == (hr = (pManagement->SetUp_CurrentScene(CScene_Loading::Create(m_pGraphic_Device, SCENE_DRAGON), SCENE_LOADING))))
+		{
+			Safe_Release(pManagement);
+			return 0;
+		}
+		if (FAILED(hr))
 		{
 			Safe_Release(pManagement);
 			return -1;
 		}
-		//if (FAILED(pManagement->SetUp_CurrentScene(CScene_Dragon::Create(m_pGraphic_Device), SCENE_DRAGON)))
-		//{
-		//	Safe_Release(pManagement);
-		//	return -1;
-		//}
-
-		dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(SCENE_DRAGON);
 
 		Safe_Release(pManagement);
 		return 0;

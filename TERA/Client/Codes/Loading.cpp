@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Loading.h"
 #include "Component_Manager.h"
+#include "Management.h"
 
 _USING(Client)
 
@@ -13,7 +14,8 @@ CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CLoading::Ready_Loading(SCENEID eSceneID)
 {
-	m_eSceneID = eSceneID;
+	m_eSceneID = (SCENEID)CManagement::GetInstance()->Get_PreScene();
+	//m_eSceneID = eSceneID;
 
 	InitializeCriticalSection(&m_CS);
 
@@ -34,10 +36,10 @@ _uint CLoading::Thread_Main(void * pArg)
 
 	switch (pLoading->Get_SceneID())
 	{
-	case SCENE_STAGE:
+	case SCENE_LOGO:
 		hr = pLoading->Ready_Stage_Component();
 		break;
-	case SCENE_DRAGON:
+	case SCENE_STAGE:
 		hr = pLoading->Ready_Dragon_Component();
 		break;
 	}

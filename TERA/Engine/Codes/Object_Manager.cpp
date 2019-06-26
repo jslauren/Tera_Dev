@@ -200,7 +200,7 @@ _int CObject_Manager::LateUpdate_Object_Manager(const _float & fTimeDelta)
 {
 	// 위랑 동일한 기능인데 끝나고 한번 더부르는 거쥬?
 
-	if (nullptr == m_pmapObject)
+ 	if (nullptr == m_pmapObject)
 		return -1;
 
 	_int		iExitCode = 0;

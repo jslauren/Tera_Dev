@@ -115,7 +115,7 @@ HRESULT CTerrainObject::Add_Component(void* pArg)
 
 	// SCENE_STAGE 을 준비하려면 SCENE_LOGO가 현재 씬이 맞다.
 	// 다음 씬을 준비하기위해 이전 씬의 조건을 검사하자.
-	if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_LOGO)
+	if (CManagement::GetInstance()->Get_PreScene() == SCENE_LOGO)
 	{
 		// For.Com_TerrainData
 		if (FAILED(CGameObject::Add_Component(SCENE_STAGE, ((OBJECTMESHDATA*)pArg)->strComProtoTag.c_str(), L"Com_Mesh", (CComponent**)&m_pMeshCom)))
@@ -125,7 +125,7 @@ HRESULT CTerrainObject::Add_Component(void* pArg)
 		if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 			return E_FAIL;
 	}
-	else if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_STAGE)
+	else if (CManagement::GetInstance()->Get_PreScene() == SCENE_STAGE)
 	{
 		// For.Com_TerrainData
 		if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, ((OBJECTMESHDATA*)pArg)->strComProtoTag.c_str(), L"Com_Mesh", (CComponent**)&m_pMeshCom)))

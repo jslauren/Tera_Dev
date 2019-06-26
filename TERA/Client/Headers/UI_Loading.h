@@ -13,8 +13,12 @@ public:
 	explicit CUI_Loading(const CUI_Loading& rhs);
 	virtual ~CUI_Loading() = default;
 
+public: // Geter
+	_int	Get_LoadingProgressValue() { return m_iLoadingProgressValue; }
+
 public:	// Setter
-	void	Set_LodingClass(CLoading* pLoading) { m_pLoading = pLoading; }
+//	void	Set_LodingClass(CLoading* pLoading) { m_pLoading = pLoading; }
+	void	Set_LoadingProgressValue(_int iValue) { m_iLoadingProgressValue = iValue; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -28,7 +32,7 @@ public:
 	virtual HRESULT	SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTargetTextureIdx = 1);
 
 private:
-	CLoading*			m_pLoading = nullptr;
+//	CLoading*			m_pLoading = nullptr;
 
 	CBuffer_RcTex*		m_pBufferBGCom = nullptr;
 

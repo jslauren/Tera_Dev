@@ -142,135 +142,138 @@ _int CPlayer::LateUpdate_GameObject(const _float & fTimeDelta)
 
 HRESULT CPlayer::Render_GameObject()
 {
-	if (nullptr == m_pShaderCom ||
-		nullptr == m_pTransformCom ||
-		nullptr == m_pMeshCom_Body)
-		return E_FAIL;
-
-	m_pMeshCom_Bone->Play_Animation(m_fTimeDelta, m_fAniSpeed);		// 몬스터 할 때 이 위치 기억해라!!
-
-	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
-	if (nullptr == pEffect)
-		return E_FAIL;
-
-	pEffect->AddRef();
-
-	if (FAILED(SetUp_ConstantTable(pEffect)))
-		return E_FAIL;
-
-	pEffect->Begin(nullptr, 0);
-	
-	// 이 포문이 파츠 개수만큼 추가 되어야 함
-	// [Head]
-	for (size_t i = 0; i < m_pMeshCom_Head->Get_NumMeshContainer(); ++i)
+	if (CManagement::GetInstance()->Get_CurrentScene() != SCENE_LOADING)
 	{
-		if (FAILED(m_pMeshCom_Head->Update_SkinnedMesh(i)))
-			break;
+		if (nullptr == m_pShaderCom ||
+			nullptr == m_pTransformCom ||
+			nullptr == m_pMeshCom_Body)
+			return E_FAIL;
 
-		for (size_t j = 0; j < m_pMeshCom_Head->Get_NumSubSet(i); ++j)
+		m_pMeshCom_Bone->Play_Animation(m_fTimeDelta, m_fAniSpeed);		// 몬스터 할 때 이 위치 기억해라!!
+
+		LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
+		if (nullptr == pEffect)
+			return E_FAIL;
+
+		pEffect->AddRef();
+
+		if (FAILED(SetUp_ConstantTable(pEffect)))
+			return E_FAIL;
+
+		pEffect->Begin(nullptr, 0);
+
+		// 이 포문이 파츠 개수만큼 추가 되어야 함
+		// [Head]
+		for (size_t i = 0; i < m_pMeshCom_Head->Get_NumMeshContainer(); ++i)
 		{
-			if (FAILED(m_pMeshCom_Head->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
-				return E_FAIL;
+			if (FAILED(m_pMeshCom_Head->Update_SkinnedMesh(i)))
+				break;
 
-			pEffect->CommitChanges();
+			for (size_t j = 0; j < m_pMeshCom_Head->Get_NumSubSet(i); ++j)
+			{
+				if (FAILED(m_pMeshCom_Head->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+					return E_FAIL;
 
-			pEffect->BeginPass(0);
+				pEffect->CommitChanges();
 
-			m_pMeshCom_Head->Render_Mesh(i, j);
+				pEffect->BeginPass(0);
 
-			pEffect->EndPass();
+				m_pMeshCom_Head->Render_Mesh(i, j);
+
+				pEffect->EndPass();
+			}
 		}
-	}
-	// [Body]
-	for (size_t i = 0; i < m_pMeshCom_Body->Get_NumMeshContainer(); ++i)
-	{
-		if (FAILED(m_pMeshCom_Body->Update_SkinnedMesh(i)))
-			break;
-
-		for (size_t j = 0; j < m_pMeshCom_Body->Get_NumSubSet(i); ++j)
+		// [Body]
+		for (size_t i = 0; i < m_pMeshCom_Body->Get_NumMeshContainer(); ++i)
 		{
-			if (FAILED(m_pMeshCom_Body->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
-				return E_FAIL;
+			if (FAILED(m_pMeshCom_Body->Update_SkinnedMesh(i)))
+				break;
 
-			pEffect->CommitChanges();
+			for (size_t j = 0; j < m_pMeshCom_Body->Get_NumSubSet(i); ++j)
+			{
+				if (FAILED(m_pMeshCom_Body->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+					return E_FAIL;
 
-			pEffect->BeginPass(0);
+				pEffect->CommitChanges();
 
-			m_pMeshCom_Body->Render_Mesh(i, j);
+				pEffect->BeginPass(0);
 
-			pEffect->EndPass();
+				m_pMeshCom_Body->Render_Mesh(i, j);
+
+				pEffect->EndPass();
+			}
 		}
-	}
-	// [Hand]
-	for (size_t i = 0; i < m_pMeshCom_Hand->Get_NumMeshContainer(); ++i)
-	{
-		if (FAILED(m_pMeshCom_Hand->Update_SkinnedMesh(i)))
-			break;
-
-		for (size_t j = 0; j < m_pMeshCom_Hand->Get_NumSubSet(i); ++j)
+		// [Hand]
+		for (size_t i = 0; i < m_pMeshCom_Hand->Get_NumMeshContainer(); ++i)
 		{
-			if (FAILED(m_pMeshCom_Hand->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
-				return E_FAIL;
+			if (FAILED(m_pMeshCom_Hand->Update_SkinnedMesh(i)))
+				break;
 
-			pEffect->CommitChanges();
+			for (size_t j = 0; j < m_pMeshCom_Hand->Get_NumSubSet(i); ++j)
+			{
+				if (FAILED(m_pMeshCom_Hand->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+					return E_FAIL;
 
-			pEffect->BeginPass(0);
+				pEffect->CommitChanges();
 
-			m_pMeshCom_Hand->Render_Mesh(i, j);
+				pEffect->BeginPass(0);
 
-			pEffect->EndPass();
+				m_pMeshCom_Hand->Render_Mesh(i, j);
+
+				pEffect->EndPass();
+			}
 		}
-	}
-	// [Leg]
-	for (size_t i = 0; i < m_pMeshCom_Leg->Get_NumMeshContainer(); ++i)
-	{
-		if (FAILED(m_pMeshCom_Leg->Update_SkinnedMesh(i)))
-			break;
-
-		for (size_t j = 0; j < m_pMeshCom_Leg->Get_NumSubSet(i); ++j)
+		// [Leg]
+		for (size_t i = 0; i < m_pMeshCom_Leg->Get_NumMeshContainer(); ++i)
 		{
-			if (FAILED(m_pMeshCom_Leg->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
-				return E_FAIL;
+			if (FAILED(m_pMeshCom_Leg->Update_SkinnedMesh(i)))
+				break;
 
-			pEffect->CommitChanges();
+			for (size_t j = 0; j < m_pMeshCom_Leg->Get_NumSubSet(i); ++j)
+			{
+				if (FAILED(m_pMeshCom_Leg->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+					return E_FAIL;
 
-			pEffect->BeginPass(0);
+				pEffect->CommitChanges();
 
-			m_pMeshCom_Leg->Render_Mesh(i, j);
+				pEffect->BeginPass(0);
 
-			pEffect->EndPass();
+				m_pMeshCom_Leg->Render_Mesh(i, j);
+
+				pEffect->EndPass();
+			}
 		}
-	}
-	// [Tail]
-	for (size_t i = 0; i < m_pMeshCom_Tail->Get_NumMeshContainer(); ++i)
-	{
-		if (FAILED(m_pMeshCom_Tail->Update_SkinnedMesh(i)))
-			break;
-
-		for (size_t j = 0; j < m_pMeshCom_Tail->Get_NumSubSet(i); ++j)
+		// [Tail]
+		for (size_t i = 0; i < m_pMeshCom_Tail->Get_NumMeshContainer(); ++i)
 		{
-			if (FAILED(m_pMeshCom_Tail->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
-				return E_FAIL;
+			if (FAILED(m_pMeshCom_Tail->Update_SkinnedMesh(i)))
+				break;
 
-			pEffect->CommitChanges();
+			for (size_t j = 0; j < m_pMeshCom_Tail->Get_NumSubSet(i); ++j)
+			{
+				if (FAILED(m_pMeshCom_Tail->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+					return E_FAIL;
 
-			pEffect->BeginPass(0);
+				pEffect->CommitChanges();
 
-			m_pMeshCom_Tail->Render_Mesh(i, j);
+				pEffect->BeginPass(0);
 
-			pEffect->EndPass();
+				m_pMeshCom_Tail->Render_Mesh(i, j);
+
+				pEffect->EndPass();
+			}
 		}
+
+		pEffect->End();
+
+		Safe_Release(pEffect);
+
+		// 콜라이더 렌더
+		m_pColliderCom->Render_Collider();
+
+		// 네비메쉬 렌더
+		m_pNavigationCom->Render_Navigation();
 	}
-	
-	pEffect->End();
-
-	Safe_Release(pEffect);
-
-	// 콜라이더 렌더
-	m_pColliderCom->Render_Collider();
-
-	// 네비메쉬 렌더
-	m_pNavigationCom->Render_Navigation();
 
 	return NOERROR;
 }

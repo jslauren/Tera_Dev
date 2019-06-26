@@ -17,9 +17,6 @@ CScene_Logo::CScene_Logo(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CScene_Logo::Ready_Scene()
 {
-	if (FAILED(Ready_Loading()))
-		return E_FAIL;
-
 	// 로고씬에서 사용할 원형컴포넌트들의 생성.
 	if (FAILED(Ready_Component_Prototype()))
 		return E_FAIL;
@@ -32,13 +29,6 @@ HRESULT CScene_Logo::Ready_Scene()
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
 		return E_FAIL;
 
-	m_pLoading = CLoading::Create(m_pGraphic_Device, SCENE_STAGE);
-	if (nullptr == m_pLoading)
-		return E_FAIL;
-
-	// 로딩 정도를 보내주기 위한 구문
-	dynamic_cast<CUI_Loading*>(CObject_Manager::GetInstance()->Get_Object(SCENE_LOGO, L"Layer_BackGround"))->Set_LodingClass(m_pLoading);
-	
 	return NOERROR;
 }
 
@@ -55,24 +45,17 @@ _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 
 	pManagement->AddRef();
 
-	if (GetKeyState(VK_SPACE) & 0x8000)
+	HRESULT		hr;
+	if (S_OK == (hr = (pManagement->SetUp_CurrentScene(CScene_Loading::Create(m_pGraphic_Device, SCENE_LOGO), SCENE_LOADING))))
 	{
-		if (100 == m_pLoading->Get_Complete())
-		{
-			if (FAILED(pManagement->SetUp_CurrentScene(CScene_Stage::Create(m_pGraphic_Device), SCENE_STAGE)))
-			{
-				Safe_Release(pManagement);
-				return -1;
-			}
-
-			dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(SCENE_STAGE);
-
-			Safe_Release(pManagement);
-			return 0;
-		}
+		Safe_Release(pManagement);
+		return 0;
+	}	
+	if (FAILED(hr))
+	{
+		Safe_Release(pManagement);
+		return -1;
 	}
-
-	Safe_Release(pManagement);
 
 	return _int(CScene::LateUpdate_Scene(fTimeDelta));
 }
@@ -80,9 +63,7 @@ _int CScene_Logo::LateUpdate_Scene(const _float & fTimeDelta)
 HRESULT CScene_Logo::Render_Scene()
 {
 	//_tchar		szComplete[MAX_PATH];
-
 	//wsprintf(szComplete, L"%d", m_pLoading->Get_Complete());
-
 	//SetWindowText(g_hWnd, szComplete);
 
 	return CScene::Render_Scene();
@@ -138,8 +119,6 @@ void CScene_Logo::Free()
 
 	if (FAILED(m_pComponent_Manager->Clear_Component_Prototype(SCENE_LOGO)))
 		return;
-
-	Safe_Release(m_pLoading);
 
 	CScene::Free();
 }

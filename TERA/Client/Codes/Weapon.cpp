@@ -109,44 +109,47 @@ _int CWeapon::LateUpdate_GameObject(const _float & fTimeDelta)
 
 HRESULT CWeapon::Render_GameObject()
 {
-	if (nullptr == m_pShaderCom ||
-		nullptr == m_pTransformCom ||
-		nullptr == m_pMeshCom )
-		return E_FAIL;
-
-	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
-	if (nullptr == pEffect)
-		return E_FAIL;
-
-	pEffect->AddRef();
-
-	if (FAILED(SetUp_ConstantTable(pEffect)))
-		return E_FAIL;
-
-	pEffect->Begin(nullptr, 0);
-
-	for (size_t i = 0; i < m_pMeshCom->Get_NumMaterials(); ++i)
+	if (CManagement::GetInstance()->Get_CurrentScene() != SCENE_LOADING)
 	{
-		if (FAILED(m_pMeshCom->SetTexture_OnShader(pEffect, i, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+		if (nullptr == m_pShaderCom ||
+			nullptr == m_pTransformCom ||
+			nullptr == m_pMeshCom)
 			return E_FAIL;
 
-		pEffect->CommitChanges();
+		LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
+		if (nullptr == pEffect)
+			return E_FAIL;
 
-		pEffect->BeginPass(0);
+		pEffect->AddRef();
 
-		m_pMeshCom->Render_Mesh(i);
+		if (FAILED(SetUp_ConstantTable(pEffect)))
+			return E_FAIL;
 
-		pEffect->EndPass();
+		pEffect->Begin(nullptr, 0);
+
+		for (size_t i = 0; i < m_pMeshCom->Get_NumMaterials(); ++i)
+		{
+			if (FAILED(m_pMeshCom->SetTexture_OnShader(pEffect, i, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+				return E_FAIL;
+
+			pEffect->CommitChanges();
+
+			pEffect->BeginPass(0);
+
+			m_pMeshCom->Render_Mesh(i);
+
+			pEffect->EndPass();
+		}
+
+		pEffect->End();
+
+		Safe_Release(pEffect);
+
+		m_pColliderCom01->Render_Collider();
+		m_pColliderCom02->Render_Collider();
+		m_pColliderCom03->Render_Collider();
+		m_pColliderCom04->Render_Collider();
 	}
-	
-	pEffect->End();
-
-	Safe_Release(pEffect);
-
-	m_pColliderCom01->Render_Collider();
-	m_pColliderCom02->Render_Collider();
-	m_pColliderCom03->Render_Collider();
-	m_pColliderCom04->Render_Collider();
 
 	return NOERROR;
 }
