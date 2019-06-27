@@ -93,6 +93,7 @@ private:
 	
 	_float			m_fHP = 10686.f;
 	_float			m_fMP = 3250.f;
+	_float			m_fAutoHealingAccTime = 0.f;
 
 private:
 	virtual HRESULT Add_Component();

@@ -23,8 +23,8 @@ HRESULT CFontManager::ReadyFont(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 	tFontInfo.Weight = FW_EXTRABOLD;
 	tFontInfo.CharSet = HANGEUL_CHARSET;
-	tFontInfo.Height = 18;
-	tFontInfo.Width = 14;
+	tFontInfo.Height = 14;
+	tFontInfo.Width = 9;
 	lstrcpy(tFontInfo.FaceName, L"∏º¿∫∞ÌµÒ√º");
 	if (FAILED(D3DXCreateFontIndirect(pGraphic_Device, &tFontInfo, &m_pFont[FONT_NAME])))
 	{
@@ -32,8 +32,8 @@ HRESULT CFontManager::ReadyFont(LPDIRECT3DDEVICE9 pGraphic_Device)
 			return E_FAIL;
 	}
 
-	tFontInfo.Height = 15;
-	tFontInfo.Width = 15;
+	tFontInfo.Height = 8;
+	tFontInfo.Width = 3;
 	if (FAILED(D3DXCreateFontIndirect(pGraphic_Device, &tFontInfo, &m_pFont[FONT_POINT_VALUE])))
 	{
 		_MSGBOX("Font Create Failed")

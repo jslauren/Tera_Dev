@@ -26,6 +26,7 @@ private:
 private: // For.FPS
 	_uint	m_iRenderCnt = 0;
 	_float	m_fTimeAcc = 0.f;
+	_tchar	m_szGameName[128] = L"TERA";
 	_tchar	m_szFPS[128] = L"";
 
 	_bool	m_bRenderlingCheck = false;

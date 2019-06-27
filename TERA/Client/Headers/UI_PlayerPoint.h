@@ -3,6 +3,7 @@
 
 _BEGIN(Client)
 
+class CPlayer;
 class CUI_PlayerPoint final : public CUI
 {
 private:
@@ -45,10 +46,12 @@ private:
 	_float				m_fMP = 3250.f;
 
 	_float				m_fCalculatedHP = 0.f;
-	_float				m_fCalculatedMP = 0.f;
+	_float				m_fCalculatedMP = 1.f;
 
 	_float				m_fHPRatio = 0.f;
 	_float				m_fMPRatio = 1.f;
+
+	_tchar				m_szHP[64];
 
 public:
 	static CUI_PlayerPoint*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);

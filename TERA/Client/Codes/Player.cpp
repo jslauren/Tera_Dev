@@ -10,6 +10,8 @@
 #include "Input_Device.h"
 
 #define PLAYER_SCALING	0.33f
+#define	PLAYER_HP	10686.f
+#define	PLAYER_MP	3250.f
 
 _USING(Client)
 
@@ -500,8 +502,14 @@ void CPlayer::Compute_HeightOnNavi()
 
 void CPlayer::AutoHealing(const _float& fTimeDelta)
 {
-	Set_HP_Add(534.3f * (fTimeDelta * 0.038));
-	Set_MP_Add(162.5f * (fTimeDelta * 0.038));
+	m_fAutoHealingAccTime += fTimeDelta;
+
+	if (m_fAutoHealingAccTime > 4.f)
+	{
+		Set_HP_Add(PLAYER_HP * 5 / 100);
+		Set_MP_Add(PLAYER_MP * 5 / 100);
+		m_fAutoHealingAccTime = 0.f;
+	}
 }
 
 _bool CPlayer::CollisionCheck()

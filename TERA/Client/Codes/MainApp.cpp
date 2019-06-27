@@ -71,12 +71,13 @@ HRESULT CMainApp::Render_MainApp()
 
 		if (m_fTimeAcc >= 1.f)
 		{
-			wsprintf(m_szFPS, L"FPS : %d", m_iRenderCnt);
+			wsprintf(m_szFPS, L"%d", m_iRenderCnt);
+			//wsprintf(m_szFPS, L"FPS : %d", m_iRenderCnt);
 			m_iRenderCnt = 0;
 			m_fTimeAcc = 0.f;
 		}
 
-		SetWindowText(g_hWnd, m_szFPS);
+		SetWindowText(g_hWnd, m_szGameName);
 	}
 
 	if (nullptr == m_pGraphic_Device ||
@@ -90,10 +91,10 @@ HRESULT CMainApp::Render_MainApp()
 
 		m_pRenderer->Render_RenderGroup();
 
+		CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3(10.f, 10.f, 0.f), m_szFPS);
+
 		if (FAILED(m_pManagement->Render_Management()))
 			return E_FAIL;
-
-		CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3(0.f, 0.f, 0.f), L"Àß µÇ¹ö·Á¶ù!");
 
 		m_pGraphic_Device->EndScene();
 		m_pGraphic_Device->Present(nullptr, nullptr, 0, nullptr);

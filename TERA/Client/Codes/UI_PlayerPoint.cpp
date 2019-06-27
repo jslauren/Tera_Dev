@@ -3,12 +3,14 @@
 #include "Management.h"
 #include "Camera_Dynamic.h"
 #include "Player.h"
+#include "FontManager.h"
 
 _USING(Client)
 
 CUI_PlayerPoint::CUI_PlayerPoint(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CUI(pGraphic_Device)
 {
+	ZeroMemory(m_szHP, sizeof(_tchar) * 64);
 }
 
 CUI_PlayerPoint::CUI_PlayerPoint(const CUI_PlayerPoint & rhs)
@@ -74,7 +76,6 @@ HRESULT CUI_PlayerPoint::Render_GameObject()
 			return NOERROR;
 		}
 		
-
 		if (FAILED(NullCheck()))
 			return E_FAIL;
 
@@ -123,6 +124,19 @@ HRESULT CUI_PlayerPoint::Render_GameObject()
 		}
 
 		Safe_Release(pEffect);
+
+		// Font ·»´õ ºÎºÐ //
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
+
+		CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3((g_iWinCX * 0.295f), (g_iWinCY * 0.775f), 0.f), L"Lv.30 ºýÁ¤¼ö");
+
+		wsprintf(m_szHP, L"%d / %d", (_int)pPlayer->Get_HP(), (_int)m_fHP);
+		CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3((g_iWinCX * 0.34f), (g_iWinCY * 0.8f), 0.f), m_szHP);
+
+		wsprintf(m_szHP, L"%d \%%", (_int)(m_fMPRatio * 100));
+		CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3((g_iWinCX * 0.585f), (g_iWinCY * 0.8f), 0.f), m_szHP);
+
+		////////////////////
 	}
 
 	return NOERROR;
