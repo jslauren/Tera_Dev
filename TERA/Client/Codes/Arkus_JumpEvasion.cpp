@@ -50,11 +50,7 @@ void CArkus_JumpEvasion::MoveArkusPosition(CArkus & Arkus, const _float fArkusSp
 	{
 		_vec3 vPlayerPos, vDir;
 		vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
-
-		if(iMoveDir == 0)
-			vDir = vPlayerPos - *Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
-		else if(iMoveDir == 1)
-			vDir = (vPlayerPos - *Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION)) * -1;
+		vDir = -(vPlayerPos - *Arkus.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION));
 
 		Arkus.Get_Transform()->Move(&vDir, fArkusSpeed, fTimeDelta);
 
