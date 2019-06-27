@@ -5,16 +5,14 @@ _BEGIN(Client)
 
 class CUI_BossPoint final : public CUI
 {
-public:
+private:
 	explicit CUI_BossPoint(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CUI_BossPoint(const CUI_BossPoint& rhs);
 	virtual ~CUI_BossPoint() = default;
 
 public: // Geter
-	_int	Get_HPValue() { return m_fHpValue; }
 
 public:	// Setter
-	void	Set_HPValue(_int iValue) { m_fHpValue = iValue; }
 	void	Set_CutSceneStart(_bool bButton) { m_bIsCutSceneStart = bButton; }
 
 public:
@@ -44,7 +42,6 @@ private:
 
 private:
 	_float				m_fTimeDelta = 1.f;
-	_float				m_fHpValue = 0.f;
 
 	_bool				m_bIsCutSceneStart = false;
 	_bool				m_bIsHpRender = false;

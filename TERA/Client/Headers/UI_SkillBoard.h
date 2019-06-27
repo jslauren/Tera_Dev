@@ -5,7 +5,7 @@ _BEGIN(Client)
 
 class CUI_SkillBoard : public CUI
 {
-public:
+private:
 	explicit CUI_SkillBoard(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CUI_SkillBoard(const CUI_SkillBoard& rhs);
 	virtual ~CUI_SkillBoard() = default;

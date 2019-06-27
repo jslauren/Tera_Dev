@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CPlayerState;
 class CPlayer_HitRolling : public CPlayerState
 {
-public:
+protected:
 	explicit CPlayer_HitRolling(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CPlayer_HitRolling() = default;
 

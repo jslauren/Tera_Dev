@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CPlayerState;
 class CPlayer_Wake : public CPlayerState
 {
-public:
+protected:
 	explicit CPlayer_Wake(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CPlayer_Wake() = default;
 

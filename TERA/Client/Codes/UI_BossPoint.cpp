@@ -167,7 +167,10 @@ HRESULT CUI_BossPoint::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTa
 		pEffect->SetMatrix("g_matWorld", m_pTransformHpCom->Get_WorldMatrixPointer());
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
-		PointCalculater(pArkus->Get_HP());
+
+		if (m_bIsCutSceneStart == false)
+			PointCalculater(pArkus->Get_HP());
+
 		pEffect->SetFloat("g_fBossHPValue", (m_fHPRatio));
 	}
 
@@ -208,9 +211,9 @@ void CUI_BossPoint::CutSceneEvent()
 	{
 		m_bIsHpRender = true;
 
-		m_fHpValue += (m_fTimeDelta * 0.35);
+		m_fHPRatio += (m_fTimeDelta * 0.35);
 
-		if (m_fHpValue >= 1)
+		if (m_fHPRatio >= 1)
 			m_bIsCutSceneStart = false;
 	}
 }

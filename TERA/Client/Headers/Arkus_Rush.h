@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CArkusState;
 class CArkus_Rush : public CArkusState
 {
-public:
+protected:
 	explicit CArkus_Rush(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CArkus_Rush() = default;
 

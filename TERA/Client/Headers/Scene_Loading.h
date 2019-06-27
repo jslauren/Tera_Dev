@@ -8,7 +8,7 @@ class CLoading;
 class CUI_Loading;
 class CScene_Loading final : public CScene
 {
-public:
+private:
 	explicit CScene_Loading(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CScene_Loading() = default;
 

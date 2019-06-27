@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CPlayerState;
 class CPlayer_Skill_RagingStrike : public CPlayerState
 {
-public:
+protected:
 	explicit CPlayer_Skill_RagingStrike(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CPlayer_Skill_RagingStrike() = default;
 

@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CArkusState;
 class CArkus_AlmostDead : public CArkusState
 {
-public:
+protected:
 	explicit CArkus_AlmostDead(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CArkus_AlmostDead() = default;
 

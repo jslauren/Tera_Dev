@@ -39,6 +39,7 @@
     <ClInclude Include="..\Headers\Engine_Struct.h" />
     <ClInclude Include="..\Headers\Engine_Typedef.h" />
     <ClInclude Include="..\Headers\EventManager.h" />
+    <ClInclude Include="..\Headers\FontManager.h" />
     <ClInclude Include="..\Headers\Frustum.h" />
     <ClInclude Include="..\Headers\GameObject.h" />
     <ClInclude Include="..\Headers\Graphic_Device.h" />
@@ -80,6 +81,7 @@
     <ClCompile Include="..\Codes\Component.cpp" />
     <ClCompile Include="..\Codes\Component_Manager.cpp" />
     <ClCompile Include="..\Codes\EventManager.cpp" />
+    <ClCompile Include="..\Codes\FontManager.cpp" />
     <ClCompile Include="..\Codes\Frustum.cpp" />
     <ClCompile Include="..\Codes\GameObject.cpp" />
     <ClCompile Include="..\Codes\Graphic_Device.cpp" />

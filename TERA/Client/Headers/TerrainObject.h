@@ -12,7 +12,7 @@ _BEGIN(Client)
 
 class CTerrainObject final : public CGameObject
 {
-public:
+private:
 	explicit CTerrainObject(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CTerrainObject(const CTerrainObject& rhs);
 	virtual ~CTerrainObject() = default;

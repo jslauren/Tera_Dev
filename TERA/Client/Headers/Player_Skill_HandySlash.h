@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CPlayerState;
 class CPlayer_Skill_HandySlash : public CPlayerState
 {
-public:
+protected:
 	explicit CPlayer_Skill_HandySlash(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CPlayer_Skill_HandySlash() = default;
 

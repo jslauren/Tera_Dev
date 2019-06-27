@@ -18,8 +18,8 @@ private:
 public:
 	HRESULT Ready_Graphic_Device(HWND hWnd, WINMODE eWinMode, const _uint& iWinCX, const _uint& iWinCY, LPDIRECT3DDEVICE9* ppGraphicDev = nullptr);
 private:
-	LPDIRECT3D9					m_pSDK = nullptr;
-	LPDIRECT3DDEVICE9			m_pGraphic_Device = nullptr;
+	LPDIRECT3D9			m_pSDK = nullptr;
+	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;
 public:
 	virtual void Free();
 };

@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CPlayerState;
 class CPlayer_KnockDown : public CPlayerState
 {
-public:
+protected:
 	explicit CPlayer_KnockDown(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CPlayer_KnockDown() = default;
 

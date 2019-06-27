@@ -13,6 +13,7 @@
 #include "Scene_Loading.h"
 #include "Scene_Stage.h"
 #include "UI_Loading.h"
+#include "FontManager.h"
 
 _USING(Client)
 
@@ -92,6 +93,8 @@ HRESULT CMainApp::Render_MainApp()
 		if (FAILED(m_pManagement->Render_Management()))
 			return E_FAIL;
 
+		CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3(0.f, 0.f, 0.f), L"Àß µÇ¹ö·Á¶ù!");
+
 		m_pGraphic_Device->EndScene();
 		m_pGraphic_Device->Present(nullptr, nullptr, 0, nullptr);
 	}
@@ -110,6 +113,10 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _u
 
 	// For.Input_Device
 	if (FAILED(CInput_Device::GetInstance()->Ready_Input_Device(g_hInst, g_hWnd)))
+		return E_FAIL;
+
+	// For.FontManager
+	if (FAILED(CFontManager::GetInstance()->ReadyFont(m_pGraphic_Device)))
 		return E_FAIL;
 
 	// For.Scene_Manager Initialize

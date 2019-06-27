@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CArkusState;
 class CArkus_Groggy : public CArkusState
 {
-public:
+protected:
 	explicit CArkus_Groggy(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CArkus_Groggy() = default;
 

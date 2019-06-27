@@ -5,7 +5,7 @@ _BEGIN(Client)
 
 class CUI_PlayerPoint final : public CUI
 {
-public:
+private:
 	explicit CUI_PlayerPoint(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CUI_PlayerPoint(const CUI_PlayerPoint& rhs);
 	virtual ~CUI_PlayerPoint() = default;

@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CPlayerState;
 class Player_Skill_FlatBlade : public CPlayerState
 {
-public:
+protected:
 	explicit Player_Skill_FlatBlade(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~Player_Skill_FlatBlade() = default;
 

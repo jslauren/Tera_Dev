@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CPlayerState;
 class CPlayer_Skill_DrawSword_Move : public CPlayerState
 {
-public:
+protected:
 	explicit CPlayer_Skill_DrawSword_Move(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CPlayer_Skill_DrawSword_Move() = default;
 

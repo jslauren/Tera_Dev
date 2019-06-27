@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CPlayerState;
 class CPlayer_Skill_StingerBlade : public CPlayerState
 {
-public:
+protected:
 	explicit CPlayer_Skill_StingerBlade(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CPlayer_Skill_StingerBlade() = default;
 

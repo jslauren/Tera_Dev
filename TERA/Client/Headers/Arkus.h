@@ -39,7 +39,7 @@ public:	// Setter
 	void			Set_TurnRightInfo(_bool bButton) { m_bIsTurnRight = bButton; }
 	void			Set_HP_Sub(_float fDamageValue) { m_fHP -= fDamageValue; }
 
-public:
+private:
 	explicit CArkus(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CArkus(const CArkus& rhs);
 	virtual ~CArkus() = default;

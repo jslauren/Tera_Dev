@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CPlayerState;
 class CPlayer_Move : public CPlayerState
 {
-public:
+protected:
 	explicit CPlayer_Move(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CPlayer_Move() = default;
 

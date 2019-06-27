@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CPlayerState;
 class CPlayer_AttackCombo_R : public CPlayerState
 {
-public:
+protected:
 	explicit CPlayer_AttackCombo_R(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CPlayer_AttackCombo_R() = default;
 

@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CArkusState;
 class CArkus_JumpEvasion : public CArkusState
 {
-public:
+protected:
 	explicit CArkus_JumpEvasion(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CArkus_JumpEvasion() = default;
 

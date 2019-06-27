@@ -6,7 +6,7 @@ _BEGIN(Client)
 class CPlayerState;
 class CPlayer_WeaponState : public CPlayerState
 {
-public:
+protected:
 	explicit CPlayer_WeaponState(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CPlayer_WeaponState() = default;
 

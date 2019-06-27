@@ -8,7 +8,7 @@ _BEGIN(Client)
 
 class CUI_Loading : public CUI
 {
-public:
+private:
 	explicit CUI_Loading(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CUI_Loading(const CUI_Loading& rhs);
 	virtual ~CUI_Loading() = default;
