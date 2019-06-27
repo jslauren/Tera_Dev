@@ -31,15 +31,13 @@ public:	// Getter
 	_bool				Get_PlayerFrontInfo() { return m_bIsPlayerFront; }
 	_bool				Get_TurnRightInfo() { return m_bIsTurnRight; }
 	const _float&		Get_HP() { return m_fHP; }
-	const _float&		Get_MP() { return m_fMP; }
 
 public:	// Setter
 	void			Set_AniIndex(const ARKUS_ANI& iIndex) { m_eAnimationIndex = iIndex; }
 	void			Set_OldAniIndex(const ARKUS_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
 	void			Set_PlayerFrontInfo(_bool bButton) { m_bIsPlayerFront = bButton; }
 	void			Set_TurnRightInfo(_bool bButton) { m_bIsTurnRight = bButton; }
-	void			Set_HP(_float fDamageValue) { m_fHP -= fDamageValue; }
-	void			Set_MP(_float fDamageValue) { m_fMP -= fDamageValue; }
+	void			Set_HP_Sub(_float fDamageValue) { m_fHP -= fDamageValue; }
 
 public:
 	explicit CArkus(LPDIRECT3DDEVICE9 pGraphic_Device);

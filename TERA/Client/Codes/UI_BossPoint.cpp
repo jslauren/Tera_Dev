@@ -168,7 +168,7 @@ HRESULT CUI_BossPoint::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTa
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
 		PointCalculater(pArkus->Get_HP());
-		pEffect->SetFloat("g_fBossHPValue", (m_fHpValue));
+		pEffect->SetFloat("g_fBossHPValue", (m_fHPRatio));
 	}
 
 	Safe_Release(pEffect);
@@ -217,10 +217,16 @@ void CUI_BossPoint::CutSceneEvent()
 
 void CUI_BossPoint::PointCalculater(_float fCurrentValue)
 {
-	if (fCurrentValue == 100.f)
+	if (fCurrentValue == 100000.f)
+	{
+		m_fHPRatio = 1.f;
+		return;
+	}
+	else if (fCurrentValue <= 0.f)
 		return;
 
-	m_fHP = 100 * (m_fHP - fCurrentValue) / 100.f * 0.01;
+	m_fCalculatedHP = 100 * (m_fHP - fCurrentValue) / 100000.f * 0.01;
+	m_fHPRatio = 1 - m_fCalculatedHP;
 
 }
 

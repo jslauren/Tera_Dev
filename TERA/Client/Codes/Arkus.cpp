@@ -67,12 +67,14 @@ _int CArkus::Update_GameObject(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
-//	ViewChanage();
 	EnemyPositionCheck();
 
 	AI();
 	CollisionCheck_Attack_Area();
-	//CollisionCheck();
+	
+	//// 아르커스 데미지 테스트용 구문 //
+	//if (CInput_Device::GetInstance()->GetDIKeyState(DIK_K) & 0x80)
+	//	Set_HP_Sub(1000);
 
 	return _int();
 }

@@ -43,13 +43,15 @@ private:
 	void				PointCalculater(_float fCurrentValue);
 
 private:
-	_float				m_fTimeDelta = 0.f;
+	_float				m_fTimeDelta = 1.f;
 	_float				m_fHpValue = 0.f;
 
 	_bool				m_bIsCutSceneStart = false;
 	_bool				m_bIsHpRender = false;
 
-	_float				m_fHP = 100.f;
+	_float				m_fHP = 100000.f;
+	_float				m_fCalculatedHP = 0.f;
+	_float				m_fHPRatio = 0.f;
 
 public:
 	static CUI_BossPoint*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
