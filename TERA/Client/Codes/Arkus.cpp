@@ -55,6 +55,9 @@ HRESULT CArkus::Ready_GameObject(void * pArg)
 	int iIdleState = 1;
 	m_pState = CArkus_Apperance::Create(m_pGraphic_Device, *this, &iIdleState);
 
+	//// [ 아르커스 HP, MP 값 셋팅 ] //
+	//m_fHP = 100000.f;
+
 }
 
 _int CArkus::Update_GameObject(const _float & fTimeDelta)

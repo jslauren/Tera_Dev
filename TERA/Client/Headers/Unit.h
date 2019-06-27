@@ -42,15 +42,14 @@ public: // Getter
 	CTransform*		Get_TransformMove() { return m_pTransformMoveCom; }
 	CMesh_Dynamic*	Get_Mesh() { return m_pMeshCom; }
 	CNavigation*	Get_NaviMesh() { return m_pNavigationCom; }
-
-	_float			Get_HP() { return m_fHP; }
-	_float			Get_MP() { return m_fMP; }
+	//const _float&	Get_HP() { return m_fHP; }
+	//const _float&	Get_MP() { return m_fMP; }
 
 public:	// Setter
 	void			Set_ActionID(const ACTION_ID& eActionID) { m_eCurActionID = eActionID; }
 	void			Set_StanceID(const STANCE_ID& eStanceID) { m_eCurStanceID = eStanceID; }
-	void			Set_HP(_float fDamageValue) { m_fHP -= fDamageValue; }
-	void			Set_MP(_float fDamageValue) { m_fMP -= fDamageValue; }
+	//void			Set_HP(_float fDamageValue) { m_fHP -= fDamageValue; }
+	//void			Set_MP(_float fDamageValue) { m_fMP -= fDamageValue; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();

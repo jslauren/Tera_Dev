@@ -35,6 +35,8 @@ public:	// Getter
 	const _bool&		Get_CutSceneInfo() { return m_bIsCutSceneEvent; }
 	const _bool&		Get_CollisionCheckWhether() { return m_bCollisionCheck; }
 	const _bool&		Get_DamageEventEndInfo() { return m_bDamageEventEndInfo; }
+	const _float&		Get_HP() { return m_fHP; }
+	const _float&		Get_MP() { return m_fMP; }
 
 public:	// Setter
 	void			Set_AniIndex(const PLAYER_ANI& iIndex) { m_eAnimationIndex = iIndex; }
@@ -44,7 +46,10 @@ public:	// Setter
 	HRESULT			Set_Navigation_Component(SCENEID eScene);
 	void			Set_CutSceneInfo(_bool bButton) { m_bIsCutSceneEvent = bButton; }
 	void			Set_DamageEventEndInfo(_bool bButton) { m_bDamageEventEndInfo = bButton; }
-
+	void			Set_HP_Sub(_float fDamageValue) { m_fHP -= fDamageValue; if (m_fHP <= 0.f) m_fHP = 0.f; }
+	void			Set_MP_Sub(_float fDamageValue) { m_fMP -= fDamageValue; if (m_fMP <= 0.f) m_fMP = 0.f; }
+	void			Set_HP_Add(_float fHealingValue) { m_fHP += fHealingValue; if (m_fHP >= 10686.f) m_fHP = 10686.f; }
+	void			Set_MP_Add(_float fHealingValue) { m_fMP += fHealingValue; if (m_fMP >= 3250.f) m_fMP = 3250.f; }
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);
@@ -85,6 +90,9 @@ private:
 
 	_bool			m_bDamageEventEndInfo = false;
 	_bool			m_bIsNavigationRender = false;
+	
+	_float			m_fHP = 10686.f;
+	_float			m_fMP = 3250.f;
 
 private:
 	virtual HRESULT Add_Component();
@@ -93,6 +101,7 @@ private:
 	void			ViewChanage();
 	void			KeyInput();
 	void			Compute_HeightOnNavi();
+	void			AutoHealing(const _float& fTimeDelta);
 
 public:
 	static CPlayer*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);

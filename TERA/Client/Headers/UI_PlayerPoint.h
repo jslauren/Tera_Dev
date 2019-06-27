@@ -39,8 +39,16 @@ private:
 	void				PointCalculater(_bool bIsHP, _float fCurrentValue);
 
 private:
-	_uint				m_fHP = 10686.f;
-	_uint				m_fMP = 3250.f;
+	_float				m_fTimeDelta = 1.f;
+
+	_float				m_fHP = 10686.f;
+	_float				m_fMP = 3250.f;
+
+	_float				m_fCalculatedHP = 0.f;
+	_float				m_fCalculatedMP = 0.f;
+
+	_float				m_fHPRatio = 0.f;
+	_float				m_fMPRatio = 1.f;
 
 public:
 	static CUI_PlayerPoint*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);

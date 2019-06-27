@@ -273,15 +273,16 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 			}
 		}
 	}
-	//// [테스트]
-	//if (CInput_Device::GetInstance()->GetDIKeyState(DIK_T) & 0x80)
-	//{
-	//	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
-	//	{
-	//		if (Player.Get_Mesh_Bone()->IsAnimationEnded())
-	//			return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
-	//	}
-	//}
+	// [테스트]
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_T) & 0x80)
+	{
+		Player.Set_MP_Sub(50);
+		//if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
+		//{
+		//	if (Player.Get_Mesh_Bone()->IsAnimationEnded())
+		//		return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+		//}
+	}
 	// [스킬 넘버]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_1) & 0x80)
 	{
@@ -341,6 +342,15 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 				return CPlayer_Skill_RagingStrike::Create(m_pGraphic_Device, Player, &m_iAniState);
 			}
 		}
+	}
+	// [ 시연을 위한 플레이어 HP, MP 치트 ] //
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_MINUS) & 0x80)
+	{
+		Player.Set_HP_Add(2000);
+	}
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_EQUALS) & 0x80)
+	{
+		Player.Set_MP_Add(300);
 	}
 
 	return nullptr;

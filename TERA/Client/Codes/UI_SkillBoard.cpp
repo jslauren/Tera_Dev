@@ -29,10 +29,10 @@ HRESULT CUI_SkillBoard::Ready_GameObject(void * pArg)
 		return E_FAIL;
 
 	m_pTransformSkillBoardCom->Set_Scaling((g_iWinCX * 0.68f), (g_iWinCY * 0.15f), 0.f);
-	m_pTransformSkillBoardCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.f, -(g_iWinCY * 0.4f), 0.f));
+	m_pTransformSkillBoardCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), -(g_iWinCY * 0.4f), 0.f));
 
 	m_pTransformSkillFilterCom->Set_Scaling((g_iWinCX * 0.01f), (g_iWinCY * 0.15f), 0.f);
-	m_pTransformSkillFilterCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.f, -(g_iWinCY * 0.4f), 0.f));
+	m_pTransformSkillFilterCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), -(g_iWinCY * 0.4f), 0.f));
 
 	return NOERROR;
 }

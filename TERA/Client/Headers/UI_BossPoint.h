@@ -40,6 +40,7 @@ private:
 private:
 	HRESULT				NullCheck();
 	void				CutSceneEvent();
+	void				PointCalculater(_float fCurrentValue);
 
 private:
 	_float				m_fTimeDelta = 0.f;
@@ -47,6 +48,8 @@ private:
 
 	_bool				m_bIsCutSceneStart = false;
 	_bool				m_bIsHpRender = false;
+
+	_float				m_fHP = 100.f;
 
 public:
 	static CUI_BossPoint*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);

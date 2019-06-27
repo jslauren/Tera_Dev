@@ -32,10 +32,11 @@ HRESULT CUI_PlayerPoint::Ready_GameObject(void * pArg)
 	m_pTransformPointBoardCom->Set_Scaling((g_iWinCX * 0.68f), (g_iWinCY * 0.15f), 0.f);
 	m_pTransformPointBoardCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-(g_iWinCX * 0.f), -(g_iWinCY * 0.305f), 0.f));
 
-	m_pTransformHpCom->Set_Scaling((g_iWinCX * 0.34f), (g_iWinCY * 0.075f), 0.f);
+	m_pTransformHpCom->Set_Scaling((g_iWinCX * 0.18f), (g_iWinCY * 0.075f), 0.f);
 	m_pTransformHpCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-(g_iWinCX * 0.115), -(g_iWinCY * 0.305f), 0.f));
 
-	m_pTransformMpCom->Set_Scaling((g_iWinCX * 0.34f), (g_iWinCY * 0.075f), 0.f);
+	// (g_iWinCX * 0.34f)
+	m_pTransformMpCom->Set_Scaling((g_iWinCX * 0.18f), (g_iWinCY * 0.075f), 0.f);
 	m_pTransformMpCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.105), -(g_iWinCY * 0.305f), 0.f));
 
 	return NOERROR;
@@ -45,6 +46,8 @@ _int CUI_PlayerPoint::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
+
+	m_fTimeDelta = fTimeDelta;
 
 	return _int();
 }
@@ -194,8 +197,8 @@ HRESULT CUI_PlayerPoint::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint i
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
 
-		PointCalculater(true, pPlayer->Get_HP());
-		pEffect->SetFloat("g_fBossHPValue", (m_fHP));
+ 		PointCalculater(true, pPlayer->Get_HP());
+		pEffect->SetFloat("g_fPlayerHpValue", (m_fHPRatio));
 	}
 	else if (3 == iTargetTextureIdx)
 	{
@@ -206,8 +209,8 @@ HRESULT CUI_PlayerPoint::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint i
 		pEffect->SetMatrix("g_matProj", &matProj);
 
 		PointCalculater(false, pPlayer->Get_MP());
-
-		pEffect->SetFloat("g_fBossHPValue", (m_fMP));
+		pEffect->SetFloat("g_fPlayerMpValue", (m_fMPRatio));
+		
 	}
 	Safe_Release(pEffect);
 
@@ -255,14 +258,30 @@ HRESULT CUI_PlayerPoint::NullCheck()
 
 void CUI_PlayerPoint::PointCalculater(_bool bIsHP, _float fCurrentValue)
 {
-	if (fCurrentValue == 10686.f || fCurrentValue == 3250.f)
+	if (fCurrentValue == 10686.f)
+	{
+		m_fHPRatio = 0.f;
+		return;
+	}
+	else if (fCurrentValue == 3250.f)
+	{
+		m_fMPRatio = 1.f;
+		return;
+	}
+	else if (fCurrentValue <= 0.f)
 		return;
 
 	if (bIsHP == true)
-		m_fHP = 100 * (m_fHP - fCurrentValue) / 10686.f * 0.01;
+	{
+		m_fCalculatedHP = 100 * (m_fHP - fCurrentValue) / 10686.f * 0.01;
+		m_fHPRatio = /*1 -*/ m_fCalculatedHP;
+	}
 
 	else if (bIsHP == false)
-		m_fMP = 100 * (m_fHP - fCurrentValue) / 3250.f * 0.01;
+	{
+		m_fCalculatedMP = 100 * (m_fMP - fCurrentValue) / 3250.f * 0.01;
+		m_fMPRatio = 1 - m_fCalculatedMP;
+	}
 
 }
 

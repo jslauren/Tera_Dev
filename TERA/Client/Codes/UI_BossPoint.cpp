@@ -2,6 +2,7 @@
 #include "..\Headers\UI_BossPoint.h"
 #include "Management.h"
 #include "Camera_Dynamic.h"
+#include "Arkus.h"
 
 _USING(Client)
 
@@ -29,10 +30,10 @@ HRESULT CUI_BossPoint::Ready_GameObject(void * pArg)
 		return E_FAIL;
 
 	m_pTransformPointBoardCom->Set_Scaling((g_iWinCX * 1.f), (g_iWinCY * 0.12f), 0.f);
-	m_pTransformPointBoardCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(0.f, (g_iWinCY * 0.42f), 0.f));
+	m_pTransformPointBoardCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), (g_iWinCY * 0.42f), 0.f));
 
 	m_pTransformHpCom->Set_Scaling((g_iWinCX * 0.515f), (g_iWinCY * 0.12f), 0.f);
-	m_pTransformHpCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-13.f, (g_iWinCY * 0.418f), 0.f));
+	m_pTransformHpCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-(g_iWinCX * 0.01f), (g_iWinCY * 0.418f), 0.f));
 
 	return NOERROR;
 }
@@ -140,6 +141,8 @@ HRESULT CUI_BossPoint::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTa
 	if (nullptr == pEffect)
 		return E_FAIL;
 
+	CArkus* pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+
 	pEffect->AddRef();
 
 	_matrix		matTmp, matProj;
@@ -164,6 +167,7 @@ HRESULT CUI_BossPoint::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTa
 		pEffect->SetMatrix("g_matWorld", m_pTransformHpCom->Get_WorldMatrixPointer());
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
+		PointCalculater(pArkus->Get_HP());
 		pEffect->SetFloat("g_fBossHPValue", (m_fHpValue));
 	}
 
@@ -209,6 +213,15 @@ void CUI_BossPoint::CutSceneEvent()
 		if (m_fHpValue >= 1)
 			m_bIsCutSceneStart = false;
 	}
+}
+
+void CUI_BossPoint::PointCalculater(_float fCurrentValue)
+{
+	if (fCurrentValue == 100.f)
+		return;
+
+	m_fHP = 100 * (m_fHP - fCurrentValue) / 100.f * 0.01;
+
 }
 
 CUI_BossPoint * CUI_BossPoint::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

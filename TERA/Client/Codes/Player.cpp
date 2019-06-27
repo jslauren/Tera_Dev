@@ -85,9 +85,9 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 
 //	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
 
-	// [ 플레이어 HP, MP 값 셋팅 ] //
-	m_fHP = 10686.f;
-	m_fHP = 3250.f;
+	//// [ 플레이어 HP, MP 값 셋팅 ] //
+	//m_fHP = 10686.f;
+	//m_fMP = 3250.f;
 
 	return NOERROR;
 }
@@ -98,6 +98,8 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 		return -1;
 
 	m_fTimeDelta = fTimeDelta;
+
+	AutoHealing(fTimeDelta);
 
 	m_fPlayerPosY = m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->y;
 
@@ -494,6 +496,12 @@ void CPlayer::Compute_HeightOnNavi()
 	pPlayerPos.y = fDist;
 
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &pPlayerPos);
+}
+
+void CPlayer::AutoHealing(const _float& fTimeDelta)
+{
+	Set_HP_Add(534.3f * (fTimeDelta * 0.038));
+	Set_MP_Add(162.5f * (fTimeDelta * 0.038));
 }
 
 _bool CPlayer::CollisionCheck()
