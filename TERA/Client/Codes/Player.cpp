@@ -8,6 +8,7 @@
 #include "Layer.h"
 #include "Arkus.h"
 #include "Input_Device.h"
+#include "Time.h"
 
 #define PLAYER_SCALING	0.33f
 #define	PLAYER_HP	10686.f
@@ -592,6 +593,87 @@ _bool CPlayer::CollisionCheck()
 
 	else if (m_bCollisionCheck == false)
 		return false;
+
+}
+
+void CPlayer::DamageCalculator(PLAYER_ANI eAttackAni)
+{
+	srand((unsigned)time(NULL));
+
+	switch (eAttackAni)
+	{
+	case Client::CPlayer::Combo1:
+		m_iOffencePower = rand() % 71 + 3300;
+		break;
+
+	case Client::CPlayer::Combo2:
+		m_iOffencePower = rand() % 51 + 350;
+		break;
+
+	case Client::CPlayer::Combo3:
+		m_iOffencePower = rand() % 61 + 360;
+		break;
+		
+	case Client::CPlayer::Combo4:
+		m_iOffencePower = rand() % 71 + 320;
+		break;
+
+	case Client::CPlayer::CutHead:
+		m_iOffencePower = rand() % 1601 + 4150;
+
+		if (m_iOffencePower >= 5250 && m_iOffencePower <= 5750)
+			m_bIsCriticalDamage = true;
+		break;
+
+	case Client::CPlayer::CuttingSlash:
+		m_iOffencePower = rand() % 1351 + 3850;
+
+		if (m_iOffencePower >= 4700 && m_iOffencePower <= 5200)
+			m_bIsCriticalDamage = true;
+		break;
+
+	case Client::CPlayer::FlatBlade:
+		m_iOffencePower = rand() % 1051 + 1500;
+
+		if (m_iOffencePower >= 2050 && m_iOffencePower <= 2550)
+			m_bIsCriticalDamage = true;
+		break;
+
+	case Client::CPlayer::HandySlash:
+		m_iOffencePower = rand() % 1651 + 4300;
+
+		if (m_iOffencePower >= 5450 && m_iOffencePower <= 5950)
+			m_bIsCriticalDamage = true;
+		break;
+
+	case Client::CPlayer::JawBreaker:
+		m_iOffencePower = rand() % 901 + 2900;
+
+		if (m_iOffencePower >= 3300 && m_iOffencePower <= 3800)
+			m_bIsCriticalDamage = true;
+		break;
+
+	case Client::CPlayer::StingerBlade:
+		m_iOffencePower = rand() % 1851 + 3850;
+
+		if (m_iOffencePower >= 5200 && m_iOffencePower <= 5700)
+			m_bIsCriticalDamage = true;
+		break;
+
+	case Client::CPlayer::RagingStrike:
+		m_iOffencePower = rand() % 851 + 1850;
+
+		if (m_iOffencePower >= 2200 && m_iOffencePower <= 2700)
+			m_bIsCriticalDamage = true;
+		break;
+
+	case Client::CPlayer::DrawSword:
+		m_iOffencePower = rand() % 1601 + 4500;
+
+		if (m_iOffencePower >= 5600 && m_iOffencePower <= 6100)
+			m_bIsCriticalDamage = true;
+		break;
+	}
 
 }
 

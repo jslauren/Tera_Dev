@@ -2,6 +2,7 @@
 #include "..\Headers\Arkus_Idle.h"
 #include "Arkus.h"
 #include "Input_Device.h"
+#include "Time.h"
 
 #include "Arkus_Run.h"
 #include "Arkus_Attack.h"
@@ -60,6 +61,8 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 			{
 				if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 				{
+					srand((unsigned)time(NULL));
+
 					m_iAniState = rand() % 5 + 4;
 
 					if (m_iAniState == 8)

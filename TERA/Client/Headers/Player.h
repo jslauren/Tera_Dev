@@ -27,39 +27,44 @@ private:
 	virtual ~CPlayer() = default;
 
 public:	// Getter
+	CMesh_Dynamic_Bone*	Get_Mesh_Bone() { return m_pMeshCom_Bone; }
 	const PLAYER_ANI&	Get_AniIndex() { return m_eAnimationIndex; }
 	const PLAYER_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
 	const _bool&		Get_DrawSwordBtnState() { return m_bIsDrawSwordPressed; }
-	CMesh_Dynamic_Bone*	Get_Mesh_Bone() { return m_pMeshCom_Bone; }
 	const _int&			Get_Direction() { return m_iDirection; }
 	const _bool&		Get_CutSceneInfo() { return m_bIsCutSceneEvent; }
 	const _bool&		Get_CollisionCheckWhether() { return m_bCollisionCheck; }
 	const _bool&		Get_DamageEventEndInfo() { return m_bDamageEventEndInfo; }
 	const _float&		Get_HP() { return m_fHP; }
 	const _float&		Get_MP() { return m_fMP; }
+	const _uint&		Get_PlayerOffenceValue() { return m_iOffencePower; }
+	const _bool&		Get_IsCriticalDamageInfo() { return m_bIsCriticalDamage; }
 
 public:	// Setter
-	void			Set_AniIndex(const PLAYER_ANI& iIndex) { m_eAnimationIndex = iIndex; }
-	void			Set_OldAniIndex(const PLAYER_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
-	void			Set_DrawSwordBtn(_bool bPressed) { m_bIsDrawSwordPressed = bPressed; }
-	void			Set_Direction(_int iDir) { m_iDirection = iDir; }
-	HRESULT			Set_Navigation_Component(SCENEID eScene);
-	void			Set_CutSceneInfo(_bool bButton) { m_bIsCutSceneEvent = bButton; }
-	void			Set_DamageEventEndInfo(_bool bButton) { m_bDamageEventEndInfo = bButton; }
-	void			Set_HP_Sub(_float fDamageValue) { m_fHP -= fDamageValue; if (m_fHP <= 0.f) m_fHP = 0.f; }
-	void			Set_MP_Sub(_float fDamageValue) { m_fMP -= fDamageValue; if (m_fMP <= 0.f) m_fMP = 0.f; }
-	void			Set_HP_Add(_float fHealingValue) { m_fHP += fHealingValue; if (m_fHP >= 10686.f) m_fHP = 10686.f; }
-	void			Set_MP_Add(_float fHealingValue) { m_fMP += fHealingValue; if (m_fMP >= 3250.f) m_fMP = 3250.f; }
-public:
-	virtual HRESULT Ready_GameObject_Prototype();
-	virtual HRESULT Ready_GameObject(void* pArg);
-	virtual _int	Update_GameObject(const _float& fTimeDelta);
-	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
-	virtual HRESULT Render_GameObject();
+	HRESULT				Set_Navigation_Component(SCENEID eScene);
+	void				Set_AniIndex(const PLAYER_ANI& iIndex) { m_eAnimationIndex = iIndex; }
+	void				Set_OldAniIndex(const PLAYER_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
+	void				Set_DrawSwordBtn(_bool bPressed) { m_bIsDrawSwordPressed = bPressed; }
+	void				Set_Direction(_int iDir) { m_iDirection = iDir; }
+	void				Set_CutSceneInfo(_bool bButton) { m_bIsCutSceneEvent = bButton; }
+	void				Set_DamageEventEndInfo(_bool bButton) { m_bDamageEventEndInfo = bButton; }
+	void				Set_HP_Sub(_float fDamageValue) { m_fHP -= fDamageValue; if (m_fHP <= 0.f) m_fHP = 0.f; }
+	void				Set_MP_Sub(_float fDamageValue) { m_fMP -= fDamageValue; if (m_fMP <= 0.f) m_fMP = 0.f; }
+	void				Set_HP_Add(_float fHealingValue) { m_fHP += fHealingValue; if (m_fHP >= 10686.f) m_fHP = 10686.f; }
+	void				Set_MP_Add(_float fHealingValue) { m_fMP += fHealingValue; if (m_fMP >= 3250.f) m_fMP = 3250.f; }
+	void				Set_PlayerOffenceValue(_uint iOffenceValue) { m_iOffencePower = iOffenceValue; }
 
 public:
-	void			DamageEvent(_float fSpeed);
-	_bool			CollisionCheck();
+	virtual HRESULT		Ready_GameObject_Prototype();
+	virtual HRESULT		Ready_GameObject(void* pArg);
+	virtual _int		Update_GameObject(const _float& fTimeDelta);
+	virtual _int		LateUpdate_GameObject(const _float& fTimeDelta);
+	virtual HRESULT		Render_GameObject();
+
+public:
+	void				DamageEvent(_float fSpeed);
+	_bool				CollisionCheck();
+	void				DamageCalculator(PLAYER_ANI eAttackAni);
 
 private:
 	CPlayerState*			m_pState = nullptr;
@@ -94,6 +99,9 @@ private:
 	_float			m_fHP = 10686.f;
 	_float			m_fMP = 3250.f;
 	_float			m_fAutoHealingAccTime = 0.f;
+
+	_uint			m_iOffencePower = 300.f;
+	_bool			m_bIsCriticalDamage = false;
 
 private:
 	virtual HRESULT Add_Component();

@@ -2,6 +2,7 @@
 #include "..\Headers\Player_AttackCombo.h"
 #include "Player.h"
 #include "Input_Device.h"
+#include "Time.h"
 
 #include "Player_Hit.h"
 #include "Player_Idle.h"
@@ -26,10 +27,17 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 {
 	CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
 
+	srand((unsigned)time(NULL));
+
 	if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
 		{
+			if (pArkus->CollisionCheck() == true)
+			{
+				Player.DamageCalculator(Player.Combo1);
+				pArkus->Set_HP_Sub(Player.Get_PlayerOffenceValue());
+			}
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 			{
 				if (Player.CollisionCheck() == true)
@@ -54,6 +62,8 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 		}
 		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
 		{
+			Player.DamageCalculator(Player.Combo2);
+
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 			{
 				if (Player.CollisionCheck() == true)
@@ -78,6 +88,8 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 		}
 		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
 		{
+			Player.DamageCalculator(Player.Combo3);
+
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 			{
 				if (Player.CollisionCheck() == true)
@@ -102,6 +114,8 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 		}
 		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo4)
 		{
+			Player.DamageCalculator(Player.Combo4);
+
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 			{
 				if (Player.CollisionCheck() == true)
