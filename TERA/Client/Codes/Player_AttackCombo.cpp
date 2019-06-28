@@ -28,223 +28,268 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 	CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
 
 	if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
-	{
-		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
-		{
-			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
-			{
-				if (Player.CollisionCheck() == true)
-				{
-					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
-					{
-						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
-					}
-					else
-						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
-				}
-
-				else if (Player.CollisionCheck() == false)
-				{
-					m_iAniState = 2;
-					return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
-				}
-			}
-		}
-		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
-		{
-			Player.DamageCalculator(Player.Combo2);
-
-			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
-			{
-				if (Player.CollisionCheck() == true)
-				{
-					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
-					{
-						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
-					}
-					else
-						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
-				}
-
-				else if (Player.CollisionCheck() == false)
-				{
-					m_iAniState = 3;
-					return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
-				}
-			}
-		}
-		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
-		{
-			Player.DamageCalculator(Player.Combo3);
-
-			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
-			{
-				if (Player.CollisionCheck() == true)
-				{
-					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
-					{
-						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
-					}
-					else
-						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
-				}
-
-				else if (Player.CollisionCheck() == false)
-				{
-					m_iAniState = 4;
-					return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
-				}
-			}
-		}
-		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo4)
-		{
-			Player.DamageCalculator(Player.Combo4);
-
-			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
-			{
-				if (Player.CollisionCheck() == true)
-				{
-					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
-					{
-						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
-					}
-					else
-						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
-				}
-
-				else if (Player.CollisionCheck() == false)
-				{
-					m_iAniState = 2;
-					return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
-				}
-			}
-		}
-	}
+		Player.Set_LBtnClickedInfo(true);
 
 	else // 아무 키도 안눌렸을 때
 	{
-		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
+		if (Player.Get_LBtnClickedInfo() == true)
 		{
-			MovePlayerPosition(Player, 0.33f, 20.f, 0.002, pAgr);
-
-			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.8f))
+			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
 			{
-				if (Player.CollisionCheck() == true)
+				AttackAvailableCheck(pArkus, &Player);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
+					AttackEvent(pArkus, &Player, 1);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 				{
-					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					if (Player.CollisionCheck() == true)
 					{
-						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+						{
+							return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						}
+						else
+							return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
 					}
-					else
-						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+
+					else if (Player.CollisionCheck() == false)
+					{
+						AttackEventFree(&Player);
+						m_iAniState = 2;
+						return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
 				}
-				else if (Player.CollisionCheck() == false)
+			}
+			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
+			{
+				AttackAvailableCheck(pArkus, &Player);
+
+				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
+					AttackEvent(pArkus, &Player, 1);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 				{
-					m_iAniState = 1;
-					return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+					if (Player.CollisionCheck() == true)
+					{
+						if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+						{
+							return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						}
+						else
+							return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+
+					else if (Player.CollisionCheck() == false)
+					{
+						AttackEventFree(&Player);
+						m_iAniState = 3;
+						return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+				}
+			}
+			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
+			{
+				AttackAvailableCheck(pArkus, &Player);
+
+				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.55f))
+					AttackEvent(pArkus, &Player, 1);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
+				{
+					if (Player.CollisionCheck() == true)
+					{
+						if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+						{
+							return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						}
+						else
+							return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+
+					else if (Player.CollisionCheck() == false)
+					{
+						AttackEventFree(&Player);
+						m_iAniState = 4;
+						return CPlayer_AttackCombo::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+				}
+			}
+			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo4)
+			{
+				AttackAvailableCheck(pArkus, &Player);
+
+				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
+					AttackEvent(pArkus, &Player, 2);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
+				{
+					if (Player.CollisionCheck() == true)
+					{
+						if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+						{
+							return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						}
+						else
+							return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+
+					else if (Player.CollisionCheck() == false)
+					{
+						AttackEventFree(&Player);
+						m_iAniState = 2;
+						return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
 				}
 			}
 		}
-		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
+		// 마우스 L버튼이 이전에 안 눌렸었다면..
+		else if(Player.Get_LBtnClickedInfo() == false)
 		{
-			MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
-
-			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.8f))
+			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
 			{
-				if (Player.CollisionCheck() == true)
+				AttackAvailableCheck(pArkus, &Player);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
+					AttackEvent(pArkus, &Player, 1);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.8f))
 				{
-					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					if (Player.CollisionCheck() == true)
 					{
-						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+						{
+							return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						}
+						else
+							return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
 					}
-					else
-						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
-				}
-				else if (Player.CollisionCheck() == false)
-				{
-					m_iAniState = 2;
-					return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+					else if (Player.CollisionCheck() == false)
+					{
+						m_iAniState = 1;
+						return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
 				}
 			}
-		}
-		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
-		{
-			MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
-
-			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.99f))
+			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
 			{
-				if (Player.CollisionCheck() == true)
+				AttackAvailableCheck(pArkus, &Player);
+
+				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
+					AttackEvent(pArkus, &Player, 1);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.8f))
 				{
-					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					if (Player.CollisionCheck() == true)
 					{
-						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+						{
+							return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						}
+						else
+							return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
 					}
-					else
-						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
-				}
-				else if (Player.CollisionCheck() == false)
-				{
-					m_iAniState = 3;
-					return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+					else if (Player.CollisionCheck() == false)
+					{
+						m_iAniState = 2;
+						return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
 				}
 			}
-		}
-		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo4)
-		{
-			MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
-
-			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
+			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
 			{
-				if (Player.CollisionCheck() == true)
+				AttackAvailableCheck(pArkus, &Player);
+
+				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.55f))
+					AttackEvent(pArkus, &Player, 1);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.8f))
 				{
-					if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
-						pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+					if (Player.CollisionCheck() == true)
 					{
-						return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+						{
+							return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						}
+						else
+							return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
 					}
-					else
-						return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+					else if (Player.CollisionCheck() == false)
+					{
+						m_iAniState = 3;
+						return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
 				}
-				else if (Player.CollisionCheck() == false)
+			}
+			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo4)
+			{
+				AttackAvailableCheck(pArkus, &Player);
+
+				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
+					AttackEvent(pArkus, &Player, 2);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 				{
-					m_iAniState = 2;
-					return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
+					if (Player.CollisionCheck() == true)
+					{
+						if (pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk01 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::RoundAtk02 ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::FlyAtk02End ||
+							pArkus->Get_AniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
+						{
+							return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+						}
+						else
+							return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
+					else if (Player.CollisionCheck() == false)
+					{
+						m_iAniState = 2;
+						return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
+					}
 				}
 			}
 		}
 	}
-	
+
 	return nullptr;
 }
 
 void CPlayer_AttackCombo::Update_State(CPlayer & Player, const float & fTimeDelta)
 {
-	CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
-
-	AttackAvailableCheck(pArkus, &Player);
 }
 
 void CPlayer_AttackCombo::MovePlayerPosition(CPlayer & Player, _float fPointTime, _float fPlayerSpeed, const float& fTimeDelta, void * pArg)

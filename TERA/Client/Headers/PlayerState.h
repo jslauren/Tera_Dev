@@ -24,7 +24,7 @@ public:
 protected:
 	void					AttackAvailableCheck(CArkus* pArkus, CPlayer* Player);
 	void					AttackEvent(CArkus* pArkus, CPlayer* Player, _uint iAvailableHitNumber);
-	void					AttackEventFree();
+	void					AttackEventFree(CPlayer* Player);
 
 protected:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;

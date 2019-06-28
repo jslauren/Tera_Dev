@@ -105,7 +105,7 @@ private:
 	_uint			m_iOffencePower = 300.f;
 	_bool			m_bIsCriticalDamage = false;
 
-	_bool			m_bLBtnClicked = true;
+	_bool			m_bLBtnClicked = false;
 
 private:
 	virtual HRESULT Add_Component();
