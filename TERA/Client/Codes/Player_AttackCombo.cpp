@@ -27,17 +27,10 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 {
 	CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
 
-	srand((unsigned)time(NULL));
-
 	if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
 		{
-			if (pArkus->CollisionCheck() == true)
-			{
-				Player.DamageCalculator(Player.Combo1);
-				pArkus->Set_HP_Sub(Player.Get_PlayerOffenceValue());
-			}
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 			{
 				if (Player.CollisionCheck() == true)
@@ -249,7 +242,9 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 
 void CPlayer_AttackCombo::Update_State(CPlayer & Player, const float & fTimeDelta)
 {
+	CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
 
+	AttackAvailableCheck(pArkus, &Player);
 }
 
 void CPlayer_AttackCombo::MovePlayerPosition(CPlayer & Player, _float fPointTime, _float fPlayerSpeed, const float& fTimeDelta, void * pArg)

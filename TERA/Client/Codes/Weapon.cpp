@@ -313,7 +313,7 @@ HRESULT CWeapon::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	return NOERROR;
 }
 
-void CWeapon::CollisionCheck()
+_bool CWeapon::CollisionCheck()
 {
 	if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_DRAGON)
 	{
@@ -363,6 +363,11 @@ void CWeapon::CollisionCheck()
 		//m_pColliderCom01->Collision_Sphere(pArkusNeckCollider);
 		//m_pColliderCom01->Collision_Sphere(pArkusTail01Collider);
 		//m_pColliderCom01->Collision_Sphere(pArkusTail02Collider);
+
+		if (m_bCollisionCheck == true)
+			return true;
+		else
+			return false;
 
 	}
 }

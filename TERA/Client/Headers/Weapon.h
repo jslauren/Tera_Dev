@@ -31,6 +31,9 @@ public:
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
 	
+public:
+	_bool			CollisionCheck();
+
 private:
 	CTransform*		m_pTransformCom = nullptr;
 	CMesh_Static*	m_pMeshCom = nullptr;
@@ -53,8 +56,6 @@ private:
 	HRESULT			Add_Component();
 	HRESULT			SetUp_HeightOnTerrain();
 	HRESULT			SetUp_ConstantTable(LPD3DXEFFECT pEffect);
-
-	void			CollisionCheck();
 
 public:
 	static CWeapon*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);

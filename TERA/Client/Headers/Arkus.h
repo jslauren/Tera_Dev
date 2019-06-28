@@ -37,6 +37,7 @@ public:	// Setter
 	void			Set_OldAniIndex(const ARKUS_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
 	void			Set_PlayerFrontInfo(_bool bButton) { m_bIsPlayerFront = bButton; }
 	void			Set_TurnRightInfo(_bool bButton) { m_bIsTurnRight = bButton; }
+	void			Set_HP_Add(_float fDamageValue) { m_fHP += fDamageValue; }
 	void			Set_HP_Sub(_float fDamageValue) { m_fHP -= fDamageValue; }
 
 private:

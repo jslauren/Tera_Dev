@@ -607,15 +607,15 @@ void CPlayer::DamageCalculator(PLAYER_ANI eAttackAni)
 		break;
 
 	case Client::CPlayer::Combo2:
-		m_iOffencePower = rand() % 51 + 350;
+		m_iOffencePower = rand() % 51 + 3500;
 		break;
 
 	case Client::CPlayer::Combo3:
-		m_iOffencePower = rand() % 61 + 360;
+		m_iOffencePower = rand() % 61 + 3600;
 		break;
 		
 	case Client::CPlayer::Combo4:
-		m_iOffencePower = rand() % 71 + 320;
+		m_iOffencePower = rand() % 71 + 3200;
 		break;
 
 	case Client::CPlayer::CutHead:

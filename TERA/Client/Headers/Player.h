@@ -39,7 +39,8 @@ public:	// Getter
 	const _float&		Get_MP() { return m_fMP; }
 	const _uint&		Get_PlayerOffenceValue() { return m_iOffencePower; }
 	const _bool&		Get_IsCriticalDamageInfo() { return m_bIsCriticalDamage; }
-
+	const _bool&		Get_LBtnClickedInfo() { return m_bLBtnClicked; }
+	
 public:	// Setter
 	HRESULT				Set_Navigation_Component(SCENEID eScene);
 	void				Set_AniIndex(const PLAYER_ANI& iIndex) { m_eAnimationIndex = iIndex; }
@@ -53,6 +54,7 @@ public:	// Setter
 	void				Set_HP_Add(_float fHealingValue) { m_fHP += fHealingValue; if (m_fHP >= 10686.f) m_fHP = 10686.f; }
 	void				Set_MP_Add(_float fHealingValue) { m_fMP += fHealingValue; if (m_fMP >= 3250.f) m_fMP = 3250.f; }
 	void				Set_PlayerOffenceValue(_uint iOffenceValue) { m_iOffencePower = iOffenceValue; }
+	void				Set_LBtnClickedInfo(_bool bButton) { m_bLBtnClicked = bButton; }
 
 public:
 	virtual HRESULT		Ready_GameObject_Prototype();
@@ -102,6 +104,8 @@ private:
 
 	_uint			m_iOffencePower = 300.f;
 	_bool			m_bIsCriticalDamage = false;
+
+	_bool			m_bLBtnClicked = true;
 
 private:
 	virtual HRESULT Add_Component();

@@ -22,10 +22,19 @@ public:
 	virtual HRESULT			Enter_State(CPlayer& Player);
 
 protected:
+	void					AttackAvailableCheck(CArkus* pArkus, CPlayer* Player);
+	void					AttackEvent(CArkus* pArkus, CPlayer* Player, _uint iAvailableHitNumber);
+	void					AttackEventFree();
+
+protected:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
 
 protected:
 	_int					m_iAniState = 1;
+	_bool					m_bIsDamageAvailable = true;
+
+	_uint					m_iAvailableHitNumber = 1;
+	_uint					m_iHitCount = 0;
 
 public:
 	virtual void			Free();
