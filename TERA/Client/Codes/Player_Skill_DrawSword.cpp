@@ -24,11 +24,20 @@ CPlayerState * CPlayer_Skill_DrawSword::Input_Keyboard(CPlayer & Player, const f
 {
 	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::DrawSword)
 	{
+		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+		AttackAvailableCheck(pArkus, &Player);
+
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.3f))
 			dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", -1))->Set_BoneMatrix(2);
 
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.5f))
+			AttackEvent(pArkus, &Player, 3);
+
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
+		{
+			AttackEventFree(&Player);
 			return CPlayer_Skill_DrawSword_End::Create(m_pGraphic_Device, Player, &m_iAniState);
+		}
 
 	}
 	return nullptr;

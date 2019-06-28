@@ -26,11 +26,17 @@ CPlayerState * CPlayer_Skill_RagingStrike::Input_Keyboard(CPlayer & Player, cons
 {
 	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::RagingStrike)
 	{
+		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+		AttackAvailableCheck(pArkus, &Player);
+
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.2f))
 			MovePlayerPosition(Player, 40.f, fTimeDelta, pArg, 0);
 
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.43f))
 			MovePlayerPosition(Player, -38.f, fTimeDelta, pArg, 0);
+
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.35f))
+			AttackEvent(pArkus, &Player, 2);
 
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.9f))
 		{
@@ -50,6 +56,7 @@ CPlayerState * CPlayer_Skill_RagingStrike::Input_Keyboard(CPlayer & Player, cons
 			}
 			else if (Player.CollisionCheck() == false)
 			{
+				AttackEventFree(&Player);
 				m_iAniState = 2;
 				return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
 			}

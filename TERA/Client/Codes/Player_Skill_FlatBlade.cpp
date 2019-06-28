@@ -26,8 +26,14 @@ CPlayerState * Player_Skill_FlatBlade::Input_Keyboard(CPlayer & Player, const fl
 {
 	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::FlatBlade)
 	{
+		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+		AttackAvailableCheck(pArkus, &Player);
+
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.05f))
 			MovePlayerPosition(Player, 40.f, fTimeDelta, pArg, 0);
+
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.18f))
+			AttackEvent(pArkus, &Player, 1);
 
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.43f))
 			MovePlayerPosition(Player, -38.f, fTimeDelta, pArg, 0);
@@ -50,6 +56,7 @@ CPlayerState * Player_Skill_FlatBlade::Input_Keyboard(CPlayer & Player, const fl
 			}
 			else if (Player.CollisionCheck() == false)
 			{
+				AttackEventFree(&Player);
 				m_iAniState = 2;
 				return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
 			}
