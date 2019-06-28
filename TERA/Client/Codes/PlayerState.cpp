@@ -49,7 +49,7 @@ void CPlayerState::AttackAvailableCheck(CArkus* pArkus, CPlayer* Player)
 		{
 			Player->DamageCalculator((CPlayer::PLAYER_ANI)Player->Get_Mesh_Bone()->Get_NowPlayAniIndex());
 
-			if(m_iHitCount < m_iAvailableHitNumber)
+			if (m_iHitCount < m_iAvailableHitNumber)
 				m_bIsDamageAvailable = true;
 		}
 	}
@@ -74,7 +74,7 @@ void CPlayerState::AttackEvent(CArkus* pArkus, CPlayer* Player, _uint iAvailable
 void CPlayerState::AttackEventFree(CPlayer* Player)
 {
 	Player->Set_LBtnClickedInfo(false);
-	m_bIsDamageAvailable = true;
+	m_bIsDamageAvailable = false;
 	m_iHitCount = 0;
 }
 

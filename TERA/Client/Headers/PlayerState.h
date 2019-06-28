@@ -31,7 +31,7 @@ protected:
 
 protected:
 	_int					m_iAniState = 1;
-	_bool					m_bIsDamageAvailable = true;
+	_bool					m_bIsDamageAvailable = false;
 
 	_uint					m_iAvailableHitNumber = 1;
 	_uint					m_iHitCount = 0;

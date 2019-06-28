@@ -34,10 +34,10 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 	{
 		if (Player.Get_LBtnClickedInfo() == true)
 		{
+			AttackAvailableCheck(pArkus, &Player);
+
 			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
 			{
-				AttackAvailableCheck(pArkus, &Player);
-
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
 					AttackEvent(pArkus, &Player, 1);
 
@@ -66,8 +66,6 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
 			{
-				AttackAvailableCheck(pArkus, &Player);
-
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
@@ -98,8 +96,6 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
 			{
-				AttackAvailableCheck(pArkus, &Player);
-
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.55f))
@@ -130,8 +126,6 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo4)
 			{
-				AttackAvailableCheck(pArkus, &Player);
-
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
@@ -164,10 +158,10 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 		// 마우스 L버튼이 이전에 안 눌렸었다면..
 		else if(Player.Get_LBtnClickedInfo() == false)
 		{
+			AttackAvailableCheck(pArkus, &Player);
+
 			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
 			{
-				AttackAvailableCheck(pArkus, &Player);
-
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
 					AttackEvent(pArkus, &Player, 1);
 
@@ -187,6 +181,7 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 					}
 					else if (Player.CollisionCheck() == false)
 					{
+						AttackEventFree(&Player);
 						m_iAniState = 1;
 						return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
 					}
@@ -194,8 +189,6 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
 			{
-				AttackAvailableCheck(pArkus, &Player);
-
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
@@ -217,6 +210,7 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 					}
 					else if (Player.CollisionCheck() == false)
 					{
+						AttackEventFree(&Player);
 						m_iAniState = 2;
 						return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
 					}
@@ -224,8 +218,6 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
 			{
-				AttackAvailableCheck(pArkus, &Player);
-
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.55f))
@@ -247,6 +239,7 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 					}
 					else if (Player.CollisionCheck() == false)
 					{
+						AttackEventFree(&Player);
 						m_iAniState = 3;
 						return CPlayer_AttackCombo_R::Create(m_pGraphic_Device, Player, &m_iAniState);
 					}
@@ -254,8 +247,6 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo4)
 			{
-				AttackAvailableCheck(pArkus, &Player);
-
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
@@ -277,6 +268,7 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 					}
 					else if (Player.CollisionCheck() == false)
 					{
+						AttackEventFree(&Player);
 						m_iAniState = 2;
 						return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
 					}
