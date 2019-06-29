@@ -229,6 +229,12 @@
     <Filter Include="04. UI\UI\03. BossPoint">
       <UniqueIdentifier>{c8762d13-19e3-41a6-a292-af6e6c9d0fea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. UI\UI\04. DamageFont">
+      <UniqueIdentifier>{28460739-3570-458f-9e54-4dd6cefb58d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. UI\UI\04. DamageFont\DamageTexture">
+      <UniqueIdentifier>{f0280f9a-2c00-4ec3-9b82-483ca9f4862f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -429,6 +435,10 @@
     <ClInclude Include="..\Headers\UI_BossPoint.h">
       <Filter>04. UI\UI\03. BossPoint</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\UI_DamageFont.h">
+      <Filter>04. UI\UI\04. DamageFont</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\UI_DamageTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -617,6 +627,10 @@
     <ClCompile Include="..\Codes\UI_BossPoint.cpp">
       <Filter>04. UI\UI\03. BossPoint</Filter>
     </ClCompile>
+    <ClCompile Include="..\Codes\UI_DamageFont.cpp">
+      <Filter>04. UI\UI\04. DamageFont</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UI_DamageTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">

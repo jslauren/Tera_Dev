@@ -109,6 +109,15 @@ HRESULT CArkus::Render_GameObject()
 		nullptr == m_pColliderCom)
 		return E_FAIL;
 
+	if (m_pMeshCom->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Death)
+	{
+		if (m_pMeshCom->IsAnimationEnded(0.95f))
+		{
+			if (m_fHP <= 0.f)
+				m_fTimeDelta = 0.f;
+		}
+	}
+
 	m_pMeshCom->Play_Animation(m_fTimeDelta);
 
 	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();

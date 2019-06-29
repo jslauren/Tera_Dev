@@ -104,6 +104,8 @@ HRESULT CUI_SkillBoard::Render_GameObject()
 		//	pEffect->End();
 		//}
 	}
+
+	return NOERROR;
 }
 
 HRESULT CUI_SkillBoard::Add_Component()

@@ -102,7 +102,7 @@ private:
 	_bool			m_bIsPlayerDamaged = false;
 
 	_float			m_fHP = 100000.f;
-
+	
 public:
 	static CArkus*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

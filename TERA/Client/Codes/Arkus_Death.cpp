@@ -25,7 +25,7 @@ CArkusState * CArkus_Death::Input_State(CArkus & Arkus, const float & fTimeDelta
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Death)
 	{
 		if (m_bIsDead == true)
-			Arkus.Get_Mesh()->Play_Animation(-1);
+			Arkus.Get_Mesh()->Play_Animation(0);
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
 			m_bIsDead = true;
