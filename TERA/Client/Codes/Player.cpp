@@ -297,18 +297,30 @@ HRESULT CPlayer::OnEvent(const _tchar * _szEventTag, void * _pMsg)
 			m_fHP = 0.f;
 		else 
 		{
-			_float fDamage = 0.f;
+			if (m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::Tumbling)
+			{
+				_float fDamage = 0.f;
 
-			if ((*(_uint*)(_pMsg) == CArkus::ARKUS_ANI::Atk01))
-				fDamage = 300.f;
+				if ((*(_uint*)(_pMsg) == CArkus::ARKUS_ANI::Atk01))
+					fDamage = 500.f;
 
-			// [ HP 조절 구문 ] //
-			// 현재 체력을 상회하는 데미지가 들어오면,
-			// 그냥 현제 체력을 0으로 만들어버린다.
-			if ((m_fHP - fDamage) <= 0.f)
-				m_fHP = 0.f;
-			else // 아니라면 그냥 들어온 데미지만큼 현제 체력을 깎는다.
-				m_fHP -= fDamage;
+				else if ((*(_uint*)(_pMsg) == CArkus::ARKUS_ANI::HeavyAtk02))
+					fDamage = 700.f;
+
+				else if ((*(_uint*)(_pMsg) == CArkus::ARKUS_ANI::FlyAtk02End))
+					fDamage = 900.f;
+
+				else if ((*(_uint*)(_pMsg) == CArkus::ARKUS_ANI::MoveAtkEnd))
+					fDamage = 1300.f;
+
+				// [ HP 조절 구문 ] //
+				// 현재 체력을 상회하는 데미지가 들어오면,
+				// 그냥 현제 체력을 0으로 만들어버린다.
+				if ((m_fHP - fDamage) <= 0.f)
+					m_fHP = 0.f;
+				else // 아니라면 그냥 들어온 데미지만큼 현제 체력을 깎는다.
+					m_fHP -= fDamage;
+			}
 		}
 	}
 
@@ -339,6 +351,11 @@ void CPlayer::DamageEvent(_float fSpeed)
 
 			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
 			m_pNavigationCom->SetUp_CurrentIndex(iCellIndx);
+
+			if ((m_fHP - 15.f) <= 0.f)
+				m_fHP = 0.f;
+			else // 아니라면 그냥 들어온 데미지만큼 현제 체력을 깎는다.
+				m_fHP -= 15.f;
 		}
 	}
 }

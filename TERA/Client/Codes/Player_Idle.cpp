@@ -276,7 +276,7 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	// [테스트]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_T) & 0x80)
 	{
-		Player.Set_HP_Add(150);
+		Player.Set_HP_Add(1000);
 		//if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 		//{
 		//	if (Player.Get_Mesh_Bone()->IsAnimationEnded())
@@ -284,7 +284,7 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 		//}
 	}
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_Y) & 0x80)
-		Player.Set_HP_Sub(150);
+		Player.Set_HP_Sub(100);
 
 	// [스킬 넘버]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_1) & 0x80)

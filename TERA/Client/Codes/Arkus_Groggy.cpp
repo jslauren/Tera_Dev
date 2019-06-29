@@ -41,6 +41,7 @@ CArkusState * CArkus_Groggy::Input_State(CArkus & Arkus, const float & fTimeDelt
 
 void CArkus_Groggy::Update_State(CArkus & Arkus, const float & fTimeDelta)
 {
+	Arkus.ViewChanage();
 }
 
 void CArkus_Groggy::MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float & fTimeDelta, void * pArg, _int iMoveDir)

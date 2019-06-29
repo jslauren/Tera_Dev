@@ -45,6 +45,7 @@ CArkusState * CArkus_AlmostDead::Input_State(CArkus & Arkus, const float & fTime
 
 void CArkus_AlmostDead::Update_State(CArkus & Arkus, const float & fTimeDelta)
 {
+	Arkus.ViewChanage();
 }
 
 CArkus_AlmostDead * CArkus_AlmostDead::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus & Arkus, void * pArg)

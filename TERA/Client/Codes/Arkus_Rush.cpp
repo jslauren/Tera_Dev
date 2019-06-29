@@ -46,7 +46,15 @@ CArkusState * CArkus_Rush::Input_State(CArkus & Arkus, const float & fTimeDelta,
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::MoveAtkEnd)
 	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
+
 		MoveArkusPosition(Arkus, 30.f, fTimeDelta, pArg, 0);
+
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.25f))
+		{
+			AttackAvailableCheck(pPlayer, &Arkus);
+			AttackEvent(pPlayer, &Arkus, 1, CArkus::ARKUS_ANI::MoveAtkEnd);
+		}
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 			m_bIsViewChangeAvaliable = false;

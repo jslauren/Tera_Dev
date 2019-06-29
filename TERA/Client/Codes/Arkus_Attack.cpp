@@ -7,6 +7,8 @@
 
 #include "Arkus_Idle.h"
 #include "Arkus_Rush.h"
+#include "Arkus_Death.h"
+#include "Arkus_AlmostDead.h"
 
 _USING(Client)
 
@@ -29,7 +31,14 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 	CCamera_Static* pCamera_Static = dynamic_cast<CCamera_Static*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 1));
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
 	
-	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::RoundAtk01)
+	if (Arkus.Get_HP() <= 3000.f)
+	{
+		if (Arkus.Get_HP() <= 0.f)
+			return CArkus_Death::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+		else
+			return CArkus_AlmostDead::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+	}
+	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::RoundAtk01)
 	{
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
 		{
@@ -58,6 +67,13 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::HeavyAtk02)
 	{
 		Arkus.ViewChanage();
+	
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.35f))
+		{
+			AttackAvailableCheck(pPlayer, &Arkus);
+			AttackEvent(pPlayer, &Arkus, 1, CArkus::ARKUS_ANI::HeavyAtk02);
+		}
+
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 	}
@@ -150,6 +166,12 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::FlyAtk02End)
 	{
 		MoveArkusPosition(Arkus, 60.f, fTimeDelta, pArg, 0);
+
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.65f))
+		{
+			AttackAvailableCheck(pPlayer, &Arkus);
+			AttackEvent(pPlayer, &Arkus, 1, CArkus::ARKUS_ANI::FlyAtk02End);
+		}
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.85f))
 			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);

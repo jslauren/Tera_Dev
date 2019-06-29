@@ -56,6 +56,7 @@ public:	// Setter
 	void				Set_LBtnClickedInfo(_bool bButton) { m_bLBtnClicked = bButton; }
 
 	void				Set_AddHitCount() { m_iHitCount++; }
+	void				Set_SubHitCount() { m_iHitCount--; }
 	void				Set_FreeHitCount() { m_iHitCount = 0; }
 
 public:
