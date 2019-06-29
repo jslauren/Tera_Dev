@@ -2,6 +2,7 @@
 #include "..\Headers\Player.h"
 #include "Object_Manager.h"
 #include "Light_Manager.h"
+#include "EventManager.h"
 #include "Management.h"
 #include "Player_Idle.h"
 #include "Player_Move.h"
@@ -87,6 +88,8 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	m_pState = CPlayer_Idle::Create(m_pGraphic_Device, *this, &iIdleState);
 
 //	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
+
+	CEventManager::GetInstance()->Register_Object(L"Arkus_Atk01", this);
 
 
 	return NOERROR;
@@ -288,6 +291,12 @@ HRESULT CPlayer::Render_GameObject()
 
 HRESULT CPlayer::OnEvent(const _tchar * _szEventTag, void * _pMsg)
 {
+	//if (!lstrcmp(_szEventTag, L"On_Input"))
+	//{
+	//}
+
+	m_fHP -= 300;
+
 	return NOERROR;
 }
 
@@ -528,13 +537,6 @@ _bool CPlayer::CollisionCheck()
 			const CCollider* pArkusColliderTail01 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Tail01");
 			const CCollider* pArkusColliderTail02 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Tail02");
 
-			//m_pColliderCom->Collision_OBB(pArkusColliderBody);
-			//m_pColliderCom->Collision_OBB(pArkusColliderHead);
-			//m_pColliderCom->Collision_OBB(pArkusColliderNeck);
-			//m_pColliderCom->Collision_OBB(pArkusColliderTail01);
-			//m_pColliderCom->Collision_OBB(pArkusColliderTail02);
-			//m_pColliderCom->Collision_OBB(pArkusColliderTail03);
-
 			if (pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Idle &&
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Hit &&
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Run_Battle &&
@@ -543,17 +545,6 @@ _bool CPlayer::CollisionCheck()
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::AlmostDead &&
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Death)
 			{
-				//if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true ||
-				//	m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true ||
-				//	m_pColliderCom->Collision_Sphere(pArkusColliderNeck) == true ||
-				//	m_pColliderCom->Collision_Sphere(pArkusColliderTail01) == true ||
-				//	m_pColliderCom->Collision_Sphere(pArkusColliderTail02) == true)
-				//{
-				//	m_bCollisionCheck = true;
-				//}
-				//else
-				//	m_bCollisionCheck = false;
-
 				if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true)
 					m_bCollisionPart[COLL_BOOY] = true;
 
@@ -581,19 +572,6 @@ _bool CPlayer::CollisionCheck()
 				}
 			}
 
-			//if (m_pColliderCom->Collision_OBB(pArkusColliderBody) == true)
-			//	m_bCollisionCheck[0] = true;
-			//else if (m_pColliderCom->Collision_OBB(pArkusColliderHead) == true)
-			//	m_bCollisionCheck[1] = true;
-			//else if (m_pColliderCom->Collision_OBB(pArkusColliderNeck) == true)
-			//	m_bCollisionCheck[2] = true;
-			//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail01) == true)
-			//	m_bCollisionCheck[3] = true;
-			//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail02) == true)
-			//	m_bCollisionCheck[4] = true;
-			//else if (m_pColliderCom->Collision_OBB(pArkusColliderTail03) == true)
-			//	m_bCollisionCheck[5] = true;
-
 			_uint	iCellIndx = 0;
 			if (m_bCollisionCheck == true)
 			{
@@ -613,11 +591,6 @@ _bool CPlayer::CollisionCheck()
 
 		if (m_bCollisionCheck == true)
 		{
-			//for (size_t i = 0; i < COLL_ATTACK_AREA; ++i)
-			//{
-			//	m_bCollisionPart[i] = false;
-			//}
-
 			// 이걸 안해주면 계속 밀린다 ㅈ된다.
 			m_bCollisionCheck = false;
 			return true;
@@ -753,6 +726,8 @@ CGameObject * CPlayer::Clone(void* pArg)
 
 void CPlayer::Free()
 {
+	CEventManager::GetInstance()->Remove_Object(L"Arkus_Atk01", this);
+
 	Safe_Release(m_pMeshCom_Tail);
 	Safe_Release(m_pMeshCom_Leg);
 	Safe_Release(m_pMeshCom_Hand);

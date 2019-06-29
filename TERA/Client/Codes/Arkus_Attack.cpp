@@ -3,6 +3,7 @@
 #include "Arkus.h"
 #include "Input_Device.h"
 #include "Camera_Static.h"
+#include "EventManager.h"
 
 #include "Arkus_Idle.h"
 #include "Arkus_Rush.h"
@@ -54,13 +55,16 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.65f))
 		{
-			if (pPlayer->CollisionCheckPartInfo(CPlayer::PLAYER_COLLISION::COLL_HEAD) == true)
-				AttackEvent(pPlayer, &Arkus, 1);
+			if (Arkus.Get_PlayerDamagedInfo() == false)
+			{
+				CEventManager::GetInstance()->Notify_Event(L"Arkus_Atk01", nullptr);
+				Arkus.Set_PlayerDamagedInfo(true);
+			}
 		}
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
 		{
-			AttackEventFree(&Arkus);
+			Arkus.Set_PlayerDamagedInfo(false);
 			m_iAniState = 4;
 			return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 			//return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);

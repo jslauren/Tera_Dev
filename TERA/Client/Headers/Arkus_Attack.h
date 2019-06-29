@@ -20,6 +20,7 @@ private:
 	
 private:
 	_bool					m_bIsFlyAtk02StartMove = false;
+
 public:
 	static CArkus_Attack*	Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus& Arkus, void* pArg = nullptr);
 	virtual void			Free();
