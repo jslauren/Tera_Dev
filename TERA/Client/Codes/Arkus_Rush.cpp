@@ -63,11 +63,12 @@ CArkusState * CArkus_Rush::Input_State(CArkus & Arkus, const float & fTimeDelta,
 
 void CArkus_Rush::Update_State(CArkus & Arkus, const float & fTimeDelta)
 {
-	if (Arkus.Get_PlayerFrontInfo() == true)
-	{
-		if (m_bIsViewChangeAvaliable == true)
-			Arkus.ViewChanage();
-	}
+	Arkus.ViewChanage();
+	//if (Arkus.Get_PlayerFrontInfo() == true)
+	//{
+	//	if (m_bIsViewChangeAvaliable == true)
+	//		Arkus.ViewChanage();
+	//}
 }
 
 void CArkus_Rush::MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float & fTimeDelta, void * pArg, _int iMoveDir)

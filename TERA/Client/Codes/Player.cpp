@@ -88,9 +88,6 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 
 //	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
 
-	//// [ 플레이어 HP, MP 값 셋팅 ] //
-	//m_fHP = 10686.f;
-	//m_fMP = 3250.f;
 
 	return NOERROR;
 }
@@ -289,9 +286,13 @@ HRESULT CPlayer::Render_GameObject()
 	return NOERROR;
 }
 
-void CPlayer::DamageEvent(_float fSpeed)
+HRESULT CPlayer::OnEvent(const _tchar * _szEventTag, void * _pMsg)
 {
-	
+	return NOERROR;
+}
+
+void CPlayer::DamageEvent(_float fSpeed)
+{	
 	if (m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::Tumbling &&
 		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSwordCharge &&
 		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSwordLoop &&
@@ -539,18 +540,45 @@ _bool CPlayer::CollisionCheck()
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Run_Battle &&
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::JumpEvasion &&
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Groggy &&
+				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::AlmostDead &&
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Death)
 			{
-				if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true ||
-					m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true ||
-					m_pColliderCom->Collision_Sphere(pArkusColliderNeck) == true ||
-					m_pColliderCom->Collision_Sphere(pArkusColliderTail01) == true ||
-					m_pColliderCom->Collision_Sphere(pArkusColliderTail02) == true)
+				//if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true ||
+				//	m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true ||
+				//	m_pColliderCom->Collision_Sphere(pArkusColliderNeck) == true ||
+				//	m_pColliderCom->Collision_Sphere(pArkusColliderTail01) == true ||
+				//	m_pColliderCom->Collision_Sphere(pArkusColliderTail02) == true)
+				//{
+				//	m_bCollisionCheck = true;
+				//}
+				//else
+				//	m_bCollisionCheck = false;
+
+				if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true)
+					m_bCollisionPart[COLL_BOOY] = true;
+
+				else if (m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true)
+					m_bCollisionPart[COLL_HEAD] = true;
+
+				else if (m_pColliderCom->Collision_Sphere(pArkusColliderNeck) == true)
+					m_bCollisionPart[COLL_NECK] = true;
+
+				else if (m_pColliderCom->Collision_Sphere(pArkusColliderTail01) == true)
+					m_bCollisionPart[COLL_TAIL01] = true;
+
+				else if (m_pColliderCom->Collision_Sphere(pArkusColliderTail02) == true)
+					m_bCollisionPart[COLL_TAIL02] = true;
+
+				for (size_t i = 0; i < COLL_ATTACK_AREA; ++i)
 				{
-					m_bCollisionCheck = true;
+					if (m_bCollisionPart[i] == true)
+					{
+						m_bCollisionCheck = true;
+						break;
+					}
+					else
+						m_bCollisionCheck = false;
 				}
-				else
-					m_bCollisionCheck = false;
 			}
 
 			//if (m_pColliderCom->Collision_OBB(pArkusColliderBody) == true)
@@ -582,19 +610,40 @@ _bool CPlayer::CollisionCheck()
 				}
 			}
 		}
+
+		if (m_bCollisionCheck == true)
+		{
+			//for (size_t i = 0; i < COLL_ATTACK_AREA; ++i)
+			//{
+			//	m_bCollisionPart[i] = false;
+			//}
+
+			// 이걸 안해주면 계속 밀린다 ㅈ된다.
+			m_bCollisionCheck = false;
+			return true;
+		}
+
+		else if (m_bCollisionCheck == false)
+			return false;
 	}
-
-	if (m_bCollisionCheck == true)
-	{
-		// 이걸 안해주면 계속 밀린다 ㅈ된다.
-		m_bCollisionCheck = false;
-		return true;
-	}
-
-	else if (m_bCollisionCheck == false)
-		return false;
-
 }
+
+_bool CPlayer::CollisionCheckPartInfo(PLAYER_COLLISION eAttackAni)
+{
+	_bool bTemp = false;
+
+	if (m_bCollisionPart[eAttackAni] == true)
+		bTemp = true;
+	else
+		bTemp = false;
+
+	for (size_t i = 0; i < COLL_ATTACK_AREA; ++i)
+	{
+		m_bCollisionPart[i] = false;
+	}
+
+	return bTemp;
+}	
 
 void CPlayer::DamageCalculator(PLAYER_ANI eAttackAni)
 {
@@ -603,19 +652,19 @@ void CPlayer::DamageCalculator(PLAYER_ANI eAttackAni)
 	switch (eAttackAni)
 	{
 	case Client::CPlayer::Combo1:
-		m_iOffencePower = rand() % 71 + 3300;
+		m_iOffencePower = rand() % 71 + 330;
 		break;
 
 	case Client::CPlayer::Combo2:
-		m_iOffencePower = rand() % 51 + 3500;
+		m_iOffencePower = rand() % 51 + 350;
 		break;
 
 	case Client::CPlayer::Combo3:
-		m_iOffencePower = rand() % 61 + 3600;
+		m_iOffencePower = rand() % 61 + 360;
 		break;
 		
 	case Client::CPlayer::Combo4:
-		m_iOffencePower = rand() % 71 + 3200;
+		m_iOffencePower = rand() % 71 + 320;
 		break;
 
 	case Client::CPlayer::CutHead:

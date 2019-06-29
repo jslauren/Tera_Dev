@@ -38,6 +38,11 @@ HRESULT CUnit::Render_GameObject()
 	return NOERROR;
 }
 
+HRESULT CUnit::OnEvent(const _tchar * _szEventTag, void * _pMsg)
+{
+	return NOERROR;
+}
+
 HRESULT CUnit::Add_Component()
 {
 	return NOERROR;

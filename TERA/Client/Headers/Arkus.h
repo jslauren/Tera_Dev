@@ -30,6 +30,7 @@ public:	// Getter
 	_bool				Get_CollisionPartCheck(ARKUS_COLLISION eCollisionPart) { return m_bCollisionPart[eCollisionPart]; }
 	_bool				Get_PlayerFrontInfo() { return m_bIsPlayerFront; }
 	_bool				Get_TurnRightInfo() { return m_bIsTurnRight; }
+	_bool				Get_PlayerDamagedInfo() { return m_bIsPlayerDamaged; }
 	const _float&		Get_HP() { return m_fHP; }
 
 public:	// Setter
@@ -37,8 +38,9 @@ public:	// Setter
 	void			Set_OldAniIndex(const ARKUS_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
 	void			Set_PlayerFrontInfo(_bool bButton) { m_bIsPlayerFront = bButton; }
 	void			Set_TurnRightInfo(_bool bButton) { m_bIsTurnRight = bButton; }
-	void			Set_HP_Add(_float fDamageValue) { m_fHP += fDamageValue; }
-	void			Set_HP_Sub(_float fDamageValue) { m_fHP -= fDamageValue; }
+	void			Set_HP_Add(_float fDamageValue) { m_fHP += fDamageValue; if (m_fHP >= 100000.f) m_fHP = 100000.f;}
+	void			Set_HP_Sub(_float fDamageValue) { m_fHP -= fDamageValue; if (m_fHP <= 0.f) m_fHP = 0.f; }
+	void			Set_PlayerDamagedInfo(_bool bButton) { m_bIsPlayerDamaged = bButton; }
 
 private:
 	explicit CArkus(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -51,6 +53,7 @@ public:
 	virtual _int	Update_GameObject(const _float& fTimeDelta);
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
+	virtual HRESULT	OnEvent(const _tchar * _szEventTag, void * _pMsg);
 
 public:
 	HRESULT			Add_Component();
@@ -95,6 +98,8 @@ private:
 
 	_bool			m_bIsPlayerFront = true;
 	_bool			m_bIsTurnRight = false;
+
+	_bool			m_bIsPlayerDamaged = false;
 
 	_float			m_fHP = 100000.f;
 

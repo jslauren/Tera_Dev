@@ -24,11 +24,13 @@ CArkusState * CArkus_Death::Input_State(CArkus & Arkus, const float & fTimeDelta
 {
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Death)
 	{
+		if (m_bIsDead == true)
+			Arkus.Get_Mesh()->Play_Animation(-1);
+
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
-		{
-			m_iAniState = 1;
-			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-		}
+			m_bIsDead = true;
+
+		return nullptr;
 	}
 }
 

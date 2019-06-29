@@ -36,22 +36,20 @@ public:
 	virtual _int	Update_GameObject(const _float& fTimeDelta);
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
+	virtual HRESULT	OnEvent(const _tchar * _szEventTag, void * _pMsg);
 
-	//이벤트 발생시 호출되는 함수
-	//1. 어떤이벤트인지, 2. 발신자로부터온 메세지
-	//해당 이벤트에서 등록을 취소하고싶은 경우 음수를 반환하면 된다. 
-	//객체가 삭제되어야 할때는 무조건 음수 반환을 하여 등록을 취소하여 객체가 제대로 삭제된다.(레퍼런스 카운터 때문에)
-	//절대 이벤트함수 안에서는 다른 이벤트를 발생시키면 안된다.(무한 루프 가능성)
-	virtual _int	OnEvent(const _tchar* _pSubject, void* _pMsg);
 public:
 	//오브젝트 매니져가 객체의 삭제 판단을 하기 위해 필요한 함수
 	const bool&		GetDelete();
+
 protected:
 	HRESULT	Add_Component(const _uint& iSceneIdx, const _tchar* pPrototypeTag, const _tchar* pComponentTag, CComponent** ppOutComponent, void* pArg = nullptr);
 	HRESULT	Compute_ViewZ(CTransform* pTransform);
+
 protected:	// Protected로 시마이 하자....
 	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;
 	CComponent_Manager*	m_pComponent_Manager = nullptr;
+
 protected:
 	// 해당 변수가 트루일 경우 클론이다.
 	_bool	m_isClone = false;
@@ -62,12 +60,15 @@ protected:
 
 	// 맵툴 트리컨트롤 인덱스용 변수.
 	_int	m_iIdxNum = 0;
+
 private:
 	// CGameObject를 상속받은 객체가 가지고 있는 컴포넌트를 모아놓기위한 컨테이너.
 	map<const _tchar*, CComponent*>			m_mapComponents;
 	typedef map<const _tchar*, CComponent*>	MAPCOMPONENTS;
+
 private:
 	CComponent*			Find_Component(const _tchar* pComponentTag);
+
 public:
 	// 이 클래스를 상속받는 자식 오브젝트 클래스들을,
 	// 프로토 타입 패턴을 사용하여 복사 해주기 위해,

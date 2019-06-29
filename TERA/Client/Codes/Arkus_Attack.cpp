@@ -25,6 +25,8 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 {
 	CCamera_Static* pCamera_Static = dynamic_cast<CCamera_Static*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 1));
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
+	
+	AttackAvailableCheck(pPlayer, &Arkus);
 
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::RoundAtk01)
 	{
@@ -49,8 +51,20 @@ CArkusState * CArkus_Attack::Input_State(CArkus & Arkus, const float & fTimeDelt
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Atk01)
 	{
 		Arkus.ViewChanage();
+
+		if (Arkus.Get_Mesh()->IsAnimationEnded(0.65f))
+		{
+			if (pPlayer->CollisionCheckPartInfo(CPlayer::PLAYER_COLLISION::COLL_HEAD) == true)
+				AttackEvent(pPlayer, &Arkus, 1);
+		}
+
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.95f))
-			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+		{
+			AttackEventFree(&Arkus);
+			m_iAniState = 4;
+			return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+			//return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+		}
 	}
 	else if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::HeavyAtk02)
 	{

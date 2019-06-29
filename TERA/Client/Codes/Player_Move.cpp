@@ -39,8 +39,8 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 			{
 				return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
 			}
-			else
-				return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+			//else
+			//	return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
 

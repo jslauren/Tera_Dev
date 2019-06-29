@@ -106,15 +106,15 @@ HRESULT CManagement::Render_Management()
 HRESULT CManagement::Release_Engine()
 {
 	// 객체들을 Release 할 때, 순서에 굉장히 유의하여야 한다.
-
-	if (0 != CEventManager::GetInstance()->DestroyInstance())
-		_MSGBOX("CEventManager Release Failed");
-
+	
 	if (0 != CManagement::GetInstance()->DestroyInstance())
 		_MSGBOX("CManagement Release Failed");
 
 	if (0 != CObject_Manager::GetInstance()->DestroyInstance())
 		_MSGBOX("CObject_Manager Release Failed");
+
+	if (0 != CEventManager::GetInstance()->DestroyInstance())
+		_MSGBOX("CEventManager Release Failed");
 
 	if (0 != CComponent_Manager::GetInstance()->DestroyInstance())
 		_MSGBOX("CComponent_Manager Release Failed");

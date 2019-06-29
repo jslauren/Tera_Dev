@@ -28,6 +28,35 @@ HRESULT CArkusState::Enter_State(CArkus & Player)
 	return NOERROR;
 }
 
+void CArkusState::AttackAvailableCheck(CPlayer * pPlayer, CArkus * pArkus)
+{
+	if (pPlayer->CollisionCheck() == true)
+	{
+	//	Player->DamageCalculator((CPlayer::PLAYER_ANI)Player->Get_Mesh_Bone()->Get_NowPlayAniIndex());
+		if (m_iHitCount < m_iAvailableHitNumber)
+			m_bIsDamageAvailable = true;
+	}
+}
+
+void CArkusState::AttackEvent(CPlayer * pPlayer, CArkus * pArkus, _uint iAvailableHitNumber)
+{
+	m_iAvailableHitNumber = iAvailableHitNumber;
+
+	if (m_bIsDamageAvailable == true)
+	{
+		pPlayer->Set_HP_Sub(200);
+		m_iHitCount++;
+
+		m_bIsDamageAvailable = false;
+	}
+}
+
+void CArkusState::AttackEventFree(CArkus * pArkus)
+{
+	m_bIsDamageAvailable = false;
+	m_iHitCount = 0;
+}
+
 void CArkusState::Free()
 {
 	Safe_Release(m_pGraphic_Device);

@@ -19,8 +19,7 @@ private:
 	void					MoveArkusPosition(CArkus & Arkus, const _float fArkusSpeed, const _float& fTimeDelta, void * pArg, _int iMoveDir = 0);
 	
 private:
-	_bool					m_IsFlyAtk02StartMove = false;
-	
+	_bool					m_bIsFlyAtk02StartMove = false;
 public:
 	static CArkus_Attack*	Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus& Arkus, void* pArg = nullptr);
 	virtual void			Free();

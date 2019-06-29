@@ -17,10 +17,12 @@ public:
 		SitStart, SitLoop, SitEnd, Run, Idle, END
 	};
 	// Jump, Fall, Groggy, Death
-	enum MESH_DIR
+	enum PLAYER_COLLISION
 	{
-		MESHDIR_FRONT, MESHDIR_BACK, MESHDIR_LEFT, MESHDIR_RIGHT, MESHDIR_END
+		COLL_BOOY, COLL_HEAD, COLL_NECK,
+		COLL_TAIL01, COLL_TAIL02, COLL_ATTACK_AREA, COLL_END
 	};
+
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CPlayer(const CPlayer& rhs);
@@ -62,10 +64,12 @@ public:
 	virtual _int		Update_GameObject(const _float& fTimeDelta);
 	virtual _int		LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT		Render_GameObject();
+	virtual HRESULT		OnEvent(const _tchar * _szEventTag, void * _pMsg);
 
 public:
 	void				DamageEvent(_float fSpeed);
 	_bool				CollisionCheck();
+	_bool				CollisionCheckPartInfo(PLAYER_COLLISION eAttackAni);
 	void				DamageCalculator(PLAYER_ANI eAttackAni);
 
 private:
@@ -93,7 +97,9 @@ private:
 	_int			m_iDirection = 1;
 
 	_bool			m_bIsCutSceneEvent = false;
+
 	_bool			m_bCollisionCheck = false;
+	_bool			m_bCollisionPart[COLL_END] = { false, false, false, false, false, false };
 
 	_bool			m_bDamageEventEndInfo = false;
 	_bool			m_bIsNavigationRender = false;

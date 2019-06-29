@@ -3,6 +3,7 @@
 #include "Management.h"
 #include "Camera_Dynamic.h"
 #include "Arkus.h"
+#include "FontManager.h"
 
 _USING(Client)
 
@@ -102,6 +103,11 @@ HRESULT CUI_BossPoint::Render_GameObject()
 			}
 
 			Safe_Release(pEffect);
+
+			CArkus* pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+
+			wsprintf(m_szHP, L"%d / %d", (_int)pArkus->Get_HP(), (_int)m_fHP);
+			CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3((g_iWinCX * 0.43f), (g_iWinCY * 0.0825f), 0.f), m_szHP);
 		}
 	}
 

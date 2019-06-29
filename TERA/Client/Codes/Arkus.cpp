@@ -55,9 +55,6 @@ HRESULT CArkus::Ready_GameObject(void * pArg)
 	int iIdleState = 1;
 	m_pState = CArkus_Apperance::Create(m_pGraphic_Device, *this, &iIdleState);
 
-	//// [ 아르커스 HP, MP 값 셋팅 ] //
-	//m_fHP = 100000.f;
-
 }
 
 _int CArkus::Update_GameObject(const _float & fTimeDelta)
@@ -89,7 +86,6 @@ _int CArkus::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	Compute_ViewZ(m_pTransformCom);
 
-
 	//if (FAILED(SetUp_HeightOnTerrain(1)))   
 	//	return -1;
 
@@ -113,7 +109,6 @@ HRESULT CArkus::Render_GameObject()
 		nullptr == m_pColliderCom)
 		return E_FAIL;
 
-//	m_pMeshCom->Play_Animation(0.f);
 	m_pMeshCom->Play_Animation(m_fTimeDelta);
 
 	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
@@ -160,6 +155,11 @@ HRESULT CArkus::Render_GameObject()
 	m_pColliderTail02Com->Render_Collider();
 	m_pColliderAtkAreaCom->Render_Collider();
 
+	return NOERROR;
+}
+
+HRESULT CArkus::OnEvent(const _tchar * _szEventTag, void * _pMsg)
+{
 	return NOERROR;
 }
 

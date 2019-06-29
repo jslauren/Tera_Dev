@@ -1,100 +1,115 @@
 #include "..\Headers\EventManager.h"
 #include "GameObject.h"
 
+_USING(Engine)
+
 _IMPLEMENT_SINGLETON(CEventManager)
 
 CEventManager::CEventManager()
 {
 }
 
-HRESULT CEventManager::NotifyEvent(const _tchar * _pSubject, void* Msg)
+HRESULT CEventManager::Register_Object(const _tchar * _szEventTag, CGameObject * pObject)
 {
-	auto	iter = find_if(m_pMapSubject.begin(), m_pMapSubject.end(), CFinder_Tag(_pSubject));
-
-	if (iter == m_pMapSubject.end())
+	if (nullptr == pObject ||
+		nullptr == _szEventTag)
 		return E_FAIL;
 
-	list<CGameObject*>* pListGameObject = (iter->second);
+	auto	iter = find_if(m_pMapEventList.begin(), m_pMapEventList.end(), CFinder_Tag(_szEventTag));
 
-	_int iRemoveCode = 0;
-	for (auto iter = pListGameObject->begin(); iter != pListGameObject->end();)
+	if (iter == m_pMapEventList.end())
 	{
-		iRemoveCode = (*iter)->OnEvent(_pSubject, Msg);
+		list<CGameObject*>* pListGameObject = new list<CGameObject*>;
 
-		if (iRemoveCode < 0)
-		{
-			Safe_Release(*iter);
-			iter = pListGameObject->erase(iter);
-			continue;
-		}
+		if (pListGameObject == nullptr)
+			return E_OUTOFMEMORY;
 
-		++iter;
-	}
+		pListGameObject->push_back(pObject);
+		m_pMapEventList.emplace(_szEventTag, pListGameObject);
 
-	return NOERROR;
-}
-
-HRESULT CEventManager::RegisterObject(const _tchar * _pSubject, CGameObject * pObject)
-{
-	if (nullptr == pObject)
-		return E_FAIL;
-
-	auto	iter = find_if(m_pMapSubject.begin(), m_pMapSubject.end(), CFinder_Tag(_pSubject));
-
-	list<CGameObject*>* pListGameObject = nullptr;
-
-	if (iter == m_pMapSubject.end())
-	{
-		pListGameObject = new list<CGameObject*>;
-		m_pMapSubject.emplace(_pSubject, pListGameObject);
+		return NOERROR;
 	}
 	else
-		pListGameObject = (iter->second);
-
-	pListGameObject->push_back(pObject);
-	pObject->AddRef();
+		iter->second->push_back(pObject);
 
 	return NOERROR;
 }
 
-HRESULT CEventManager::RemoveObject(const _tchar* _pSubject, CGameObject* pObject)
+HRESULT CEventManager::Notify_Event(const _tchar * _szEventTag, void* pMsg)
 {
-	if (nullptr == pObject)
-		return E_FAIL;
+	if (nullptr == _szEventTag)
+		return NOERROR;
 
-	auto	iterList = find_if(m_pMapSubject.begin(), m_pMapSubject.end(), CFinder_Tag(_pSubject));
+	auto	iter = find_if(m_pMapEventList.begin(), m_pMapEventList.end(), CFinder_Tag(_szEventTag));
 
-	if (iterList == m_pMapSubject.end())
-		return E_FAIL;
+	if (iter == m_pMapEventList.end())
+		return E_OUTOFMEMORY;
 
-	auto iterObject = find_if(iterList->second->begin(), iterList->second->end(),
-		[&pObject](CGameObject* pGameObejct)->bool { return pGameObejct == pObject; });
-
-	if (iterObject == iterList->second->end())
-		return E_FAIL;
-
-	Safe_Release(*iterObject);
-	iterList->second->erase(iterObject);
-
-	return NOERROR;
-}
-
-HRESULT CEventManager::RemoveAll()
-{
-	for (auto& Pair : m_pMapSubject)
+	for (auto Object : *iter->second)
 	{
-		for (auto& pGameObject : (*Pair.second))
-			Safe_Release(pGameObject);
-
-		Pair.second->clear();
+		if (FAILED(Object->OnEvent(_szEventTag, pMsg)))
+			return E_FAIL;
 	}
 
-	m_pMapSubject.clear();
+	return NOERROR;
+}
+
+HRESULT CEventManager::Remove_Object(const _tchar* _szEventTag, CGameObject* pObject)
+{
+	if (nullptr == pObject ||
+		nullptr == _szEventTag)
+		return NOERROR;
+
+	auto iterList = find_if(m_pMapEventList.begin(), m_pMapEventList.end(), CFinder_Tag(_szEventTag));
+
+	if (iterList == m_pMapEventList.end())
+		return E_OUTOFMEMORY;
+
+	for (auto IterObject = iterList->second->begin(); IterObject != iterList->second->end(); ++IterObject)
+	{
+		if (pObject == *IterObject)
+		{
+			iterList->second->erase(IterObject);
+			break;
+		}
+	}
+
+	if (iterList->second->empty())
+	{
+		iterList->second->clear();
+		Safe_Delete(iterList->second);
+		m_pMapEventList.erase(iterList);
+	}
+
+	return NOERROR;
+}
+
+HRESULT CEventManager::Remove_Event(const _tchar* _szEventTag)
+{
+	if (nullptr == _szEventTag)
+	{
+		Free();
+		return NOERROR;
+	}
+
+	auto iter = find_if(m_pMapEventList.begin(), m_pMapEventList.end(), CFinder_Tag(_szEventTag));
+
+	if (iter == m_pMapEventList.end())
+		return	E_OUTOFMEMORY;
+
+	Safe_Delete(iter->second);
+
+	m_pMapEventList.erase(iter);
 
 	return NOERROR;
 }
 
 void CEventManager::Free()
 {
-	RemoveAll();
+	for (auto & list : m_pMapEventList)
+	{
+		list.second->clear();
+		Safe_Delete(list.second);
+	}
+	m_pMapEventList.clear();
 }

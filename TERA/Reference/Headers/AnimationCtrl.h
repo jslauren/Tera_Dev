@@ -13,6 +13,7 @@ public: // Getter
 	_double			Get_CurretTrackPos();
 	const _uint&	Get_NowPlayAniIndex() { return m_iOldIndex; }
 	const _double	Get_Period();
+
 public:
 	HRESULT Ready_AnimationCtrl();
 	HRESULT SetUp_AnimationSet(_uint iIndex, const _float fAniSpeed = 1.f);
@@ -28,6 +29,7 @@ private:
 	_uint						m_iOldIndex = 12000;
 	_double						m_TimeAcc = 0.0;
 	_float						m_fAniSpeed = 1.f;
+
 public:
 	static CAnimationCtrl*	Create(LPD3DXANIMATIONCONTROLLER pAniCtrl);
 	static CAnimationCtrl*	Create(const CAnimationCtrl& rhs);

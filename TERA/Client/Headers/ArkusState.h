@@ -21,7 +21,16 @@ protected:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
 
 protected:
+	void					AttackAvailableCheck(CPlayer* pPlayer, CArkus* pArkus);
+	void					AttackEvent(CPlayer* pPlayer, CArkus* pArkus, _uint iAvailableHitNumber);
+	void					AttackEventFree(CArkus* pArkus);
+
+protected:
 	_int					m_iAniState = 1;
+	_bool					m_bIsDamageAvailable = false;
+
+	_uint					m_iAvailableHitNumber = 1;
+	_uint					m_iHitCount = 0;
 
 public:
 	virtual void			Free();

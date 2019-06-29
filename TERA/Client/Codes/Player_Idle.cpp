@@ -50,8 +50,8 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 			{
 				return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
 			}
-			else
-				return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
+			//else
+			//	return CPlayer_Hit::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}
 
@@ -276,7 +276,7 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	// [Å×½ºÆ®]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_T) & 0x80)
 	{
-		Player.Set_MP_Sub(50);
+		Player.Set_HP_Add(150);
 		//if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 		//{
 		//	if (Player.Get_Mesh_Bone()->IsAnimationEnded())

@@ -41,6 +41,11 @@ HRESULT CUI::Render_GameObject()
 	return NOERROR;
 }
 
+HRESULT CUI::OnEvent(const _tchar * _szEventTag, void * _pMsg)
+{
+	return NOERROR;
+}
+
 HRESULT CUI::Add_Component()
 {
 	// For.Com_Transform

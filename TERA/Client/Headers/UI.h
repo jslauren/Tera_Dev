@@ -25,6 +25,8 @@ public:
 	virtual _int	Update_GameObject(const _float& fTimeDelta);
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
+	virtual HRESULT	OnEvent(const _tchar * _szEventTag, void * _pMsg);
+
 
 public:
 	virtual HRESULT			Add_Component();

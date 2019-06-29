@@ -50,6 +50,8 @@ private:
 	_float				m_fCalculatedHP = 0.f;
 	_float				m_fHPRatio = 0.f;
 
+	_tchar				m_szHP[64];
+
 public:
 	static CUI_BossPoint*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*		Clone(void * pArg = nullptr) override;

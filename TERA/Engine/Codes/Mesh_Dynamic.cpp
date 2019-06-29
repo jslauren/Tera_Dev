@@ -172,7 +172,6 @@ HRESULT CMesh_Dynamic::ChangePivot(_vec3 vState, _float fDegree)
 	return NOERROR;
 }
 
-
 HRESULT CMesh_Dynamic::Update_CombinedTransformationMatrix(D3DXFRAME * pFrame, const D3DXMATRIX* pParentMatrix)
 {
 	D3DXFRAME_DERIVED*		pFrame_Derived = (D3DXFRAME_DERIVED*)pFrame;

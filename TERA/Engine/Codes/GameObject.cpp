@@ -180,9 +180,9 @@ HRESULT CGameObject::Render_GameObject()
 	return NOERROR;
 }
 
-_int CGameObject::OnEvent(const _tchar * _pSubject, void * _pMsg)
+HRESULT CGameObject::OnEvent(const _tchar * _pSubject, void * _pMsg)
 {
-	return _int();
+	return NOERROR;
 }
 
 HRESULT CGameObject::Add_Component(const _uint & iSceneIdx, const _tchar * pPrototypeTag, const _tchar* pComponentTag, CComponent** ppOutComponent, void* pArg)

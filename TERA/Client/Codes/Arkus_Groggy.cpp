@@ -4,6 +4,8 @@
 #include "Input_Device.h"
 
 #include "Arkus_Idle.h"
+#include "Arkus_AlmostDead.h"
+#include "Arkus_Death.h"
 
 _USING(Client)
 
@@ -24,12 +26,15 @@ CArkusState * CArkus_Groggy::Input_State(CArkus & Arkus, const float & fTimeDelt
 {
 	if (Arkus.Get_Mesh()->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Groggy)
 	{
+		if (Arkus.Get_HP() <= 0.f)
+			return CArkus_Death::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+
 		MoveArkusPosition(Arkus, 25.f, fTimeDelta, pArg, 0);
 
 		if (Arkus.Get_Mesh()->IsAnimationEnded(0.75f))
 		{
-			m_iAniState = 1;
-			return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+			if(Arkus.Get_HP() >= 0.f)
+				return CArkus_AlmostDead::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}
 	}
 }
