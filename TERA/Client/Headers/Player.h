@@ -17,11 +17,7 @@ public:
 		SitStart, SitLoop, SitEnd, Run, Idle, END
 	};
 	// Jump, Fall, Groggy, Death
-	enum PLAYER_COLLISION
-	{
-		COLL_BOOY, COLL_HEAD, COLL_NECK,
-		COLL_TAIL01, COLL_TAIL02, COLL_ATTACK_AREA, COLL_END
-	};
+
 
 private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -69,7 +65,6 @@ public:
 public:
 	void				DamageEvent(_float fSpeed);
 	_bool				CollisionCheck();
-	_bool				CollisionCheckPartInfo(PLAYER_COLLISION eAttackAni);
 	void				DamageCalculator(PLAYER_ANI eAttackAni);
 
 private:
@@ -99,7 +94,6 @@ private:
 	_bool			m_bIsCutSceneEvent = false;
 
 	_bool			m_bCollisionCheck = false;
-	_bool			m_bCollisionPart[COLL_END] = { false, false, false, false, false, false };
 
 	_bool			m_bDamageEventEndInfo = false;
 	_bool			m_bIsNavigationRender = false;

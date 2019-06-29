@@ -542,34 +542,18 @@ _bool CPlayer::CollisionCheck()
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Run_Battle &&
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::JumpEvasion &&
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Groggy &&
-				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::AlmostDead &&
 				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Death)
 			{
-				if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true)
-					m_bCollisionPart[COLL_BOOY] = true;
-
-				else if (m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true)
-					m_bCollisionPart[COLL_HEAD] = true;
-
-				else if (m_pColliderCom->Collision_Sphere(pArkusColliderNeck) == true)
-					m_bCollisionPart[COLL_NECK] = true;
-
-				else if (m_pColliderCom->Collision_Sphere(pArkusColliderTail01) == true)
-					m_bCollisionPart[COLL_TAIL01] = true;
-
-				else if (m_pColliderCom->Collision_Sphere(pArkusColliderTail02) == true)
-					m_bCollisionPart[COLL_TAIL02] = true;
-
-				for (size_t i = 0; i < COLL_ATTACK_AREA; ++i)
+				if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true ||
+					m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true ||
+					m_pColliderCom->Collision_Sphere(pArkusColliderNeck) == true ||
+					m_pColliderCom->Collision_Sphere(pArkusColliderTail01) == true ||
+					m_pColliderCom->Collision_Sphere(pArkusColliderTail02) == true)
 				{
-					if (m_bCollisionPart[i] == true)
-					{
-						m_bCollisionCheck = true;
-						break;
-					}
-					else
-						m_bCollisionCheck = false;
+					m_bCollisionCheck = true;
 				}
+				else
+					m_bCollisionCheck = false;
 			}
 
 			_uint	iCellIndx = 0;
@@ -588,35 +572,18 @@ _bool CPlayer::CollisionCheck()
 				}
 			}
 		}
-
-		if (m_bCollisionCheck == true)
-		{
-			// 이걸 안해주면 계속 밀린다 ㅈ된다.
-			m_bCollisionCheck = false;
-			return true;
-		}
-
-		else if (m_bCollisionCheck == false)
-			return false;
 	}
-}
 
-_bool CPlayer::CollisionCheckPartInfo(PLAYER_COLLISION eAttackAni)
-{
-	_bool bTemp = false;
-
-	if (m_bCollisionPart[eAttackAni] == true)
-		bTemp = true;
-	else
-		bTemp = false;
-
-	for (size_t i = 0; i < COLL_ATTACK_AREA; ++i)
+	if (m_bCollisionCheck == true)
 	{
-		m_bCollisionPart[i] = false;
+		// 이걸 안해주면 계속 밀린다 ㅈ된다.
+		m_bCollisionCheck = false;
+		return true;
 	}
 
-	return bTemp;
-}	
+	else if (m_bCollisionCheck == false)
+		return false;
+}
 
 void CPlayer::DamageCalculator(PLAYER_ANI eAttackAni)
 {
