@@ -38,6 +38,7 @@ public:	// Getter
 	const _uint&		Get_PlayerOffenceValue() { return m_iOffencePower; }
 	const _bool&		Get_IsCriticalDamageInfo() { return m_bIsCriticalDamage; }
 	const _bool&		Get_LBtnClickedInfo() { return m_bLBtnClicked; }
+	const _bool&		Get_HitCount() { return m_iHitCount; }
 	
 public:	// Setter
 	HRESULT				Set_Navigation_Component(SCENEID eScene);
@@ -53,6 +54,9 @@ public:	// Setter
 	void				Set_MP_Add(_float fHealingValue) { m_fMP += fHealingValue; if (m_fMP >= 3250.f) m_fMP = 3250.f; }
 	void				Set_PlayerOffenceValue(_uint iOffenceValue) { m_iOffencePower = iOffenceValue; }
 	void				Set_LBtnClickedInfo(_bool bButton) { m_bLBtnClicked = bButton; }
+
+	void				Set_AddHitCount() { m_iHitCount++; }
+	void				Set_FreeHitCount() { m_iHitCount = 0; }
 
 public:
 	virtual HRESULT		Ready_GameObject_Prototype();
@@ -106,6 +110,7 @@ private:
 	_bool			m_bIsCriticalDamage = false;
 
 	_bool			m_bLBtnClicked = false;
+	_uint			m_iHitCount = 0;
 
 private:
 	virtual HRESULT Add_Component();

@@ -33,28 +33,29 @@ void CArkusState::AttackAvailableCheck(CPlayer * pPlayer, CArkus * pArkus)
 	if (pPlayer->CollisionCheck() == true)
 	{
 	//	Player->DamageCalculator((CPlayer::PLAYER_ANI)Player->Get_Mesh_Bone()->Get_NowPlayAniIndex());
-		if (m_iHitCount < m_iAvailableHitNumber)
+		if (pPlayer->Get_HitCount() < m_iAvailableHitNumber)
 			m_bIsDamageAvailable = true;
 	}
 }
 
-void CArkusState::AttackEvent(CPlayer * pPlayer, CArkus * pArkus, _uint iAvailableHitNumber)
+void CArkusState::AttackEvent(CPlayer * pPlayer, CArkus * pArkus, _uint iAvailableHitNumber, _uint iAttackNumber)
 {
 	m_iAvailableHitNumber = iAvailableHitNumber;
 
 	if (m_bIsDamageAvailable == true)
 	{
-		pPlayer->Set_HP_Sub(200);
-		m_iHitCount++;
+		CEventManager::GetInstance()->Notify_Event(L"Arkus_Attack", &iAttackNumber);
+
+		pPlayer->Set_AddHitCount();
 
 		m_bIsDamageAvailable = false;
 	}
 }
 
-void CArkusState::AttackEventFree(CArkus * pArkus)
+void CArkusState::AttackEventFree(CPlayer* pPlayer, CArkus * pArkus)
 {
 	m_bIsDamageAvailable = false;
-	m_iHitCount = 0;
+	pPlayer->Set_FreeHitCount();
 }
 
 void CArkusState::Free()

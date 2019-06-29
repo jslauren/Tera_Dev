@@ -89,7 +89,7 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 
 //	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
 
-	CEventManager::GetInstance()->Register_Object(L"Arkus_Atk01", this);
+	CEventManager::GetInstance()->Register_Object(L"Arkus_Attack", this);
 
 
 	return NOERROR;
@@ -291,11 +291,26 @@ HRESULT CPlayer::Render_GameObject()
 
 HRESULT CPlayer::OnEvent(const _tchar * _szEventTag, void * _pMsg)
 {
-	//if (!lstrcmp(_szEventTag, L"On_Input"))
-	//{
-	//}
+	if (!lstrcmp(_szEventTag, L"Arkus_Attack"))
+	{
+		if (m_fHP <= 0.f)
+			m_fHP = 0.f;
+		else 
+		{
+			_float fDamage = 0.f;
 
-	m_fHP -= 300;
+			if ((*(_uint*)(_pMsg) == CArkus::ARKUS_ANI::Atk01))
+				fDamage = 300.f;
+
+			// [ HP 조절 구문 ] //
+			// 현재 체력을 상회하는 데미지가 들어오면,
+			// 그냥 현제 체력을 0으로 만들어버린다.
+			if ((m_fHP - fDamage) <= 0.f)
+				m_fHP = 0.f;
+			else // 아니라면 그냥 들어온 데미지만큼 현제 체력을 깎는다.
+				m_fHP -= fDamage;
+		}
+	}
 
 	return NOERROR;
 }
@@ -513,13 +528,17 @@ void CPlayer::Compute_HeightOnNavi()
 
 void CPlayer::AutoHealing(const _float& fTimeDelta)
 {
-	m_fAutoHealingAccTime += fTimeDelta;
-
-	if (m_fAutoHealingAccTime > 4.f)
+	if (m_pMeshCom_Bone->Get_NowPlayAniIndex() == PLAYER_ANI::Idle_Battle ||
+		m_pMeshCom_Bone->Get_NowPlayAniIndex() == PLAYER_ANI::SitLoop)
 	{
-		Set_HP_Add(PLAYER_HP * 5 / 100);
-		Set_MP_Add(PLAYER_MP * 5 / 100);
-		m_fAutoHealingAccTime = 0.f;
+		m_fAutoHealingAccTime += fTimeDelta;
+
+		if (m_fAutoHealingAccTime > 4.f)
+		{
+			Set_HP_Add(PLAYER_HP * 5 / 100);
+			Set_MP_Add(PLAYER_MP * 5 / 100);
+			m_fAutoHealingAccTime = 0.f;
+		}
 	}
 }
 
@@ -693,7 +712,7 @@ CGameObject * CPlayer::Clone(void* pArg)
 
 void CPlayer::Free()
 {
-	CEventManager::GetInstance()->Remove_Object(L"Arkus_Atk01", this);
+	CEventManager::GetInstance()->Remove_Object(L"Arkus_Attack", this);
 
 	Safe_Release(m_pMeshCom_Tail);
 	Safe_Release(m_pMeshCom_Leg);

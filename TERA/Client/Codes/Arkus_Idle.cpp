@@ -44,29 +44,33 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 		//	}
 		//}
 
+		// m_bIsDamageAvailable √ ±‚»≠ //
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
+		AttackEventFree(pPlayer, &Arkus);
+
 //		if (Arkus.Get_PlayerFrontInfo() == true)
 //		{
-			if (Arkus.Get_HP() <= 3000.f)
-			{
-				if (Arkus.Get_HP() <= 0.f)
-					return CArkus_Death::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-				else
-					return CArkus_AlmostDead::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+			//if (Arkus.Get_HP() <= 3000.f)
+			//{
+			//	if (Arkus.Get_HP() <= 0.f)
+			//		return CArkus_Death::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+			//	else
+			//		return CArkus_AlmostDead::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 
-			}
-			if (Arkus.CollisionCheck() == true)
-			{
-				if (Arkus.Get_Mesh()->IsAnimationEnded(0.15f))
-					return CArkus_Hit::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-			}
+			//}
+			//if (Arkus.CollisionCheck() == true)
+			//{
+			//	if (Arkus.Get_Mesh()->IsAnimationEnded(0.15f))
+			//		return CArkus_Hit::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+			//}
 
-			if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATTACK_AREA) == false)
-			{
-				if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
-					return CArkus_Run::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-			}
-			else if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATTACK_AREA) == true)
-			{
+			//if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATTACK_AREA) == false)
+			//{
+			//	if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
+			//		return CArkus_Run::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+			//}
+			//else if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATTACK_AREA) == true)
+			//{
 				if (Arkus.Get_Mesh()->IsAnimationEnded(0.6f))
 				{
 					srand((unsigned)time(NULL));
@@ -83,7 +87,7 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 					//return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 					return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 				}
-			}
+			//}
 			else
 				return nullptr;
 //		}		

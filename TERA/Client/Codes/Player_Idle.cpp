@@ -283,6 +283,9 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 		//		return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
 		//}
 	}
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_Y) & 0x80)
+		Player.Set_HP_Sub(150);
+
 	// [스킬 넘버]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_1) & 0x80)
 	{
