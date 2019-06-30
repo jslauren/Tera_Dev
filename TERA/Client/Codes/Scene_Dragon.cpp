@@ -14,6 +14,8 @@
 #include "UI_BossPoint.h"
 #include "UI_SkillBoard.h"
 #include "UI_Loading.h"
+#include "UI_DamageTexture.h"
+#include "UI_DamageFont_Manager.h"
 
 #define	NEAR			0.2f
 #define FAR				1000.f
@@ -327,7 +329,6 @@ HRESULT CScene_Dragon::Ready_GameObject_Prototype()
 	// For.GameObject_Arkus
 	if (FAILED(Add_Object_Prototype(SCENE_DRAGON, L"GameObject_Arkus", CArkus::Create(m_pGraphic_Device))))
 		return E_FAIL;
-
 
 	return NOERROR;
 }

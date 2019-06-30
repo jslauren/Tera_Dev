@@ -156,8 +156,6 @@ HRESULT CScene_Loading::Ready_Component_Prototype()
 
 HRESULT CScene_Loading::Ready_GameObject_Prototype()
 {
-
-
 	return NOERROR;
 }
 

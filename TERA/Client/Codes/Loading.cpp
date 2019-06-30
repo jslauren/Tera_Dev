@@ -356,7 +356,7 @@ HRESULT CLoading::Ready_Dragon_Component()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
-	m_iTotalRsrcNum = 10;
+	m_iTotalRsrcNum = 15;
 	m_iCurrentRsrcNum = 0;
 	m_iComplete = 0;
 
@@ -384,6 +384,26 @@ HRESULT CLoading::Ready_Dragon_Component()
 
 	// For.Component_Texture_SkyBox
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Damage_One", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Damage_Ten", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Damage_Hndr", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Damage_Thsn", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_Damage", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/DamageFont/DamageFont_%d.png", 10))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 
