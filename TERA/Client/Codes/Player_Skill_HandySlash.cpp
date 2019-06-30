@@ -17,7 +17,6 @@ CPlayer_Skill_HandySlash::CPlayer_Skill_HandySlash(LPDIRECT3DDEVICE9 pGraphic_De
 HRESULT CPlayer_Skill_HandySlash::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::HandySlash);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }

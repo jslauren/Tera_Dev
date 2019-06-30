@@ -14,6 +14,7 @@ public:
 	const D3DLIGHT9* Get_LightInfo(const _uint& iIndex) const;
 public:
 	HRESULT Add_Light(LPDIRECT3DDEVICE9 pGraphic_Device, const D3DLIGHT9* pLightInfo);
+	HRESULT Render_LightAcc(LPD3DXEFFECT pEffect);
 private:
 	list<CLight*>	m_LightList;
 public:

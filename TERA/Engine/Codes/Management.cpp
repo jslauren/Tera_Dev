@@ -10,6 +10,7 @@
 #include "KeyManager.h"
 #include "EventManager.h"
 #include "FontManager.h"
+#include "Target_Manager.h"
 
 _IMPLEMENT_SINGLETON(CManagement)
 
@@ -124,6 +125,9 @@ HRESULT CManagement::Release_Engine()
 
 	if (0 != CLight_Manager::GetInstance()->DestroyInstance())
 		_MSGBOX("CLight_Manager Release Failed");
+
+	if (0 != CTarget_Manager::GetInstance()->DestroyInstance())
+		_MSGBOX("CTarget_Manager Release Failed");
 
 	if (0 != CKeyManager::GetInstance()->DestroyInstance())
 		_MSGBOX("CManagement Release Failed");

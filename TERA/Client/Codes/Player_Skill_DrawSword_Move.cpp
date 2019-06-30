@@ -16,7 +16,6 @@ CPlayer_Skill_DrawSword_Move::CPlayer_Skill_DrawSword_Move(LPDIRECT3DDEVICE9 pGr
 HRESULT CPlayer_Skill_DrawSword_Move::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DrawSwordMove);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	CTransform* pWeaponTransformCom = dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", -1))->Get_TransformCom();
 

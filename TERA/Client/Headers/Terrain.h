@@ -3,9 +3,10 @@
 #include "GameObject.h"
 
 _BEGIN(Engine)
-class CTransform;
 class CBuffer_Terrain; // 그리기를 위한 리소스로 정점 버퍼를 추가한다.
+class CTransform;
 class CRenderer; //백로고를 렌더그룹에 추가하기 위해.and Render함수를 호출할 수 있도록 
+class CFrustum;
 class CTexture;
 class CShader;
 _END
@@ -31,19 +32,17 @@ private:
 	CBuffer_Terrain*	m_pBufferCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
 	CTexture*			m_pTextureCom = nullptr;
-	//CTexture*			m_pFilterCom = nullptr;
-	//CTexture*			m_pBrushCom = nullptr;
+	CFrustum*			m_pFrustumCom = nullptr;
 	CShader*			m_pShaderCom = nullptr;
-//private:
-//	LPDIRECT3DTEXTURE9	m_pFilterTexture = nullptr;
+
 private:
 	D3DMATERIAL9		m_MtrlInfo;
 	_vec4				m_vDetail = { 1.f, 1.f, 1.f, 1.f };
+
 private:
 	HRESULT Add_Component();
 	HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
-	//HRESULT SetUp_RenderState();
-	//HRESULT Release_RenderState();
+
 public:
 	static CTerrain*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);

@@ -282,7 +282,7 @@ HRESULT CScene_Dragon::Ready_LightInfo()
 	LightInfo.Type = D3DLIGHT_DIRECTIONAL;
 	LightInfo.Direction = _vec3(1.f, -1.f, 0.f);
 	LightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	LightInfo.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	LightInfo.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
 	LightInfo.Specular = D3DXCOLOR(0.f, 0.f, 0.f, 0.f);
 
 	if (FAILED(pLight_Manager->Add_Light(m_pGraphic_Device, &LightInfo)))

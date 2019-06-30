@@ -53,6 +53,9 @@ _int CTerrain_Dragon::LateUpdate_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pRendererCom)
 		return -1;
+	
+	// 2의n승으로 터레인을 만들어 놓은 뒤, 사용해야 한다.
+//	m_pBufferCom->Culling(m_pTransformCom, m_pFrustumCom);
 
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
 		return -1;
@@ -114,6 +117,10 @@ HRESULT CTerrain_Dragon::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Shader_Terrain", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
+	// For.Com_Frustum
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Frustum", L"Com_Frustum", (CComponent**)&m_pFrustumCom)))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
@@ -128,23 +135,6 @@ HRESULT CTerrain_Dragon::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
 	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
 	pEffect->SetVector("g_fDetail", &m_vDetail);
-
-	CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
-	if (nullptr == pLight_Manager)
-		return E_FAIL;
-
-	pLight_Manager->AddRef();
-
-	const D3DLIGHT9* pLightInfo = pLight_Manager->Get_LightInfo(0);
-	if (nullptr == pLightInfo)
-		return E_FAIL;
-
-	pEffect->SetVector("g_vLightDir", &_vec4(pLightInfo->Direction, 0.f));
-	pEffect->SetVector("g_vLightDiffuse", (_vec4*)&pLightInfo->Diffuse);
-	pEffect->SetVector("g_vLightAmbient", (_vec4*)&pLightInfo->Ambient);
-	pEffect->SetVector("g_vLightSpecular", (_vec4*)&pLightInfo->Specular);
-
-	Safe_Release(pLight_Manager);
 
 	m_pTextureCom->SetUp_OnShader(pEffect, "g_BaseTexture", 0);
 
@@ -185,6 +175,7 @@ CGameObject * CTerrain_Dragon::Clone(void* pArg)
 
 void CTerrain_Dragon::Free()
 {
+	Safe_Release(m_pFrustumCom);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);

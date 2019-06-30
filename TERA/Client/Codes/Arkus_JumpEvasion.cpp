@@ -15,7 +15,6 @@ CArkus_JumpEvasion::CArkus_JumpEvasion(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CArkus_JumpEvasion::Initialize_State(CArkus & Arkus)
 {
 	Arkus.Set_AniIndex(CArkus::ARKUS_ANI::JumpEvasion);
-	Arkus.Set_ActionID(CArkus::ACTION_ID::ACTION_PHYSICSSKILL);
 
 	return NOERROR;
 }

@@ -17,7 +17,6 @@ CPlayer_Skill_Tumbling::CPlayer_Skill_Tumbling(LPDIRECT3DDEVICE9 pGraphic_Device
 HRESULT CPlayer_Skill_Tumbling::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::Tumbling);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }

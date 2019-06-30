@@ -17,7 +17,6 @@ CPlayer_Skill_CuttingSlash::CPlayer_Skill_CuttingSlash(LPDIRECT3DDEVICE9 pGraphi
 HRESULT CPlayer_Skill_CuttingSlash::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::CuttingSlash);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }

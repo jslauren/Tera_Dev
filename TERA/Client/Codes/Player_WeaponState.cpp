@@ -16,7 +16,6 @@ CPlayer_WeaponState::CPlayer_WeaponState(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CPlayer_WeaponState::Initialize_State(CPlayer & Player)
 {
 	//Player.Set_AniIndex(CPlayer::PLAYER_STATE::OUTWEAPON);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_READY);
 
 	return NOERROR;
 }

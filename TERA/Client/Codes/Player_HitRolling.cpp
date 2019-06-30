@@ -15,7 +15,6 @@ CPlayer_HitRolling::CPlayer_HitRolling(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CPlayer_HitRolling::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::Hit_Rolling);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_PHYSICSSKILL);
 
 	return NOERROR;
 }

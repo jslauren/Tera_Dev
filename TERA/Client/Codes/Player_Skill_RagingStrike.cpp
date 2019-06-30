@@ -17,7 +17,6 @@ CPlayer_Skill_RagingStrike::CPlayer_Skill_RagingStrike(LPDIRECT3DDEVICE9 pGraphi
 HRESULT CPlayer_Skill_RagingStrike::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::RagingStrike);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }

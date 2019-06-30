@@ -4,6 +4,7 @@
 _BEGIN(Engine)
 
 class CFrustum;
+class CQuadTree;
 class _DLL_EXPORTS CBuffer_Terrain final : public CVIBuffer
 {
 private:
@@ -17,10 +18,11 @@ public:
 	virtual void	Render_Buffer(const CTransform* pTransform = nullptr);
 	virtual _float	Compute_HeightOnBuffer(const CTransform* pTransform);
 public:
-	HRESULT			Culling(CFrustum* pFrustum);
+	HRESULT			Culling(CTransform* pTransform, CFrustum* pFrustum);
 private:
 	void			ComputeNormal(_vec3* pVtx0, _vec3* pVtx1, _vec3* pVtx2, _vec3* pOut);
 private:
+	CQuadTree*		m_pQuadTree = nullptr;
 	_uint			m_iNumVerticesX = 0;
 	_uint			m_iNumVerticesZ = 0;
 	_float			m_fInterval = 1.f;

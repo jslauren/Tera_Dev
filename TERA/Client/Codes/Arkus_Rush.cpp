@@ -14,8 +14,6 @@ CArkus_Rush::CArkus_Rush(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CArkus_Rush::Initialize_State(CArkus & Arkus)
 {
-	Arkus.Set_ActionID(CArkus::ACTION_ID::ACTION_PHYSICSSKILL);
-
 	return NOERROR;
 }
 

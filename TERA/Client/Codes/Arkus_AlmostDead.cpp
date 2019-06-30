@@ -17,7 +17,6 @@ CArkus_AlmostDead::CArkus_AlmostDead(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CArkus_AlmostDead::Initialize_State(CArkus & Arkus)
 {
 	Arkus.Set_AniIndex(CArkus::ARKUS_ANI::AlmostDead);
-	Arkus.Set_ActionID(CArkus::ACTION_ID::ACTION_STUN);
 
 	return NOERROR;
 }

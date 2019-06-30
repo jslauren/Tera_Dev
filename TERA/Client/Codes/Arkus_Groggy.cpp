@@ -17,7 +17,6 @@ CArkus_Groggy::CArkus_Groggy(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CArkus_Groggy::Initialize_State(CArkus & Arkus)
 {
 	Arkus.Set_AniIndex(CArkus::ARKUS_ANI::Groggy);
-	Arkus.Set_ActionID(CArkus::ACTION_ID::ACTION_READY);
 
 	return NOERROR;
 }

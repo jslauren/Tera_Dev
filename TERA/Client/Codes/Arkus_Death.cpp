@@ -15,7 +15,6 @@ CArkus_Death::CArkus_Death(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CArkus_Death::Initialize_State(CArkus & Arkus)
 {
 	Arkus.Set_AniIndex(CArkus::ARKUS_ANI::Death);
-	Arkus.Set_ActionID(CArkus::ACTION_ID::ACTION_STUN);
 
 	return NOERROR;
 }

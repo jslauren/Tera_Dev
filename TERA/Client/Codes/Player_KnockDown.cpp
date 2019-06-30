@@ -15,7 +15,6 @@ CPlayer_KnockDown::CPlayer_KnockDown(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CPlayer_KnockDown::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::Hit_Land);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_PHYSICSSKILL);
 
 	return NOERROR;
 }

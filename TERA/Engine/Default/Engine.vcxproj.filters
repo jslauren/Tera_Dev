@@ -137,7 +137,16 @@
       <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Normal</Filter>
     </ClInclude>
     <ClInclude Include="..\Headers\FontManager.h">
-      <Filter>01. Utility\05. FontManager</Filter>
+      <Filter>01. Utility\06. FontManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\QuadTree.h">
+      <Filter>01. Utility\02. Component\Component\Buffer\Terrain\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Target.h">
+      <Filter>01. Utility\05. RenderTarget\Target</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Target_Manager.h">
+      <Filter>01. Utility\05. RenderTarget\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -291,8 +300,23 @@
     <Filter Include="01. Utility\02. Component\Component\Mesh\Dynamic_Player\Mesh_Dynamic_Parts">
       <UniqueIdentifier>{8801e23c-1b44-4c5f-a9d8-df421b545e4a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Utility\05. FontManager">
+    <Filter Include="01. Utility\02. Component\Component\Buffer\Terrain\QuadTree">
+      <UniqueIdentifier>{2569427d-86df-4320-842e-a94a0360b326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\04. Light\ShaderFiles">
+      <UniqueIdentifier>{0b0425da-f416-462c-8b20-190a2297939d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\06. FontManager">
       <UniqueIdentifier>{03e649ce-089d-4632-b270-80a29154ea07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\05. RenderTarget">
+      <UniqueIdentifier>{f876d231-2543-44c8-b85d-a2b08aa58ee7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\05. RenderTarget\Manager">
+      <UniqueIdentifier>{ad17dc05-8445-4d09-877c-55d85a7f39a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Utility\05. RenderTarget\Target">
+      <UniqueIdentifier>{b972006c-c3ef-42cc-ae53-356555eb7517}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -414,12 +438,27 @@
       <Filter>01. Utility\02. Component\Component\Mesh\Dynamic_Player\Loader_Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Codes\FontManager.cpp">
-      <Filter>01. Utility\05. FontManager</Filter>
+      <Filter>01. Utility\06. FontManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\QuadTree.cpp">
+      <Filter>01. Utility\02. Component\Component\Buffer\Terrain\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Target.cpp">
+      <Filter>01. Utility\05. RenderTarget\Target</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Target_Manager.cpp">
+      <Filter>01. Utility\05. RenderTarget\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Collider.fx">
       <Filter>01. Utility\02. Component\Component\Collider\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_LightAcc.fx">
+      <Filter>01. Utility\04. Light\ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Blend.fx">
+      <Filter>01. Utility\04. Light\ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

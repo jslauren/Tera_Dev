@@ -50,7 +50,6 @@ HRESULT CArkus::Ready_GameObject(void * pArg)
 	m_pMeshCom->SetUp_AnimationSet(Apperance01);
 	m_eAnimationIndex = Apperance01;
 	m_eOldAnimationIndex = End;
-	m_eCurActionID = ACTION_READY;
 
 	int iIdleState = 1;
 	m_pState = CArkus_Apperance::Create(m_pGraphic_Device, *this, &iIdleState);
@@ -95,8 +94,11 @@ _int CArkus::LateUpdate_GameObject(const _float & fTimeDelta)
 	m_pColliderCom->Collision_OBB(pPlayerCollider);
 	m_pColliderCom->Collision_OBB(pWeaponCollider);
 
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
-		return -1;
+	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, 50.f))
+	{
+		if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
+			return -1;
+	}
 
 	return _int();
 }
@@ -109,6 +111,7 @@ HRESULT CArkus::Render_GameObject()
 		nullptr == m_pColliderCom)
 		return E_FAIL;
 
+	// Arkus가 죽고 난 뒤, 애니메이션을 영구적으로 멈추기 위한 구문.
 	if (m_pMeshCom->Get_NowPlayAniIndex() == CArkus::ARKUS_ANI::Death)
 	{
 		if (m_pMeshCom->IsAnimationEnded(0.95f))
@@ -271,29 +274,44 @@ HRESULT CArkus::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
 	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
 
-	CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
-	if (nullptr == pLight_Manager)
-		return E_FAIL;
-
-	pLight_Manager->AddRef();
-
-	const D3DLIGHT9* pLightInfo = pLight_Manager->Get_LightInfo(0);
-	if (nullptr == pLightInfo)
-		return E_FAIL;
-
-	pEffect->SetVector("g_vLightDir", &_vec4(pLightInfo->Direction, 0.f));
-	pEffect->SetVector("g_vLightDiffuse", (_vec4*)&pLightInfo->Diffuse);
-	pEffect->SetVector("g_vLightAmbient", (_vec4*)&pLightInfo->Ambient);
-	pEffect->SetVector("g_vLightSpecular", (_vec4*)&pLightInfo->Specular);
-
-	Safe_Release(pLight_Manager);
-
-	_matrix		matView = CGameObject::Get_Transform(D3DTS_VIEW);
-	D3DXMatrixInverse(&matView, nullptr, &matView);
-
-	pEffect->SetVector("g_vCamPosition", (_vec4*)&matView.m[3][0]);
-
 	Safe_Release(pEffect);
+
+
+	// Old
+	{
+		//if (nullptr == pEffect)
+		//	return E_FAIL;
+
+		//pEffect->AddRef();
+
+		//pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
+		//pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
+		//pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
+
+		//CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
+		//if (nullptr == pLight_Manager)
+		//	return E_FAIL;
+
+		//pLight_Manager->AddRef();
+
+		//const D3DLIGHT9* pLightInfo = pLight_Manager->Get_LightInfo(0);
+		//if (nullptr == pLightInfo)
+		//	return E_FAIL;
+
+		//pEffect->SetVector("g_vLightDir", &_vec4(pLightInfo->Direction, 0.f));
+		//pEffect->SetVector("g_vLightDiffuse", (_vec4*)&pLightInfo->Diffuse);
+		//pEffect->SetVector("g_vLightAmbient", (_vec4*)&pLightInfo->Ambient);
+		//pEffect->SetVector("g_vLightSpecular", (_vec4*)&pLightInfo->Specular);
+
+		//Safe_Release(pLight_Manager);
+
+		//_matrix		matView = CGameObject::Get_Transform(D3DTS_VIEW);
+		//D3DXMatrixInverse(&matView, nullptr, &matView);
+
+		//pEffect->SetVector("g_vCamPosition", (_vec4*)&matView.m[3][0]);
+
+		//Safe_Release(pEffect);
+	}
 
 	return NOERROR;
 }

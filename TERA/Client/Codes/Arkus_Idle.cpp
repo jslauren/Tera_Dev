@@ -21,7 +21,6 @@ CArkus_Idle::CArkus_Idle(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CArkus_Idle::Initialize_State(CArkus & Arkus)
 {
 	Arkus.Set_AniIndex(CArkus::ARKUS_ANI::Idle);
-	Arkus.Set_ActionID(CArkus::ACTION_ID::ACTION_IDLE);
 
 	return NOERROR;
 }

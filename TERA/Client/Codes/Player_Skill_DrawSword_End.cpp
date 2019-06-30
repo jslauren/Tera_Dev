@@ -15,7 +15,6 @@ CPlayer_Skill_DrawSword_End::CPlayer_Skill_DrawSword_End(LPDIRECT3DDEVICE9 pGrap
 HRESULT CPlayer_Skill_DrawSword_End::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DrawSwordEnd);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }

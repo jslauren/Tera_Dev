@@ -30,8 +30,6 @@ CPlayer_Idle::CPlayer_Idle(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CPlayer_Idle::Initialize_State(CPlayer & Player)
 {
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_IDLE);
-
 	return NOERROR;
 }
 

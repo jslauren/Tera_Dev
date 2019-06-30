@@ -16,7 +16,6 @@ CPlayer_Skill_DrawSword_Loop::CPlayer_Skill_DrawSword_Loop(LPDIRECT3DDEVICE9 pGr
 HRESULT CPlayer_Skill_DrawSword_Loop::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DrawSwordLoop);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }

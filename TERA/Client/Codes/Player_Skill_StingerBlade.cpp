@@ -17,7 +17,6 @@ CPlayer_Skill_StingerBlade::CPlayer_Skill_StingerBlade(LPDIRECT3DDEVICE9 pGraphi
 HRESULT CPlayer_Skill_StingerBlade::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::StingerBlade);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }

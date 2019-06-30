@@ -14,8 +14,6 @@ CPlayer_Sit::CPlayer_Sit(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CPlayer_Sit::Initialize_State(CPlayer & Player)
 {
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_READY);
-
 	return NOERROR;
 }
 

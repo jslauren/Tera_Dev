@@ -307,6 +307,7 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Default.fx" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_Effect.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Mesh.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Sky.fx" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Terrain.fx" />

@@ -17,7 +17,6 @@ CPlayer_Skill_CutHead::CPlayer_Skill_CutHead(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CPlayer_Skill_CutHead::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::CutHead);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }

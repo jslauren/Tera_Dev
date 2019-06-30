@@ -31,7 +31,7 @@ HRESULT CFrustum::Ready_Frustum()
 	return NOERROR;
 }
 
-_bool CFrustum::isIn_Frustum(const _vec3 * pWorldPoint, const CTransform * pTransform, _float fRadius)
+_bool CFrustum::WorldPt_InFrustum(const _vec3 * pWorldPoint, const CTransform * pTransform, _float fRadius)
 {
 	_vec3			vPoint[8];
 	_vec3			vLocalPoint;
@@ -41,10 +41,10 @@ _bool CFrustum::isIn_Frustum(const _vec3 * pWorldPoint, const CTransform * pTran
 	D3DXVec3Normalize((_vec3*)&WorldMatrix.m[0][0], (_vec3*)&WorldMatrix.m[0][0]);
 	D3DXVec3Normalize((_vec3*)&WorldMatrix.m[1][0], (_vec3*)&WorldMatrix.m[1][0]);
 	D3DXVec3Normalize((_vec3*)&WorldMatrix.m[2][0], (_vec3*)&WorldMatrix.m[2][0]);
-
+	
 	D3DXMatrixInverse(&WorldMatrix, nullptr, &WorldMatrix);
 	D3DXVec3TransformCoord(&vLocalPoint, pWorldPoint, &WorldMatrix);
-
+	
 	if (FAILED(Transform_ToLocal(pTransform, vPoint)))
 		return false;
 
@@ -67,6 +67,37 @@ _bool CFrustum::isIn_Frustum(const _vec3 * pWorldPoint, const CTransform * pTran
 	return _bool(true);
 }
 
+_bool CFrustum::LocalPt_InFrustum(const _vec3 * pLocal, const CTransform * pTransform, _float fRadius)
+{
+	for (size_t i = 0; i < 6; ++i)
+	{
+		// if(ax + by + cz + d > 0)
+		//		return false;
+
+		_float fDistance = D3DXPlaneDotCoord(&m_Plane[i], pLocal);
+
+		if (fDistance > fRadius)
+			return false;
+	}
+
+	return _bool(true);
+}
+
+CFrustum* CFrustum::Make_LocalPlane(const CTransform * pTransform)
+{
+	_vec3			vPoint[8];
+
+	// 투영스페이스 상에 있는 절두체를 구성하기위한 여덟개의 점을 로컬스페이스로 옮긴다.
+	if (FAILED(Transform_ToLocal(pTransform, vPoint)))
+		return nullptr;
+
+	// 로컬영역상의 평면을 구성한다.
+	if (FAILED(Make_Plane(vPoint, m_Plane)))
+		return nullptr;
+
+	return this;
+}
+
 HRESULT CFrustum::Transform_ToLocal(const CTransform * pTransform, _vec3* pPointArray)
 {
 	if (nullptr == m_pGraphic_Device ||
@@ -74,6 +105,7 @@ HRESULT CFrustum::Transform_ToLocal(const CTransform * pTransform, _vec3* pPoint
 		return E_FAIL;
 
 	_matrix			matProj, matView;
+
 
 	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &matProj);
 	D3DXMatrixInverse(&matProj, nullptr, &matProj);
@@ -88,15 +120,16 @@ HRESULT CFrustum::Transform_ToLocal(const CTransform * pTransform, _vec3* pPoint
 	// 월드스페이스로 변환했따.
 	for (size_t i = 0; i < 8; ++i)
 		D3DXVec3TransformCoord(&pPointArray[i], &pPointArray[i], &matView);
-
+	
 	_matrix WorldMatrix = *pTransform->Get_WorldMatrixPointer();
 
 	D3DXVec3Normalize((_vec3*)&WorldMatrix.m[0][0], (_vec3*)&WorldMatrix.m[0][0]);
 	D3DXVec3Normalize((_vec3*)&WorldMatrix.m[1][0], (_vec3*)&WorldMatrix.m[1][0]);
 	D3DXVec3Normalize((_vec3*)&WorldMatrix.m[2][0], (_vec3*)&WorldMatrix.m[2][0]);
-
+	
 	D3DXMatrixInverse(&WorldMatrix, nullptr, &WorldMatrix);
 
+	// 로컬스페이스로 변환했따.
 	for (size_t i = 0; i < 8; ++i)
 		D3DXVec3TransformCoord(&pPointArray[i], &pPointArray[i], &WorldMatrix);
 
@@ -121,7 +154,6 @@ HRESULT CFrustum::Make_Plane(const _vec3 * pPoints, D3DXPLANE * pPlane)
 	D3DXPlaneFromPoints(&pPlane[5], &pPoints[0], &pPoints[1], &pPoints[2]);
 
 	return NOERROR;
-
 }
 
 CFrustum * CFrustum::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

@@ -29,8 +29,7 @@ HRESULT CTerrainObject::Ready_GameObject(void * pArg)
 	if (FAILED(Add_Component(pArg)))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(0.04f, 0.04f, 0.04f);	
-
+	m_pTransformCom->Set_Scaling(0.04f, 0.04f, 0.04f);
 	m_pTransformCom->Set_WorldMatrix(((OBJECTMESHDATA*)pArg)->matWorld);
 
 	return NOERROR;
@@ -56,8 +55,11 @@ _int CTerrainObject::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
-		return -1;
+	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, m_fCulling))
+	{
+		if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
+			return -1;
+	}
 
 	return _int();
 }
@@ -127,6 +129,11 @@ HRESULT CTerrainObject::Add_Component(void* pArg)
 	}
 	else if (CManagement::GetInstance()->Get_PreScene() == SCENE_STAGE)
 	{
+		//const _tchar* p = ((OBJECTMESHDATA*)pArg)->strComProtoTag.c_str();
+		int iNoneCullingObject = lstrcmp(((OBJECTMESHDATA*)pArg)->strComProtoTag.c_str(), L"Component_Mesh_Static_Arena_Main_B");
+		if (0 == iNoneCullingObject)
+			m_fCulling = 500.f;
+
 		// For.Com_TerrainData
 		if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, ((OBJECTMESHDATA*)pArg)->strComProtoTag.c_str(), L"Com_Mesh", (CComponent**)&m_pMeshCom)))
 			return E_FAIL;
@@ -135,6 +142,10 @@ HRESULT CTerrainObject::Add_Component(void* pArg)
 		if (FAILED(CGameObject::Add_Component(SCENE_DRAGON, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 			return E_FAIL;
 	}
+
+	// For.Com_Frustum
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Frustum", L"Com_Frustum", (CComponent**)&m_pFrustumCom)))
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -150,27 +161,6 @@ HRESULT CTerrainObject::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
 	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
 
-	CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
-	if (nullptr == pLight_Manager)
-		return E_FAIL;
-
-	pLight_Manager->AddRef();
-
-	const D3DLIGHT9* pLightInfo = pLight_Manager->Get_LightInfo(0);
-	if (nullptr == pLightInfo)
-		return E_FAIL;
-
-	pEffect->SetVector("g_vLightDir", &_vec4(pLightInfo->Direction, 0.f));
-	pEffect->SetVector("g_vLightDiffuse", (_vec4*)&pLightInfo->Diffuse);
-	pEffect->SetVector("g_vLightAmbient", (_vec4*)&pLightInfo->Ambient);
-	pEffect->SetVector("g_vLightSpecular", (_vec4*)&pLightInfo->Specular);
-
-	Safe_Release(pLight_Manager);
-
-	_matrix		matView = CGameObject::Get_Transform(D3DTS_VIEW);
-	D3DXMatrixInverse(&matView, nullptr, &matView);
-
-	pEffect->SetVector("g_vCamPosition", (_vec4*)&matView.m[3][0]);
 
 	Safe_Release(pEffect);
 
@@ -208,6 +198,7 @@ void CTerrainObject::Free()
 	Safe_Release(m_pRendererCom);
 	Safe_Release(m_pMeshCom);
 	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pFrustumCom);
 
 	CGameObject::Free();
 }

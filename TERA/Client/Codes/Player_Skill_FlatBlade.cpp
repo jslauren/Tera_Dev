@@ -17,7 +17,6 @@ Player_Skill_FlatBlade::Player_Skill_FlatBlade(LPDIRECT3DDEVICE9 pGraphic_Device
 HRESULT Player_Skill_FlatBlade::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::FlatBlade);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }

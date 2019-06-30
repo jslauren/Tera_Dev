@@ -279,34 +279,11 @@ HRESULT CWeapon::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 
 	pEffect->AddRef();
 
-	//_matrix		matWorld = *m_pTransformCom->Get_WorldMatrixPointer() * *m_pBoneMatrix * *m_pParentMatrix;
 	m_matWorld = *m_pTransformCom->Get_WorldMatrixPointer() * *m_pBoneMatrix * *m_pParentMatrix;
 
 	pEffect->SetMatrix("g_matWorld", &m_matWorld);
 	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
 	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
-
-	CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
-	if (nullptr == pLight_Manager)
-		return E_FAIL;
-
-	pLight_Manager->AddRef();
-
-	const D3DLIGHT9* pLightInfo = pLight_Manager->Get_LightInfo(0);
-	if (nullptr == pLightInfo)
-		return E_FAIL;
-
-	pEffect->SetVector("g_vLightDir", &_vec4(pLightInfo->Direction, 0.f));
-	pEffect->SetVector("g_vLightDiffuse", (_vec4*)&pLightInfo->Diffuse);
-	pEffect->SetVector("g_vLightAmbient", (_vec4*)&pLightInfo->Ambient);
-	pEffect->SetVector("g_vLightSpecular", (_vec4*)&pLightInfo->Specular);
-
-	Safe_Release(pLight_Manager);
-
-	_matrix		matView = CGameObject::Get_Transform(D3DTS_VIEW);
-	D3DXMatrixInverse(&matView, nullptr, &matView);
-
-	pEffect->SetVector("g_vCamPosition", (_vec4*)&matView.m[3][0]);
 
 	Safe_Release(pEffect);
 

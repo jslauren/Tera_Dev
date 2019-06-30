@@ -18,7 +18,6 @@ CArkus_Hit::CArkus_Hit(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CArkus_Hit::Initialize_State(CArkus & Arkus)
 {
 	Arkus.Set_AniIndex(CArkus::ARKUS_ANI::Hit);
-	Arkus.Set_ActionID(CArkus::ACTION_ID::ACTION_STUN);
 
 	return NOERROR;
 }

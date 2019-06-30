@@ -17,7 +17,6 @@ CPlayer_Skill_JawBreaker::CPlayer_Skill_JawBreaker(LPDIRECT3DDEVICE9 pGraphic_De
 HRESULT CPlayer_Skill_JawBreaker::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::JawBreaker);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }

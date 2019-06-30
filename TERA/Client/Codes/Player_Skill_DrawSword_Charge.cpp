@@ -16,7 +16,6 @@ CPlayer_Skill_DrawSword_Charge::CPlayer_Skill_DrawSword_Charge(LPDIRECT3DDEVICE9
 HRESULT CPlayer_Skill_DrawSword_Charge::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DrawSwordCharge);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
 
 	return NOERROR;
 }

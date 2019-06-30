@@ -1,5 +1,7 @@
 #include "..\Headers\Buffer_Terrain.h"
 #include "Transform.h"
+#include "Frustum.h"
+#include "QuadTree.h"
 
 CBuffer_Terrain::CBuffer_Terrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CVIBuffer(pGraphic_Device)
@@ -11,6 +13,7 @@ CBuffer_Terrain::CBuffer_Terrain(const CBuffer_Terrain & rhs)
 	, m_iNumVerticesX(rhs.m_iNumVerticesX)
 	, m_iNumVerticesZ(rhs.m_iNumVerticesZ)
 	, m_fInterval(rhs.m_fInterval)
+	, m_pQuadTree(rhs.m_pQuadTree)
 {
 }
 
@@ -24,8 +27,10 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer()
 	m_iNumVerticesX = 100;
 	m_iNumVerticesZ = 100;
 	m_iNumVertices = m_iNumVerticesX * m_iNumVerticesZ;
+
 	m_dwVtxFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1;
 	m_iNumPolygons = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2;
+
 	m_iIndexSize = sizeof(INDEX16);
 	m_Format = D3DFMT_INDEX16;
 
@@ -45,17 +50,16 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer()
 
 			pVertices[iIndex].vPosition = _vec3(j * m_fInterval, 0.0f, i * m_fInterval);
 			m_pPositions[iIndex] = pVertices[iIndex].vPosition;
-			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f) * m_fDetail, i / (m_iNumVerticesZ - 1.f) * m_fDetail);
+			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 		}
 	}
 
 	m_pVB->Unlock();
-
-
+	
 	INDEX16*	pIndices = nullptr;
 
 	_uint		iNumPolygons = 0;
-
+	
 	m_pIB->Lock(0, 0, (void**)&pIndices, 0);
 
 	for (size_t i = 0; i < m_iNumVerticesZ - 1; i++)
@@ -67,6 +71,7 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer()
 			pIndices[iNumPolygons]._1 = iIndex + m_iNumVerticesX;
 			pIndices[iNumPolygons]._2 = iIndex + m_iNumVerticesX + 1;
 			pIndices[iNumPolygons]._3 = iIndex + 1;
+
 
 			++iNumPolygons;
 
@@ -290,6 +295,8 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer(const _tchar * pHeighitMapPath)
 	m_pVB->Unlock();
 	m_pIB->Unlock();
 
+	m_pQuadTree = CQuadTree::Create(m_pGraphic_Device, m_pPositions, m_iNumVerticesX, m_iNumVerticesZ);
+
 	return NOERROR;
 }
 
@@ -486,23 +493,29 @@ _float CBuffer_Terrain::Compute_HeightOnBuffer(const CTransform * pTransform)
 
 }
 
-HRESULT CBuffer_Terrain::Culling(CFrustum * pFrustum)
+HRESULT CBuffer_Terrain::Culling(CTransform* pTransform, CFrustum * pFrustum)
 {
 	if (nullptr == m_pPositions)
 		return E_FAIL;
 
-	_matrix			matIdentity;
+	INDEX16*	pIndices = (INDEX16*)m_pIndices;
+				
+	_uint		iNumPolygons = 0;
+				
+	_matrix		matIdentity;
 	D3DXMatrixIdentity(&matIdentity);
 
-	for (size_t i = 0; i < m_iNumVerticesZ; ++i)
-	{
-		for (size_t j = 0; j < m_iNumVerticesX; ++j)
-		{
-			size_t iIndex = i * m_iNumVerticesX + j;
+	m_pQuadTree->Culling(pFrustum->Make_LocalPlane(pTransform), pTransform, pIndices, iNumPolygons);
 
-			//pFrustum->isIn_Frustum(&m_pPositions[iIndex], &matIdentity);
-		}
-	}
+	INDEX16*	pOriginalIndices = nullptr;
+
+	m_pIB->Lock(0, 0, (void**)&pOriginalIndices, 0);
+
+	memcpy(pOriginalIndices, pIndices, sizeof(INDEX16) * iNumPolygons);
+
+	m_pIB->Unlock();
+
+	m_iNumPolygons = iNumPolygons;
 
 	return NOERROR;
 }
@@ -559,5 +572,7 @@ CComponent * CBuffer_Terrain::Clone(void* pArg)
 
 void CBuffer_Terrain::Free()
 {
+	Safe_Release(m_pQuadTree);
+
 	CVIBuffer::Free();
 }

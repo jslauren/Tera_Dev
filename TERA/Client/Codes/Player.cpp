@@ -90,8 +90,7 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 //	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
 
 	CEventManager::GetInstance()->Register_Object(L"Arkus_Attack", this);
-
-
+	
 	return NOERROR;
 }
 
@@ -455,29 +454,45 @@ HRESULT CPlayer::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
 	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
 
-	CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
-	if (nullptr == pLight_Manager)
-		return E_FAIL;
-
-	pLight_Manager->AddRef();
-
-	const D3DLIGHT9* pLightInfo = pLight_Manager->Get_LightInfo(0);
-	if (nullptr == pLightInfo)
-		return E_FAIL;
-
-	pEffect->SetVector("g_vLightDir", &_vec4(pLightInfo->Direction, 0.f));
-	pEffect->SetVector("g_vLightDiffuse", (_vec4*)&pLightInfo->Diffuse);
-	pEffect->SetVector("g_vLightAmbient", (_vec4*)&pLightInfo->Ambient);
-	pEffect->SetVector("g_vLightSpecular", (_vec4*)&pLightInfo->Specular);
-
-	Safe_Release(pLight_Manager);
-
-	_matrix		matView = CGameObject::Get_Transform(D3DTS_VIEW);
-	D3DXMatrixInverse(&matView, nullptr, &matView);
-
-	pEffect->SetVector("g_vCamPosition", (_vec4*)&matView.m[3][0]);
-
 	Safe_Release(pEffect);
+
+	return NOERROR;
+
+	// Old
+	{
+		//if (nullptr == pEffect)
+		//	return E_FAIL;
+
+		//pEffect->AddRef();
+
+		//pEffect->SetMatrix("g_matWorld", m_pTransformCom->Get_WorldMatrixPointer());
+		//pEffect->SetMatrix("g_matView", &CGameObject::Get_Transform(D3DTS_VIEW));
+		//pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
+
+		//CLight_Manager*	pLight_Manager = CLight_Manager::GetInstance();
+		//if (nullptr == pLight_Manager)
+		//	return E_FAIL;
+
+		//pLight_Manager->AddRef();
+
+		//const D3DLIGHT9* pLightInfo = pLight_Manager->Get_LightInfo(0);
+		//if (nullptr == pLightInfo)
+		//	return E_FAIL;
+
+		//pEffect->SetVector("g_vLightDir", &_vec4(pLightInfo->Direction, 0.f));
+		//pEffect->SetVector("g_vLightDiffuse", (_vec4*)&pLightInfo->Diffuse);
+		//pEffect->SetVector("g_vLightAmbient", (_vec4*)&pLightInfo->Ambient);
+		//pEffect->SetVector("g_vLightSpecular", (_vec4*)&pLightInfo->Specular);
+
+		//Safe_Release(pLight_Manager);
+
+		//_matrix		matView = CGameObject::Get_Transform(D3DTS_VIEW);
+		//D3DXMatrixInverse(&matView, nullptr, &matView);
+
+		//pEffect->SetVector("g_vCamPosition", (_vec4*)&matView.m[3][0]);
+
+		//Safe_Release(pEffect);
+	}
 
 	return NOERROR;
 }

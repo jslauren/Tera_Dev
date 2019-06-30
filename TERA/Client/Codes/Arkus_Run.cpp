@@ -21,7 +21,6 @@ CArkus_Run::CArkus_Run(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CArkus_Run::Initialize_State(CArkus & Arkus)
 {
 	Arkus.Set_AniIndex(CArkus::ARKUS_ANI::Run_Battle);
-	Arkus.Set_ActionID(CArkus::ACTION_ID::ACTION_READY);
 
 	return NOERROR;
 }

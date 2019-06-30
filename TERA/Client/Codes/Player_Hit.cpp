@@ -15,7 +15,6 @@ CPlayer_Hit::CPlayer_Hit(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CPlayer_Hit::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::Hit);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_PHYSICSSKILL);
 
 	return NOERROR;
 }

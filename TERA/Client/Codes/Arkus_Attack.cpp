@@ -19,8 +19,6 @@ CArkus_Attack::CArkus_Attack(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CArkus_Attack::Initialize_State(CArkus & Arkus)
 {
-	Arkus.Set_ActionID(CArkus::ACTION_ID::ACTION_ATTACK);
-
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
 
 	return NOERROR;

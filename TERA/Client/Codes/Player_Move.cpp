@@ -19,7 +19,6 @@ CPlayer_Move::CPlayer_Move(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CPlayer_Move::Initialize_State(CPlayer & Player)
 {
 //	Player.Set_AniIndex(CPlayer::PLAYER_ANI::UNARMEDRUN);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_RUN);
 
 	return NOERROR;
 }

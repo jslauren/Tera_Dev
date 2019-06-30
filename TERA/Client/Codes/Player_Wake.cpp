@@ -15,7 +15,6 @@ CPlayer_Wake::CPlayer_Wake(LPDIRECT3DDEVICE9 pGraphic_Device)
 HRESULT CPlayer_Wake::Initialize_State(CPlayer & Player)
 {
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::Hit_Wake);
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_READY);
 
 	return NOERROR;
 }

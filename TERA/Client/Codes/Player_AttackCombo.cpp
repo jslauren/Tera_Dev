@@ -18,8 +18,6 @@ CPlayer_AttackCombo::CPlayer_AttackCombo(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CPlayer_AttackCombo::Initialize_State(CPlayer & Player)
 {
-	Player.Set_ActionID(CPlayer::ACTION_ID::ACTION_ATTACK);
-
 	return NOERROR;
 }
 
