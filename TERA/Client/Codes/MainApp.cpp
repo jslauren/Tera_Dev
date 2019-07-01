@@ -14,6 +14,7 @@
 #include "Scene_Stage.h"
 #include "UI_Loading.h"
 #include "FontManager.h"
+#include "UI_DamageFont_Manager.h"
 
 _USING(Client)
 
@@ -298,6 +299,8 @@ void CMainApp::Free()
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pManagement);
 	Safe_Release(m_pGraphic_Device);
+
+	CUI_DamageFont_Manager::GetInstance()->DestroyInstance();
 
  	if (FAILED(CManagement::Release_Engine()))
 		return;

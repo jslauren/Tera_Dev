@@ -2,13 +2,15 @@
 #include "..\Headers\UI_DamageFont_Manager.h"
 #include "UI_DamageTexture.h"
 
-_IMPLEMENT_SINGLETON(Client::CUI_DamageFont_Manager)
+_USING(Client)
 
-Client::CUI_DamageFont_Manager::CUI_DamageFont_Manager()
+_IMPLEMENT_SINGLETON(CUI_DamageFont_Manager)
+
+CUI_DamageFont_Manager::CUI_DamageFont_Manager()
 {
 }
 
-HRESULT Client::CUI_DamageFont_Manager::Create_DamageFont(LPDIRECT3DDEVICE9 pGraphic_Device, const _vec3 & vPos, const float & fDamageValue)
+HRESULT CUI_DamageFont_Manager::Create_DamageFont(LPDIRECT3DDEVICE9 pGraphic_Device, const _vec3 & vPos, const float & fDamageValue)
 {
 	_vec3 vInfoV = vPos;
 
@@ -38,16 +40,16 @@ HRESULT Client::CUI_DamageFont_Manager::Create_DamageFont(LPDIRECT3DDEVICE9 pGra
 	m_DamageFontList.push_back(pDamageTexture);
 }
 
-void Client::CUI_DamageFont_Manager::Update_DamageFont(const float & fTimeDelta)
+void CUI_DamageFont_Manager::Update_DamageFont(const float & fTimeDelta)
 {
 	auto iter = m_DamageFontList.begin();
 	auto iter_end = m_DamageFontList.end();
 
 	for (; iter != iter_end;)
 	{
-		int iEvent = (*iter)->Update_GameObject(fTimeDelta);
+		int iDeleteInfo = (*iter)->Update_GameObject(fTimeDelta);
 
-		if (iEvent == 1)
+		if (iDeleteInfo == 1)
 		{
 			Engine::Safe_Release(*iter);
 			iter = m_DamageFontList.erase(iter);
@@ -57,13 +59,13 @@ void Client::CUI_DamageFont_Manager::Update_DamageFont(const float & fTimeDelta)
 	}
 }
 
-void Client::CUI_DamageFont_Manager::Render_DamageFont()
+void CUI_DamageFont_Manager::Render_DamageFont()
 {
 	for (auto& iter : m_DamageFontList)
 		iter->Render_GameObject();
 }
 
-void Client::CUI_DamageFont_Manager::Free()
+void CUI_DamageFont_Manager::Free()
 {
 	for (auto& iter : m_DamageFontList)
 		Safe_Release(iter);

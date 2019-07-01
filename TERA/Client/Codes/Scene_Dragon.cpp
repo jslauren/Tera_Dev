@@ -78,6 +78,8 @@ HRESULT CScene_Dragon::Ready_Scene()
 	
 	SetCutSceneEvent();
 
+	CUI_DamageFont_Manager::GetInstance()->Create_DamageFont(m_pGraphic_Device, _vec3(100.f, 100.f, 0), 325);
+
 	return NOERROR;
 }
 
@@ -89,6 +91,8 @@ _int CScene_Dragon::Update_Scene(const _float & fTimeDelta)
 		m_bIsSceneFirstPlay = false;
 	}
 
+	CUI_DamageFont_Manager::GetInstance()->Update_DamageFont(fTimeDelta);
+
 	return _int(CScene::Update_Scene(fTimeDelta));
 }
 
@@ -99,6 +103,9 @@ _int CScene_Dragon::LateUpdate_Scene(const _float & fTimeDelta)
 
 HRESULT CScene_Dragon::Render_Scene()
 {
+
+	CUI_DamageFont_Manager::GetInstance()->Render_DamageFont();
+
 	return CScene::Render_Scene();
 }
 

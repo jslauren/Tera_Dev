@@ -39,7 +39,12 @@ HRESULT CUI_DamageTexture::Ready_GameObject(void * pArg)
 	SeprateDamageValue();
 
 	SetDamageTransform();
-	
+
+	//m_pTransformThsnCom->Set_Scaling(m_fFontSize, m_fFontSize, 0.f);
+	//m_pTransformHndrCom->Set_Scaling(m_fFontSize, m_fFontSize, 0.f);
+	//m_pTransformTenCom->Set_Scaling(m_fFontSize, m_fFontSize, 0.f);
+	//m_pTransformOneCom->Set_Scaling(m_fFontSize, m_fFontSize, 0.f);
+
 	return NOERROR;
 }
 
@@ -48,17 +53,53 @@ _int CUI_DamageTexture::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
-	return _int();
+	m_fTimeAcc += (fTimeDelta * 1.25f);
+	
+	if (m_bIsSub == false)
+	{
+		if (m_fCurrentFontSize <= m_fMaxFontSize)
+			m_fCurrentFontSize += m_fTimeAcc;
+
+		else if (m_fCurrentFontSize >= m_fMaxFontSize)
+			m_bIsSub = true;
+	}
+	else if (m_bIsSub == true)
+	{
+		m_fCurrentFontSize -= m_fTimeAcc;
+
+		if (m_fCurrentFontSize <= m_fMinFontSize)
+		{
+			// 여기서 포지션 위로 올리면서 알파값으로 흐려지게 하고,
+			// 포지션값이 내가 지정한 값까지 올라간다면 return 하게끔 짠다.
+			return 1;
+		}
+	}
+	
+
+
+
+	//else
+	//	m_fFontSize = 50.f;
+
+	m_pTransformThsnCom->Set_Scaling(m_fCurrentFontSize, m_fCurrentFontSize, 0.f);
+	m_pTransformHndrCom->Set_Scaling(m_fCurrentFontSize, m_fCurrentFontSize, 0.f);
+	m_pTransformTenCom->Set_Scaling(m_fCurrentFontSize, m_fCurrentFontSize, 0.f);
+	m_pTransformOneCom->Set_Scaling(m_fCurrentFontSize, m_fCurrentFontSize, 0.f);
+
+	//if (m_fTimeAcc > m_fMaxTime)
+	//	return 1;
+
+	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this)))
+		return -1;
+
+	return _int(0);
 }
 
 _int CUI_DamageTexture::LateUpdate_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pRendererCom)
 		return -1;
-
-	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this)))
-		return -1;
-
+	
 	return _int();
 }
 
@@ -70,24 +111,29 @@ HRESULT CUI_DamageTexture::Render_GameObject()
 
 	pEffect->AddRef();
 
+	for (size_t i = 0; i < m_iNumberUnit; ++i)
+	{
+		if (FAILED(SetUp_ConstantTable(pEffect, i)))
+			return E_FAIL;
 
-	if (FAILED(SetUp_ConstantTable(pEffect, m_iNumberUnit)))
-		return E_FAIL;
+		pEffect->Begin(nullptr, 0);
+		pEffect->BeginPass(0);
 
-	pEffect->Begin(nullptr, 0);
-	pEffect->BeginPass(0);
+		if (i == 0)
+			m_pBufferOneCom->Render_Buffer();
 
-	// 받은 데미지가 천 단위라면, 천 단위 버퍼도 렌더 한다.
-	if (m_iNumberUnit == 2)
-		m_pBufferThsnCom->Render_Buffer();
+		else if(i == 1)
+			m_pBufferTenCom->Render_Buffer();
 
-	// 그렇지 않다면, 백 단위 까지 렌더한다.
-	m_pBufferHndrCom->Render_Buffer();
-	m_pBufferTenCom->Render_Buffer();
-	m_pBufferOneCom->Render_Buffer();
+		else if (i == 2)
+			m_pBufferHndrCom->Render_Buffer();
 
-	pEffect->EndPass();
-	pEffect->End();
+		else if (i == 3)
+			m_pBufferThsnCom->Render_Buffer();
+
+		pEffect->EndPass();
+		pEffect->End();
+	}
 
 	Safe_Release(pEffect);
 
@@ -128,18 +174,6 @@ HRESULT CUI_DamageTexture::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_UI_Damage", L"Com_Texture_Damage", (CComponent**)&m_pTextureDamageCom)))
 		return E_FAIL;
 
-	//if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_UI_Damage_One", L"Com_Texture_Damage_One", (CComponent**)&m_pTextureOneCom)))
-	//	return E_FAIL;
-
-	//if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_UI_Damage_Ten", L"Com_Texture_Damage_Ten", (CComponent**)&m_pTextureTenCom)))
-	//	return E_FAIL;
-
-	//if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_UI_Damage_Hndr", L"Com_Texture_Damage_Hndr", (CComponent**)&m_pTextureHndrCom)))
-	//	return E_FAIL;
-
-	//if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Texture_UI_Damage_Thsn", L"Com_Texture_Damage_Thsn", (CComponent**)&m_pTextureThsnCom)))
-	//	return E_FAIL;
-
 	return NOERROR;
 }
 
@@ -157,7 +191,25 @@ HRESULT CUI_DamageTexture::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint
 	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &matProj);
 	D3DXMatrixOrthoLH(&matProj, g_iWinCX, g_iWinCY, 0.f, 1.f);
 
-	if (1 == iTargetTextureIdx)
+	if (0 == iTargetTextureIdx)
+	{
+		// 일의 자리.
+		m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[0]);
+		
+		pEffect->SetMatrix("g_matWorld", m_pTransformOneCom->Get_WorldMatrixPointer());
+		pEffect->SetMatrix("g_matView", &matTmp);
+		pEffect->SetMatrix("g_matProj", &matProj);
+	}
+	else if (1 == iTargetTextureIdx)
+	{
+		// 십의 자리.
+		m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[1]);
+
+		pEffect->SetMatrix("g_matWorld", m_pTransformTenCom->Get_WorldMatrixPointer());
+		pEffect->SetMatrix("g_matView", &matTmp);
+		pEffect->SetMatrix("g_matProj", &matProj);
+	}
+	else if (2 == iTargetTextureIdx)
 	{
 		// 백의 자리.
 		m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[2]);
@@ -165,22 +217,8 @@ HRESULT CUI_DamageTexture::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint
 		pEffect->SetMatrix("g_matWorld", m_pTransformHndrCom->Get_WorldMatrixPointer());
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
-
-		// 십의 자리.
-		m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[1]);
-
-		pEffect->SetMatrix("g_matWorld", m_pTransformTenCom->Get_WorldMatrixPointer());
-		pEffect->SetMatrix("g_matView", &matTmp);
-		pEffect->SetMatrix("g_matProj", &matProj);
-
-		// 일의 자리
-		m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[0]);
-
-		pEffect->SetMatrix("g_matWorld", m_pTransformOneCom->Get_WorldMatrixPointer());
-		pEffect->SetMatrix("g_matView", &matTmp);
-		pEffect->SetMatrix("g_matProj", &matProj);
 	}
-	else if (2 == iTargetTextureIdx)
+	else if (3 == iTargetTextureIdx)
 	{
 		// 천의 자리.
 		m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[3]);
@@ -188,27 +226,63 @@ HRESULT CUI_DamageTexture::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint
 		pEffect->SetMatrix("g_matWorld", m_pTransformThsnCom->Get_WorldMatrixPointer());
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
+	}
 
-		// 백의 자리.
-		m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[2]);
+	// Old
+	{
+		//if (1 == iTargetTextureIdx)
+		//{
+		//	// 백의 자리.
+		//	m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[2]);
 
-		pEffect->SetMatrix("g_matWorld", m_pTransformHndrCom->Get_WorldMatrixPointer());
-		pEffect->SetMatrix("g_matView", &matTmp);
-		pEffect->SetMatrix("g_matProj", &matProj);
+		//	pEffect->SetMatrix("g_matWorld", m_pTransformHndrCom->Get_WorldMatrixPointer());
+		//	pEffect->SetMatrix("g_matView", &matTmp);
+		//	pEffect->SetMatrix("g_matProj", &matProj);
 
-		// 십의 자리.
-		m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[1]);
+		//	// 십의 자리.
+		//	m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[1]);
 
-		pEffect->SetMatrix("g_matWorld", m_pTransformTenCom->Get_WorldMatrixPointer());
-		pEffect->SetMatrix("g_matView", &matTmp);
-		pEffect->SetMatrix("g_matProj", &matProj);
+		//	pEffect->SetMatrix("g_matWorld", m_pTransformTenCom->Get_WorldMatrixPointer());
+		//	pEffect->SetMatrix("g_matView", &matTmp);
+		//	pEffect->SetMatrix("g_matProj", &matProj);
 
-		// 일의 자리
-		m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[0]);
+		//	// 일의 자리
+		//	m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[0]);
 
-		pEffect->SetMatrix("g_matWorld", m_pTransformOneCom->Get_WorldMatrixPointer());
-		pEffect->SetMatrix("g_matView", &matTmp);
-		pEffect->SetMatrix("g_matProj", &matProj);
+		//	pEffect->SetMatrix("g_matWorld", m_pTransformOneCom->Get_WorldMatrixPointer());
+		//	pEffect->SetMatrix("g_matView", &matTmp);
+		//	pEffect->SetMatrix("g_matProj", &matProj);
+		//}
+		//else if (2 == iTargetTextureIdx)
+		//{
+		//	// 천의 자리.
+		//	m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[3]);
+
+		//	pEffect->SetMatrix("g_matWorld", m_pTransformThsnCom->Get_WorldMatrixPointer());
+		//	pEffect->SetMatrix("g_matView", &matTmp);
+		//	pEffect->SetMatrix("g_matProj", &matProj);
+
+		//	// 백의 자리.
+		//	m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[2]);
+
+		//	pEffect->SetMatrix("g_matWorld", m_pTransformHndrCom->Get_WorldMatrixPointer());
+		//	pEffect->SetMatrix("g_matView", &matTmp);
+		//	pEffect->SetMatrix("g_matProj", &matProj);
+
+		//	// 십의 자리.
+		//	m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[1]);
+
+		//	pEffect->SetMatrix("g_matWorld", m_pTransformTenCom->Get_WorldMatrixPointer());
+		//	pEffect->SetMatrix("g_matView", &matTmp);
+		//	pEffect->SetMatrix("g_matProj", &matProj);
+
+		//	// 일의 자리
+		//	m_pTextureDamageCom->SetUp_OnShader(pEffect, "g_BaseTexture", m_iSeprateDamage[0]);
+
+		//	pEffect->SetMatrix("g_matWorld", m_pTransformOneCom->Get_WorldMatrixPointer());
+		//	pEffect->SetMatrix("g_matView", &matTmp);
+		//	pEffect->SetMatrix("g_matProj", &matProj);
+		//}
 	}
 
 	Safe_Release(pEffect);
@@ -230,17 +304,11 @@ HRESULT CUI_DamageTexture::NullCheck()
 	if (nullptr == m_pBufferOneCom)
 		return E_FAIL;
 
-	//if (nullptr == m_pTextureOneCom)
-	//	return E_FAIL;
-
 	if (nullptr == m_pTransformTenCom)
 		return E_FAIL;
 
 	if (nullptr == m_pBufferTenCom)
 		return E_FAIL;
-
-	//if (nullptr == m_pTextureTenCom)
-	//	return E_FAIL;
 
 	if (nullptr == m_pTransformHndrCom)
 		return E_FAIL;
@@ -248,17 +316,11 @@ HRESULT CUI_DamageTexture::NullCheck()
 	if (nullptr == m_pBufferHndrCom)
 		return E_FAIL;
 
-	//if (nullptr == m_pTextureHndrCom)
-	//	return E_FAIL;
-
 	if (nullptr == m_pTransformThsnCom)
 		return E_FAIL;
 
 	if (nullptr == m_pBufferThsnCom)
 		return E_FAIL;
-
-	//if (nullptr == m_pTextureThsnCom)
-	//	return E_FAIL;
 	
 	return NOERROR;
 }
@@ -269,7 +331,7 @@ void CUI_DamageTexture::SeprateDamageValue()
 
 	if (lstrlen(m_szDamageValue) == 4)
 	{
-		m_iNumberUnit = 2;
+		m_iNumberUnit = 4;
 
 		m_iSeprateDamage[3] = m_iDamageValue / 1000;
 		m_iDamageValue %= 1000;
@@ -284,7 +346,7 @@ void CUI_DamageTexture::SeprateDamageValue()
 	}
 	else if (lstrlen(m_szDamageValue) == 3)
 	{
-		m_iNumberUnit = 1;
+		m_iNumberUnit = 3;
 
 		m_iSeprateDamage[2] = m_iDamageValue / 100;
 		m_iDamageValue %= 100;
@@ -298,18 +360,18 @@ void CUI_DamageTexture::SeprateDamageValue()
 
 void CUI_DamageTexture::SetDamageTransform()
 {
-	if (m_iNumberUnit == 1)
+	if (m_iNumberUnit == 3)
 	{
-		m_pTransformHndrCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), (g_iWinCY * 0.f), 0.f));
+		m_pTransformHndrCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * -(0.015f)), (g_iWinCY * 0.f), 0.f));
 		m_pTransformTenCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), (g_iWinCY * 0.f), 0.f));
-		m_pTransformOneCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), (g_iWinCY * 0.f), 0.f));
+		m_pTransformOneCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.015f), (g_iWinCY * 0.f), 0.f));
 	}
-	else if (m_iNumberUnit == 2)
+	else if (m_iNumberUnit == 4)
 	{
-		m_pTransformThsnCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), (g_iWinCY * 0.f), 0.f));
-		m_pTransformHndrCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), (g_iWinCY * 0.f), 0.f));
-		m_pTransformTenCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), (g_iWinCY * 0.f), 0.f));
-		m_pTransformOneCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), (g_iWinCY * 0.f), 0.f));
+		m_pTransformThsnCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * -(0.03f)), (g_iWinCY * 0.f), 0.f));
+		m_pTransformHndrCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * -(0.01f)), (g_iWinCY * 0.f), 0.f));
+		m_pTransformTenCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.01f), (g_iWinCY * 0.f), 0.f));
+		m_pTransformOneCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.03f), (g_iWinCY * 0.f), 0.f));
 	}
 }
 
@@ -338,19 +400,15 @@ void CUI_DamageTexture::Free()
 
 	Safe_Release(m_pTransformOneCom);
 	Safe_Release(m_pBufferOneCom);
-//	Safe_Release(m_pTextureOneCom);
 
 	Safe_Release(m_pTransformTenCom);
 	Safe_Release(m_pBufferTenCom);
-//	Safe_Release(m_pTextureTenCom);
 
 	Safe_Release(m_pTransformHndrCom);
 	Safe_Release(m_pBufferHndrCom);
-//	Safe_Release(m_pTextureHndrCom);
 
 	Safe_Release(m_pTransformThsnCom);
 	Safe_Release(m_pBufferThsnCom);
-//	Safe_Release(m_pTextureThsnCom);
 
 	CUI::Free();
 }

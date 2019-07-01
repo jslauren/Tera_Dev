@@ -26,19 +26,15 @@ private:
 
 	CTransform*		m_pTransformOneCom = nullptr;
 	CBuffer_RcTex*	m_pBufferOneCom = nullptr;
-//	CTexture*		m_pTextureOneCom = nullptr;
 
 	CTransform*		m_pTransformTenCom = nullptr;
 	CBuffer_RcTex*	m_pBufferTenCom = nullptr;
-//	CTexture*		m_pTextureTenCom = nullptr;
 
 	CTransform*		m_pTransformHndrCom = nullptr;
 	CBuffer_RcTex*	m_pBufferHndrCom = nullptr;
-//	CTexture*		m_pTextureHndrCom = nullptr;
 
 	CTransform*		m_pTransformThsnCom = nullptr;
 	CBuffer_RcTex*	m_pBufferThsnCom = nullptr;
-//	CTexture*		m_pTextureThsnCom = nullptr;
 
 private:
 	_vec3			m_vPosition;
@@ -48,6 +44,12 @@ private:
 	_uint			m_iSeprateDamage[4];
 	_uint			m_iNumberUnit = 0;
 
+	_float			m_fMaxTime = 3.7f;
+	_float			m_fTimeAcc = 0.f;
+	_float			m_fCurrentFontSize = 50.f;
+	_float			m_fMinFontSize = 50.f;
+	_float			m_fMaxFontSize = 75.f;
+	_bool			m_bIsSub = false;
 private:
 	HRESULT			NullCheck();
 	void			SeprateDamageValue();
