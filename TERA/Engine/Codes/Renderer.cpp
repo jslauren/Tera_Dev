@@ -59,6 +59,7 @@ HRESULT CRenderer::Ready_Renderer()
 	// For.MRT_LightAcc(Shade + Specular)
 	if (FAILED(m_pTarget_Manager->Add_MRT(L"MRT_LightAcc", L"Target_Shade")))
 		return E_FAIL;
+
 	if (FAILED(m_pTarget_Manager->Add_MRT(L"MRT_LightAcc", L"Target_Specular")))
 		return E_FAIL;
 
@@ -245,6 +246,7 @@ HRESULT CRenderer::Render_LightAcc()
 
 	if (FAILED(m_pTarget_Manager->SetUp_OnShader(pEffect, L"Target_Normal", "g_NormalTexture")))
 		return E_FAIL;
+
 	if (FAILED(m_pTarget_Manager->SetUp_OnShader(pEffect, L"Target_Depth", "g_DepthTexture")))
 		return E_FAIL;
 

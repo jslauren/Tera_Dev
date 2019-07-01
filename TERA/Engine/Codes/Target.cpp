@@ -54,9 +54,9 @@ HRESULT CTarget::Release_OnGraphicDev(_uint iIndex)
 	if (GetKeyState(VK_RETURN) < 0)
 	{
 		if (0 == iIndex)
-			D3DXSaveTextureToFile(L"../Bin/dIFFUSE.jpg", D3DXIFF_JPG, m_pTarget_Texture, nullptr);
+			D3DXSaveTextureToFile(L"../Bin/Diffuse.jpg", D3DXIFF_JPG, m_pTarget_Texture, nullptr);
 		if (1 == iIndex)
-			D3DXSaveTextureToFile(L"../Bin/nORMAL.jpg", D3DXIFF_JPG, m_pTarget_Texture, nullptr);
+			D3DXSaveTextureToFile(L"../Bin/Normal.jpg", D3DXIFF_JPG, m_pTarget_Texture, nullptr);
 	}
 
 	return NOERROR;
