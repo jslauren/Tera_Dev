@@ -121,17 +121,18 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer(_int iNumVtxX, _int iNumVtxZ, _float fIn
 			_uint		iIndex = i * m_iNumVerticesX + j;
 
 			pVertices[iIndex].vPosition = _vec3(j * m_fInterval, 0.0f, i * m_fInterval);
-			pVertices[iIndex].vNormal = _vec3(0.0f, 0.f, 0.f);
+			pVertices[iIndex].vNormal = _vec3(0.0f, 1.f, 0.f);
 			m_pPositions[iIndex] = pVertices[iIndex].vPosition;
 			pVertices[iIndex].vTexUV = _vec2(j / (m_iNumVerticesX - 1.f) /** fDetail*/, i / (m_iNumVerticesZ - 1.f) /** fDetail*/);
 		}
 	}
 
+	m_pVB->Unlock();
+	
+	
 	INDEX16*	pIndices = nullptr;
 
 	_uint		iNumPolygons = 0;
-
-	_vec3		vDest, vSour, vNormal;
 
 	m_pIB->Lock(0, 0, (void**)&pIndices, 0);
 
@@ -145,37 +146,66 @@ HRESULT CBuffer_Terrain::Ready_VIBuffer(_int iNumVtxX, _int iNumVtxZ, _float fIn
 			pIndices[iNumPolygons]._2 = iIndex + m_iNumVerticesX + 1;
 			pIndices[iNumPolygons]._3 = iIndex + 1;
 
-			vDest = pVertices[pIndices[iNumPolygons]._2].vPosition - pVertices[pIndices[iNumPolygons]._1].vPosition;
-			vSour = pVertices[pIndices[iNumPolygons]._3].vPosition - pVertices[pIndices[iNumPolygons]._1].vPosition;
-			D3DXVec3Normalize(&vNormal, D3DXVec3Cross(&vNormal, &vDest, &vSour));
-
-			pVertices[pIndices[iNumPolygons]._1].vNormal += vNormal;
-			pVertices[pIndices[iNumPolygons]._2].vNormal += vNormal;
-			pVertices[pIndices[iNumPolygons]._3].vNormal += vNormal;
 			++iNumPolygons;
 
 			pIndices[iNumPolygons]._1 = iIndex + m_iNumVerticesX;
 			pIndices[iNumPolygons]._2 = iIndex + 1;
 			pIndices[iNumPolygons]._3 = iIndex;
-
-			vDest = pVertices[pIndices[iNumPolygons]._2].vPosition - pVertices[pIndices[iNumPolygons]._1].vPosition;
-			vSour = pVertices[pIndices[iNumPolygons]._3].vPosition - pVertices[pIndices[iNumPolygons]._1].vPosition;
-			D3DXVec3Normalize(&vNormal, D3DXVec3Cross(&vNormal, &vDest, &vSour));
-
-			pVertices[pIndices[iNumPolygons]._1].vNormal += vNormal;
-			pVertices[pIndices[iNumPolygons]._2].vNormal += vNormal;
-			pVertices[pIndices[iNumPolygons]._3].vNormal += vNormal;
-
 			++iNumPolygons;
 		}
 	}
+
 	memcpy(m_pIndices, pIndices, sizeof(INDEX16) * m_iNumPolygons);
 
-	for (size_t i = 0; i < m_iNumVertices; i++)
-		D3DXVec3Normalize(&pVertices[i].vNormal, &pVertices[i].vNormal);
-
-	m_pVB->Unlock();
 	m_pIB->Unlock();
+
+	{
+		//_vec3		vDest, vSour, vNormal;
+
+		//m_pIB->Lock(0, 0, (void**)&pIndices, 0);
+
+		//for (size_t i = 0; i < m_iNumVerticesZ - 1; i++)
+		//{
+		//	for (size_t j = 0; j < m_iNumVerticesX - 1; j++)
+		//	{
+		//		_uint		iIndex = i * m_iNumVerticesX + j;
+
+		//		pIndices[iNumPolygons]._1 = iIndex + m_iNumVerticesX;
+		//		pIndices[iNumPolygons]._2 = iIndex + m_iNumVerticesX + 1;
+		//		pIndices[iNumPolygons]._3 = iIndex + 1;
+
+		//		vDest = pVertices[pIndices[iNumPolygons]._2].vPosition - pVertices[pIndices[iNumPolygons]._1].vPosition;
+		//		vSour = pVertices[pIndices[iNumPolygons]._3].vPosition - pVertices[pIndices[iNumPolygons]._1].vPosition;
+		//		D3DXVec3Normalize(&vNormal, D3DXVec3Cross(&vNormal, &vDest, &vSour));
+
+		//		pVertices[pIndices[iNumPolygons]._1].vNormal += vNormal;
+		//		pVertices[pIndices[iNumPolygons]._2].vNormal += vNormal;
+		//		pVertices[pIndices[iNumPolygons]._3].vNormal += vNormal;
+		//		++iNumPolygons;
+
+		//		pIndices[iNumPolygons]._1 = iIndex + m_iNumVerticesX;
+		//		pIndices[iNumPolygons]._2 = iIndex + 1;
+		//		pIndices[iNumPolygons]._3 = iIndex;
+
+		//		vDest = pVertices[pIndices[iNumPolygons]._2].vPosition - pVertices[pIndices[iNumPolygons]._1].vPosition;
+		//		vSour = pVertices[pIndices[iNumPolygons]._3].vPosition - pVertices[pIndices[iNumPolygons]._1].vPosition;
+		//		D3DXVec3Normalize(&vNormal, D3DXVec3Cross(&vNormal, &vDest, &vSour));
+
+		//		pVertices[pIndices[iNumPolygons]._1].vNormal += vNormal;
+		//		pVertices[pIndices[iNumPolygons]._2].vNormal += vNormal;
+		//		pVertices[pIndices[iNumPolygons]._3].vNormal += vNormal;
+
+		//		++iNumPolygons;
+		//	}
+		//}
+		//memcpy(m_pIndices, pIndices, sizeof(INDEX16) * m_iNumPolygons);
+
+		//for (size_t i = 0; i < m_iNumVertices; i++)
+		//	D3DXVec3Normalize(&pVertices[i].vNormal, &pVertices[i].vNormal);
+
+
+		//m_pIB->Unlock();
+	}
 
 	return NOERROR;
 }

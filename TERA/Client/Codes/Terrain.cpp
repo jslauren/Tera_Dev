@@ -33,7 +33,7 @@ HRESULT CTerrain::Ready_GameObject(void* pArg)
 	ZeroMemory(&m_MtrlInfo, sizeof(D3DMATERIAL9));
 
 	m_MtrlInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	m_MtrlInfo.Ambient = D3DXCOLOR(0.2f, 0.2f, 0.2f, 1.f);
+	m_MtrlInfo.Ambient = D3DXCOLOR(0.4f, 0.4f, 0.4f, 1.f);
 	m_MtrlInfo.Specular = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 
 	CGameObject::Set_Material(m_MtrlInfo);
