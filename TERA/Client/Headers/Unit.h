@@ -28,6 +28,7 @@ public: // Getter
 	CTransform*		Get_TransformMove() { return m_pTransformMoveCom; }
 	CMesh_Dynamic*	Get_Mesh() { return m_pMeshCom; }
 	CNavigation*	Get_NaviMesh() { return m_pNavigationCom; }
+	CCollider*		Get_Collider() { return m_pColliderCom; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();

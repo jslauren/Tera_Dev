@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\Headers\PlayerState.h"
+#include "UI_DamageFont_Manager.h"
 
 _USING(Client)
 
@@ -64,6 +65,8 @@ void CPlayerState::AttackEvent(CArkus* pArkus, CPlayer* Player, _uint iAvailable
 		if (m_bIsDamageAvailable == true)
 		{
 			pArkus->Set_HP_Sub(Player->Get_PlayerOffenceValue());
+			
+			CUI_DamageFont_Manager::GetInstance()->Create_DamageFont(m_pGraphic_Device, *Player->Get_Collider()->Get_CollisionPos(), Player->Get_PlayerOffenceValue());
 			m_iHitCount++;
 
 			m_bIsDamageAvailable = false;

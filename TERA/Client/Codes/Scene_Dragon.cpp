@@ -10,6 +10,8 @@
 #include "Monster.h"
 #include "Arkus.h"
 #include "TerrainObject.h"
+#include "FontManager.h"
+
 #include "UI_PlayerPoint.h"
 #include "UI_BossPoint.h"
 #include "UI_SkillBoard.h"
@@ -78,8 +80,6 @@ HRESULT CScene_Dragon::Ready_Scene()
 	
 	SetCutSceneEvent();
 
-	CUI_DamageFont_Manager::GetInstance()->Create_DamageFont(m_pGraphic_Device, _vec3(100.f, 100.f, 0), 325);
-
 	return NOERROR;
 }
 
@@ -103,6 +103,11 @@ _int CScene_Dragon::LateUpdate_Scene(const _float & fTimeDelta)
 
 HRESULT CScene_Dragon::Render_Scene()
 {
+
+	_vec3 vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+
+	wsprintf(m_szPlayerPos, L"%d, %d, %d", (_int)vPlayerPos.x, (_int)vPlayerPos.y, (_int)vPlayerPos.z);
+	CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3((g_iWinCX * 0.5) - 50.f, g_iWinCY - 30.f, 0.f), m_szPlayerPos);
 
 	CUI_DamageFont_Manager::GetInstance()->Render_DamageFont();
 

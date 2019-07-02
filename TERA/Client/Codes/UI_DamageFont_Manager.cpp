@@ -22,7 +22,7 @@ HRESULT CUI_DamageFont_Manager::Create_DamageFont(LPDIRECT3DDEVICE9 pGraphic_Dev
 	ZeroMemory(&viewPort, sizeof(D3DVIEWPORT9));
 
 	pGraphic_Device->GetTransform(D3DTS_VIEW, &matView);
-	pGraphic_Device->GetTransform(D3DTS_PROJECTION, &matView);
+	pGraphic_Device->GetTransform(D3DTS_PROJECTION, &matProj);
 	pGraphic_Device->GetViewport(&viewPort);
 
 	D3DXMatrixIdentity(&matWorld);

@@ -48,7 +48,7 @@ private:
 	_float			m_fTimeAcc = 0.f;
 	_float			m_fCurrentFontSize = 50.f;
 	_float			m_fMinFontSize = 50.f;
-	_float			m_fMaxFontSize = 75.f;
+	_float			m_fMaxFontSize = 55.5f;
 	_bool			m_bIsSub = false;
 	_float			m_fFontPosition = 0.f;
 	_float			m_fMaxFontPosition = 1.5f;

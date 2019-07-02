@@ -276,6 +276,10 @@ _bool CCollider::Collision_Sphere(const CCollider * pTargetCollider)
 	memcpy(&vDestPos, &pTargetCollider->m_matWorld.m[3][0], sizeof(_vec3));
 
 	m_vLookDistance = vSourPos - vDestPos;
+
+	// 데미지 폰트 포지션용 구문.
+	m_vCollisionCheckPosition = (vSourPos + vDestPos) / 2;
+
 	fDistance = D3DXVec3Length(&(vSourPos - vDestPos));
 
 	m_fRadius = (m_ColliderDesc.vScale.x + pTargetCollider->m_ColliderDesc.vScale.x) / 2;

@@ -56,6 +56,7 @@ public:	// Getter
 	const _matrix* Get_WorldMatrix() const { return &m_matWorld; }
 	const _float Get_Radius() const { return m_fRadius; }
 	const _vec3* Get_LookDistance() const { return &m_vLookDistance; }
+	const _vec3* Get_CollisionPos() const { return &m_vCollisionCheckPosition; }
 
 public:	// Setter
 	void	Set_ColliderRenderling(_bool bButton) { m_bIsRendering = bButton; }
@@ -78,6 +79,7 @@ private:
 	_float			m_fRadius = 0.f;
 	_vec3			m_vLookDistance;
 	_bool			m_bIsRendering = false;
+	_vec3			m_vCollisionCheckPosition;
 
 private:
 	_vec3			m_vMin, m_vMax;

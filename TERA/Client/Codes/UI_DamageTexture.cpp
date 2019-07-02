@@ -72,7 +72,7 @@ _int CUI_DamageTexture::Update_GameObject(const _float & fTimeDelta)
 		{
 			m_fFontStayTimeAcc += fTimeDelta;
 
-			if (m_fFontStayTimeAcc >= 0.55f)
+			if (m_fFontStayTimeAcc >= 0.075f)
 			{
 				_vec3 Temp;
 
@@ -381,18 +381,38 @@ void CUI_DamageTexture::SeprateDamageValue()
 
 void CUI_DamageTexture::SetDamageTransform()
 {
+	_vec3 vTempPos;
+
 	if (m_iNumberUnit == 3)
 	{
-		m_pTransformHndrCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * -(0.015f)), (g_iWinCY * 0.f), 0.f));
-		m_pTransformTenCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), (g_iWinCY * 0.f), 0.f));
-		m_pTransformOneCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.015f), (g_iWinCY * 0.f), 0.f));
+		vTempPos = m_vPosition;
+		vTempPos.x -= 17.5f;
+		m_pTransformHndrCom->Set_StateInfo(CTransform::STATE_POSITION, &vTempPos);
+
+		vTempPos = m_vPosition;
+		m_pTransformTenCom->Set_StateInfo(CTransform::STATE_POSITION, &m_vPosition);
+
+		vTempPos = m_vPosition;
+		vTempPos.x += 17.5f;
+		m_pTransformOneCom->Set_StateInfo(CTransform::STATE_POSITION, &vTempPos);
 	}
 	else if (m_iNumberUnit == 4)
 	{
-		m_pTransformThsnCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * -(0.03f)), (g_iWinCY * 0.f), 0.f));
-		m_pTransformHndrCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * -(0.01f)), (g_iWinCY * 0.f), 0.f));
-		m_pTransformTenCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.01f), (g_iWinCY * 0.f), 0.f));
-		m_pTransformOneCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.03f), (g_iWinCY * 0.f), 0.f));
+		vTempPos = m_vPosition;
+		vTempPos.x -= 26.25f;
+		m_pTransformThsnCom->Set_StateInfo(CTransform::STATE_POSITION, &vTempPos);
+
+		vTempPos = m_vPosition;
+		vTempPos.x -= 8.75f;
+		m_pTransformHndrCom->Set_StateInfo(CTransform::STATE_POSITION, &vTempPos);
+
+		vTempPos = m_vPosition;
+		vTempPos.x += 8.75f;
+		m_pTransformTenCom->Set_StateInfo(CTransform::STATE_POSITION, &vTempPos);
+
+		vTempPos = m_vPosition;
+		vTempPos.x += 26.25f;
+		m_pTransformOneCom->Set_StateInfo(CTransform::STATE_POSITION, &vTempPos);
 	}
 }
 

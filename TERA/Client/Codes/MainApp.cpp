@@ -14,6 +14,7 @@
 #include "Scene_Stage.h"
 #include "UI_Loading.h"
 #include "FontManager.h"
+#include "Player.h"
 #include "UI_DamageFont_Manager.h"
 
 _USING(Client)

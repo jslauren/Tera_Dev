@@ -94,7 +94,7 @@ _int CArkus::LateUpdate_GameObject(const _float & fTimeDelta)
 	m_pColliderCom->Collision_OBB(pPlayerCollider);
 	m_pColliderCom->Collision_OBB(pWeaponCollider);
 
-	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, 50.f))
+	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, 350.f))
 	{
 		if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
 			return -1;
