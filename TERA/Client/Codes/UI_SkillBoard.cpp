@@ -29,10 +29,11 @@ HRESULT CUI_SkillBoard::Ready_GameObject(void * pArg)
 		return E_FAIL;
 
 	m_pTransformSkillBoardCom->Set_Scaling((g_iWinCX * 0.68f), (g_iWinCY * 0.15f), 0.f);
-	m_pTransformSkillBoardCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), -(g_iWinCY * 0.4f), 0.f));
+	m_pTransformSkillBoardCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-(g_iWinCX * 0.005f), -(g_iWinCY * 0.4f), 0.f));
 
-	m_pTransformSkillFilterCom->Set_Scaling((g_iWinCX * 0.01f), (g_iWinCY * 0.15f), 0.f);
-	m_pTransformSkillFilterCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.f), -(g_iWinCY * 0.4f), 0.f));
+	// 쿨타임용 필터 텍스쳐.
+	m_pTransformSkillFilterCom->Set_Scaling((g_iWinCX * 0.044f), (g_iWinCY * 0.075f), 0.f);
+	m_pTransformSkillFilterCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-(g_iWinCX * 0.1845f), -(g_iWinCY * 0.429f), 0.f));
 
 	return NOERROR;
 }
@@ -67,7 +68,6 @@ HRESULT CUI_SkillBoard::Render_GameObject()
 			return NOERROR;
 		}
 
-
 		if (FAILED(NullCheck()))
 			return E_FAIL;
 
@@ -89,20 +89,20 @@ HRESULT CUI_SkillBoard::Render_GameObject()
 		pEffect->EndPass();
 		pEffect->End();
 
+		{
+			if (FAILED(SetUp_ConstantTable(pEffect, 2)))
+				return E_FAIL;
+
+			pEffect->Begin(nullptr, 0);
+			pEffect->BeginPass(2);
+
+			m_pBufferSkillFilterCom->Render_Buffer();
+
+			pEffect->EndPass();
+			pEffect->End();
+		}
+
 		Safe_Release(pEffect);
-
-		//{
-		//	if (FAILED(SetUp_ConstantTable(pEffect, 1)))
-		//		return E_FAIL;
-
-		//	pEffect->Begin(nullptr, 0);
-		//	pEffect->BeginPass(2);
-
-		//	m_pBufferSkillFilterCom->Render_Buffer();
-
-		//	pEffect->EndPass();
-		//	pEffect->End();
-		//}
 	}
 
 	return NOERROR;
@@ -160,12 +160,13 @@ HRESULT CUI_SkillBoard::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iT
 	}
 	else if (2 == iTargetTextureIdx)
 	{
-		m_pTextureSkillBoardCom->SetUp_OnShader(pEffect, "g_BaseTexture");
+		m_pTextureSkillFilterCom->SetUp_OnShader(pEffect, "g_BaseTexture");
 
-		pEffect->SetMatrix("g_matWorld", m_pTransformSkillBoardCom->Get_WorldMatrixPointer());
+		pEffect->SetMatrix("g_matWorld", m_pTransformSkillFilterCom->Get_WorldMatrixPointer());
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
-		pEffect->SetFloat("g_fCoolTimeDegree", _float(45.f));
+
+		pEffect->SetFloat("g_fCool", _float(0.35f));
 	}
 
 	Safe_Release(pEffect);

@@ -22,13 +22,13 @@ public:
 	virtual HRESULT	SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTargetTextureIdx = 1);
 
 private:
+	CTexture*			m_pTextureSkillBoardCom = nullptr;
 	CTransform*			m_pTransformSkillBoardCom = nullptr;
 	CBuffer_RcTex*		m_pBufferSkillBoardCom = nullptr;
-	CTexture*			m_pTextureSkillBoardCom = nullptr;
 
+	CTexture*			m_pTextureSkillFilterCom = nullptr;
 	CTransform*			m_pTransformSkillFilterCom = nullptr;
 	CBuffer_RcTex*		m_pBufferSkillFilterCom = nullptr;
-	CTexture*			m_pTextureSkillFilterCom = nullptr;
 
 private:
 	HRESULT				NullCheck();
