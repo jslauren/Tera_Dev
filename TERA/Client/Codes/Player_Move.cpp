@@ -48,7 +48,14 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
 			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Run_Battle)
-				return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			{
+				if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling) == true)
+				{
+					Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling, false);
+
+					return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
+			}
 		}
 
 		_uint		iCellIndx = 0;
@@ -80,7 +87,14 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
 			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Run_Battle)
-				return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			{
+				if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling) == true)
+				{
+					Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling, false);
+
+					return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
+			}
 		}
 		
 		_uint		iCellIndx = 0;
@@ -112,7 +126,14 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
 			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Run_Battle)
-				return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			{
+				if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling) == true)
+				{
+					Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling, false);
+
+					return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
+			}
 		}
 
 		_uint		iCellIndx = 0;
@@ -134,7 +155,14 @@ CPlayerState * CPlayer_Move::Input_Keyboard(CPlayer & Player, const float & fTim
 		if (CInput_Device::GetInstance()->Get_DIMouseDown(CInput_Device::MOUSEBUTTON::DIM_RBUTTON))
 		{
 			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Run_Battle)
-				return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			{
+				if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling) == true)
+				{
+					Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling, false);
+
+					return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+				}
+			}
 		}
 
 		_uint		iCellIndx = 0;

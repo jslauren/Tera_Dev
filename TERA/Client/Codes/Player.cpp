@@ -39,19 +39,19 @@ const _float & CPlayer::Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni)
 		return m_fCurrentCoolTime[1];
 		break;
 
-	case Client::CPlayer::DrawSword:
+	case Client::CPlayer::FlatBlade:
 		return m_fCurrentCoolTime[2];
 		break;
 
-	case Client::CPlayer::FlatBlade:
+	case Client::CPlayer::HandySlash:
 		return m_fCurrentCoolTime[3];
 		break;
 
-	case Client::CPlayer::HandySlash:
+	case Client::CPlayer::JawBreaker:
 		return m_fCurrentCoolTime[4];
 		break;
 
-	case Client::CPlayer::JawBreaker:
+	case Client::CPlayer::StingerBlade:
 		return m_fCurrentCoolTime[5];
 		break;
 
@@ -59,7 +59,7 @@ const _float & CPlayer::Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni)
 		return m_fCurrentCoolTime[6];
 		break;
 
-	case Client::CPlayer::StingerBlade:
+	case Client::CPlayer::DrawSword:
 		return m_fCurrentCoolTime[7];
 		break;
 
@@ -81,19 +81,19 @@ const _float & CPlayer::Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni)
 		return m_fMaxCoolTime[1];
 		break;
 
-	case Client::CPlayer::DrawSword:
+	case Client::CPlayer::FlatBlade:
 		return m_fMaxCoolTime[2];
 		break;
 
-	case Client::CPlayer::FlatBlade:
+	case Client::CPlayer::HandySlash:
 		return m_fMaxCoolTime[3];
 		break;
 
-	case Client::CPlayer::HandySlash:
+	case Client::CPlayer::JawBreaker:
 		return m_fMaxCoolTime[4];
 		break;
 
-	case Client::CPlayer::JawBreaker:
+	case Client::CPlayer::StingerBlade:
 		return m_fMaxCoolTime[5];
 		break;
 
@@ -101,7 +101,7 @@ const _float & CPlayer::Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni)
 		return m_fMaxCoolTime[6];
 		break;
 
-	case Client::CPlayer::StingerBlade:
+	case Client::CPlayer::DrawSword:
 		return m_fMaxCoolTime[7];
 		break;
 
@@ -123,19 +123,19 @@ const _bool & CPlayer::Get_CoolTimeAvailable(PLAYER_ANI eAttackAni)
 		return m_bIsCoolTimeAvailable[1];
 		break;
 
-	case Client::CPlayer::DrawSword:
+	case Client::CPlayer::FlatBlade:
 		return m_bIsCoolTimeAvailable[2];
 		break;
 
-	case Client::CPlayer::FlatBlade:
+	case Client::CPlayer::HandySlash:
 		return m_bIsCoolTimeAvailable[3];
 		break;
 
-	case Client::CPlayer::HandySlash:
+	case Client::CPlayer::JawBreaker:
 		return m_bIsCoolTimeAvailable[4];
 		break;
 
-	case Client::CPlayer::JawBreaker:
+	case Client::CPlayer::StingerBlade:
 		return m_bIsCoolTimeAvailable[5];
 		break;
 
@@ -143,7 +143,7 @@ const _bool & CPlayer::Get_CoolTimeAvailable(PLAYER_ANI eAttackAni)
 		return m_bIsCoolTimeAvailable[6];
 		break;
 
-	case Client::CPlayer::StingerBlade:
+	case Client::CPlayer::DrawSword:
 		return m_bIsCoolTimeAvailable[7];
 		break;
 
@@ -195,19 +195,19 @@ void CPlayer::Set_CoolTimeAvailable(PLAYER_ANI eAttackAni, _bool bButton)
 		m_bIsCoolTimeAvailable[1] = bButton;
 		break;
 
-	case Client::CPlayer::DrawSword:
+	case Client::CPlayer::FlatBlade:
 		m_bIsCoolTimeAvailable[2] = bButton;
 		break;
 
-	case Client::CPlayer::FlatBlade:
+	case Client::CPlayer::HandySlash:
 		m_bIsCoolTimeAvailable[3] = bButton;
 		break;
 
-	case Client::CPlayer::HandySlash:
+	case Client::CPlayer::JawBreaker:
 		m_bIsCoolTimeAvailable[4] = bButton;
 		break;
 
-	case Client::CPlayer::JawBreaker:
+	case Client::CPlayer::StingerBlade:
 		m_bIsCoolTimeAvailable[5] = bButton;
 		break;
 
@@ -215,7 +215,7 @@ void CPlayer::Set_CoolTimeAvailable(PLAYER_ANI eAttackAni, _bool bButton)
 		m_bIsCoolTimeAvailable[6] = bButton;
 		break;
 
-	case Client::CPlayer::StingerBlade:
+	case Client::CPlayer::DrawSword:
 		m_bIsCoolTimeAvailable[7] = bButton;
 		break;
 
@@ -237,19 +237,19 @@ void CPlayer::Set_CoolTimeFree(PLAYER_ANI eAttackAni)
 		m_fCurrentCoolTime[1] = m_fMaxCoolTime[1];
 		break;
 
-	case Client::CPlayer::DrawSword:
+	case Client::CPlayer::FlatBlade:
 		m_fCurrentCoolTime[2] = m_fMaxCoolTime[2];
 		break;
 
-	case Client::CPlayer::FlatBlade:
+	case Client::CPlayer::HandySlash:
 		m_fCurrentCoolTime[3] = m_fMaxCoolTime[3];
 		break;
 
-	case Client::CPlayer::HandySlash:
+	case Client::CPlayer::JawBreaker:
 		m_fCurrentCoolTime[4] = m_fMaxCoolTime[4];
 		break;
 
-	case Client::CPlayer::JawBreaker:
+	case Client::CPlayer::StingerBlade:
 		m_fCurrentCoolTime[5] = m_fMaxCoolTime[5];
 		break;
 
@@ -257,7 +257,7 @@ void CPlayer::Set_CoolTimeFree(PLAYER_ANI eAttackAni)
 		m_fCurrentCoolTime[6] = m_fMaxCoolTime[6];
 		break;
 
-	case Client::CPlayer::StingerBlade:
+	case Client::CPlayer::DrawSword:
 		m_fCurrentCoolTime[7] = m_fMaxCoolTime[7];
 		break;
 
@@ -937,7 +937,7 @@ void CPlayer::DecreaseSkillCoolTime()
 			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::CutHead, true);
 		}
 	}
-	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::CuttingSlash) == false)
+	if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::CuttingSlash) == false)
 	{
 		if (m_fCurrentCoolTime[1] > 0)
 			m_fCurrentCoolTime[1] -= m_fTimeDelta;
@@ -948,51 +948,51 @@ void CPlayer::DecreaseSkillCoolTime()
 			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::CuttingSlash, true);
 		}
 	}
-	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::DrawSword) == false)
+	if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::FlatBlade) == false)
 	{
 		if (m_fCurrentCoolTime[2] > 0)
 			m_fCurrentCoolTime[2] -= m_fTimeDelta;
 
 		else if (m_fCurrentCoolTime[2] <= 0)
 		{
-			Set_CoolTimeFree(CPlayer::PLAYER_ANI::DrawSword);
-			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::DrawSword, true);
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::FlatBlade);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::FlatBlade, true);
 		}
 	}
-	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::FlatBlade) == false)
+	if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::HandySlash) == false)
 	{
 		if (m_fCurrentCoolTime[3] > 0)
 			m_fCurrentCoolTime[3] -= m_fTimeDelta;
 
 		else if (m_fCurrentCoolTime[3] <= 0)
 		{
-			Set_CoolTimeFree(CPlayer::PLAYER_ANI::FlatBlade);
-			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::FlatBlade, true);
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::HandySlash);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::HandySlash, true);
 		}
 	}
-	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::HandySlash) == false)
+	if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::JawBreaker) == false)
 	{
 		if (m_fCurrentCoolTime[4] > 0)
 			m_fCurrentCoolTime[4] -= m_fTimeDelta;
 
 		else if (m_fCurrentCoolTime[4] <= 0)
 		{
-			Set_CoolTimeFree(CPlayer::PLAYER_ANI::HandySlash);
-			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::HandySlash, true);
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::JawBreaker);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::JawBreaker, true);
 		}
 	}
-	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::JawBreaker) == false)
+	if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::StingerBlade) == false)
 	{
 		if (m_fCurrentCoolTime[5] > 0)
 			m_fCurrentCoolTime[5] -= m_fTimeDelta;
 
 		else if (m_fCurrentCoolTime[5] <= 0)
 		{
-			Set_CoolTimeFree(CPlayer::PLAYER_ANI::JawBreaker);
-			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::JawBreaker, true);
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::StingerBlade);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::StingerBlade, true);
 		}
 	}
-	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::RagingStrike) == false)
+	if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::RagingStrike) == false)
 	{
 		if (m_fCurrentCoolTime[6] > 0)
 			m_fCurrentCoolTime[6] -= m_fTimeDelta;
@@ -1003,18 +1003,18 @@ void CPlayer::DecreaseSkillCoolTime()
 			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::RagingStrike, true);
 		}
 	}
-	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::StingerBlade) == false)
+	if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::DrawSword) == false)
 	{
 		if (m_fCurrentCoolTime[7] > 0)
 			m_fCurrentCoolTime[7] -= m_fTimeDelta;
 
 		else if (m_fCurrentCoolTime[7] <= 0)
 		{
-			Set_CoolTimeFree(CPlayer::PLAYER_ANI::StingerBlade);
-			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::StingerBlade, true);
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::DrawSword);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::DrawSword, true);
 		}
 	}
-	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling) == false)
+	if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling) == false)
 	{
 		if (m_fCurrentCoolTime[8] > 0)
 			m_fCurrentCoolTime[8] -= m_fTimeDelta;
