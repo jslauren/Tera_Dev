@@ -36,10 +36,11 @@ public:	// Getter
 	const _float&		Get_HP() { return m_fHP; }
 	const _float&		Get_MP() { return m_fMP; }
 	const _uint&		Get_PlayerOffenceValue() { return m_iOffencePower; }
-	const _bool&		Get_IsCriticalDamageInfo() { return m_bIsCriticalDamage; }
 	const _bool&		Get_LBtnClickedInfo() { return m_bLBtnClicked; }
 	const _bool&		Get_HitCount() { return m_iHitCount; }
-	
+	const _uint&		Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni);
+	const _bool&		Get_CoolTimeAvailable(PLAYER_ANI eAttackAni);
+
 public:	// Setter
 	HRESULT				Set_Navigation_Component(SCENEID eScene);
 	void				Set_AniIndex(const PLAYER_ANI& iIndex) { m_eAnimationIndex = iIndex; }
@@ -58,6 +59,8 @@ public:	// Setter
 	void				Set_AddHitCount() { m_iHitCount++; }
 	void				Set_SubHitCount() { m_iHitCount--; }
 	void				Set_FreeHitCount() { m_iHitCount = 0; }
+	void				Set_CoolTimeAvailable(PLAYER_ANI eAttackAni, _bool bButton);
+	void				Set_CoolTimeFree(PLAYER_ANI eAttackAni);
 
 public:
 	virtual HRESULT		Ready_GameObject_Prototype();
@@ -68,9 +71,10 @@ public:
 	virtual HRESULT		OnEvent(const _tchar * _szEventTag, void * _pMsg);
 
 public:
-	void				DamageEvent(_float fSpeed);
 	_bool				CollisionCheck();
+	void				DamageEvent(_float fSpeed);
 	void				DamageCalculator(PLAYER_ANI eAttackAni);
+	void				DecreaseSkillCoolTime();
 
 private:
 	CPlayerState*			m_pState = nullptr;
@@ -108,10 +112,16 @@ private:
 	_float			m_fAutoHealingAccTime = 0.f;
 
 	_uint			m_iOffencePower = 300.f;
-	_bool			m_bIsCriticalDamage = false;
+	_bool			m_bIsCriticalDamage[8] = { false, false, false, false, false, false, false, false};
 
 	_bool			m_bLBtnClicked = false;
 	_uint			m_iHitCount = 0;
+
+	_bool			m_bIsCoolTimeAvailable[9] = { true, true, true, true, true, true, true, true, true};
+	_uint			m_iMaxCoolTime[9] = { 5, 4, 7, 3, 5, 3, 9, 5, 3};
+	_uint			m_iCurrentCoolTime[9] = { 5, 4, 7, 3, 5, 3, 9, 5, 3 };
+
+	_float			m_fCoolTimeAcc = 0.f;
 
 private:
 	virtual HRESULT Add_Component();

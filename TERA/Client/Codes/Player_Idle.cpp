@@ -236,10 +236,12 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 		{
-			m_iAniState = 0;
-			return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling) == true)
+			{
+				m_iAniState = 0;
+				return CPlayer_Skill_Tumbling::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
 		}
-
 	}
 	// [무기 발검, 착검]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_F) & 0x80)
@@ -289,8 +291,13 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 		{
-			if (Player.Get_Mesh_Bone()->IsAnimationEnded())
-				return CPlayer_Skill_CutHead::Create(m_pGraphic_Device, Player, &m_iAniState);
+			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::CutHead) == true)
+			{
+				Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::CutHead, false);
+
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded())
+					return CPlayer_Skill_CutHead::Create(m_pGraphic_Device, Player, &m_iAniState);
+			}
 		}
 	}
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_2) & 0x80)

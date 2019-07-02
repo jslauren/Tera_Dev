@@ -108,6 +108,15 @@ HRESULT CUI_SkillBoard::Render_GameObject()
 	return NOERROR;
 }
 
+HRESULT CUI_SkillBoard::OnEvent(const _tchar * _szEventTag, void * _pMsg)
+{
+	if (!lstrcmp(_szEventTag, L"Arkus_Attack"))
+	{
+	}
+
+	return NOERROR;
+}
+
 HRESULT CUI_SkillBoard::Add_Component()
 {
 	CUI::Add_Component();

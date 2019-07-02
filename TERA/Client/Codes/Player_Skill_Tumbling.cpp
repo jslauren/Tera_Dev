@@ -37,79 +37,30 @@ CPlayerState * CPlayer_Skill_Tumbling::Input_Keyboard(CPlayer & Player, const fl
 
 void CPlayer_Skill_Tumbling::Update_State(CPlayer & Player, const float & fTimeDelta)
 {
-	if (Player.Get_Direction() == 0)
+	_uint		iCellIndx = 0;
+	if (true == (Player.Get_NaviMesh()->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), PLAYER_SPEED * fTimeDelta * 1.8, &iCellIndx)))
 	{
-			_uint		iCellIndx = 0;
-			if (true == (Player.Get_NaviMesh()->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), PLAYER_SPEED * fTimeDelta, &iCellIndx)))
-			{
-				Player.Get_TransformMove()->Move(0, PLAYER_SPEED, fTimeDelta * 1.8);
+		Player.Get_TransformMove()->Move(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), PLAYER_SPEED, fTimeDelta * 1.8);
 
-				/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
-				(Player.Get_NaviMesh()->SetUp_CurrentIndex(iCellIndx));
-			}
-	}
-	else if (Player.Get_Direction() == 1)
-	{
-		_uint		iCellIndx = 0;
-		if (true == (Player.Get_NaviMesh()->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), PLAYER_SPEED * fTimeDelta, &iCellIndx)))
-		{
-			Player.Get_TransformMove()->Move(1, PLAYER_SPEED, fTimeDelta * 1.8);
-
-			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
-			(Player.Get_NaviMesh()->SetUp_CurrentIndex(iCellIndx));
-		}
-	}
-	else if (Player.Get_Direction() == 2)
-	{
-		_uint		iCellIndx = 0;
-		if (true == (Player.Get_NaviMesh()->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), PLAYER_SPEED * fTimeDelta, &iCellIndx)))
-		{
-			Player.Get_TransformMove()->Move(2, PLAYER_SPEED, fTimeDelta * 1.8);
-
-			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
-			(Player.Get_NaviMesh()->SetUp_CurrentIndex(iCellIndx));
-		}
-	}
-	else if (Player.Get_Direction() == 3)
-	{
-		_uint		iCellIndx = 0;
-		if (true == (Player.Get_NaviMesh()->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), PLAYER_SPEED * fTimeDelta, &iCellIndx)))
-		{
-			Player.Get_TransformMove()->Move(3, PLAYER_SPEED, fTimeDelta * 1.8);
-
-			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
-			(Player.Get_NaviMesh()->SetUp_CurrentIndex(iCellIndx));
-		}
+		/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
+		(Player.Get_NaviMesh()->SetUp_CurrentIndex(iCellIndx));
 	}
 }
 
 void CPlayer_Skill_Tumbling::MovePlayerPosition(CPlayer & Player, _float fPlayerSpeed, const float & fTimeDelta, void * pArg, _int iMoveDir)
 {
-	_uint		iCellIndx = 0;
-	if (true == ((CNavigation*)(pArg))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), 30.0f * fTimeDelta, &iCellIndx))
-	{
-		Player.Get_TransformMove()->Move(iMoveDir, fPlayerSpeed, fTimeDelta);
-
-		/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
-		((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
-	}
+	//_uint		iCellIndx = 0;
+	//if (true == ((CNavigation*)(pArg))->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), fPlayerSpeed * fTimeDelta, &iCellIndx))
+	//{
+	//	Player.Get_TransformMove()->Move(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), fPlayerSpeed, fTimeDelta);
+	//	/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
+	//	((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
+	//}
 }
 
 CPlayer_Skill_Tumbling * CPlayer_Skill_Tumbling::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer & Player, void * pArg)
 {
 	CPlayer_Skill_Tumbling* pInstance = new CPlayer_Skill_Tumbling(pGraphicDevice);
-
-	if (*(_int*)(pArg) == 0)
-		Player.Set_Direction(0);
-
-	else if (*(_int*)(pArg) == 1)
-		Player.Set_Direction(1);
-
-	else if (*(_int*)(pArg) == 2)
-		Player.Set_Direction(2);
-
-	else if (*(_int*)(pArg) == 3)
-		Player.Set_Direction(3);
 
 	if (FAILED(pInstance->Initialize_State(Player)))
 		Safe_Release(pInstance);

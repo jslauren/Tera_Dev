@@ -27,6 +27,90 @@ CPlayer::CPlayer(const CPlayer & rhs)
 {
 }
 
+const _uint & CPlayer::Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni)
+{
+	switch (eAttackAni)
+	{
+	case Client::CPlayer::CutHead:
+		return m_iCurrentCoolTime[0];
+		break;
+
+	case Client::CPlayer::CuttingSlash:
+		return m_iCurrentCoolTime[1];
+		break;
+
+	case Client::CPlayer::DrawSword:
+		return m_iCurrentCoolTime[2];
+		break;
+
+	case Client::CPlayer::FlatBlade:
+		return m_iCurrentCoolTime[3];
+		break;
+
+	case Client::CPlayer::HandySlash:
+		return m_iCurrentCoolTime[4];
+		break;
+
+	case Client::CPlayer::JawBreaker:
+		return m_iCurrentCoolTime[5];
+		break;
+
+	case Client::CPlayer::RagingStrike:
+		return m_iCurrentCoolTime[6];
+		break;
+
+	case Client::CPlayer::StingerBlade:
+		return m_iCurrentCoolTime[7];
+		break;
+
+	case Client::CPlayer::Tumbling:
+		return m_iCurrentCoolTime[8];
+		break;
+	}
+}
+
+const _bool & CPlayer::Get_CoolTimeAvailable(PLAYER_ANI eAttackAni)
+{
+	switch (eAttackAni)
+	{
+	case Client::CPlayer::CutHead:
+		return m_bIsCoolTimeAvailable[0];
+		break;
+
+	case Client::CPlayer::CuttingSlash:
+		return m_bIsCoolTimeAvailable[1];
+		break;
+
+	case Client::CPlayer::DrawSword:
+		return m_bIsCoolTimeAvailable[2];
+		break;
+
+	case Client::CPlayer::FlatBlade:
+		return m_bIsCoolTimeAvailable[3];
+		break;
+
+	case Client::CPlayer::HandySlash:
+		return m_bIsCoolTimeAvailable[4];
+		break;
+
+	case Client::CPlayer::JawBreaker:
+		return m_bIsCoolTimeAvailable[5];
+		break;
+
+	case Client::CPlayer::RagingStrike:
+		return m_bIsCoolTimeAvailable[6];
+		break;
+
+	case Client::CPlayer::StingerBlade:
+		return m_bIsCoolTimeAvailable[7];
+		break;
+
+	case Client::CPlayer::Tumbling:
+		return m_bIsCoolTimeAvailable[8];
+		break;
+	}
+}
+
 HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
 {
 	// For.Com_Navigation
@@ -55,6 +139,90 @@ HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
 	m_pMeshCom_Bone->SetUp_AnimationSet(Idle);
 
 	return NOERROR;
+}
+
+void CPlayer::Set_CoolTimeAvailable(PLAYER_ANI eAttackAni, _bool bButton)
+{
+	switch (eAttackAni)
+	{
+	case Client::CPlayer::CutHead:
+		m_bIsCoolTimeAvailable[0] = bButton;
+		break;
+
+	case Client::CPlayer::CuttingSlash:
+		m_bIsCoolTimeAvailable[1] = bButton;
+		break;
+
+	case Client::CPlayer::DrawSword:
+		m_bIsCoolTimeAvailable[2] = bButton;
+		break;
+
+	case Client::CPlayer::FlatBlade:
+		m_bIsCoolTimeAvailable[3] = bButton;
+		break;
+
+	case Client::CPlayer::HandySlash:
+		m_bIsCoolTimeAvailable[4] = bButton;
+		break;
+
+	case Client::CPlayer::JawBreaker:
+		m_bIsCoolTimeAvailable[5] = bButton;
+		break;
+
+	case Client::CPlayer::RagingStrike:
+		m_bIsCoolTimeAvailable[6] = bButton;
+		break;
+
+	case Client::CPlayer::StingerBlade:
+		m_bIsCoolTimeAvailable[7] = bButton;
+		break;
+
+	case Client::CPlayer::Tumbling:
+		m_bIsCoolTimeAvailable[8] = bButton;
+		break;
+	}
+}
+
+void CPlayer::Set_CoolTimeFree(PLAYER_ANI eAttackAni)
+{
+	switch (eAttackAni)
+	{
+	case Client::CPlayer::CutHead:
+		m_iCurrentCoolTime[0] = m_iMaxCoolTime[0];
+		break;
+
+	case Client::CPlayer::CuttingSlash:
+		m_iCurrentCoolTime[1] = m_iMaxCoolTime[1];
+		break;
+
+	case Client::CPlayer::DrawSword:
+		m_iCurrentCoolTime[2] = m_iMaxCoolTime[2];
+		break;
+
+	case Client::CPlayer::FlatBlade:
+		m_iCurrentCoolTime[3] = m_iMaxCoolTime[3];
+		break;
+
+	case Client::CPlayer::HandySlash:
+		m_iCurrentCoolTime[4] = m_iMaxCoolTime[4];
+		break;
+
+	case Client::CPlayer::JawBreaker:
+		m_iCurrentCoolTime[5] = m_iMaxCoolTime[5];
+		break;
+
+	case Client::CPlayer::RagingStrike:
+		m_iCurrentCoolTime[6] = m_iMaxCoolTime[6];
+		break;
+
+	case Client::CPlayer::StingerBlade:
+		m_iCurrentCoolTime[7] = m_iMaxCoolTime[7];
+		break;
+
+	case Client::CPlayer::Tumbling:
+		m_iCurrentCoolTime[8] = m_iMaxCoolTime[8];
+		break;
+	}
 }
 
 HRESULT CPlayer::Ready_GameObject_Prototype()
@@ -102,13 +270,16 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	m_fTimeDelta = fTimeDelta;
 
 	AutoHealing(fTimeDelta);
-
-	m_fPlayerPosY = m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->y;
-
 	KeyInput();
-	
+	Compute_HeightOnNavi();	
+	CollisionCheck();
+	DecreaseSkillCoolTime();
+
 	if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_N))
 		m_bIsNavigationRender = !m_bIsNavigationRender;
+
+	m_fPlayerPosY = m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->y;
+	m_pTransformCom->Set_WorldMatrix((*m_pTransformRotateCom->Get_WorldMatrixPointer()) * (*m_pTransformMoveCom->Get_WorldMatrixPointer()));
 
 	//// 이 부분은 추후에 인벤토리 구현 시 참고할 구문이다.
 
@@ -128,12 +299,6 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	//	}
 	//	m_bTest = !m_bTest;
 	//}
-
-	m_pTransformCom->Set_WorldMatrix((*m_pTransformRotateCom->Get_WorldMatrixPointer()) * (*m_pTransformMoveCom->Get_WorldMatrixPointer()));
-
-	Compute_HeightOnNavi();
-	
-	CollisionCheck();
 
 	return _int();
 }
@@ -662,59 +827,83 @@ void CPlayer::DamageCalculator(PLAYER_ANI eAttackAni)
 		m_iOffencePower = rand() % 1601 + 4150;
 
 		if (m_iOffencePower >= 5250 && m_iOffencePower <= 5750)
-			m_bIsCriticalDamage = true;
+			m_bIsCriticalDamage[0] = true;
 		break;
 
 	case Client::CPlayer::CuttingSlash:
 		m_iOffencePower = rand() % 1351 + 3850;
 
 		if (m_iOffencePower >= 4700 && m_iOffencePower <= 5200)
-			m_bIsCriticalDamage = true;
+			m_bIsCriticalDamage[1] = true;
 		break;
 
 	case Client::CPlayer::FlatBlade:
 		m_iOffencePower = rand() % 1051 + 1500;
 
 		if (m_iOffencePower >= 2050 && m_iOffencePower <= 2550)
-			m_bIsCriticalDamage = true;
+			m_bIsCriticalDamage[2] = true;
 		break;
 
 	case Client::CPlayer::HandySlash:
 		m_iOffencePower = rand() % 1651 + 4300;
 
 		if (m_iOffencePower >= 5450 && m_iOffencePower <= 5950)
-			m_bIsCriticalDamage = true;
+			m_bIsCriticalDamage[3]= true;
 		break;
 
 	case Client::CPlayer::JawBreaker:
 		m_iOffencePower = rand() % 901 + 2900;
 
 		if (m_iOffencePower >= 3300 && m_iOffencePower <= 3800)
-			m_bIsCriticalDamage = true;
+			m_bIsCriticalDamage[4]= true;
 		break;
 
 	case Client::CPlayer::StingerBlade:
 		m_iOffencePower = rand() % 1851 + 3850;
 
 		if (m_iOffencePower >= 5200 && m_iOffencePower <= 5700)
-			m_bIsCriticalDamage = true;
+			m_bIsCriticalDamage[5]= true;
 		break;
 
 	case Client::CPlayer::RagingStrike:
 		m_iOffencePower = rand() % 851 + 1850;
 
 		if (m_iOffencePower >= 2200 && m_iOffencePower <= 2700)
-			m_bIsCriticalDamage = true;
+			m_bIsCriticalDamage[6]= true;
 		break;
 
 	case Client::CPlayer::DrawSword:
 		m_iOffencePower = rand() % 1601 + 4500;
 
 		if (m_iOffencePower >= 5600 && m_iOffencePower <= 6100)
-			m_bIsCriticalDamage = true;
+			m_bIsCriticalDamage[7]= true;
 		break;
 	}
 
+}
+
+void CPlayer::DecreaseSkillCoolTime()
+{
+	if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::CutHead) == false)
+	{
+		if(m_fCoolTimeAcc <= 1)
+			m_fCoolTimeAcc += m_fTimeDelta;
+
+		else if (m_fCoolTimeAcc >= 1)
+		{
+			if (m_iCurrentCoolTime[0] > 0)
+			{
+				m_iCurrentCoolTime[0] -= m_fCoolTimeAcc;
+				m_fCoolTimeAcc = 0.f;
+			}
+
+			else if (m_iCurrentCoolTime[0] <= 0)
+			{
+				Set_CoolTimeFree(CPlayer::PLAYER_ANI::CutHead);
+				Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::CutHead, true);
+			}
+		}
+	}
 }
 
 CPlayer * CPlayer::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
