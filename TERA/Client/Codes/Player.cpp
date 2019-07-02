@@ -27,44 +27,86 @@ CPlayer::CPlayer(const CPlayer & rhs)
 {
 }
 
-const _uint & CPlayer::Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni)
+const _float & CPlayer::Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni)
 {
 	switch (eAttackAni)
 	{
 	case Client::CPlayer::CutHead:
-		return m_iCurrentCoolTime[0];
+		return m_fCurrentCoolTime[0];
 		break;
 
 	case Client::CPlayer::CuttingSlash:
-		return m_iCurrentCoolTime[1];
+		return m_fCurrentCoolTime[1];
 		break;
 
 	case Client::CPlayer::DrawSword:
-		return m_iCurrentCoolTime[2];
+		return m_fCurrentCoolTime[2];
 		break;
 
 	case Client::CPlayer::FlatBlade:
-		return m_iCurrentCoolTime[3];
+		return m_fCurrentCoolTime[3];
 		break;
 
 	case Client::CPlayer::HandySlash:
-		return m_iCurrentCoolTime[4];
+		return m_fCurrentCoolTime[4];
 		break;
 
 	case Client::CPlayer::JawBreaker:
-		return m_iCurrentCoolTime[5];
+		return m_fCurrentCoolTime[5];
 		break;
 
 	case Client::CPlayer::RagingStrike:
-		return m_iCurrentCoolTime[6];
+		return m_fCurrentCoolTime[6];
 		break;
 
 	case Client::CPlayer::StingerBlade:
-		return m_iCurrentCoolTime[7];
+		return m_fCurrentCoolTime[7];
 		break;
 
 	case Client::CPlayer::Tumbling:
-		return m_iCurrentCoolTime[8];
+		return m_fCurrentCoolTime[8];
+		break;
+	}
+}
+
+const _float & CPlayer::Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni)
+{
+	switch (eAttackAni)
+	{
+	case Client::CPlayer::CutHead:
+		return m_fMaxCoolTime[0];
+		break;
+
+	case Client::CPlayer::CuttingSlash:
+		return m_fMaxCoolTime[1];
+		break;
+
+	case Client::CPlayer::DrawSword:
+		return m_fMaxCoolTime[2];
+		break;
+
+	case Client::CPlayer::FlatBlade:
+		return m_fMaxCoolTime[3];
+		break;
+
+	case Client::CPlayer::HandySlash:
+		return m_fMaxCoolTime[4];
+		break;
+
+	case Client::CPlayer::JawBreaker:
+		return m_fMaxCoolTime[5];
+		break;
+
+	case Client::CPlayer::RagingStrike:
+		return m_fMaxCoolTime[6];
+		break;
+
+	case Client::CPlayer::StingerBlade:
+		return m_fMaxCoolTime[7];
+		break;
+
+	case Client::CPlayer::Tumbling:
+		return m_fMaxCoolTime[8];
 		break;
 	}
 }
@@ -188,39 +230,39 @@ void CPlayer::Set_CoolTimeFree(PLAYER_ANI eAttackAni)
 	switch (eAttackAni)
 	{
 	case Client::CPlayer::CutHead:
-		m_iCurrentCoolTime[0] = m_iMaxCoolTime[0];
+		m_fCurrentCoolTime[0] = m_fMaxCoolTime[0];
 		break;
 
 	case Client::CPlayer::CuttingSlash:
-		m_iCurrentCoolTime[1] = m_iMaxCoolTime[1];
+		m_fCurrentCoolTime[1] = m_fMaxCoolTime[1];
 		break;
 
 	case Client::CPlayer::DrawSword:
-		m_iCurrentCoolTime[2] = m_iMaxCoolTime[2];
+		m_fCurrentCoolTime[2] = m_fMaxCoolTime[2];
 		break;
 
 	case Client::CPlayer::FlatBlade:
-		m_iCurrentCoolTime[3] = m_iMaxCoolTime[3];
+		m_fCurrentCoolTime[3] = m_fMaxCoolTime[3];
 		break;
 
 	case Client::CPlayer::HandySlash:
-		m_iCurrentCoolTime[4] = m_iMaxCoolTime[4];
+		m_fCurrentCoolTime[4] = m_fMaxCoolTime[4];
 		break;
 
 	case Client::CPlayer::JawBreaker:
-		m_iCurrentCoolTime[5] = m_iMaxCoolTime[5];
+		m_fCurrentCoolTime[5] = m_fMaxCoolTime[5];
 		break;
 
 	case Client::CPlayer::RagingStrike:
-		m_iCurrentCoolTime[6] = m_iMaxCoolTime[6];
+		m_fCurrentCoolTime[6] = m_fMaxCoolTime[6];
 		break;
 
 	case Client::CPlayer::StingerBlade:
-		m_iCurrentCoolTime[7] = m_iMaxCoolTime[7];
+		m_fCurrentCoolTime[7] = m_fMaxCoolTime[7];
 		break;
 
 	case Client::CPlayer::Tumbling:
-		m_iCurrentCoolTime[8] = m_iMaxCoolTime[8];
+		m_fCurrentCoolTime[8] = m_fMaxCoolTime[8];
 		break;
 	}
 }
@@ -886,22 +928,101 @@ void CPlayer::DecreaseSkillCoolTime()
 {
 	if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::CutHead) == false)
 	{
-		if(m_fCoolTimeAcc <= 1)
-			m_fCoolTimeAcc += m_fTimeDelta;
+		if (m_fCurrentCoolTime[0] > 0)
+			m_fCurrentCoolTime[0] -= m_fTimeDelta;
 
-		else if (m_fCoolTimeAcc >= 1)
+		else if (m_fCurrentCoolTime[0] <= 0)
 		{
-			if (m_iCurrentCoolTime[0] > 0)
-			{
-				m_iCurrentCoolTime[0] -= m_fCoolTimeAcc;
-				m_fCoolTimeAcc = 0.f;
-			}
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::CutHead);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::CutHead, true);
+		}
+	}
+	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::CuttingSlash) == false)
+	{
+		if (m_fCurrentCoolTime[1] > 0)
+			m_fCurrentCoolTime[1] -= m_fTimeDelta;
 
-			else if (m_iCurrentCoolTime[0] <= 0)
-			{
-				Set_CoolTimeFree(CPlayer::PLAYER_ANI::CutHead);
-				Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::CutHead, true);
-			}
+		else if (m_fCurrentCoolTime[1] <= 0)
+		{
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::CuttingSlash);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::CuttingSlash, true);
+		}
+	}
+	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::DrawSword) == false)
+	{
+		if (m_fCurrentCoolTime[2] > 0)
+			m_fCurrentCoolTime[2] -= m_fTimeDelta;
+
+		else if (m_fCurrentCoolTime[2] <= 0)
+		{
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::DrawSword);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::DrawSword, true);
+		}
+	}
+	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::FlatBlade) == false)
+	{
+		if (m_fCurrentCoolTime[3] > 0)
+			m_fCurrentCoolTime[3] -= m_fTimeDelta;
+
+		else if (m_fCurrentCoolTime[3] <= 0)
+		{
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::FlatBlade);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::FlatBlade, true);
+		}
+	}
+	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::HandySlash) == false)
+	{
+		if (m_fCurrentCoolTime[4] > 0)
+			m_fCurrentCoolTime[4] -= m_fTimeDelta;
+
+		else if (m_fCurrentCoolTime[4] <= 0)
+		{
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::HandySlash);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::HandySlash, true);
+		}
+	}
+	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::JawBreaker) == false)
+	{
+		if (m_fCurrentCoolTime[5] > 0)
+			m_fCurrentCoolTime[5] -= m_fTimeDelta;
+
+		else if (m_fCurrentCoolTime[5] <= 0)
+		{
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::JawBreaker);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::JawBreaker, true);
+		}
+	}
+	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::RagingStrike) == false)
+	{
+		if (m_fCurrentCoolTime[6] > 0)
+			m_fCurrentCoolTime[6] -= m_fTimeDelta;
+
+		else if (m_fCurrentCoolTime[6] <= 0)
+		{
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::RagingStrike);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::RagingStrike, true);
+		}
+	}
+	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::StingerBlade) == false)
+	{
+		if (m_fCurrentCoolTime[7] > 0)
+			m_fCurrentCoolTime[7] -= m_fTimeDelta;
+
+		else if (m_fCurrentCoolTime[7] <= 0)
+		{
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::StingerBlade);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::StingerBlade, true);
+		}
+	}
+	else if (Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling) == false)
+	{
+		if (m_fCurrentCoolTime[8] > 0)
+			m_fCurrentCoolTime[8] -= m_fTimeDelta;
+
+		else if (m_fCurrentCoolTime[8] <= 0)
+		{
+			Set_CoolTimeFree(CPlayer::PLAYER_ANI::Tumbling);
+			Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::Tumbling, true);
 		}
 	}
 }

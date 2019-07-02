@@ -16,7 +16,6 @@ public:
 	virtual _int	Update_GameObject(const _float& fTimeDelta);
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
-	virtual HRESULT	OnEvent(const _tchar * _szEventTag, void * _pMsg);
 
 public:
 	virtual HRESULT	Add_Component();
@@ -33,6 +32,18 @@ private:
 
 private:
 	HRESULT				NullCheck();
+	void				Renewal_PlayerSkill_CoolTime();
+
+private:
+	_float				m_fMaxCoolTime[9] = { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f };
+	_float				m_fCurrentCoolTime[9] = { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f };
+	_float				m_fCalculatedCoolTime[9] = { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f };
+
+	_float				m_fPosX = 0.f;
+	_float				m_fPosY = 0.f;
+
+	_tchar				m_szCutHead_CT[32];
+
 
 public:
 	static CUI_SkillBoard*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);

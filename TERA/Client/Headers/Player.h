@@ -38,7 +38,8 @@ public:	// Getter
 	const _uint&		Get_PlayerOffenceValue() { return m_iOffencePower; }
 	const _bool&		Get_LBtnClickedInfo() { return m_bLBtnClicked; }
 	const _bool&		Get_HitCount() { return m_iHitCount; }
-	const _uint&		Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni);
+	const _float&		Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni);
+	const _float&		Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni);
 	const _bool&		Get_CoolTimeAvailable(PLAYER_ANI eAttackAni);
 
 public:	// Setter
@@ -118,10 +119,8 @@ private:
 	_uint			m_iHitCount = 0;
 
 	_bool			m_bIsCoolTimeAvailable[9] = { true, true, true, true, true, true, true, true, true};
-	_uint			m_iMaxCoolTime[9] = { 5, 4, 7, 3, 5, 3, 9, 5, 3};
-	_uint			m_iCurrentCoolTime[9] = { 5, 4, 7, 3, 5, 3, 9, 5, 3 };
-
-	_float			m_fCoolTimeAcc = 0.f;
+	_float			m_fMaxCoolTime[9] = { 5.f, 4.f, 7.f, 3.f, 5.f, 3.f, 9.f, 5.f, 3.f};
+	_float			m_fCurrentCoolTime[9] = { 5.f, 4.f, 7.f, 3.f, 5.f, 3.f, 9.f, 5.f, 3.f };
 
 private:
 	virtual HRESULT Add_Component();

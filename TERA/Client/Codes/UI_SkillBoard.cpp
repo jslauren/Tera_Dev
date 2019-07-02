@@ -2,6 +2,8 @@
 #include "..\Headers\UI_SkillBoard.h"
 #include "Management.h"
 #include "Camera_Dynamic.h"
+#include "FontManager.h"
+#include "Player.h"
 
 _USING(Client)
 
@@ -35,6 +37,8 @@ HRESULT CUI_SkillBoard::Ready_GameObject(void * pArg)
 	m_pTransformSkillFilterCom->Set_Scaling((g_iWinCX * 0.044f), (g_iWinCY * 0.075f), 0.f);
 	m_pTransformSkillFilterCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-(g_iWinCX * 0.1845f), -(g_iWinCY * 0.429f), 0.f));
 
+	// _vec3(m_fX - (g_iWinCX >> 1), (g_iWinCY >> 1) - m_fY, 0.0f)
+
 	return NOERROR;
 }
 
@@ -42,6 +46,8 @@ _int CUI_SkillBoard::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
+
+	Renewal_PlayerSkill_CoolTime();
 
 	return _int();
 }
@@ -96,7 +102,8 @@ HRESULT CUI_SkillBoard::Render_GameObject()
 			pEffect->Begin(nullptr, 0);
 			pEffect->BeginPass(2);
 
-			m_pBufferSkillFilterCom->Render_Buffer();
+			if(m_fCalculatedCoolTime[0] != 1.f)
+				m_pBufferSkillFilterCom->Render_Buffer();
 
 			pEffect->EndPass();
 			pEffect->End();
@@ -105,14 +112,12 @@ HRESULT CUI_SkillBoard::Render_GameObject()
 		Safe_Release(pEffect);
 	}
 
-	return NOERROR;
-}
-
-HRESULT CUI_SkillBoard::OnEvent(const _tchar * _szEventTag, void * _pMsg)
-{
-	if (!lstrcmp(_szEventTag, L"Arkus_Attack"))
+	if (m_fCalculatedCoolTime[0] != 1.f)
 	{
+		wsprintf(m_szCutHead_CT, L"%d", (_int)m_fCurrentCoolTime[0] + 1);
+		CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3((g_iWinCX * 0.312f), (g_iWinCY * 0.92f), 0.f), m_szCutHead_CT);
 	}
+
 
 	return NOERROR;
 }
@@ -158,7 +163,7 @@ HRESULT CUI_SkillBoard::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iT
 	// UI는 직교투영을 해야하기 때문에 이렇게 처리해준다.
 	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &matProj);
 	D3DXMatrixOrthoLH(&matProj, g_iWinCX, g_iWinCY, 0.f, 1.f);
-
+	
 	if (1 == iTargetTextureIdx)
 	{
 		m_pTextureSkillBoardCom->SetUp_OnShader(pEffect, "g_BaseTexture");
@@ -175,7 +180,7 @@ HRESULT CUI_SkillBoard::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iT
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
 
-		pEffect->SetFloat("g_fCool", _float(0.35f));
+		pEffect->SetFloat("g_fCool", m_fCalculatedCoolTime[0]);
 	}
 
 	Safe_Release(pEffect);
@@ -188,7 +193,78 @@ HRESULT CUI_SkillBoard::NullCheck()
 	if (nullptr == m_pShaderCom)
 		return E_FAIL;
 
+	if (nullptr == m_pTextureSkillBoardCom)
+		return E_FAIL;
+
+	if (nullptr == m_pTransformSkillBoardCom)
+		return E_FAIL;
+
+	if (nullptr == m_pBufferSkillBoardCom)
+		return E_FAIL;
+
+	if (nullptr == m_pTextureSkillFilterCom)
+		return E_FAIL;
+
+	if (nullptr == m_pTransformSkillFilterCom)
+		return E_FAIL;
+
+	if (nullptr == m_pBufferSkillFilterCom)
+		return E_FAIL;
+	
 	return NOERROR;
+}
+
+void CUI_SkillBoard::Renewal_PlayerSkill_CoolTime()
+{
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
+
+	{
+		m_fMaxCoolTime[0] = pPlayer->Get_MaxCoolTimeInfo(CPlayer::PLAYER_ANI::CutHead);;
+		m_fCurrentCoolTime[0] = pPlayer->Get_CurrentCoolTimeInfo(CPlayer::PLAYER_ANI::CutHead);
+		m_fCalculatedCoolTime[0] = m_fCurrentCoolTime[0] / m_fMaxCoolTime[0];
+	}
+	{
+		m_fMaxCoolTime[1] = pPlayer->Get_MaxCoolTimeInfo(CPlayer::PLAYER_ANI::CuttingSlash);;
+		m_fCurrentCoolTime[1] = pPlayer->Get_CurrentCoolTimeInfo(CPlayer::PLAYER_ANI::CuttingSlash);
+		m_fCalculatedCoolTime[1] = m_fCurrentCoolTime[1] / m_fMaxCoolTime[1];
+	}
+	{
+		m_fMaxCoolTime[2] = pPlayer->Get_MaxCoolTimeInfo(CPlayer::PLAYER_ANI::DrawSword);;
+		m_fCurrentCoolTime[2] = pPlayer->Get_CurrentCoolTimeInfo(CPlayer::PLAYER_ANI::DrawSword);
+		m_fCalculatedCoolTime[2] = m_fCurrentCoolTime[2] / m_fMaxCoolTime[2];
+	}
+	{
+		m_fMaxCoolTime[3] = pPlayer->Get_MaxCoolTimeInfo(CPlayer::PLAYER_ANI::FlatBlade);;
+		m_fCurrentCoolTime[3] = pPlayer->Get_CurrentCoolTimeInfo(CPlayer::PLAYER_ANI::FlatBlade);
+		m_fCalculatedCoolTime[3] = m_fCurrentCoolTime[3] / m_fMaxCoolTime[3];
+	}
+	{
+		m_fMaxCoolTime[4] = pPlayer->Get_MaxCoolTimeInfo(CPlayer::PLAYER_ANI::HandySlash);;
+		m_fCurrentCoolTime[4] = pPlayer->Get_CurrentCoolTimeInfo(CPlayer::PLAYER_ANI::HandySlash);
+		m_fCalculatedCoolTime[4] = m_fCurrentCoolTime[4] / m_fMaxCoolTime[4];
+	}
+	{
+		m_fMaxCoolTime[5] = pPlayer->Get_MaxCoolTimeInfo(CPlayer::PLAYER_ANI::JawBreaker);;
+		m_fCurrentCoolTime[5] = pPlayer->Get_CurrentCoolTimeInfo(CPlayer::PLAYER_ANI::JawBreaker);
+		m_fCalculatedCoolTime[5] = m_fCurrentCoolTime[5] / m_fMaxCoolTime[5];
+	}
+	{
+		m_fMaxCoolTime[6] = pPlayer->Get_MaxCoolTimeInfo(CPlayer::PLAYER_ANI::RagingStrike);;
+		m_fCurrentCoolTime[6] = pPlayer->Get_CurrentCoolTimeInfo(CPlayer::PLAYER_ANI::RagingStrike);
+		m_fCalculatedCoolTime[6] = m_fCurrentCoolTime[6] / m_fMaxCoolTime[6];
+	}
+	{
+		m_fMaxCoolTime[7] = pPlayer->Get_MaxCoolTimeInfo(CPlayer::PLAYER_ANI::StingerBlade);;
+		m_fCurrentCoolTime[7] = pPlayer->Get_CurrentCoolTimeInfo(CPlayer::PLAYER_ANI::StingerBlade);
+		m_fCalculatedCoolTime[7] = m_fCurrentCoolTime[7] / m_fMaxCoolTime[7];
+	}
+	{
+		m_fMaxCoolTime[8] = pPlayer->Get_MaxCoolTimeInfo(CPlayer::PLAYER_ANI::Tumbling);;
+		m_fCurrentCoolTime[8] = pPlayer->Get_CurrentCoolTimeInfo(CPlayer::PLAYER_ANI::Tumbling);
+		m_fCalculatedCoolTime[8] = m_fCurrentCoolTime[8] / m_fMaxCoolTime[8];
+	}
+
+
 }
 
 CUI_SkillBoard * CUI_SkillBoard::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
