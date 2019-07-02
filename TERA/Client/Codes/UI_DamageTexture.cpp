@@ -65,29 +65,49 @@ _int CUI_DamageTexture::Update_GameObject(const _float & fTimeDelta)
 	}
 	else if (m_bIsSub == true)
 	{
-		m_fCurrentFontSize -= m_fTimeAcc;
+		if (m_fCurrentFontSize > m_fMinFontSize)
+			m_fCurrentFontSize -= m_fTimeAcc;
 
-		if (m_fCurrentFontSize <= m_fMinFontSize)
+		else if (m_fCurrentFontSize <= m_fMinFontSize)
 		{
-			// 여기서 포지션 위로 올리면서 알파값으로 흐려지게 하고,
-			// 포지션값이 내가 지정한 값까지 올라간다면 return 하게끔 짠다.
-			return 1;
+			m_fFontStayTimeAcc += fTimeDelta;
+
+			if (m_fFontStayTimeAcc >= 0.55f)
+			{
+				_vec3 Temp;
+
+				m_fFontPosition += (fTimeDelta);
+
+				if (m_fMaxFontPosition > m_fFontPosition)
+				{
+					m_fFontAlpha = m_fFontPosition;
+
+					Temp = *(m_pTransformThsnCom->Get_StateInfo(CTransform::STATE_POSITION));
+					Temp.y += m_fFontPosition;
+					m_pTransformThsnCom->Set_StateInfo(CTransform::STATE_POSITION, &Temp);
+
+					Temp = *(m_pTransformHndrCom->Get_StateInfo(CTransform::STATE_POSITION));
+					Temp.y += m_fFontPosition;
+					m_pTransformHndrCom->Set_StateInfo(CTransform::STATE_POSITION, &Temp);
+
+					Temp = *(m_pTransformTenCom->Get_StateInfo(CTransform::STATE_POSITION));
+					Temp.y += m_fFontPosition;
+					m_pTransformTenCom->Set_StateInfo(CTransform::STATE_POSITION, &Temp);
+
+					Temp = *(m_pTransformOneCom->Get_StateInfo(CTransform::STATE_POSITION));
+					Temp.y += m_fFontPosition;
+					m_pTransformOneCom->Set_StateInfo(CTransform::STATE_POSITION, &Temp);
+				}
+				else if (m_fMaxFontPosition <= m_fFontPosition)
+					return 1;
+			}			
 		}
 	}
-	
-
-
-
-	//else
-	//	m_fFontSize = 50.f;
 
 	m_pTransformThsnCom->Set_Scaling(m_fCurrentFontSize, m_fCurrentFontSize, 0.f);
 	m_pTransformHndrCom->Set_Scaling(m_fCurrentFontSize, m_fCurrentFontSize, 0.f);
 	m_pTransformTenCom->Set_Scaling(m_fCurrentFontSize, m_fCurrentFontSize, 0.f);
 	m_pTransformOneCom->Set_Scaling(m_fCurrentFontSize, m_fCurrentFontSize, 0.f);
-
-	//if (m_fTimeAcc > m_fMaxTime)
-	//	return 1;
 
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_UI, this)))
 		return -1;
@@ -117,7 +137,7 @@ HRESULT CUI_DamageTexture::Render_GameObject()
 			return E_FAIL;
 
 		pEffect->Begin(nullptr, 0);
-		pEffect->BeginPass(0);
+		pEffect->BeginPass(6);
 
 		if (i == 0)
 			m_pBufferOneCom->Render_Buffer();
@@ -199,6 +219,7 @@ HRESULT CUI_DamageTexture::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint
 		pEffect->SetMatrix("g_matWorld", m_pTransformOneCom->Get_WorldMatrixPointer());
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
+		pEffect->SetFloat("g_fDamageFontAlpha", (m_fFontAlpha));
 	}
 	else if (1 == iTargetTextureIdx)
 	{

@@ -50,6 +50,12 @@ private:
 	_float			m_fMinFontSize = 50.f;
 	_float			m_fMaxFontSize = 75.f;
 	_bool			m_bIsSub = false;
+	_float			m_fFontPosition = 0.f;
+	_float			m_fMaxFontPosition = 1.5f;
+	_float			m_fFontAlpha = 0.f;
+	_float			m_fFontStayTimeAcc = 0.f;
+
+
 private:
 	HRESULT			NullCheck();
 	void			SeprateDamageValue();
