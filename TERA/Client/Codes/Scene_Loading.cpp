@@ -84,9 +84,7 @@ _int CScene_Loading::LateUpdate_Scene(const _float & fTimeDelta)
 		//		Safe_Release(pManagement);
 		//		return -1;
 		//	}
-
 		//	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(SCENE_DRAGON);
-
 		//	Safe_Release(pManagement);
 		//	return 0;
 		//}

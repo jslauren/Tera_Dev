@@ -31,7 +31,7 @@ private:
 	CBuffer_CubeTex*	m_pBufferCom = nullptr;
 	CRenderer*			m_pRendererCom = nullptr;
 	CTexture*			m_pTextureCom = nullptr;
-	CShader*				m_pShaderCom = nullptr;
+	CShader*			m_pShaderCom = nullptr;
 private:
 	HRESULT Add_Component();
 	HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);

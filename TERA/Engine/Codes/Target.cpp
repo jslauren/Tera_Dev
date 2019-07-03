@@ -116,7 +116,11 @@ CTarget * CTarget::Create(LPDIRECT3DDEVICE9 pGraphic_Device, _uint iWidth, _uint
 
 void CTarget::Free()
 {
+#ifdef _DEBUG
 	Safe_Release(m_pDebugBuffer);
+
+#endif // _DEBUG
+
 
 	Safe_Release(m_pGraphic_Device);
 	Safe_Release(m_pTarget_Surface);

@@ -10,6 +10,15 @@ _USING(Client)
 CUI_SkillBoard::CUI_SkillBoard(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CUI(pGraphic_Device)
 {
+	ZeroMemory(m_szCutHead_CT, sizeof(_tchar) * 32);
+	ZeroMemory(m_szCuttingSlash_CT, sizeof(_tchar) * 32);
+	ZeroMemory(m_szFlatBlade_CT, sizeof(_tchar) * 32);
+	ZeroMemory(m_szHandySlash_CT, sizeof(_tchar) * 32);
+	ZeroMemory(m_szJawBreaker_CT, sizeof(_tchar) * 32);
+	ZeroMemory(m_szStingerBlade_CT, sizeof(_tchar) * 32);
+	ZeroMemory(m_szRagingStrike_CT, sizeof(_tchar) * 32);
+	ZeroMemory(m_szDrawSword_CT, sizeof(_tchar) * 32);
+	ZeroMemory(m_szTumbling_CT, sizeof(_tchar) * 32);
 }
 
 CUI_SkillBoard::CUI_SkillBoard(const CUI_SkillBoard & rhs)

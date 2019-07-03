@@ -10,6 +10,7 @@ _USING(Client)
 CUI_BossPoint::CUI_BossPoint(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CUI(pGraphic_Device)
 {
+	ZeroMemory(m_szHP, sizeof(_tchar) * 64);
 }
 
 CUI_BossPoint::CUI_BossPoint(const CUI_BossPoint & rhs)

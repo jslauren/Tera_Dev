@@ -30,6 +30,7 @@ _USING(Client)
 CScene_Dragon::CScene_Dragon(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CScene(pGraphic_Device)
 {
+	ZeroMemory(m_szPlayerPos, sizeof(_tchar) * 128);
 }
 
 HRESULT CScene_Dragon::Ready_Scene()

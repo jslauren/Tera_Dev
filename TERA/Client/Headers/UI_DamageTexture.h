@@ -41,7 +41,7 @@ private:
 
 	_uint			m_iDamageValue = 0.f;
 	_tchar			m_szDamageValue[64];
-	_uint			m_iSeprateDamage[4];
+	_uint			m_iSeprateDamage[4] = { 0, 0, 0, 0 };
 	_uint			m_iNumberUnit = 0;
 
 	_float			m_fMaxTime = 3.7f;
