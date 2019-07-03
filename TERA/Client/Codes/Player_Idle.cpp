@@ -224,9 +224,13 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 		{
 			if (Player.Get_DrawSwordBtnState() == true)
 			{
-				if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::DrawSword) == true)
+				if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::DrawSword) == true &&
+					Player.Get_SkillAvailable(CPlayer::PLAYER_ANI::DrawSword) == true)
 				{
 					Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::DrawSword, false);
+					Player.Set_SkillAvailable(CPlayer::PLAYER_ANI::DrawSword, false);
+
+					Player.Set_MP_Sub(Player.Get_Requirement_SkillMP_Info(CPlayer::PLAYER_ANI::DrawSword));
 
 					m_iAniState = 1;
 					return CPlayer_Skill_DrawSword_Charge::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -298,9 +302,13 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 		{
-			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::CutHead) == true)
+			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::CutHead) == true &&
+				Player.Get_SkillAvailable(CPlayer::PLAYER_ANI::CutHead) == true)
 			{
 				Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::CutHead, false);
+				Player.Set_SkillAvailable(CPlayer::PLAYER_ANI::CutHead, false);
+
+				Player.Set_MP_Sub(Player.Get_Requirement_SkillMP_Info(CPlayer::PLAYER_ANI::CutHead));
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 					return CPlayer_Skill_CutHead::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -311,9 +319,13 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 		{
-			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::CuttingSlash) == true)
+			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::CuttingSlash) == true &&
+				Player.Get_SkillAvailable(CPlayer::PLAYER_ANI::CuttingSlash) == true)
 			{
 				Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::CuttingSlash, false);
+				Player.Set_SkillAvailable(CPlayer::PLAYER_ANI::CuttingSlash, false);
+
+				Player.Set_MP_Sub(Player.Get_Requirement_SkillMP_Info(CPlayer::PLAYER_ANI::CuttingSlash));
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 					return CPlayer_Skill_CuttingSlash::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -324,9 +336,13 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 		{
-			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::FlatBlade) == true)
+			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::FlatBlade) == true &&
+				Player.Get_SkillAvailable(CPlayer::PLAYER_ANI::FlatBlade) == true)
 			{
 				Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::FlatBlade, false);
+				Player.Set_SkillAvailable(CPlayer::PLAYER_ANI::FlatBlade, false);
+
+				Player.Set_MP_Sub(Player.Get_Requirement_SkillMP_Info(CPlayer::PLAYER_ANI::FlatBlade));
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 					return Player_Skill_FlatBlade::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -337,9 +353,13 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 		{
-			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::HandySlash) == true)
+			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::HandySlash) == true &&
+				Player.Get_SkillAvailable(CPlayer::PLAYER_ANI::HandySlash) == true)
 			{
 				Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::HandySlash, false);
+				Player.Set_SkillAvailable(CPlayer::PLAYER_ANI::HandySlash, false);
+
+				Player.Set_MP_Sub(Player.Get_Requirement_SkillMP_Info(CPlayer::PLAYER_ANI::HandySlash));
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 					return CPlayer_Skill_HandySlash::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -350,9 +370,13 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 		{
-			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::JawBreaker) == true)
+			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::JawBreaker) == true &&
+				Player.Get_SkillAvailable(CPlayer::PLAYER_ANI::JawBreaker) == true)
 			{
 				Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::JawBreaker, false);
+				Player.Set_SkillAvailable(CPlayer::PLAYER_ANI::JawBreaker, false);
+
+				Player.Set_MP_Sub(Player.Get_Requirement_SkillMP_Info(CPlayer::PLAYER_ANI::JawBreaker));
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 					return CPlayer_Skill_JawBreaker::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -363,9 +387,13 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 		{
-			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::StingerBlade) == true)
+			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::StingerBlade) == true &&
+				Player.Get_SkillAvailable(CPlayer::PLAYER_ANI::StingerBlade) == true)
 			{
 				Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::StingerBlade, false);
+				Player.Set_SkillAvailable(CPlayer::PLAYER_ANI::StingerBlade, false);
+
+				Player.Set_MP_Sub(Player.Get_Requirement_SkillMP_Info(CPlayer::PLAYER_ANI::StingerBlade));
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 					return CPlayer_Skill_StingerBlade::Create(m_pGraphic_Device, Player, &m_iAniState);
@@ -376,9 +404,13 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 		{
-			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::RagingStrike) == true)
+			if (Player.Get_CoolTimeAvailable(CPlayer::PLAYER_ANI::RagingStrike) == true &&
+				Player.Get_SkillAvailable(CPlayer::PLAYER_ANI::RagingStrike) == true)
 			{
 				Player.Set_CoolTimeAvailable(CPlayer::PLAYER_ANI::RagingStrike, false);
+				Player.Set_SkillAvailable(CPlayer::PLAYER_ANI::RagingStrike, false);
+
+				Player.Set_MP_Sub(Player.Get_Requirement_SkillMP_Info(CPlayer::PLAYER_ANI::RagingStrike));
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded())
 				{

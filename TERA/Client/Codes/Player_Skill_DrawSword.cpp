@@ -34,7 +34,7 @@ CPlayerState * CPlayer_Skill_DrawSword::Input_Keyboard(CPlayer & Player, const f
 
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 		{
-			AttackEventFree(&Player);
+			AttackEventFree(&Player, CPlayer::PLAYER_ANI::DrawSword);
 			return CPlayer_Skill_DrawSword_End::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 

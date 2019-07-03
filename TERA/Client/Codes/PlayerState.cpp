@@ -74,8 +74,11 @@ void CPlayerState::AttackEvent(CArkus* pArkus, CPlayer* Player, _uint iAvailable
 	}
 }
 
-void CPlayerState::AttackEventFree(CPlayer* Player)
+void CPlayerState::AttackEventFree(CPlayer* Player, CPlayer::PLAYER_ANI ePlayerAni)
 {
+	if(ePlayerAni != CPlayer::PLAYER_ANI::END)
+		Player->Set_SkillAvailable(ePlayerAni, true);
+
 	Player->Set_LBtnClickedInfo(false);
 	m_bIsDamageAvailable = false;
 	m_iHitCount = 0;

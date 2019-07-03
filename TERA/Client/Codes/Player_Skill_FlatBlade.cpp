@@ -55,7 +55,7 @@ CPlayerState * Player_Skill_FlatBlade::Input_Keyboard(CPlayer & Player, const fl
 			}
 			else if (Player.CollisionCheck() == false)
 			{
-				AttackEventFree(&Player);
+				AttackEventFree(&Player, CPlayer::PLAYER_ANI::FlatBlade);
 				m_iAniState = 2;
 				return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
 			}

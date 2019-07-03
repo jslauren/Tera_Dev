@@ -36,6 +36,7 @@ HRESULT CScene_Loading::Ready_Scene(SCENEID eID)
 		return E_FAIL;
 	
 	m_pCUI_Loading = dynamic_cast<CUI_Loading*>(CObject_Manager::GetInstance()->Get_Object(SCENE_LOADING, L"Layer_BackGround"));
+	Safe_AddRef(m_pCUI_Loading);
 
 	return NOERROR;
 }

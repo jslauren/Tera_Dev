@@ -27,6 +27,120 @@ CPlayer::CPlayer(const CPlayer & rhs)
 {
 }
 
+const _bool & CPlayer::Get_SkillAvailable(PLAYER_ANI eAttackAni)
+{
+	_float fCurrentMP = Get_MP();
+
+	switch (eAttackAni)
+	{
+	case Client::CPlayer::CutHead:
+		if (fCurrentMP >= m_iRequirementSkillMP[0])
+			return true;
+		else
+			return false;
+		break;
+
+	case Client::CPlayer::CuttingSlash:
+		if (fCurrentMP >= m_iRequirementSkillMP[1])
+			return true;
+		else
+			return false;
+		break;
+
+	case Client::CPlayer::FlatBlade:
+		if (fCurrentMP >= m_iRequirementSkillMP[2])
+			return true;
+		else
+			return false;
+		break;
+
+	case Client::CPlayer::HandySlash:
+		if (fCurrentMP >= m_iRequirementSkillMP[3])
+			return true;
+		else
+			return false;
+		break;
+
+	case Client::CPlayer::JawBreaker:
+		if (fCurrentMP >= m_iRequirementSkillMP[4])
+			return true;
+		else
+			return false;
+		break;
+
+	case Client::CPlayer::StingerBlade:
+		if (fCurrentMP >= m_iRequirementSkillMP[5])
+			return true;
+		else
+			return false;
+		break;
+
+	case Client::CPlayer::RagingStrike:
+		if (fCurrentMP >= m_iRequirementSkillMP[6])
+			return true;
+		else
+			return false;
+		break;
+
+	case Client::CPlayer::DrawSword:
+		if (fCurrentMP >= m_iRequirementSkillMP[7])
+			return true;
+		else
+			return false;
+		break;
+
+	case Client::CPlayer::Tumbling:
+		if (fCurrentMP >= m_iRequirementSkillMP[8])
+			return true;
+		else
+			return false;
+		break;
+	}
+
+}
+
+const _uint & CPlayer::Get_Requirement_SkillMP_Info(PLAYER_ANI eAttackAni)
+{
+	switch (eAttackAni)
+	{
+	case Client::CPlayer::CutHead:
+		return m_iRequirementSkillMP[0];
+		break;
+
+	case Client::CPlayer::CuttingSlash:
+		return m_iRequirementSkillMP[1];
+		break;
+
+	case Client::CPlayer::FlatBlade:
+		return m_iRequirementSkillMP[2];
+		break;
+
+	case Client::CPlayer::HandySlash:
+		return m_iRequirementSkillMP[3];
+		break;
+
+	case Client::CPlayer::JawBreaker:
+		return m_iRequirementSkillMP[4];
+		break;
+
+	case Client::CPlayer::StingerBlade:
+		return m_iRequirementSkillMP[5];
+		break;
+
+	case Client::CPlayer::RagingStrike:
+		return m_iRequirementSkillMP[6];
+		break;
+
+	case Client::CPlayer::DrawSword:
+		return m_iRequirementSkillMP[7];
+		break;
+
+	case Client::CPlayer::Tumbling:
+		return m_iRequirementSkillMP[8];
+		break;
+	}
+}
+
 const _float & CPlayer::Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni)
 {
 	switch (eAttackAni)
@@ -153,6 +267,48 @@ const _bool & CPlayer::Get_CoolTimeAvailable(PLAYER_ANI eAttackAni)
 	}
 }
 
+const _bool & CPlayer::GetSkillAvailable(PLAYER_ANI eAttackAni)
+{
+	switch (eAttackAni)
+	{
+	case Client::CPlayer::CutHead:
+		return m_bIsSkillAvailable[0];
+		break;
+
+	case Client::CPlayer::CuttingSlash:
+		return m_bIsSkillAvailable[1];
+		break;
+
+	case Client::CPlayer::FlatBlade:
+		return m_bIsSkillAvailable[2];
+		break;
+
+	case Client::CPlayer::HandySlash:
+		return m_bIsSkillAvailable[3];
+		break;
+
+	case Client::CPlayer::JawBreaker:
+		return m_bIsSkillAvailable[4];
+		break;
+
+	case Client::CPlayer::StingerBlade:
+		return m_bIsSkillAvailable[5];
+		break;
+
+	case Client::CPlayer::RagingStrike:
+		return m_bIsSkillAvailable[6];
+		break;
+
+	case Client::CPlayer::DrawSword:
+		return m_bIsSkillAvailable[7];
+		break;
+
+	case Client::CPlayer::Tumbling:
+		return m_bIsSkillAvailable[8];
+		break;
+	}
+}
+
 HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
 {
 	// For.Com_Navigation
@@ -263,6 +419,48 @@ void CPlayer::Set_CoolTimeFree(PLAYER_ANI eAttackAni)
 
 	case Client::CPlayer::Tumbling:
 		m_fCurrentCoolTime[8] = m_fMaxCoolTime[8];
+		break;
+	}
+}
+
+void CPlayer::Set_SkillAvailable(PLAYER_ANI eAttackAni, _bool bButton)
+{
+	switch (eAttackAni)
+	{
+	case Client::CPlayer::CutHead:
+		m_bIsSkillAvailable[0] = bButton;
+		break;
+
+	case Client::CPlayer::CuttingSlash:
+		m_bIsSkillAvailable[1] = bButton;
+		break;
+
+	case Client::CPlayer::FlatBlade:
+		m_bIsSkillAvailable[2] = bButton;
+		break;
+
+	case Client::CPlayer::HandySlash:
+		m_bIsSkillAvailable[3] = bButton;
+		break;
+
+	case Client::CPlayer::JawBreaker:
+		m_bIsSkillAvailable[4] = bButton;
+		break;
+
+	case Client::CPlayer::StingerBlade:
+		m_bIsSkillAvailable[5] = bButton;
+		break;
+
+	case Client::CPlayer::RagingStrike:
+		m_bIsSkillAvailable[6] = bButton;
+		break;
+
+	case Client::CPlayer::DrawSword:
+		m_bIsSkillAvailable[7] = bButton;
+		break;
+
+	case Client::CPlayer::Tumbling:
+		m_bIsSkillAvailable[8] = bButton;
 		break;
 	}
 }

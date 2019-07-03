@@ -35,12 +35,15 @@ public:	// Getter
 	const _bool&		Get_DamageEventEndInfo() { return m_bDamageEventEndInfo; }
 	const _float&		Get_HP() { return m_fHP; }
 	const _float&		Get_MP() { return m_fMP; }
+	const _bool&		Get_SkillAvailable(PLAYER_ANI eAttackAni);
+	const _uint&		Get_Requirement_SkillMP_Info(PLAYER_ANI eAttackAni);
 	const _uint&		Get_PlayerOffenceValue() { return m_iOffencePower; }
 	const _bool&		Get_LBtnClickedInfo() { return m_bLBtnClicked; }
 	const _bool&		Get_HitCount() { return m_iHitCount; }
 	const _float&		Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni);
 	const _float&		Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni);
 	const _bool&		Get_CoolTimeAvailable(PLAYER_ANI eAttackAni);
+	const _bool&		GetSkillAvailable(PLAYER_ANI eAttackAni);
 
 public:	// Setter
 	HRESULT				Set_Navigation_Component(SCENEID eScene);
@@ -62,6 +65,7 @@ public:	// Setter
 	void				Set_FreeHitCount() { m_iHitCount = 0; }
 	void				Set_CoolTimeAvailable(PLAYER_ANI eAttackAni, _bool bButton);
 	void				Set_CoolTimeFree(PLAYER_ANI eAttackAni);
+	void				Set_SkillAvailable(PLAYER_ANI eAttackAni, _bool bButton);
 
 public:
 	virtual HRESULT		Ready_GameObject_Prototype();
@@ -110,6 +114,9 @@ private:
 	
 	_float			m_fHP = 10686.f;
 	_float			m_fMP = 3250.f;
+
+	_uint			m_iRequirementSkillMP[8] = { 330, 325, 315, 320, 325, 350, 330, 370};
+
 	_float			m_fAutoHealingAccTime = 0.f;
 
 	_uint			m_iOffencePower = 300.f;
@@ -119,6 +126,7 @@ private:
 	_uint			m_iHitCount = 0;
 
 	_bool			m_bIsCoolTimeAvailable[9] = { true, true, true, true, true, true, true, true, true};
+	_bool			m_bIsSkillAvailable[9] = { true, true, true, true, true, true, true, true, true };
 	_float			m_fMaxCoolTime[9] = { 5.f, 4.f, 7.f, 3.f, 5.f, 3.f, 9.f, 5.f, 3.f};
 	_float			m_fCurrentCoolTime[9] = { 5.f, 4.f, 7.f, 3.f, 5.f, 3.f, 9.f, 5.f, 3.f };
 

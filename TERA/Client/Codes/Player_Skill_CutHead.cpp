@@ -56,7 +56,7 @@ CPlayerState * CPlayer_Skill_CutHead::Input_Keyboard(CPlayer & Player, const flo
 			}
 			else if (Player.CollisionCheck() == false)
 			{
-				AttackEventFree(&Player);
+				AttackEventFree(&Player, CPlayer::PLAYER_ANI::CutHead);
 				m_iAniState = 2;
 				return CPlayer_Idle::Create(m_pGraphic_Device, Player, &m_iAniState);
 			}
