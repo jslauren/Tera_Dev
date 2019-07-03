@@ -80,6 +80,9 @@ HRESULT CScene_Dragon::Ready_Scene()
 	
 	SetCutSceneEvent();
 
+	// 가즈아 릴리즈 모드!!!
+	int i = 0;
+
 	return NOERROR;
 }
 
