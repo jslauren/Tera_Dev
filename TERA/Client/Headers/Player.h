@@ -111,6 +111,8 @@ private:
 
 	_bool			m_bDamageEventEndInfo = false;
 	_bool			m_bIsNavigationRender = false;
+
+	_float			m_fNaviDistValue = 0.f;
 	
 	_float			m_fHP = 10686.f;
 	_float			m_fMP = 3250.f;

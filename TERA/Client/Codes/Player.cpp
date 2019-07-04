@@ -511,7 +511,6 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 
 	AutoHealing(fTimeDelta);
 	KeyInput();
-	Compute_HeightOnNavi();	
 	CollisionCheck();
 	DecreaseSkillCoolTime();
 
@@ -520,6 +519,9 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 
 	m_fPlayerPosY = m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->y;
 	m_pTransformCom->Set_WorldMatrix((*m_pTransformRotateCom->Get_WorldMatrixPointer()) * (*m_pTransformMoveCom->Get_WorldMatrixPointer()));
+
+	// 네비메쉬 타는거는 서식때문에 반드시 맨 밑에 위치해야 한다.
+	Compute_HeightOnNavi();	
 
 	//// 이 부분은 추후에 인벤토리 구현 시 참고할 구문이다.
 
@@ -956,9 +958,9 @@ void CPlayer::Compute_HeightOnNavi()
 	
 	m_pNavigationCom->SetUp_CurrentIndexLoop(pPlayerPos);
 	
-	_float fDist = m_pNavigationCom->Compute_HeightOnNavi(&pPlayerPos);
+	m_fNaviDistValue = m_pNavigationCom->Compute_HeightOnNavi(&pPlayerPos);
 	
-	pPlayerPos.y = fDist;
+	pPlayerPos.y = m_fNaviDistValue;
 
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &pPlayerPos);
 }
