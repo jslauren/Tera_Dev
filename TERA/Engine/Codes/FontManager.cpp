@@ -61,11 +61,18 @@ void CFontManager::RenderFont(FONT_ID eFontID, _vec3 vPosition, _tchar * pFontCo
 
 void CFontManager::Free()
 {
-	Safe_Release(m_pGraphic_Device);
-
 	for (size_t i = 0; i < FONT_END; ++i)
-		Safe_Release(m_pFont[i]);
+	{
+		if (m_pFont[i] != nullptr)
+		{
+			if (0 != Safe_Release(m_pFont[i]))
+				_MSGBOX("m_pSprite Release Failed");
+		}
+	}
 
 	if (0 != Safe_Release(m_pSprite))
 		_MSGBOX("m_pSprite Release Failed");
+
+	Safe_Release(m_pGraphic_Device);
+
 }

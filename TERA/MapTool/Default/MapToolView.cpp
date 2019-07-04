@@ -21,6 +21,7 @@
 #include "Layer.h"
 #include "DataManager.h"
 #include "Buffer_Terrain_Tool.h"
+#include "FontManager.h"
 
 
 // Object
@@ -63,6 +64,8 @@ CMapToolView::~CMapToolView()
 	CDataManager::GetInstance()->DestroyInstance();
 	CEventManager::GetInstance()->DestroyInstance();
 	CEventManagerTool::GetInstance()->DestroyInstance();
+	CFontManager::GetInstance()->DestroyInstance();
+
 
 	Safe_Release(m_pViewManager);
 	Safe_Release(m_pRenderer);

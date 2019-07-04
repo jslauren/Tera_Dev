@@ -107,6 +107,9 @@ HRESULT CManagement::Render_Management()
 HRESULT CManagement::Release_Engine()
 {
 	// 객체들을 Release 할 때, 순서에 굉장히 유의하여야 한다.
+
+	if (0 != CFontManager::GetInstance()->DestroyInstance())
+		_MSGBOX("CFontManager Release Failed");
 	
 	if (0 != CManagement::GetInstance()->DestroyInstance())
 		_MSGBOX("CManagement Release Failed");
@@ -131,9 +134,6 @@ HRESULT CManagement::Release_Engine()
 
 	if (0 != CKeyManager::GetInstance()->DestroyInstance())
 		_MSGBOX("CManagement Release Failed");
-
-	if (0 != CFontManager::GetInstance()->DestroyInstance())
-		_MSGBOX("CFontManager Release Failed");
 
 	if (0 != CGraphic_Device::GetInstance()->DestroyInstance())
 		_MSGBOX("CGraphic_Device Release Failed");
