@@ -17,6 +17,11 @@ HRESULT CScene::Ready_Scene()
 	return NOERROR;
 }
 
+HRESULT CScene::Init_Setting()
+{
+	return NOERROR;
+}
+
 _int CScene::Update_Scene(const _float & fTimeDelta)
 {
 	// 현재 씬에서 사용 할 오브젝트들의 Update를,

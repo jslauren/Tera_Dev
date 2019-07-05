@@ -15,6 +15,7 @@ protected:
 	virtual ~CScene() = default;
 public:
 	virtual HRESULT			Ready_Scene();
+	virtual HRESULT			Init_Setting();
 	virtual _int			Update_Scene(const _float& fTimeDelta);
 	// 현재 씬의 Update호출 이후 최종적으로 한번 더 호출되는 Update
 	// 씬안에서 객체들의 업데이트 호출. 모든 객체들의 업데이트를 호출한 후, 다시 한번 객체들의 업데이트를 호출.

@@ -171,6 +171,21 @@ _float CNavigation::Compute_HeightOnNavi(_vec3 * _pPlayerPos)
 	return _float(fDist);
 }
 
+_uint CNavigation::Get_CellIndex(_vec3 vPosition)
+{
+	CCell::EDGE iGo = CCell::EDGE_END;
+
+	for (auto iter : m_vecCell)
+	{
+		if (iter->isIn(&vPosition, &iGo))
+		{
+			return m_iCurrentIndex = iter->Get_Index();
+		}
+	}
+
+	return _uint();
+}
+
 CNavigation * CNavigation::Create(LPDIRECT3DDEVICE9 pGraphic_Device, const _tchar * pFilePath)
 {
 	CNavigation* pInstance = new CNavigation(pGraphic_Device);

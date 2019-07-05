@@ -32,7 +32,6 @@ private:
 private:
 	_float	m_fDetail = 1.f;
 	_bool	m_bIsSceneFirstPlay = true;
-	_tchar	m_szPlayerPos[128] = L"";
 
 private:
 	map<int, TERRAINDATA*>					m_MapTerrainData;

@@ -30,7 +30,6 @@ _USING(Client)
 CScene_Dragon::CScene_Dragon(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CScene(pGraphic_Device)
 {
-	ZeroMemory(m_szPlayerPos, sizeof(_tchar) * 128);
 }
 
 HRESULT CScene_Dragon::Ready_Scene()
@@ -107,12 +106,6 @@ _int CScene_Dragon::LateUpdate_Scene(const _float & fTimeDelta)
 
 HRESULT CScene_Dragon::Render_Scene()
 {
-
-	_vec3 vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
-
-	wsprintf(m_szPlayerPos, L"%d, %d, %d", (_int)vPlayerPos.x, (_int)vPlayerPos.y, (_int)vPlayerPos.z);
-	CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3((g_iWinCX * 0.5) - 50.f, g_iWinCY - 30.f, 0.f), m_szPlayerPos);
-
 	CUI_DamageFont_Manager::GetInstance()->Render_DamageFont();
 
 	return CScene::Render_Scene();

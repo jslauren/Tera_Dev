@@ -100,6 +100,8 @@ private:
 	PLAYER_ANI		m_eAnimationIndex = Idle;
 	PLAYER_ANI		m_eOldAnimationIndex = Idle;
 
+	_uint			m_iCurrentCellIdx = 0;
+
 	_bool			m_bTest = false;
 
 	_bool			m_bIsDrawSwordPressed = false;

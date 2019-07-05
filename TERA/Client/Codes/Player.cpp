@@ -315,11 +315,11 @@ HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
 	// 씬 별 네비게이션 컴포넌트 셋팅 부분.
 	_uint		iIndex = 0;
 
-	Safe_Release(m_pNavigationCom);
-
 	switch (eScene)
 	{
 	case SCENE_STAGE:
+		iIndex = 0;
+
 		if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Navigation_Stage", L"Com_Navigation_Stage", (CComponent**)&m_pNavigationCom, &iIndex)))
 			return E_FAIL;
 		break;
@@ -333,6 +333,8 @@ HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
 	case SCENE_BOSS:
 		break;
 	}
+
+	Safe_Release(m_pNavigationCom);
 
 	m_pMeshCom_Bone->SetUp_AnimationSet(Idle);
 
@@ -484,19 +486,18 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	m_pMeshCom_Bone->Set_LegFrame(m_pMeshCom_Leg->GetRootFrame());
 	m_pMeshCom_Bone->Set_TailFrame(m_pMeshCom_Tail->GetRootFrame());
 
-	/*m_pTransformCom->Set_Scaling(0.3f, 0.3f, 0.3f);
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));*/
-
 	m_pTransformMoveCom->Set_Scaling(PLAYER_SCALING, PLAYER_SCALING, PLAYER_SCALING);
-	m_pTransformMoveCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));
+	m_pTransformMoveCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(12.f, 0.f, 233.f));
+
+	//	m_pTransformMoveCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(100.f, 0.f, 100.f));
 
 	m_pMeshCom_Bone->SetUp_AnimationSet(Idle);
 
 	int iIdleState = 1;
 	m_pState = CPlayer_Idle::Create(m_pGraphic_Device, *this, &iIdleState);
 
-//	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), -90);
-
+	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), 90);
+	
 	CEventManager::GetInstance()->Register_Object(L"Arkus_Attack", this);
 	
 	return NOERROR;

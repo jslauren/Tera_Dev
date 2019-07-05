@@ -5,6 +5,7 @@
 #include "Camera_Dynamic.h"
 #include "Camera_Static.h"
 #include "Light_Manager.h"
+#include "FontManager.h"
 #include "SkyBox.h"
 #include "Terrain.h"
 #include "Player.h"
@@ -28,6 +29,7 @@ _USING(Client)
 CScene_Stage::CScene_Stage(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CScene(pGraphic_Device)
 {
+	ZeroMemory(m_szPlayerPos, sizeof(_tchar) * 128);
 }
 
 HRESULT CScene_Stage::Ready_Scene()
@@ -72,13 +74,23 @@ HRESULT CScene_Stage::Ready_Scene()
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
 		return E_FAIL;
 
-	// For.Layer_Monster
-	if (FAILED(Ready_Layer_Monster(L"Layer_Monster")))
+	// For.Initialize_Setting
+	if (FAILED(Init_Setting()))
 		return E_FAIL;
 
+	return NOERROR;
+}
+
+HRESULT CScene_Stage::Init_Setting()
+{
 	// 여기서 현재 씬을 정해준다.
 	CManagement::GetInstance()->Set_CurrentScene(SCENE_STAGE);
 	CManagement::GetInstance()->Set_FirstLoadingInfo(false);
+
+	m_pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
+	Safe_AddRef(m_pPlayer);
+
+	m_pPlayer->Get_Transform()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(12.f, 0.f, 233.f));
 
 	return NOERROR;
 }
@@ -93,8 +105,6 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 	CManagement*	pManagement = CManagement::GetInstance();
 	if (nullptr == pManagement)
 		return -1;
-
-	CPlayer*	pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
 
 	pManagement->AddRef();
 
@@ -123,6 +133,11 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 
 HRESULT CScene_Stage::Render_Scene()
 {
+	_vec3 vPlayerPos = *m_pPlayer->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+	
+	wsprintf(m_szPlayerPos, L"%d, %d, %d", (_int)vPlayerPos.x, (_int)vPlayerPos.y, (_int)vPlayerPos.z);
+	CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3((g_iWinCX * 0.5) - 50.f, g_iWinCY - 30.f, 0.f), m_szPlayerPos);
+
 	return CScene::Render_Scene();
 }
 
@@ -306,7 +321,7 @@ HRESULT CScene_Stage::Ready_LightInfo()
 	LightInfo.Type = D3DLIGHT_DIRECTIONAL;
 	LightInfo.Direction = _vec3(1.f, -1.f, 0.f);
 	LightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
-	LightInfo.Ambient = D3DXCOLOR(0.3f, 0.3f, 0.3f, 1.f);
+	LightInfo.Ambient = D3DXCOLOR(0.6f, 0.6f, 0.6f, 1.f);
 	LightInfo.Specular = D3DXCOLOR(0.f, 0.f, 0.f, 0.f);
 
 	if (FAILED(pLight_Manager->Add_Light(m_pGraphic_Device, &LightInfo)))
@@ -423,11 +438,6 @@ HRESULT CScene_Stage::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	return NOERROR;
 }
 
-HRESULT CScene_Stage::Ready_Layer_Monster(const _tchar * pLayerTag)
-{
-	return NOERROR;
-}
-
 CScene_Stage * CScene_Stage::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
 	CScene_Stage* pInstance = new CScene_Stage(pGraphic_Device);
@@ -446,6 +456,8 @@ void CScene_Stage::Free()
 	if (nullptr == m_pObject_Manager ||
 		nullptr == m_pComponent_Manager)
 		return;
+
+	Safe_Release(m_pPlayer);
 
 	if (FAILED(m_pObject_Manager->Clear_Object(SCENE_STAGE)))
 		return;

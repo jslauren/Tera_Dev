@@ -23,6 +23,7 @@ public:
 	_bool	Move_OnNavigation(const _vec3* pPosition, const _vec3* pDir, _float fTimeDelta, _uint* pOutIndex);
 	HRESULT SetUp_Neighbor();
 	_float	Compute_HeightOnNavi(_vec3* _pPlayerPos);
+	_uint	Get_CellIndex(_vec3 vPosition);
 
 private:
 	vector<CCell*>			m_vecCell;
