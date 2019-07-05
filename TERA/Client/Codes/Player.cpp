@@ -12,8 +12,8 @@
 #include "Time.h"
 
 #define PLAYER_SCALING	0.33f
-#define	PLAYER_HP	10686.f
-#define	PLAYER_MP	3250.f
+#define	PLAYER_HP	10686
+#define	PLAYER_MP	3250
 
 _USING(Client)
 
@@ -97,6 +97,7 @@ const _bool & CPlayer::Get_SkillAvailable(PLAYER_ANI eAttackAni)
 		break;
 	}
 
+	return false;
 }
 
 const _uint & CPlayer::Get_Requirement_SkillMP_Info(PLAYER_ANI eAttackAni)
@@ -139,6 +140,8 @@ const _uint & CPlayer::Get_Requirement_SkillMP_Info(PLAYER_ANI eAttackAni)
 		return m_iRequirementSkillMP[8];
 		break;
 	}
+	
+	return 0;
 }
 
 const _float & CPlayer::Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni)
@@ -181,6 +184,8 @@ const _float & CPlayer::Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni)
 		return m_fCurrentCoolTime[8];
 		break;
 	}
+
+	return 0;
 }
 
 const _float & CPlayer::Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni)
@@ -223,6 +228,8 @@ const _float & CPlayer::Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni)
 		return m_fMaxCoolTime[8];
 		break;
 	}
+
+	return 0;
 }
 
 const _bool & CPlayer::Get_CoolTimeAvailable(PLAYER_ANI eAttackAni)
@@ -265,6 +272,8 @@ const _bool & CPlayer::Get_CoolTimeAvailable(PLAYER_ANI eAttackAni)
 		return m_bIsCoolTimeAvailable[8];
 		break;
 	}
+
+	return 0;
 }
 
 const _bool & CPlayer::GetSkillAvailable(PLAYER_ANI eAttackAni)
@@ -307,6 +316,8 @@ const _bool & CPlayer::GetSkillAvailable(PLAYER_ANI eAttackAni)
 		return m_bIsSkillAvailable[8];
 		break;
 	}
+
+	return 0;
 }
 
 HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
@@ -319,7 +330,6 @@ HRESULT CPlayer::Set_Navigation_Component(SCENEID eScene)
 	{
 	case SCENE_STAGE:
 		iIndex = 0;
-
 		if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Navigation_Stage", L"Com_Navigation_Stage", (CComponent**)&m_pNavigationCom, &iIndex)))
 			return E_FAIL;
 		break;
@@ -496,9 +506,12 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	int iIdleState = 1;
 	m_pState = CPlayer_Idle::Create(m_pGraphic_Device, *this, &iIdleState);
 
-	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), 90);
+	m_pMeshCom_Bone->ChangePivot(_vec3(0.f, 1.f, 0.f), 0);
 	
 	CEventManager::GetInstance()->Register_Object(L"Arkus_Attack", this);
+
+	m_pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+	Safe_AddRef(m_pArkus);
 	
 	return NOERROR;
 }
@@ -744,8 +757,8 @@ void CPlayer::DamageEvent(_float fSpeed)
 		m_pMeshCom_Bone->Get_NowPlayAniIndex() != PLAYER_ANI::DrawSwordEnd)
 	{
 
-		CArkus* pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
-		_vec3 vArkusPosition = *pArkus->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+	//	CArkus* pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+		_vec3 vArkusPosition = *m_pArkus->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
 
 		_vec3 vDir = (*m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)) - vArkusPosition;
 
@@ -986,9 +999,11 @@ _bool CPlayer::CollisionCheck()
 {
 	if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_DRAGON)
 	{
-		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+		//CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
+		if (m_pArkus == nullptr)
+			m_pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
 
-		if (pArkus->EnemyPositionCheck() == true)
+		if (m_pArkus->EnemyPositionCheck() == true)
 		{
 			const CCollider* pArkusColliderBody = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Body");
 			const CCollider* pArkusColliderHead = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Head");
@@ -996,12 +1011,12 @@ _bool CPlayer::CollisionCheck()
 			const CCollider* pArkusColliderTail01 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Tail01");
 			const CCollider* pArkusColliderTail02 = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_DRAGON, L"Layer_Monster", L"Com_Collider_Arkus_Tail02");
 
-			if (pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Idle &&
-				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Hit &&
-				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Run_Battle &&
-				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::JumpEvasion &&
-				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Groggy &&
-				pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Death)
+			if (m_pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Idle &&
+				m_pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Hit &&
+				m_pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Run_Battle &&
+				m_pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::JumpEvasion &&
+				m_pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Groggy &&
+				m_pArkus->Get_AniIndex() != CArkus::ARKUS_ANI::Death)
 			{
 				if (m_pColliderCom->Collision_Sphere(pArkusColliderBody) == true ||
 					m_pColliderCom->Collision_Sphere(pArkusColliderHead) == true ||
@@ -1042,6 +1057,8 @@ _bool CPlayer::CollisionCheck()
 
 	else if (m_bCollisionCheck == false)
 		return false;
+
+	return false;
 }
 
 void CPlayer::DamageCalculator(PLAYER_ANI eAttackAni)
@@ -1256,6 +1273,8 @@ CGameObject * CPlayer::Clone(void* pArg)
 void CPlayer::Free()
 {
 	CEventManager::GetInstance()->Remove_Object(L"Arkus_Attack", this);
+
+	Safe_Release(m_pArkus);
 
 	Safe_Release(m_pMeshCom_Tail);
 	Safe_Release(m_pMeshCom_Leg);

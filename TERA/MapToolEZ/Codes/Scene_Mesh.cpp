@@ -22,9 +22,7 @@ HRESULT CScene_Mesh::Ready_Scene()
 	if (FAILED(Ready_GameObject_Prototype()))
 		return E_FAIL;
 
-	//// For.Layer_Camera
-	//if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
-	//	return E_FAIL;
+	return NOERROR;
 }
 
 _int CScene_Mesh::Update_Scene(const _float & fTimeDelta)

@@ -196,7 +196,7 @@ HRESULT CUI_Loading::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTarg
 
 	// UI는 직교투영을 해야하기 때문에 이렇게 처리해준다.
 	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &matProj);
-	D3DXMatrixOrthoLH(&matProj, g_iWinCX, g_iWinCY, 0.f, 1.f);
+	D3DXMatrixOrthoLH(&matProj, (_float)g_iWinCX, (_float)g_iWinCY, 0.f, 1.f);
 
 	if (1 == iTargetTextureIdx)
 	{
@@ -235,7 +235,7 @@ HRESULT CUI_Loading::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTarg
 		pEffect->SetMatrix("g_matProj", &matProj);
 
 		//m_iLoadingProgressValue = m_pLoading->Get_Complete();
-		pEffect->SetFloat("g_fLoadingValue", (m_iLoadingProgressValue * 0.01));
+		pEffect->SetFloat("g_fLoadingValue", (m_fLoadingProgressValue * 0.01f));
 	}
 
 	Safe_Release(pEffect);

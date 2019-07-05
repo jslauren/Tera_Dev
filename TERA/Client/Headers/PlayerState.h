@@ -5,6 +5,7 @@
 
 _BEGIN(Client)
 
+class CArkus;
 class CPlayer;
 class CPlayerState : public CBase
 {

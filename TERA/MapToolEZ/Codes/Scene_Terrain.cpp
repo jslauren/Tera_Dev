@@ -22,9 +22,7 @@ HRESULT CScene_Terrain::Ready_Scene()
 	if (FAILED(Ready_GameObject_Prototype()))
 		return E_FAIL;
 
-	//// For.Layer_Camera
-	//if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
-	//	return E_FAIL;
+	return NOERROR;
 }
 
 _int CScene_Terrain::Update_Scene(const _float & fTimeDelta)
@@ -67,38 +65,16 @@ HRESULT CScene_Terrain::Ready_Component_Prototype()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
-	//// For.Component_Texture_SkyBox
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_PROTO, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
-	//	return E_FAIL;
-
-	//// For.Component_Texture_Terrain
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_PROTO, L"Component_Texture_Terrain", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Terrain/Grass_%d.tga", 2))))
-	//	return E_FAIL;
-
-	//// For.Component_Buffer_Terrain
-	//if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_PROTO, L"Component_Buffer_Terrain", CBuffer_Terrain::Create(m_pGraphic_Device, L"../Bin/Resources/Textures/Terrain/Height.bmp"))))
-	//	return E_FAIL;
+	return NOERROR;
 }
 
 HRESULT CScene_Terrain::Ready_GameObject_Prototype()
 {
-	//// For.GameObject_SkyBox
-	//if (FAILED(Add_Object_Prototype(SCENE_PROTO, L"GameObject_SkyBox", CSkyBox::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
-
-	//// For.GameObject_Terrain
-	//if (FAILED(Add_Object_Prototype(SCENE_PROTO, L"GameObject_Terrain", CTerrain::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
-
 	return NOERROR;
 }
 
 HRESULT CScene_Terrain::Ready_Layer_Camera(const _tchar * pLayerTag)
 {
-	//// For.Camera
-	//if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Camera_Dynamic", SCENE_STAGE, pLayerTag, &CCamera::CAMERAINFO(_vec3(0.f, 7.f, -10.f), _vec3(0.f, 0.f, 0.f), _vec3(0.0f, 1.f, 0.f), D3DXToRadian(60.0f), _float(g_iWinCX) / g_iWinCY, 0.2f, 500.f))))
-	//	return E_FAIL;
-
 	return NOERROR;
 }
 

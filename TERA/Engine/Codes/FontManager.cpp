@@ -40,6 +40,7 @@ HRESULT CFontManager::ReadyFont(LPDIRECT3DDEVICE9 pGraphic_Device)
 			return E_FAIL;
 	}
 
+	return NOERROR;
 }
 
 void CFontManager::RenderFont(FONT_ID eFontID, _vec3 vPosition, _tchar * pFontContents)

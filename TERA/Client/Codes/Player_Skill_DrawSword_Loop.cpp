@@ -39,7 +39,7 @@ CPlayerState * CPlayer_Skill_DrawSword_Loop::Input_Keyboard(CPlayer & Player, co
 
 		else if (CInput_Device::GetInstance()->Get_DIMouseUp(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 		{
-			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.75f));
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.75f))
 				return CPlayer_Skill_DrawSword::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
 	}

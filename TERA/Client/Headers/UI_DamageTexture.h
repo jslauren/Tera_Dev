@@ -39,7 +39,7 @@ private:
 private:
 	_vec3			m_vPosition;
 
-	_uint			m_iDamageValue = 0.f;
+	_uint			m_iDamageValue = 0;
 	_tchar			m_szDamageValue[64];
 	_uint			m_iSeprateDamage[4] = { 0, 0, 0, 0 };
 	_uint			m_iNumberUnit = 0;

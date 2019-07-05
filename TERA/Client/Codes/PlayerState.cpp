@@ -64,9 +64,9 @@ void CPlayerState::AttackEvent(CArkus* pArkus, CPlayer* Player, _uint iAvailable
 
 		if (m_bIsDamageAvailable == true)
 		{
-			pArkus->Set_HP_Sub(Player->Get_PlayerOffenceValue());
+			pArkus->Set_HP_Sub((_float)Player->Get_PlayerOffenceValue());
 			
-			CUI_DamageFont_Manager::GetInstance()->Create_DamageFont(m_pGraphic_Device, *Player->Get_Collider()->Get_CollisionPos(), Player->Get_PlayerOffenceValue());
+			CUI_DamageFont_Manager::GetInstance()->Create_DamageFont(m_pGraphic_Device, *Player->Get_Collider()->Get_CollisionPos(), (_float)Player->Get_PlayerOffenceValue());
 			m_iHitCount++;
 
 			m_bIsDamageAvailable = false;

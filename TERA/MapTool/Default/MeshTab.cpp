@@ -64,23 +64,23 @@ void CMeshTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SPIN12, Obj_Y_Position_Btn);
 	DDX_Control(pDX, IDC_SPIN13, Obj_Z_Position_Btn);
 	DDX_Text(pDX, IDC_EDIT5, m_fScalingX);
-	DDV_MinMaxFloat(pDX, m_fScalingX, 0.01, 100);
+	DDV_MinMaxDouble(pDX, m_fScalingX, 0.01, 100);
 	DDX_Text(pDX, IDC_EDIT6, m_fScalingY);
-	DDV_MinMaxFloat(pDX, m_fScalingY, 0.01, 100);
+	DDV_MinMaxDouble(pDX, m_fScalingY, 0.01, 100);
 	DDX_Text(pDX, IDC_EDIT7, m_fScalingZ);
-	DDV_MinMaxFloat(pDX, m_fScalingZ, 0.01, 100);
+	DDV_MinMaxDouble(pDX, m_fScalingZ, 0.01, 100);
 	DDX_Text(pDX, IDC_EDIT8, m_fRotX);
-	DDV_MinMaxFloat(pDX, m_fRotX, -360, 360);
+	DDV_MinMaxDouble(pDX, m_fRotX, -360, 360);
 	DDX_Text(pDX, IDC_EDIT9, m_fRotY);
-	DDV_MinMaxFloat(pDX, m_fRotY, -360, 360);
+	DDV_MinMaxDouble(pDX, m_fRotY, -360, 360);
 	DDX_Text(pDX, IDC_EDIT10, m_fRotZ);
-	DDV_MinMaxFloat(pDX, m_fRotZ, -360, 360);
+	DDV_MinMaxDouble(pDX, m_fRotZ, -360, 360);
 	DDX_Text(pDX, IDC_EDIT11, m_fPosX);
-	DDV_MinMaxFloat(pDX, m_fPosX, -10000, 10000);
+	DDV_MinMaxDouble(pDX, m_fPosX, -10000, 10000);
 	DDX_Text(pDX, IDC_EDIT12, m_fPosY);
-	DDV_MinMaxFloat(pDX, m_fPosY, -10000, 10000);
+	DDV_MinMaxDouble(pDX, m_fPosY, -10000, 10000);
 	DDX_Text(pDX, IDC_EDIT13, m_fPosZ);
-	DDV_MinMaxFloat(pDX, m_fPosZ, -10000, 10000);
+	DDV_MinMaxDouble(pDX, m_fPosZ, -10000, 10000);
 	DDX_Control(pDX, IDC_TREE4, Tree_Mesh_DynamicObj);
 	DDX_Control(pDX, IDC_TREE2, Tree_Mesh_Navi);
 }
@@ -139,32 +139,32 @@ BOOL CMeshTab::OnInitDialog()
 	// Spin_Control의 속성 값에 Auto_Buddy값과 Set_Buddy_Integer값을 True로 바꾸고,
 	// 리소스 뷰 다이얼로그에서 Ctrl+D를 눌러서,
 	// Edit Box와 Spin Control이 연속된 숫자를 가지게 셋팅하면 된다.
-	Obj_X_Scaling_Btn.SetPos(1.f);
-	Obj_X_Scaling_Btn.SetRange(100.f, 0.01f);
+	Obj_X_Scaling_Btn.SetPos(1);
+	Obj_X_Scaling_Btn.SetRange(100, 0);
 
-	Obj_Y_Scaling_Btn.SetPos(1.f);
-	Obj_Y_Scaling_Btn.SetRange(100.f, 0.01f);
+	Obj_Y_Scaling_Btn.SetPos(1);
+	Obj_Y_Scaling_Btn.SetRange(100, 0);
 
-	Obj_Z_Scaling_Btn.SetPos(1.f);
-	Obj_Z_Scaling_Btn.SetRange(100.f, 0.01f);
+	Obj_Z_Scaling_Btn.SetPos(1);
+	Obj_Z_Scaling_Btn.SetRange(100, 0);
 
-	Obj_X_Rotation_Btn.SetPos(0.f);
-	Obj_X_Rotation_Btn.SetRange(360.f, -360.f);
+	Obj_X_Rotation_Btn.SetPos(0);
+	Obj_X_Rotation_Btn.SetRange(360, -360);
 
-	Obj_Y_Rotation_Btn.SetPos(0.f);
-	Obj_Y_Rotation_Btn.SetRange(360.f, -360.f);
+	Obj_Y_Rotation_Btn.SetPos(0);
+	Obj_Y_Rotation_Btn.SetRange(360, -360);
 
-	Obj_Z_Rotation_Btn.SetPos(0.f);
-	Obj_Z_Rotation_Btn.SetRange(360.f, -360.f);
+	Obj_Z_Rotation_Btn.SetPos(0);
+	Obj_Z_Rotation_Btn.SetRange(360, -360);
 
-	Obj_X_Position_Btn.SetPos(0.f);
-	Obj_X_Position_Btn.SetRange(10000.f, -10000.f);
+	Obj_X_Position_Btn.SetPos(0);
+	Obj_X_Position_Btn.SetRange(10000, -10000);
 
-	Obj_Y_Position_Btn.SetPos(0.f);
-	Obj_Y_Position_Btn.SetRange(10000.f, -10000.f);
+	Obj_Y_Position_Btn.SetPos(0);
+	Obj_Y_Position_Btn.SetRange(10000, -10000);
 
-	Obj_Z_Position_Btn.SetPos(0.f);
-	Obj_Z_Position_Btn.SetRange(10000.f, -10000.f);
+	Obj_Z_Position_Btn.SetPos(0);
+	Obj_Z_Position_Btn.SetRange(10000, -10000);
 
 	InitTreeCtrl_Object();
 
@@ -327,7 +327,7 @@ void CMeshTab::OnBnClicked_StaticObject_Delete()
 	}
 	strItemIdx.Delete(0, i);
 
-	_int iItemIdx = _ttoi(strItemIdx);
+	size_t iItemIdx = _ttoi(strItemIdx);
 
 	if (iLatestItemIdx < iItemIdx)
 		iLatestItemIdx = iItemIdx;
@@ -407,7 +407,7 @@ void CMeshTab::OnBnClicked_DynamicObject_Delete()
 	}
 	strItemIdx.Delete(0, i);
 
-	_int iItemIdx = _ttoi(strItemIdx);
+	size_t iItemIdx = _ttoi(strItemIdx);
 
 	if (iLatestItemIdx < iItemIdx)
 		iLatestItemIdx = iItemIdx;
@@ -593,7 +593,7 @@ HRESULT CMeshTab::MakeItemForTree()
 			CObject_Manager* pObjectManager = CObject_Manager::GetInstance();
 
 			auto IdxValue = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().begin();
-			_int iSize = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().size();
+			size_t iSize = pObjectManager->FindObjectLayer(SCENE_STATIC, strLayerTag)->Get_ObjectList().size();
 
 			// List의 .back() 함수는 이터레이터를 던져주는것이 아니라, 해당 이터의 값, 즉 (*iter)를 리턴하기 때문에,
 			// back - 1은 값에 -1을 해주는것이다. 결국 뻘짓이라는거지..
@@ -1091,7 +1091,7 @@ void CMeshTab::OnNMRClickTreeStaticObj(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	strItemIdx.Delete(0, i);
 
-	_int iItemIdx = _ttoi(strItemIdx);
+	size_t iItemIdx = _ttoi(strItemIdx);
 
 	if (iLatestItemIdx < iItemIdx)
 		iLatestItemIdx = iItemIdx;
@@ -1176,7 +1176,7 @@ void CMeshTab::OnNMRClickTreeDynamicObj(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	strItemIdx.Delete(0, i);
 
-	_int iItemIdx = _ttoi(strItemIdx);
+	size_t iItemIdx = _ttoi(strItemIdx);
 
 	iCurrentSelcetedIndex = iItemIdx;
 	strCurrentSelectedObjectName = ParentItemName;

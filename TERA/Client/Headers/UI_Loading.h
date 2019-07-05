@@ -14,11 +14,11 @@ private:
 	virtual ~CUI_Loading() = default;
 
 public: // Geter
-	_int	Get_LoadingProgressValue() { return m_iLoadingProgressValue; }
+	_float	Get_LoadingProgressValue() { return m_fLoadingProgressValue; }
 
 public:	// Setter
 //	void	Set_LodingClass(CLoading* pLoading) { m_pLoading = pLoading; }
-	void	Set_LoadingProgressValue(_int iValue) { m_iLoadingProgressValue = iValue; }
+	void	Set_LoadingProgressValue(_float fValue) { m_fLoadingProgressValue = fValue; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -57,7 +57,7 @@ private:
 
 private:
 	CLoading*		pLoading = nullptr;
-	_int			m_iLoadingProgressValue = 0;
+	_float			m_fLoadingProgressValue = 0.f;
 
 public:
 	static CUI_Loading*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);

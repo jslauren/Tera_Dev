@@ -4,6 +4,7 @@
 
 _BEGIN(Client)
 
+class CArkus;
 class CPlayerState;
 class CPlayer : public CUnit
 {
@@ -39,7 +40,7 @@ public:	// Getter
 	const _uint&		Get_Requirement_SkillMP_Info(PLAYER_ANI eAttackAni);
 	const _uint&		Get_PlayerOffenceValue() { return m_iOffencePower; }
 	const _bool&		Get_LBtnClickedInfo() { return m_bLBtnClicked; }
-	const _bool&		Get_HitCount() { return m_iHitCount; }
+	const _uint&		Get_HitCount() { return m_iHitCount; }
 	const _float&		Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni);
 	const _float&		Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni);
 	const _bool&		Get_CoolTimeAvailable(PLAYER_ANI eAttackAni);
@@ -53,10 +54,10 @@ public:	// Setter
 	void				Set_Direction(_int iDir) { m_iDirection = iDir; }
 	void				Set_CutSceneInfo(_bool bButton) { m_bIsCutSceneEvent = bButton; }
 	void				Set_DamageEventEndInfo(_bool bButton) { m_bDamageEventEndInfo = bButton; }
-	void				Set_HP_Sub(_float fDamageValue) { m_fHP -= fDamageValue; if (m_fHP <= 0.f) m_fHP = 0.f; }
-	void				Set_MP_Sub(_float fDamageValue) { m_fMP -= fDamageValue; if (m_fMP <= 0.f) m_fMP = 0.f; }
-	void				Set_HP_Add(_float fHealingValue) { m_fHP += fHealingValue; if (m_fHP >= 10686.f) m_fHP = 10686.f; }
-	void				Set_MP_Add(_float fHealingValue) { m_fMP += fHealingValue; if (m_fMP >= 3250.f) m_fMP = 3250.f; }
+	void				Set_HP_Sub(_uint iDamageValue) { m_fHP -= iDamageValue; if (m_fHP <= 0.f) m_fHP = 0.f; }
+	void				Set_MP_Sub(_uint iDamageValue) { m_fMP -= iDamageValue; if (m_fMP <= 0.f) m_fMP = 0.f; }
+	void				Set_HP_Add(_uint iHealingValue) { m_fHP += iHealingValue; if (m_fHP >= 10686.f) m_fHP = 10686.f; }
+	void				Set_MP_Add(_uint iHealingValue) { m_fMP += iHealingValue; if (m_fMP >= 3250.f) m_fMP = 3250.f; }
 	void				Set_PlayerOffenceValue(_uint iOffenceValue) { m_iOffencePower = iOffenceValue; }
 	void				Set_LBtnClickedInfo(_bool bButton) { m_bLBtnClicked = bButton; }
 
@@ -91,6 +92,9 @@ private:
 	CMesh_Dynamic_Parts*	m_pMeshCom_Tail = nullptr;
 
 private:
+	CArkus*			m_pArkus = nullptr;
+
+private:
 	const _matrix*	m_pBoneMatrix = nullptr;
 	const _matrix*	m_pParentMatrix = nullptr;
 
@@ -123,7 +127,7 @@ private:
 
 	_float			m_fAutoHealingAccTime = 0.f;
 
-	_uint			m_iOffencePower = 300.f;
+	_uint			m_iOffencePower = 300;
 	_bool			m_bIsCriticalDamage[8] = { false, false, false, false, false, false, false, false};
 
 	_bool			m_bLBtnClicked = false;

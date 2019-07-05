@@ -35,11 +35,11 @@ HRESULT CUI_PlayerPoint::Ready_GameObject(void * pArg)
 	m_pTransformPointBoardCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-(g_iWinCX * 0.f), -(g_iWinCY * 0.305f), 0.f));
 
 	m_pTransformHpCom->Set_Scaling((g_iWinCX * 0.18f), (g_iWinCY * 0.075f), 0.f);
-	m_pTransformHpCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-(g_iWinCX * 0.115), -(g_iWinCY * 0.305f), 0.f));
+	m_pTransformHpCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(-(g_iWinCX * 0.115f), -(g_iWinCY * 0.305f), 0.f));
 
 	// (g_iWinCX * 0.34f)
 	m_pTransformMpCom->Set_Scaling((g_iWinCX * 0.18f), (g_iWinCY * 0.075f), 0.f);
-	m_pTransformMpCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.105), -(g_iWinCY * 0.305f), 0.f));
+	m_pTransformMpCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * 0.105f), -(g_iWinCY * 0.305f), 0.f));
 
 	return NOERROR;
 }
@@ -193,7 +193,7 @@ HRESULT CUI_PlayerPoint::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint i
 
 	// UI는 직교투영을 해야하기 때문에 이렇게 처리해준다.
 	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &matProj);
-	D3DXMatrixOrthoLH(&matProj, g_iWinCX, g_iWinCY, 0.f, 1.f);
+	D3DXMatrixOrthoLH(&matProj, (_float)g_iWinCX, (_float)g_iWinCY, 0.f, 1.f);
 
 	if (1 == iTargetTextureIdx)
 	{
@@ -287,13 +287,13 @@ void CUI_PlayerPoint::PointCalculater(_bool bIsHP, _float fCurrentValue)
 
 	if (bIsHP == true)
 	{
-		m_fCalculatedHP = 100 * (m_fHP - fCurrentValue) / 10686.f * 0.01;
+		m_fCalculatedHP = 100 * (m_fHP - fCurrentValue) / 10686.f * 0.01f;
 		m_fHPRatio = /*1 -*/ m_fCalculatedHP;
 	}
 
 	else if (bIsHP == false)
 	{
-		m_fCalculatedMP = 100 * (m_fMP - fCurrentValue) / 3250.f * 0.01;
+		m_fCalculatedMP = 100 * (m_fMP - fCurrentValue) / 3250.f * 0.01f;
 		m_fMPRatio = 1 - m_fCalculatedMP;
 	}
 

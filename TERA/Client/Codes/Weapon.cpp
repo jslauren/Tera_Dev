@@ -345,8 +345,9 @@ _bool CWeapon::CollisionCheck()
 			return true;
 		else
 			return false;
-
 	}
+
+	return false;
 }
 
 CWeapon * CWeapon::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

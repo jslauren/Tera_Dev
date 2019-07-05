@@ -10,9 +10,9 @@ private:
 	explicit CAnimationCtrl(const CAnimationCtrl& rhs);
 	virtual ~CAnimationCtrl() = default;
 public: // Getter
-	_double			Get_CurretTrackPos();
+	const _double&	Get_CurretTrackPos();
 	const _uint&	Get_NowPlayAniIndex() { return m_iOldIndex; }
-	const _double	Get_Period();
+	const _double&	Get_Period();
 
 public:
 	HRESULT Ready_AnimationCtrl();
@@ -22,6 +22,7 @@ public:
 public:
 	_bool	IsAnimationEnded(_double fCtrlEndTime = 0.f);
 private:
+	D3DXTRACK_DESC				m_TrackDesc;
 	LPD3DXANIMATIONSET			m_pAnimationSet = nullptr;
 	LPD3DXANIMATIONCONTROLLER	m_pAniCtrl = nullptr;
 	_uint						m_iCurrentTrack = 0;

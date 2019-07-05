@@ -14,18 +14,17 @@ CAnimationCtrl::CAnimationCtrl(const CAnimationCtrl & rhs)
 		return;
 }
 
-_double CAnimationCtrl::Get_CurretTrackPos()
+const _double& CAnimationCtrl::Get_CurretTrackPos()
 {
-	D3DXTRACK_DESC	TrackDesc;
-	ZeroMemory(&TrackDesc, sizeof(D3DXTRACK_DESC));
+	ZeroMemory(&m_TrackDesc, sizeof(D3DXTRACK_DESC));
 
 	// 트랙의 현재 포지션 값.
-	m_pAniCtrl->GetTrackDesc(m_iCurrentTrack, &TrackDesc);
+	m_pAniCtrl->GetTrackDesc(m_iCurrentTrack, &m_TrackDesc);
 
-	return _double(TrackDesc.Position);
+	return _double(m_TrackDesc.Position);
 }
 
-const _double CAnimationCtrl::Get_Period()
+const _double& CAnimationCtrl::Get_Period()
 {
 	return m_pAnimationSet->GetPeriod();
 }

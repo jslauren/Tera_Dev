@@ -73,7 +73,7 @@ HRESULT CRenderer::Ready_Renderer()
 		return E_FAIL;
 
 	// For.Buffer
-	m_pBuffer = CBuffer_ScreenTex::Create(m_pGraphic_Device, 0.f - 0.5f, 0.f - 0.5f, ViewPort.Width, ViewPort.Height);
+	m_pBuffer = CBuffer_ScreenTex::Create(m_pGraphic_Device, 0.f - 0.5f, 0.f - 0.5f, (_float)ViewPort.Width, (_float)ViewPort.Height);
 	if (nullptr == m_pBuffer)
 		return E_FAIL;
 

@@ -440,7 +440,7 @@ HRESULT CLoading::Ready_Dragon_Component()
 void CLoading::CalculatedCompleteNumber()
 {
 	m_iCurrentRsrcNum++;
-	m_iComplete = (100 * ((_float)m_iCurrentRsrcNum / m_iTotalRsrcNum));
+	m_iComplete = (_uint)(100 * ((_float)m_iCurrentRsrcNum / m_iTotalRsrcNum));
 }
 
 CLoading * CLoading::Create(LPDIRECT3DDEVICE9 pGraphic_Device, SCENEID eSceneID)

@@ -31,6 +31,7 @@ CArkusState * CArkus_Death::Input_State(CArkus & Arkus, const float & fTimeDelta
 
 		return nullptr;
 	}
+	return nullptr;
 }
 
 void CArkus_Death::Update_State(CArkus & Arkus, const float & fTimeDelta)

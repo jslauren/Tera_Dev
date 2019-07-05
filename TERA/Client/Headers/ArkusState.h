@@ -5,6 +5,7 @@
 _BEGIN(Client)
 
 class CArkus;
+class CPlayer;
 class CArkusState : public CBase
 {
 protected:
@@ -19,7 +20,6 @@ public:
 
 protected:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
-
 protected:
 	void					AttackAvailableCheck(CPlayer* pPlayer, CArkus* pArkus);
 	void					AttackEvent(CPlayer* pPlayer, CArkus* pArkus, _uint iAvailableHitNumber, _uint iAttackNumber);

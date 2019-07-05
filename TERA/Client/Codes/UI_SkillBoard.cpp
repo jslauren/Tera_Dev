@@ -355,7 +355,7 @@ HRESULT CUI_SkillBoard::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iT
 
 	// UI는 직교투영을 해야하기 때문에 이렇게 처리해준다.
 	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &matProj);
-	D3DXMatrixOrthoLH(&matProj, g_iWinCX, g_iWinCY, 0.f, 1.f);
+	D3DXMatrixOrthoLH(&matProj, (_float)g_iWinCX, (_float)g_iWinCY, 0.f, 1.f);
 	
 	if (0 == iTargetTextureIdx)
 	{

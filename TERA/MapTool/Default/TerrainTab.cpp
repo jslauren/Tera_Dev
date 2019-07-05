@@ -148,29 +148,29 @@ BOOL CTerrainTab::OnInitDialog()
 	Vertex_Z_Count_Btn.SetPos(100);
 	Vertex_Z_Count_Btn.SetRange(1, 300);
 
-	Vertex_Interval_Btn.SetPos(1.f);
-	Vertex_Interval_Btn.SetRange(1.f, 20.f);
+	Vertex_Interval_Btn.SetPos(1);
+	Vertex_Interval_Btn.SetRange(1, 20);
 
-	Vertex_Detail_Btn.SetPos(1.f);
-	Vertex_Detail_Btn.SetRange(1.f, 500.f);
+	Vertex_Detail_Btn.SetPos(1);
+	Vertex_Detail_Btn.SetRange(1, 500);
 
-	PositionX_Btn.SetPos(0.f);
-	PositionX_Btn.SetRange(1000.f, -1000.f);
+	PositionX_Btn.SetPos(0);
+	PositionX_Btn.SetRange(1000, -1000);
 
-	PositionY_Btn.SetPos(0.f);
-	PositionY_Btn.SetRange(1000.f, -1000.f);
+	PositionY_Btn.SetPos(0);
+	PositionY_Btn.SetRange(1000, -1000);
 
-	PositionZ_Btn.SetPos(0.f);
-	PositionZ_Btn.SetRange(1000.f, -1000.f);
+	PositionZ_Btn.SetPos(0);
+	PositionZ_Btn.SetRange(1000, -1000);
 
-	RotaionX_Btn.SetPos(0.f);
-	RotaionX_Btn.SetRange(360.f, 0.f);
+	RotaionX_Btn.SetPos(0);
+	RotaionX_Btn.SetRange(360, 0);
 
-	RotaionY_Btn.SetPos(0.f);
-	RotaionY_Btn.SetRange(360.f, 0.f);
+	RotaionY_Btn.SetPos(0);
+	RotaionY_Btn.SetRange(360, 0);
 
-	RotaionZ_Btn.SetPos(0.f);
-	RotaionZ_Btn.SetRange(360.f, 0.f);
+	RotaionZ_Btn.SetPos(0);
+	RotaionZ_Btn.SetRange(360, 0);
 
 	InitTreeCtrl();
 
@@ -211,10 +211,10 @@ void CTerrainTab::OnBnClickedTerrain_Apply()
 	//m_iNumVtxZ = _ttoi(strValue);
 
 	Vertex_Interval.GetWindowTextW(strValue);
-	m_fInterval = _ttof(strValue);
+	m_fInterval = (_float)_ttof(strValue);
 
 	Vertex_Detail.GetWindowTextW(strValue);
-	m_fDetail = _ttof(strValue);
+	m_fDetail = (_float)_ttof(strValue);
 
 	CLayer* pLayer = CObject_Manager::GetInstance()->FindObjectLayer(SCENE_STATIC, L"Layer_Terrain");
 	dynamic_cast<CTerrain*>(pLayer->Get_ObjectList().back())->Reset_Terrain(m_iNumVtxX, m_iNumVtxZ, m_fInterval, m_fDetail);

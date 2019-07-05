@@ -36,6 +36,7 @@ CArkusState * CArkus_Groggy::Input_State(CArkus & Arkus, const float & fTimeDelt
 				return CArkus_AlmostDead::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}
 	}
+	return nullptr;
 }
 
 void CArkus_Groggy::Update_State(CArkus & Arkus, const float & fTimeDelta)

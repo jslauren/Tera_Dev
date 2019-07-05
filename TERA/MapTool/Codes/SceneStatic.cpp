@@ -64,6 +64,8 @@ HRESULT CSceneStatic::Add_Static_Object(const _tchar * pLayerTag)
 	// For.Static_Mesh
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Static", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
+
+	return NOERROR;
 }
 
 HRESULT CSceneStatic::Add_Static_Object_Component_Prototype(const _tchar * pComponentPrototypeTag, const _tchar * pFilePath, const _tchar * pFileName)
@@ -71,6 +73,8 @@ HRESULT CSceneStatic::Add_Static_Object_Component_Prototype(const _tchar * pComp
 	// For.Component_Static_Object
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, pComponentPrototypeTag, CMesh_Static::Create(m_pGraphic_Device, pFilePath, pFileName))))
 		return E_FAIL;
+
+	return NOERROR;
 }
 
 HRESULT CSceneStatic::Ready_LightInfo()

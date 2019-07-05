@@ -157,7 +157,7 @@ HRESULT CUI_BossPoint::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTa
 
 	// UI는 직교투영을 해야하기 때문에 이렇게 처리해준다.
 	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &matProj);
-	D3DXMatrixOrthoLH(&matProj, g_iWinCX, g_iWinCY, 0.f, 1.f);
+	D3DXMatrixOrthoLH(&matProj, (_float)g_iWinCX, (_float)g_iWinCY, 0.f, 1.f);
 
 	if (1 == iTargetTextureIdx)
 	{
@@ -218,7 +218,7 @@ void CUI_BossPoint::CutSceneEvent()
 	{
 		m_bIsHpRender = true;
 
-		m_fHPRatio += (m_fTimeDelta * 0.35);
+		m_fHPRatio += (m_fTimeDelta * 0.35f);
 
 		if (m_fHPRatio >= 1)
 			m_bIsCutSceneStart = false;
@@ -235,7 +235,7 @@ void CUI_BossPoint::PointCalculater(_float fCurrentValue)
 	else if (fCurrentValue <= 0.f)
 		return;
 
-	m_fCalculatedHP = 100 * (m_fHP - fCurrentValue) / 100000.f * 0.01;
+	m_fCalculatedHP = 100 * (m_fHP - fCurrentValue) / 100000.f * 0.01f;
 	m_fHPRatio = 1 - m_fCalculatedHP;
 
 }

@@ -255,7 +255,7 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 		}
 	}
 	// [무기 발검, 착검]
-	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_F) & 0x80)
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_E) & 0x80)
 	{
 		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle)
 		{

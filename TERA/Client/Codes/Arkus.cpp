@@ -31,21 +31,12 @@ HRESULT CArkus::Ready_GameObject_Prototype()
 
 HRESULT CArkus::Ready_GameObject(void * pArg)
 {
-	//tObjectMeshData = *((OBJECTMESHDATA*)pArg);
-
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-//	_matrix matWorld = *(_matrix*)pArg;
-
 	m_pTransformCom->Set_Scaling(0.4f, 0.4f, 0.4f);
-//	m_pTransformCom->Set_Rotation_YawPitchRoll(D3DXToRadian(90.f), D3DXToRadian(0.f), D3DXToRadian(0.f));
 	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(180.f));
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(160.f, 0.f, 180.f));
-//	m_pTransformCom->Set_WorldMatrix(matWorld);
-
-//	m_pTransformCom->Set_WorldMatrix(tObjectMeshData.matWorld);
-//	m_pTransformCom->Set_WorldMatrix(((OBJECTMESHDATA*)pArg)->matWorld);
 
 	m_pMeshCom->SetUp_AnimationSet(Apperance01);
 	m_eAnimationIndex = Apperance01;
@@ -54,6 +45,10 @@ HRESULT CArkus::Ready_GameObject(void * pArg)
 	int iIdleState = 1;
 	m_pState = CArkus_Apperance::Create(m_pGraphic_Device, *this, &iIdleState);
 
+	m_pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
+	Safe_AddRef(m_pPlayer);
+
+	return NOERROR;
 }
 
 _int CArkus::Update_GameObject(const _float & fTimeDelta)
@@ -87,12 +82,6 @@ _int CArkus::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	//if (FAILED(SetUp_HeightOnTerrain(1)))   
 	//	return -1;
-
-	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
-	const CCollider* pWeaponCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Weapon", L"Com_WeaponCollider");
-
-	m_pColliderCom->Collision_OBB(pPlayerCollider);
-	m_pColliderCom->Collision_OBB(pWeaponCollider);
 
 	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, 350.f))
 	{
@@ -325,7 +314,6 @@ HRESULT CArkus::SetUp_HeightOnTerrain(_uint iIndex)
 
 _bool CArkus::CollisionCheck()
 {
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
 	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
 
 	//if (m_pColliderAtkAreaCom->Collision_Sphere(pPlayerCollider))
@@ -333,20 +321,20 @@ _bool CArkus::CollisionCheck()
 	//else // 빌어먹을 이 else 문 하나 안써서 몇시간을 날려먹은거냐 ㅡㅡ
 	//	m_bCollisionPart[COLL_ATTACK_AREA] = false;
 
-	if (pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle_Battle &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit_Wake &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit_Loop &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit_Rolling &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit_High &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit_Land &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::DrawSwordCharge &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::DrawSwordLoop &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::DrawSwordMove &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Run &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Run_Battle &&
-		pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Tumbling)
+	if (m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Idle_Battle &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit_Wake &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit_Loop &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit_Rolling &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit_High &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Hit_Land &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::DrawSwordCharge &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::DrawSwordLoop &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::DrawSwordMove &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Run &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Run_Battle &&
+		m_pPlayer->Get_AniIndex() != CPlayer::PLAYER_ANI::Tumbling)
 	{
 		// Static으로 있는 플레이어 레이어에서 Com_Player_Collider라는 콜라이더를 가져오겠다.
 		//const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
@@ -427,16 +415,6 @@ _bool CArkus::CollisionCheck()
 			else if (m_pColliderTail02Com->Collision_Sphere(pWeaponCollider04) == true)
 				m_bCollisionPart[COLL_TAIL02] = true;
 		}
-		//{
-		//	if (m_pColliderAtkAreaCom->Collision_Sphere(pWeaponCollider01) == true)
-		//		m_bCollisionPartsCheck[5] = true;
-		//	if (m_pColliderAtkAreaCom->Collision_Sphere(pWeaponCollider02) == true)
-		//		m_bCollisionPartsCheck[5] = true;
-		//	if (m_pColliderAtkAreaCom->Collision_Sphere(pWeaponCollider03) == true)
-		//		m_bCollisionPartsCheck[5] = true;
-		//	if (m_pColliderAtkAreaCom->Collision_Sphere(pWeaponCollider04) == true)
-		//		m_bCollisionPartsCheck[5] = true;
-		//}
 
 		for (size_t i = 0; i < COLL_ATTACK_AREA; ++i)
 		{
@@ -462,11 +440,11 @@ _bool CArkus::CollisionCheck()
 	else if (m_bCollisionCheck == false)
 		return false;
 
+	return false;
 }
 
 void CArkus::CollisionCheck_Attack_Area()
 {
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
 	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
 
 	if (m_pColliderAtkAreaCom->Collision_Sphere(pPlayerCollider))
@@ -479,7 +457,7 @@ void CArkus::ViewChanage()
 {
 	_vec3 vArkusRight, vArkusUp, vArkusLook, vDir, vPlayerPos, vArkusPos;
 
-	vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+	vPlayerPos = *m_pPlayer->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
 	vArkusPos = *m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
 
 	vDir = vPlayerPos - vArkusPos;
@@ -542,7 +520,7 @@ void CArkus::AI()
 
 _bool CArkus::EnemyPositionCheck()
 {
-	_vec3 vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+	_vec3 vPlayerPos = *m_pPlayer->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
 
 	_vec3 vDir = vPlayerPos - (*m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION));
 	D3DXVec3Normalize(&vDir, &vDir);
@@ -574,13 +552,15 @@ _bool CArkus::EnemyPositionCheck()
 
 		return false;
 	}
+
+	return true;
 }
 
 void CArkus::LookChangeToPlayer(_bool bPtoM)
 {
 	_vec3 vArkusRight, vArkusUp, vArkusLook, vDir, vPlayerPos, vArkusPos;
 
-	vPlayerPos = *dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
+	vPlayerPos = *m_pPlayer->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
 	vArkusPos = *m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
 	vArkusRight = *m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT);
 	vArkusUp = *m_pTransformCom->Get_StateInfo(CTransform::STATE_UP);
@@ -637,6 +617,8 @@ CGameObject * CArkus::Clone(void * pArg)
 
 void CArkus::Free()
 {
+	Safe_Release(m_pPlayer);
+
 	Safe_Release(m_pColliderHeadCom);
 	Safe_Release(m_pColliderNeckCom);
 	Safe_Release(m_pColliderTail01Com);

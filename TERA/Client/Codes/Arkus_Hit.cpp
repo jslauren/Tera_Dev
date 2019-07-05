@@ -45,6 +45,7 @@ CArkusState * CArkus_Hit::Input_State(CArkus & Arkus, const float & fTimeDelta, 
 				return CArkus_JumpEvasion::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		}
 	}
+	return nullptr;
 }
 
 void CArkus_Hit::Update_State(CArkus & Arkus, const float & fTimeDelta)

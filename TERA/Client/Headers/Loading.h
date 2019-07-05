@@ -33,8 +33,8 @@ private:
 	void	CalculatedCompleteNumber();
 
 private:
-	_uint	m_iTotalRsrcNum = 0.f;
-	_uint	m_iCurrentRsrcNum = 0.f;
+	_uint	m_iTotalRsrcNum = 0;
+	_uint	m_iCurrentRsrcNum = 0;
 
 
 public:

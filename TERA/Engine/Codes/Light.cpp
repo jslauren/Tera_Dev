@@ -15,7 +15,7 @@ HRESULT CLight::Ready_Light(const D3DLIGHT9 * pLightInfo)
 
 	m_pGraphic_Device->GetViewport(&ViewPort);
 
-	m_pBuffer = CBuffer_ScreenTex::Create(m_pGraphic_Device, 0.0f - 0.5f, 0.0f - 0.5f, ViewPort.Width, ViewPort.Height);
+	m_pBuffer = CBuffer_ScreenTex::Create(m_pGraphic_Device, 0.0f - 0.5f, 0.0f - 0.5f, (_float)ViewPort.Width, (_float)ViewPort.Height);
 	if (nullptr == m_pBuffer)
 		return E_FAIL;
 

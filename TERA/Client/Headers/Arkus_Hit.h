@@ -16,7 +16,7 @@ public:
 	virtual void			Update_State(CArkus& Arkus, const float& fTimeDelta);
 
 private:
-	_uint					m_iRandomState = 0.f;
+	_uint					m_iRandomState = 0;
 
 public:
 	static CArkus_Hit*		Create(LPDIRECT3DDEVICE9 pGraphicDevice, CArkus& Arkus, void* pArg = nullptr);

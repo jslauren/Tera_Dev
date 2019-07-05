@@ -38,9 +38,9 @@ CPlayerState * CPlayer_Skill_Tumbling::Input_Keyboard(CPlayer & Player, const fl
 void CPlayer_Skill_Tumbling::Update_State(CPlayer & Player, const float & fTimeDelta)
 {
 	_uint		iCellIndx = 0;
-	if (true == (Player.Get_NaviMesh()->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), PLAYER_SPEED * fTimeDelta * 1.8, &iCellIndx)))
+	if (true == (Player.Get_NaviMesh()->Move_OnNavigation(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION), Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), PLAYER_SPEED * fTimeDelta * 1.8f, &iCellIndx)))
 	{
-		Player.Get_TransformMove()->Move(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), PLAYER_SPEED, fTimeDelta * 1.8);
+		Player.Get_TransformMove()->Move(Player.Get_Transform()->Get_StateInfo(CTransform::STATE_LOOK), PLAYER_SPEED, fTimeDelta * 1.8f);
 
 		/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
 		(Player.Get_NaviMesh()->SetUp_CurrentIndex(iCellIndx));

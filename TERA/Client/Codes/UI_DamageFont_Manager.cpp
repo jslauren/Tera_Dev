@@ -38,6 +38,8 @@ HRESULT CUI_DamageFont_Manager::Create_DamageFont(LPDIRECT3DDEVICE9 pGraphic_Dev
 		return E_FAIL;
 
 	m_DamageFontList.push_back(pDamageTexture);
+
+	return NOERROR;
 }
 
 void CUI_DamageFont_Manager::Update_DamageFont(const float & fTimeDelta)

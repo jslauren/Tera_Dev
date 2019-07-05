@@ -40,6 +40,7 @@ CArkusState * CArkus_AlmostDead::Input_State(CArkus & Arkus, const float & fTime
 		//	return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 		//}
 	}
+	return nullptr;
 }
 
 void CArkus_AlmostDead::Update_State(CArkus & Arkus, const float & fTimeDelta)

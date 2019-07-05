@@ -5,6 +5,7 @@
 
 _BEGIN(Client)
 
+class CPlayer;
 class CArkusState;
 class CArkus final : public CUnit
 {
@@ -76,6 +77,7 @@ private:
 
 private:
 	CArkusState*	m_pState = nullptr;
+	CPlayer*		m_pPlayer = nullptr;
 
 private:
 	ARKUS_ANI		m_eAnimationIndex = Idle;

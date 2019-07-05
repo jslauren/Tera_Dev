@@ -114,7 +114,7 @@ public:
 public:
 	_bool		bDblClkTreeStaticObj = false;
 	_bool		bDblClkTreeDynamicObj = false;
-	_int		iLatestItemIdx = 0;
+	size_t		iLatestItemIdx = 0;
 	_int		iSaveItemIdx = 0;
 	_int		iCurrentSelcetedIndex = 0;
 	_bool		bIsNaviMesh = false;	// 기본은 오브젝트 메쉬.
