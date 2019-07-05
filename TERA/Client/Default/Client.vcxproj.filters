@@ -244,6 +244,9 @@
     <Filter Include="03. Unit\NPC\QuestNPC">
       <UniqueIdentifier>{2024ea61-ac62-47ec-8889-75f3613feb5a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. UI\UI\05. Q_Mark">
+      <UniqueIdentifier>{c618fa23-8d1f-4b03-9e95-3167000e3cc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -453,6 +456,9 @@
     <ClInclude Include="..\Headers\QuestNPC.h">
       <Filter>03. Unit\NPC\QuestNPC</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\QMark.h">
+      <Filter>04. UI\UI\05. Q_Mark</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -649,6 +655,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\QuestNPC.cpp">
       <Filter>03. Unit\NPC\QuestNPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\QMark.cpp">
+      <Filter>04. UI\UI\05. Q_Mark</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,7 @@
 #include "UI_Loading.h"
 #include "Scene_Loading.h"
 #include "QuestNPC.h"
+#include "QMark.h"
 
 #define	NEAR			0.2f
 #define FAR				1000.f
@@ -59,6 +60,10 @@ HRESULT CScene_Stage::Ready_Scene()
 	if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
 		return E_FAIL;
 
+	// For.Layer_NPC
+	if (FAILED(Ready_Layer_NPC(L"Layer_NPC")))
+		return E_FAIL;
+
 	// For.Layer_UI
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
@@ -73,10 +78,6 @@ HRESULT CScene_Stage::Ready_Scene()
 
 	// For.Layer_BackGround
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
-		return E_FAIL;
-
-	// For.Layer_NPC
-	if (FAILED(Ready_Layer_NPC(L"Layer_NPC")))
 		return E_FAIL;
 
 	// For.Initialize_Setting
@@ -384,6 +385,9 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_SkillBoard", CUI_SkillBoard::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_QMark
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_QMark", CQMark::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	return NOERROR;
 }
@@ -401,12 +405,24 @@ HRESULT CScene_Stage::Ready_Layer_Camera(const _tchar * pLayerTag)
 	return NOERROR;
 }
 
+HRESULT CScene_Stage::Ready_Layer_NPC(const _tchar * pLayerTag)
+{
+	// For.GameObject_NPC_Quest
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Quest", SCENE_STATIC, pLayerTag)))
+		return E_FAIL;
+
+	return NOERROR;
+}
+
 HRESULT CScene_Stage::Ready_Layer_UI(const _tchar * pLayerTag)
 {
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_PlayerPoint", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
 
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_SkillBoard", SCENE_STATIC, pLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_QMark", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -438,15 +454,6 @@ HRESULT CScene_Stage::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 	// For.Terrain
 	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Terrain", SCENE_STAGE, pLayerTag, (void*)&m_fDetail)))
-		return E_FAIL;
-
-	return NOERROR;
-}
-
-HRESULT CScene_Stage::Ready_Layer_NPC(const _tchar * pLayerTag)
-{
-	// For.Weapon
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Quest", SCENE_STAGE, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;

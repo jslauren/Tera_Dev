@@ -22,7 +22,7 @@ public:
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
 
-public:
+private:
 	virtual HRESULT	Add_Component();
 	virtual HRESULT	SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTargetTextureIdx = 1);
 

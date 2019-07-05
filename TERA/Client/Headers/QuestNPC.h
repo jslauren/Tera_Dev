@@ -7,7 +7,7 @@ _BEGIN(Client)
 
 class CQuestNPC : public CUnit
 {
-public:
+private:
 	explicit CQuestNPC(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CQuestNPC(const CQuestNPC& rhs);
 	virtual ~CQuestNPC() = default;

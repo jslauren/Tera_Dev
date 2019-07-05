@@ -57,7 +57,7 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 	
-	m_iTotalRsrcNum = 62;
+	m_iTotalRsrcNum = 65;
 	m_iCurrentRsrcNum = 0;
 	m_iComplete = 0;
 
@@ -317,6 +317,22 @@ HRESULT CLoading::Ready_Stage_Component()
 	// [NPC Mesh]
 	// For.Component_Mesh_QuestNPC
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_QuestNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/QuestNPC/", L"QuestNPC_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// [Q_Mark]
+	// For.Component_Mesh_QMark_Start
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_QMark_Start", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/QMark/", L"Qmark_Start_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Mesh_QMark_Ongoing
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_QMark_Ongoing", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/QMark/", L"Qmark_Ongoing_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Mesh_QMark_Reward
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_QMark_Reward", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/QMark/", L"Qmark_Reward_B.X"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 
