@@ -57,7 +57,7 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 	
-	m_iTotalRsrcNum = 61;
+	m_iTotalRsrcNum = 62;
 	m_iCurrentRsrcNum = 0;
 	m_iComplete = 0;
 
@@ -311,6 +311,12 @@ HRESULT CLoading::Ready_Stage_Component()
 	CalculatedCompleteNumber();
 
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_Player_Tail03", CMesh_Dynamic_Parts::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/Player/Parts/Tail/03/", L"Tail03_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// [NPC Mesh]
+	// For.Component_Mesh_QuestNPC
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_QuestNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/QuestNPC/", L"QuestNPC_B.X"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 

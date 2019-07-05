@@ -24,8 +24,6 @@ protected:
 
 public: // Getter
 	CTransform*		Get_Transform() { return m_pTransformCom; }
-	CTransform*		Get_TransformRotation() { return m_pTransformRotateCom; }
-	CTransform*		Get_TransformMove() { return m_pTransformMoveCom; }
 	CMesh_Dynamic*	Get_Mesh() { return m_pMeshCom; }
 	CNavigation*	Get_NaviMesh() { return m_pNavigationCom; }
 	CCollider*		Get_Collider() { return m_pColliderCom; }
@@ -45,8 +43,6 @@ public:
 
 protected:
 	CTransform*		m_pTransformCom = nullptr;
-	CTransform*		m_pTransformRotateCom = nullptr;
-	CTransform*		m_pTransformMoveCom = nullptr;
 	CRenderer*		m_pRendererCom = nullptr;
 	CMesh_Dynamic*	m_pMeshCom = nullptr;
 	CShader*		m_pShaderCom = nullptr;

@@ -17,6 +17,7 @@
 #include "UI_SkillBoard.h"
 #include "UI_Loading.h"
 #include "Scene_Loading.h"
+#include "QuestNPC.h"
 
 #define	NEAR			0.2f
 #define FAR				1000.f
@@ -72,6 +73,10 @@ HRESULT CScene_Stage::Ready_Scene()
 
 	// For.Layer_BackGround
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
+		return E_FAIL;
+
+	// For.Layer_NPC
+	if (FAILED(Ready_Layer_NPC(L"Layer_NPC")))
 		return E_FAIL;
 
 	// For.Initialize_Setting
@@ -367,8 +372,8 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Weapon", CWeapon::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	// For.GameObject_Monster
-	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Monster", CMonster::Create(m_pGraphic_Device))))
+	// For.GameObject_NPC
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Quest", CQuestNPC::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	// For.GameObject_UI_PlayerPoint
@@ -433,6 +438,15 @@ HRESULT CScene_Stage::Ready_Layer_BackGround(const _tchar* pLayerTag)
 
 	// For.Terrain
 	if (FAILED(Add_Object(SCENE_STAGE, L"GameObject_Terrain", SCENE_STAGE, pLayerTag, (void*)&m_fDetail)))
+		return E_FAIL;
+
+	return NOERROR;
+}
+
+HRESULT CScene_Stage::Ready_Layer_NPC(const _tchar * pLayerTag)
+{
+	// For.Weapon
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Quest", SCENE_STAGE, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;

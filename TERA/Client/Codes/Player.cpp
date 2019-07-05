@@ -1276,6 +1276,8 @@ void CPlayer::Free()
 
 	Safe_Release(m_pArkus);
 
+	Safe_Release(m_pTransformRotateCom);
+	Safe_Release(m_pTransformMoveCom);
 	Safe_Release(m_pMeshCom_Tail);
 	Safe_Release(m_pMeshCom_Leg);
 	Safe_Release(m_pMeshCom_Hand);

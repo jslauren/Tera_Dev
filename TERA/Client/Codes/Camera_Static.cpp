@@ -135,19 +135,21 @@ void CCamera_Static::ChangeView()
 
 		if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_Y))
 		{
-			if (dwMouseMove < 0 && fDotValue < 0.1f)
+			// 마우스 커서를 위로 올릴 때.
+			// 더 많이 올리고 싶으면 밑에 0.3f 값을 더 크게 주면 된다.
+			if (dwMouseMove < 0 && fDotValue < 0.3f)
 			{
-				// 마우스 커서를 일정영역 밑으로 내리면 카메라 줌아웃 하는 구문.
-				if (fDotValue < 0.1f && fDotValue > m_fDotValuePri)
-					m_fCameraDistance -= 0.01f;
+				//// 마우스 커서를 일정영역 밑으로 내리면 카메라 줌아웃 하는 구문.
+				//if (fDotValue < 0.1f && fDotValue > m_fDotValuePri)
+				//	m_fCameraDistance -= 0.01f;
 
 				m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
 			}
-			else if (dwMouseMove > 0 && fDotValue > -0.5f)
+			else if (dwMouseMove > 0 && fDotValue > -0.1f)
 			{
-				// 카메라 줌인 구문.
-				if (fDotValue < -0.5f && fDotValue < m_fDotValuePri)
-					m_fCameraDistance += 0.03f;
+				//// 카메라 줌인 구문.
+				//if (fDotValue < -0.5f && fDotValue < m_fDotValuePri)
+				//	m_fCameraDistance += 0.03f;
 
 				m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
 			}
@@ -161,18 +163,18 @@ void CCamera_Static::ChangeView()
 		{
 			if (0 < m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_WHEEL))
 			{
-				if (m_fCameraDistance <= 60.f)
+				if (m_fCameraDistance <= 40.f)
 					m_fCameraDistance += (15.f);
 
-				if (m_fCameraHeightValue <= 20.f)
+				if (m_fCameraHeightValue <= 15.f)
 					m_fCameraHeightValue += (5.f);
 			}
 			else if (0 > m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_WHEEL))
 			{
-				if (m_fCameraDistance >= 30.f)
+				if (m_fCameraDistance >= 40.f)
 					m_fCameraDistance -= (15.f);
 
-				if (m_fCameraHeightValue >= 10.f)
+				if (m_fCameraHeightValue >= 15.f)
 					m_fCameraHeightValue -= (5.f);
 			}
 		}

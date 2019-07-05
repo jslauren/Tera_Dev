@@ -238,6 +238,12 @@
     <Filter Include="04. UI\UI\04. DamageFont\UI_DamageFont_Manager">
       <UniqueIdentifier>{80d66981-f4f5-44e6-b2bc-9e5386ba45fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Unit\NPC">
+      <UniqueIdentifier>{d4f8f704-4608-426d-bcd8-da565b9e5e2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\QuestNPC">
+      <UniqueIdentifier>{2024ea61-ac62-47ec-8889-75f3613feb5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -444,6 +450,9 @@
     <ClInclude Include="..\Headers\UI_DamageFont_Manager.h">
       <Filter>04. UI\UI\04. DamageFont\UI_DamageFont_Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\QuestNPC.h">
+      <Filter>03. Unit\NPC\QuestNPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -637,6 +646,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\UI_DamageFont_Manager.cpp">
       <Filter>04. UI\UI\04. DamageFont\UI_DamageFont_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\QuestNPC.cpp">
+      <Filter>03. Unit\NPC\QuestNPC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -210,6 +210,7 @@
     <ClInclude Include="..\Headers\Player_Skill_Tumbling.h" />
     <ClInclude Include="..\Headers\Player_Wake.h" />
     <ClInclude Include="..\Headers\Player_WeaponState.h" />
+    <ClInclude Include="..\Headers\QuestNPC.h" />
     <ClInclude Include="..\Headers\Scene_Dragon.h" />
     <ClInclude Include="..\Headers\Scene_Loading.h" />
     <ClInclude Include="..\Headers\Scene_Logo.h" />
@@ -278,6 +279,7 @@
     <ClCompile Include="..\Codes\Player_Skill_Tumbling.cpp" />
     <ClCompile Include="..\Codes\Player_Wake.cpp" />
     <ClCompile Include="..\Codes\Player_WeaponState.cpp" />
+    <ClCompile Include="..\Codes\QuestNPC.cpp" />
     <ClCompile Include="..\Codes\Scene_Dragon.cpp" />
     <ClCompile Include="..\Codes\Scene_Loading.cpp" />
     <ClCompile Include="..\Codes\Scene_Logo.cpp" />

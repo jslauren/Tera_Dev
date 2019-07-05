@@ -50,8 +50,8 @@ private:
 	void			TracingPlayer();
 private:
 	_float			m_fTimeDelta = 0.f;
-	_float			m_fCameraDistance = 30.f;
-	_float			m_fCameraHeightValue = 10.f;
+	_float			m_fCameraDistance = 40.f;
+	_float			m_fCameraHeightValue = 15.f;
 	_float			m_fDotValuePri = 0.f;
 	_bool			m_bIsStaticCamOnAir = true;
 	_bool			m_bCameraModOn = true;

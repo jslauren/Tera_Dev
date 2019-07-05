@@ -27,6 +27,8 @@ private:
 
 public:	// Getter
 	CMesh_Dynamic_Bone*	Get_Mesh_Bone() { return m_pMeshCom_Bone; }
+	CTransform*			Get_TransformRotation() { return m_pTransformRotateCom; }
+	CTransform*			Get_TransformMove() { return m_pTransformMoveCom; }
 	const PLAYER_ANI&	Get_AniIndex() { return m_eAnimationIndex; }
 	const PLAYER_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
 	const _bool&		Get_DrawSwordBtnState() { return m_bIsDrawSwordPressed; }
@@ -84,6 +86,9 @@ public:
 
 private:
 	CPlayerState*			m_pState = nullptr;
+
+	CTransform*				m_pTransformRotateCom = nullptr;
+	CTransform*				m_pTransformMoveCom = nullptr;
 	CMesh_Dynamic_Bone*		m_pMeshCom_Bone = nullptr;
 	CMesh_Dynamic_Parts*	m_pMeshCom_Head = nullptr;
 	CMesh_Dynamic_Parts*	m_pMeshCom_Body = nullptr;
