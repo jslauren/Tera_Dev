@@ -219,7 +219,7 @@ HRESULT CUI_DamageTexture::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint
 		pEffect->SetMatrix("g_matWorld", m_pTransformOneCom->Get_WorldMatrixPointer());
 		pEffect->SetMatrix("g_matView", &matTmp);
 		pEffect->SetMatrix("g_matProj", &matProj);
-		pEffect->SetFloat("g_fDamageFontAlpha", (m_fFontAlpha));
+		pEffect->SetFloat("g_fDamageFontAlpha", (1.f - m_fFontAlpha));
 	}
 	else if (1 == iTargetTextureIdx)
 	{

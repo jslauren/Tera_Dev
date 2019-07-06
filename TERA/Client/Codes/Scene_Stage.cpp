@@ -408,7 +408,7 @@ HRESULT CScene_Stage::Ready_Layer_Camera(const _tchar * pLayerTag)
 HRESULT CScene_Stage::Ready_Layer_NPC(const _tchar * pLayerTag)
 {
 	// For.GameObject_NPC_Quest
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Quest", SCENE_STATIC, pLayerTag)))
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Quest", SCENE_STAGE, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -422,7 +422,7 @@ HRESULT CScene_Stage::Ready_Layer_UI(const _tchar * pLayerTag)
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_SkillBoard", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
 
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_QMark", SCENE_STATIC, pLayerTag)))
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_QMark", SCENE_STAGE, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;
