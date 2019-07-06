@@ -2,6 +2,7 @@
 #include "..\Headers\QuestNPC.h"
 #include "Object_Manager.h"
 #include "Light_Manager.h"
+#include "EventManager.h"
 
 _USING(Client)
 
@@ -41,6 +42,8 @@ _int CQuestNPC::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
+
+	CollisionCheck();
 
 	return _int();
 }
@@ -162,6 +165,29 @@ HRESULT CQuestNPC::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	pEffect->SetMatrix("g_matProj", &CGameObject::Get_Transform(D3DTS_PROJECTION));
 
 	Safe_Release(pEffect);
+}
+
+void CQuestNPC::CollisionCheck()
+{
+	const CCollider* pPlayerCollider = (const CCollider*)CObject_Manager::GetInstance()->Get_Component(SCENE_STATIC, L"Layer_Player", L"Com_Player_Collider");
+
+	if (m_pColliderEventCom->Collision_Sphere(pPlayerCollider) == true)
+	{
+		m_bIsPlayerInside = true;
+		m_iEventArgValue = 0;
+		CEventManager::GetInstance()->Notify_Event(L"Player_Inside_Event", &m_iEventArgValue);
+	}
+	else
+	{
+		// 이벤트를 계속 보내지 않고, 플레이어가 건물 밖으로 벗어났을 시에 한번만 보내기 위해
+		// 해당 bool 값을 이용한 구문을 사용 함.
+		if (m_bIsPlayerInside == true)
+		{
+			m_iEventArgValue = 1;
+			CEventManager::GetInstance()->Notify_Event(L"Player_Inside_Event", &m_iEventArgValue);
+			m_bIsPlayerInside = false;
+		}
+	}
 }
 
 CQuestNPC * CQuestNPC::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

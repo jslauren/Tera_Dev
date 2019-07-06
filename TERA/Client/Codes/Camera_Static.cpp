@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\Headers\Camera_Static.h"
 #include "Input_Device.h"
+#include "EventManager.h"
 #include "Layer.h"
 #include "Player.h"
 #include "Arkus.h"
@@ -48,6 +49,8 @@ HRESULT CCamera_Static::Ready_GameObject(void * pArg)
 	SetUp_ViewMatrix();
 	SetUp_ProjectionMatrix();
 
+	EventRegist();
+
 	return NOERROR;
 }
 
@@ -55,8 +58,15 @@ _int CCamera_Static::Update_GameObject(const _float & fTimeDelta)
 {
 	m_fTimeDelta = fTimeDelta;
 
+	if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_Z))
+	{
+		if (m_bIsCameraReverting != true)
+			m_bIsCameraReverting = true;
+	}
+
 	ChangeView();
 	TracingPlayer();
+	RevertInitValue();
 
 	return _int();
 }
@@ -71,6 +81,30 @@ _int CCamera_Static::LateUpdate_GameObject(const _float & fTimeDelta)
 
 HRESULT CCamera_Static::Render_GameObject()
 {
+	return NOERROR;
+}
+
+HRESULT CCamera_Static::OnEvent(const _tchar * _szEventTag, void * _pMsg)
+{
+	if (!lstrcmp(_szEventTag, L"Player_Inside_Event"))
+	{
+		if (*(_uint*)(_pMsg) == 0)
+		{
+			m_bIsPlayerInside = true;
+			m_bIsCameraReverting = false;
+			PlayerInsideEvent();
+		}
+		else if (*(_uint*)(_pMsg) == 1)
+		{
+			m_bIsPlayerInside = false;
+			m_bIsCameraReverting = true;
+			RevertInitValue();
+		}
+	}
+
+//	else if (!lstrcmp(_szEventTag, L"NPC_Talk_Event"))
+
+
 	return NOERROR;
 }
 
@@ -110,6 +144,13 @@ HRESULT CCamera_Static::SetUp_ProjectionMatrix()
 	}
 
 	return NOERROR;
+}
+
+void CCamera_Static::EventRegist()
+{
+	CEventManager::GetInstance()->Register_Object(L"Player_Inside_Event", this);
+//	CEventManager::GetInstance()->Register_Object(L"Quest_NPC_Talk_Event", this);
+
 }
 
 void CCamera_Static::ChangeView()
@@ -160,24 +201,7 @@ void CCamera_Static::ChangeView()
 		// Arkus 공중공격 시, 카메라 제어를 수동으로 하기 때문에
 		// 그 타이밍에 수동 제어를 막으려고 만들어 놓은 불 변수.
 		if (m_bIsCameraCtrlAvailable == true)
-		{
-			if (0 < m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_WHEEL))
-			{
-				if (m_fCameraDistance <= 40.f)
-					m_fCameraDistance += (15.f);
-
-				if (m_fCameraHeightValue <= 15.f)
-					m_fCameraHeightValue += (5.f);
-			}
-			else if (0 > m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_WHEEL))
-			{
-				if (m_fCameraDistance >= 40.f)
-					m_fCameraDistance -= (15.f);
-
-				if (m_fCameraHeightValue >= 15.f)
-					m_fCameraHeightValue -= (5.f);
-			}
-		}
+			MouseWheelPlay();
 
 		POINT	ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
 
@@ -223,6 +247,88 @@ void CCamera_Static::TracingPlayer()
 	}
 }
 
+void CCamera_Static::MouseWheelPlay()
+{
+	// 마우스 휠 조작을 했을 시 카메라 포지션을 조절하는 함수이다.
+
+	if (m_bIsCameraReverting == false &&
+		m_bIsPlayerInside != true)
+	{
+		if (0 < m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_WHEEL))
+		{
+			if (m_fCameraDistance <= (m_fOriginCameraDistance + 10.f))
+				m_fCameraDistance += (5.f);
+
+			if (m_fCameraHeightValue <= m_fOriginCameraHeightValue)
+				m_fCameraHeightValue += (5.f);
+		}
+		else if (0 > m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_WHEEL))
+		{
+			if (m_fCameraDistance >= (m_fOriginCameraDistance - 10.f))
+				m_fCameraDistance -= (5.f);
+
+			if (m_fCameraHeightValue >= m_fOriginCameraHeightValue)
+				m_fCameraHeightValue -= (5.f);
+		}
+	}
+}
+
+void CCamera_Static::RevertInitValue()
+{
+	// 카메라의 포지션을 초기값으로 되돌리는 함수이다.
+
+	if (m_bIsCameraReverting == true)
+	{
+		if (m_fCameraDistance < m_fOriginCameraDistance ||
+			m_fCameraHeightValue < m_fOriginCameraHeightValue)
+		{
+			m_fCameraDistance += (m_fTimeDelta * 15.f);
+			m_fCameraHeightValue += (m_fTimeDelta * 10.f);
+
+			if (m_fCameraDistance > m_fOriginCameraDistance)
+				m_fCameraDistance = m_fOriginCameraDistance;
+
+			if (m_fCameraHeightValue > m_fOriginCameraHeightValue)
+				m_fCameraHeightValue = m_fOriginCameraHeightValue;
+		}
+		else if (m_fCameraDistance > m_fOriginCameraDistance ||
+				m_fCameraHeightValue > m_fOriginCameraHeightValue)
+		{
+			m_fCameraDistance -= (m_fTimeDelta * 15.f);
+			m_fCameraHeightValue -= (m_fTimeDelta * 10.f);
+
+			if (m_fCameraDistance < m_fOriginCameraDistance)
+				m_fCameraDistance = m_fOriginCameraDistance;
+
+			if (m_fCameraHeightValue < m_fOriginCameraHeightValue)
+				m_fCameraHeightValue = m_fOriginCameraHeightValue;
+		}
+
+		if (m_fCameraDistance == m_fOriginCameraDistance && 
+			m_fCameraHeightValue == m_fOriginCameraHeightValue)
+			m_bIsCameraReverting = false;
+	}
+}
+
+void CCamera_Static::PlayerInsideEvent()
+{
+	if (m_fCameraDistance > 25.f)
+	{
+		m_fCameraDistance -= (m_fTimeDelta * 15.f);
+
+		if (m_fCameraDistance < 25.f)
+			m_fCameraDistance = 25.f;
+	}
+
+	if (m_fCameraHeightValue > 12.f)
+	{
+		m_fCameraHeightValue -= (m_fTimeDelta * 15.f);
+
+		if (m_fCameraHeightValue < 12.f)
+			m_fCameraHeightValue = 12.f;
+	}
+}
+
 CCamera_Static * CCamera_Static::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
 	CCamera_Static* pInstance = new CCamera_Static(pGraphic_Device);
@@ -250,6 +356,9 @@ CGameObject * CCamera_Static::Clone(void * pArg)
 
 void CCamera_Static::Free()
 {
+	CEventManager::GetInstance()->Remove_Object(L"Player_Inside_Event", this);
+//	CEventManager::GetInstance()->Remove_Object(L"NPC_Talk_Event", this);
+
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pTransformCom);
 

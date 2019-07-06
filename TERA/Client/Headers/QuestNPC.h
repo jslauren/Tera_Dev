@@ -23,8 +23,15 @@ public:
 	virtual HRESULT Add_Component();
 	virtual HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 
+public:
+	void			CollisionCheck();
+
 private:
 	CCollider*		m_pColliderEventCom = nullptr;
+
+private:
+	_bool			m_bIsPlayerInside = false;
+	_uint			m_iEventArgValue = 0;
 
 public:
 	static CQuestNPC*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
