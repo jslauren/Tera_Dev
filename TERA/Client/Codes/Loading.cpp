@@ -57,7 +57,7 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 	
-	m_iTotalRsrcNum = 65;
+	m_iTotalRsrcNum = 67;
 	m_iCurrentRsrcNum = 0;
 	m_iComplete = 0;
 
@@ -155,6 +155,16 @@ HRESULT CLoading::Ready_Stage_Component()
 
 	// For.Component_Texture_UI_Boss_Hp
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_Boss_Hp", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/BossPoint/Boss_Hp.png"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Buffer_UI_Dialog
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Dialog", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Texture_UI_Dialog
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_Dialog", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/Quest/Dialog.png"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 

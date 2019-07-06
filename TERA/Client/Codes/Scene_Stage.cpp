@@ -19,6 +19,7 @@
 #include "Scene_Loading.h"
 #include "QuestNPC.h"
 #include "QMark.h"
+#include "UI_Dialog.h"
 
 #define	NEAR			0.2f
 #define FAR				1000.f
@@ -389,6 +390,10 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_QMark", CQMark::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_UI_Dialog
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_Dialog", CUI_Dialog::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
@@ -423,6 +428,9 @@ HRESULT CScene_Stage::Ready_Layer_UI(const _tchar * pLayerTag)
 		return E_FAIL;
 
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_QMark", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_Dialog", SCENE_STAGE, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;

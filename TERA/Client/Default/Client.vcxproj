@@ -225,6 +225,7 @@
     <ClInclude Include="..\Headers\UI_BossPoint.h" />
     <ClInclude Include="..\Headers\UI_DamageFont_Manager.h" />
     <ClInclude Include="..\Headers\UI_DamageTexture.h" />
+    <ClInclude Include="..\Headers\UI_Dialog.h" />
     <ClInclude Include="..\Headers\UI_Loading.h" />
     <ClInclude Include="..\Headers\UI_PlayerPoint.h" />
     <ClInclude Include="..\Headers\UI_SkillBoard.h" />
@@ -295,6 +296,7 @@
     <ClCompile Include="..\Codes\UI_BossPoint.cpp" />
     <ClCompile Include="..\Codes\UI_DamageFont_Manager.cpp" />
     <ClCompile Include="..\Codes\UI_DamageTexture.cpp" />
+    <ClCompile Include="..\Codes\UI_Dialog.cpp" />
     <ClCompile Include="..\Codes\UI_Loading.cpp" />
     <ClCompile Include="..\Codes\UI_PlayerPoint.cpp" />
     <ClCompile Include="..\Codes\UI_SkillBoard.cpp" />

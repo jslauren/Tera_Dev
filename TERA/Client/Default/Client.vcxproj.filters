@@ -247,6 +247,9 @@
     <Filter Include="04. UI\UI\05. Q_Mark">
       <UniqueIdentifier>{c618fa23-8d1f-4b03-9e95-3167000e3cc3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. UI\UI\06. Dialog">
+      <UniqueIdentifier>{67a294fe-ee93-4758-877d-039ab55e01af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -459,6 +462,9 @@
     <ClInclude Include="..\Headers\QMark.h">
       <Filter>04. UI\UI\05. Q_Mark</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\UI_Dialog.h">
+      <Filter>04. UI\UI\06. Dialog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -658,6 +664,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\QMark.cpp">
       <Filter>04. UI\UI\05. Q_Mark</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UI_Dialog.cpp">
+      <Filter>04. UI\UI\06. Dialog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
