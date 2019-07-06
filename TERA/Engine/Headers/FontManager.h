@@ -7,14 +7,14 @@ class _DLL_EXPORTS CFontManager final : public CBase
 {
 	_DECLARE_SINGLETON(CFontManager)
 public:
-	enum FONT_ID { FONT_NAME, FONT_POINT_VALUE, FONT_END };
+	enum FONT_ID { FONT_NAME, FONT_POINT_VALUE, FONT_SCRIPT, FONT_END };
 private:
 	explicit CFontManager();
 	virtual ~CFontManager() = default;
 
 public:
 	HRESULT	ReadyFont(LPDIRECT3DDEVICE9 pGraphic_Device);
-	void	RenderFont(FONT_ID eFontID, _vec3 vPosition, _tchar* pFontContents);
+	void	RenderFont(FONT_ID eFontID, _vec3 vPosition, _tchar* pFontContents, D3DCOLORVALUE dwColor = { 1.f, 1.f, 1.f, 1.f });
 
 private:
 	LPDIRECT3DDEVICE9	m_pGraphic_Device = nullptr;

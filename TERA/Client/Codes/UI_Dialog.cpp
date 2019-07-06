@@ -7,7 +7,9 @@ _USING(Client)
 CUI_Dialog::CUI_Dialog(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CUI(pGraphic_Device)
 {
-	ZeroMemory(m_szDialogTitle, sizeof(_tchar) * 64);
+	ZeroMemory(m_szTitle, sizeof(m_szTitle));
+	ZeroMemory(m_szMain, sizeof(m_szMain));
+	ZeroMemory(m_szReply, sizeof(m_szReply));
 }
 
 CUI_Dialog::CUI_Dialog(const CUI_Dialog & rhs)
@@ -29,7 +31,7 @@ HRESULT CUI_Dialog::Ready_GameObject(void * pArg)
 		return E_FAIL;
 
 	m_pTransformCom->Set_Scaling((g_iWinCX * 0.2f), (g_iWinCY * 0.5f), 0.f);
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * -(0.4f)), (g_iWinCY * 0.17f), 0.f));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3((g_iWinCX * -(0.39f)), (g_iWinCY * 0.17f), 0.f));
 
 	return NOERROR;
 }
@@ -77,13 +79,27 @@ HRESULT CUI_Dialog::Render_GameObject()
 
 	Safe_Release(pEffect);
 
-	lstrcpy(m_szDialogTitle, L"아르커스 사냥");
-
 	// Dialog Script //
-	CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3((g_iWinCX * 0.05f), (g_iWinCY * 0.175f), 0.f), m_szDialogTitle);
+	CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3((g_iWinCX * 0.07f), (g_iWinCY * 0.175f), 0.f), m_szTitle);
+	
+	D3DCOLORVALUE dwBlack = { 0, 0, 0, 1 };
+	CFontManager::GetInstance()->RenderFont(CFontManager::FONT_SCRIPT, _vec3((g_iWinCX * 0.03f), (g_iWinCY * 0.22f), 0.f), m_szMain, dwBlack);
 
+	CFontManager::GetInstance()->RenderFont(CFontManager::FONT_SCRIPT, _vec3((g_iWinCX * 0.03f), (g_iWinCY * 0.555f), 0.f), m_szReply);
 
 	return NOERROR;
+}
+
+void CUI_Dialog::MakeScript(SCRIPT eScriptKinds, _tchar * pScriptContents)
+{
+	if (eScriptKinds == SCRIPT_TITLE)
+		lstrcpy(m_szTitle, pScriptContents);
+
+	else if (eScriptKinds == SCRIPT_MAIN)
+		lstrcpy(m_szMain, pScriptContents);
+
+	else if (eScriptKinds == SCRIPT_REPLY)
+		lstrcpy(m_szReply, pScriptContents);
 }
 
 HRESULT CUI_Dialog::Add_Component()

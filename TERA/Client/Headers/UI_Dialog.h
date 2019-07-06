@@ -5,6 +5,12 @@ _BEGIN(Client)
 
 class CUI_Dialog final : public CUI
 {
+public:
+	enum SCRIPT
+	{
+		SCRIPT_TITLE, SCRIPT_MAIN, SCRIPT_REPLY, SCRIPT_END
+	};
+
 private:
 	explicit CUI_Dialog(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CUI_Dialog(const CUI_Dialog& rhs);
@@ -23,6 +29,9 @@ public:
 	virtual _int	LateUpdate_GameObject(const _float& fTimeDelta);
 	virtual HRESULT Render_GameObject();
 
+public:
+	void			MakeScript(SCRIPT eScriptKinds, _tchar* pScriptContents);
+
 private:
 	virtual HRESULT	Add_Component();
 	virtual HRESULT	SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTargetTextureIdx = 1);
@@ -32,8 +41,9 @@ private:
 	CTexture*			m_pTextureCom = nullptr;
 
 private:
-	_tchar				m_szDialogTitle[64];
-
+	_tchar				m_szTitle[32];
+	_tchar				m_szMain[MAX_PATH];
+	_tchar				m_szReply[MAX_PATH];
 	_bool				m_bIsTalkEventAvaliable = false;
 
 public:

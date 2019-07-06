@@ -40,10 +40,18 @@ HRESULT CFontManager::ReadyFont(LPDIRECT3DDEVICE9 pGraphic_Device)
 			return E_FAIL;
 	}
 
+	tFontInfo.Height = 13;
+	tFontInfo.Width = 7;
+	if (FAILED(D3DXCreateFontIndirect(pGraphic_Device, &tFontInfo, &m_pFont[FONT_SCRIPT])))
+	{
+		_MSGBOX("Font Create Failed")
+			return E_FAIL;
+	}
+
 	return NOERROR;
 }
 
-void CFontManager::RenderFont(FONT_ID eFontID, _vec3 vPosition, _tchar * pFontContents)
+void CFontManager::RenderFont(FONT_ID eFontID, _vec3 vPosition, _tchar * pFontContents, D3DCOLORVALUE dwColor)
 {
 	//wsprintf(m_szStageCnt, L"%d/%d", m_iCurrentStage, m_iTotalStage);
 
@@ -55,7 +63,7 @@ void CFontManager::RenderFont(FONT_ID eFontID, _vec3 vPosition, _tchar * pFontCo
 
 	m_pSprite->SetTransform(&matTrans);
 
-	m_pFont[eFontID]->DrawTextW(m_pSprite, pFontContents, lstrlen(pFontContents), NULL, NULL, D3DCOLOR_ARGB(255, 255, 255, 255));
+	m_pFont[eFontID]->DrawTextW(m_pSprite, pFontContents, lstrlen(pFontContents), NULL, NULL, D3DCOLOR_COLORVALUE(dwColor.r, dwColor.g, dwColor.b, dwColor.a));
 
 	m_pSprite->End();
 }

@@ -2,6 +2,7 @@
 #include "..\Headers\Camera_Static.h"
 #include "Input_Device.h"
 #include "EventManager.h"
+#include "UI_Dialog.h"
 #include "Layer.h"
 #include "Player.h"
 #include "Arkus.h"
@@ -67,6 +68,7 @@ _int CCamera_Static::Update_GameObject(const _float & fTimeDelta)
 	ChangeView();
 	TracingPlayer();
 	RevertInitValue();
+	TalkEvent();
 
 	return _int();
 }
@@ -101,8 +103,6 @@ HRESULT CCamera_Static::OnEvent(const _tchar * _szEventTag, void * _pMsg)
 			RevertInitValue();
 		}
 	}
-
-//	else if (!lstrcmp(_szEventTag, L"NPC_Talk_Event"))
 
 
 	return NOERROR;
@@ -149,12 +149,22 @@ HRESULT CCamera_Static::SetUp_ProjectionMatrix()
 void CCamera_Static::EventRegist()
 {
 	CEventManager::GetInstance()->Register_Object(L"Player_Inside_Event", this);
-//	CEventManager::GetInstance()->Register_Object(L"Quest_NPC_Talk_Event", this);
-
 }
 
 void CCamera_Static::ChangeView()
 {
+	POINT	ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
+
+	ClientToScreen(g_hWnd, &ptMouse);
+	SetCursorPos(ptMouse.x, ptMouse.y);
+
+	// NPC와 대화중일땐 아무고또 모타죠? //
+	CUI_Dialog* pUI_Dialog = dynamic_cast<CUI_Dialog*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_UI", 1));
+
+	if (pUI_Dialog->Get_TalkEventAvaliable() == true)
+		return;
+	///////////////////////////////////////
+
 	if (m_bIsStaticCamOnAir == true)
 	{
 		if (nullptr == m_pInput_Device)
@@ -203,13 +213,8 @@ void CCamera_Static::ChangeView()
 		if (m_bIsCameraCtrlAvailable == true)
 			MouseWheelPlay();
 
-		POINT	ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
-
 		// 카메라 줌 인, 아웃을 하기위해 필요한 구문.
 		m_fDotValuePri = fDotValue;
-
-		ClientToScreen(g_hWnd, &ptMouse);
-		SetCursorPos(ptMouse.x, ptMouse.y);
 	}
 }
 
@@ -252,7 +257,8 @@ void CCamera_Static::MouseWheelPlay()
 	// 마우스 휠 조작을 했을 시 카메라 포지션을 조절하는 함수이다.
 
 	if (m_bIsCameraReverting == false &&
-		m_bIsPlayerInside != true)
+		m_bIsPlayerInside != true &&
+		m_bIsTalking != true)
 	{
 		if (0 < m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_WHEEL))
 		{
@@ -320,12 +326,42 @@ void CCamera_Static::PlayerInsideEvent()
 			m_fCameraDistance = 25.f;
 	}
 
-	if (m_fCameraHeightValue > 12.f)
+	if (m_bIsTalking == false)
 	{
-		m_fCameraHeightValue -= (m_fTimeDelta * 15.f);
+		if (m_fCameraHeightValue > 12.f)
+		{
+			m_fCameraHeightValue -= (m_fTimeDelta * 15.f);
 
-		if (m_fCameraHeightValue < 12.f)
-			m_fCameraHeightValue = 12.f;
+			if (m_fCameraHeightValue < 12.f)
+				m_fCameraHeightValue = 12.f;
+		}
+	}
+}
+
+void CCamera_Static::TalkEvent()
+{
+	// 원하는 위치까지 카메라를 옮기면 더이상 이동하지 않는다.
+	if (m_fCameraDistance == 20.f &&
+		m_fCameraHeightValue == 20.f)
+		return;
+
+	if (m_bIsTalking == true)
+	{
+		if (m_fCameraDistance > 20.f)
+		{
+			m_fCameraDistance -= (m_fTimeDelta * 15.f);
+
+			if (m_fCameraDistance < 20.f)
+				m_fCameraDistance = 20.f;
+		}
+
+		if (m_fCameraHeightValue < 16.f)
+		{
+			m_fCameraHeightValue += (m_fTimeDelta * 10.f);
+
+			if (m_fCameraHeightValue > 16.f)
+				m_fCameraHeightValue = 16.f;
+		}
 	}
 }
 
@@ -357,7 +393,6 @@ CGameObject * CCamera_Static::Clone(void * pArg)
 void CCamera_Static::Free()
 {
 	CEventManager::GetInstance()->Remove_Object(L"Player_Inside_Event", this);
-//	CEventManager::GetInstance()->Remove_Object(L"NPC_Talk_Event", this);
 
 	Safe_Release(m_pInput_Device);
 	Safe_Release(m_pTransformCom);

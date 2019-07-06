@@ -24,6 +24,7 @@ public:	// Getter
 	_bool			Get_CameraModInfo() { return m_bCameraModOn; }
 	_bool			Get_CameraBackTimeInfo() { return m_bCameraBackTime; }
 	_bool			Get_CameraCtrlAvaliableInfo() { return m_bIsCameraCtrlAvailable; }
+	_bool			Get_TalkingInfo() { return m_bIsTalking; }
 
 public:	// Setter
 	void			Set_TurnOnStaticCam(_bool bButton) { m_bIsStaticCamOnAir = bButton; }
@@ -32,6 +33,7 @@ public:	// Setter
 	void			Set_CameraModInfo(_bool bButton) { m_bCameraModOn = bButton; }
 	void			Set_CameraBackTimeInfo(_bool bButton) { m_bCameraBackTime = bButton; }
 	void			Set_CameraCtrlAvaliableInfo(_bool bButton) { m_bIsCameraCtrlAvailable = bButton; }
+	void			Set_TalkingInfo(_bool bButton) { m_bIsTalking = bButton; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -56,6 +58,7 @@ private:
 	void			RevertInitValue();
 
 	void			PlayerInsideEvent();
+	void			TalkEvent();
 
 private:
 	_float			m_fTimeDelta = 0.f;
@@ -70,6 +73,7 @@ private:
 	_bool			m_bIsCameraCtrlAvailable = true;
 	_bool			m_bIsCameraReverting = false;
 	_bool			m_bIsPlayerInside = false;
+	_bool			m_bIsTalking = false;
 
 public:
 	static CCamera_Static*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);

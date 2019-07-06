@@ -61,16 +61,16 @@ HRESULT CScene_Stage::Ready_Scene()
 	if (FAILED(Ready_Layer_Camera(L"Layer_Camera")))
 		return E_FAIL;
 
-	// For.Layer_NPC
-	if (FAILED(Ready_Layer_NPC(L"Layer_NPC")))
+	// For.Layer_Player
+	if (FAILED(Ready_Layer_Player(L"Layer_Player")))
 		return E_FAIL;
 
 	// For.Layer_UI
 	if (FAILED(Ready_Layer_UI(L"Layer_UI")))
 		return E_FAIL;
 
-	// For.Layer_Player
-	if (FAILED(Ready_Layer_Player(L"Layer_Player")))
+	// For.Layer_NPC
+	if (FAILED(Ready_Layer_NPC(L"Layer_NPC")))
 		return E_FAIL;
 
 	// For.Layer_Weapon
@@ -410,10 +410,10 @@ HRESULT CScene_Stage::Ready_Layer_Camera(const _tchar * pLayerTag)
 	return NOERROR;
 }
 
-HRESULT CScene_Stage::Ready_Layer_NPC(const _tchar * pLayerTag)
+HRESULT CScene_Stage::Ready_Layer_Player(const _tchar * pLayerTag)
 {
-	// For.GameObject_NPC_Quest
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Quest", SCENE_STAGE, pLayerTag)))
+	// For.Player
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Player", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;
@@ -436,10 +436,10 @@ HRESULT CScene_Stage::Ready_Layer_UI(const _tchar * pLayerTag)
 	return NOERROR;
 }
 
-HRESULT CScene_Stage::Ready_Layer_Player(const _tchar * pLayerTag)
+HRESULT CScene_Stage::Ready_Layer_NPC(const _tchar * pLayerTag)
 {
-	// For.Player
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Player", SCENE_STATIC, pLayerTag)))
+	// For.GameObject_NPC_Quest
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Quest", SCENE_STAGE, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;
