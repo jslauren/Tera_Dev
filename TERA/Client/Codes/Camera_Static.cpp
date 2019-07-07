@@ -326,7 +326,7 @@ void CCamera_Static::PlayerInsideEvent()
 			m_fCameraDistance = 25.f;
 	}
 
-	if (m_bIsTalking == false)
+	if (m_bIsTalking != true)
 	{
 		if (m_fCameraHeightValue > 12.f)
 		{

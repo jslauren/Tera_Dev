@@ -5,6 +5,8 @@
 
 _BEGIN(Client)
 
+class CUI_Dialog;
+class CCamera_Static;
 class CQuestNPC : public CUnit
 {
 private:
@@ -30,9 +32,11 @@ public:
 	void			LookAtPlayer();
 	void			TalkWithPlayer();
 	void			ScriptInfo();
+	void			TalkEventFree(CUI_Dialog* _pUI_Dialog);
 
 private:
 	CCollider*		m_pColliderEventCom = nullptr;
+	CCamera_Static*	m_pCameraStatic = nullptr;
 
 private:
 	_bool			m_bIsPlayerInside = false;
@@ -43,6 +47,7 @@ private:
 	_tchar*			m_pMainScript[10];
 	_tchar*			m_pReplyScript[10];
 	_int			m_iScriptNumber = -1;
+	_bool			m_bIsTalkEnded = true;
 
 public:
 	static CQuestNPC*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
