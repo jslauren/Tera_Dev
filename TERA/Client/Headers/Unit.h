@@ -36,7 +36,7 @@ public:
 	virtual HRESULT Render_GameObject();
 	virtual HRESULT	OnEvent(const _tchar * _szEventTag, void * _pMsg);
 
-public:
+protected:
 	virtual HRESULT Add_Component();
 	virtual HRESULT SetUp_HeightOnTerrain(_uint iIndex);
 	virtual HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);

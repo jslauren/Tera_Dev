@@ -465,6 +465,9 @@
     <ClInclude Include="..\Headers\UI_Dialog.h">
       <Filter>04. UI\UI\06. Dialog</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\NPC.h">
+      <Filter>03. Unit\NPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -667,6 +670,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\UI_Dialog.cpp">
       <Filter>04. UI\UI\06. Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\NPC.cpp">
+      <Filter>03. Unit\NPC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
