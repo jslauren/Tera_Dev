@@ -28,7 +28,7 @@ HRESULT CWeaponNPC::Ready_GameObject(void * pArg)
 
 	m_pTransformCom->Set_Scaling(0.5f, 0.5f, 0.5f);
 	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(0.f));
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(265.f, 0.f, 70.f));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(271.f, 0.f, 63.f));
 
 	m_pMeshCom->SetUp_AnimationSet(1);
 
@@ -55,7 +55,7 @@ _int CWeaponNPC::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
-	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, 350.f))
+	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, m_fCulling))
 	{
 		if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
 			return -1;

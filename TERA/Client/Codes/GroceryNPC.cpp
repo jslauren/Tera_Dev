@@ -41,7 +41,7 @@ _int CGroceryNPC::Update_GameObject(const _float & fTimeDelta)
 		return -1;
 
 	CollisionCheck(false);
-	TalkWithPlayer(3, 1);
+	TalkWithPlayer(1, 1, 1, false, 180);
 
 	return _int();
 }
@@ -55,7 +55,7 @@ _int CGroceryNPC::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
-	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, 350.f))
+	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, m_fCulling))
 	{
 		if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
 			return -1;
@@ -148,18 +148,8 @@ void CGroceryNPC::ScriptInfo()
 	m_pTitleScript = L"대부호 포포";
 
 	// Quest Start //
-	m_pMainScript[0] = L"못보던 놈인데...\n\n네놈은 누구지?";
-	m_pReplyScript[0] = L"취준생 빡정수다.";
-
-	m_pMainScript[1] = L"(......)\n\n그동안 고생이 많았겠군.\n\n그래 무슨일로 날 찾아왔지?";
-	m_pReplyScript[1] = L"나의 가치를 증명하러 왔다.";
-
-	m_pMainScript[2] = L"가치의 증명이라..... 좋다.\n\n벨리카에는 천공의 경기장이라는\n\n곳이 있다.여기의 제왕으로 군림한\n\n아르커스를 죽여라.";
-	m_pReplyScript[2] = L"다녀오지.";
-
-	// Quest Ongoing //
-	m_pMainScript[3] = L"여기서 뭐하고 있는거지?\n\n네놈의 가치는 이것뿐인가?";
-	m_pReplyScript[3] = L"(...) 다녀오지.";
+	m_pMainScript[0] = L"식료품 상점은 아직 준비중이다링";
+	m_pReplyScript[0] = L"알겠습니다.";
 }
 
 CGroceryNPC * CGroceryNPC::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

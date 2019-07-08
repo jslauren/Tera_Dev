@@ -26,9 +26,9 @@ HRESULT CCartNPC::Ready_GameObject(void * pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(0.8f, 0.8f, 0.8f);
-	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(180.f));
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(126.f, 0.f, 46.f));
+	m_pTransformCom->Set_Scaling(0.4f, 0.4f, 0.4f);
+	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(0.f));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(155.f, 0.f, 85.f));
 
 	m_pMeshCom->SetUp_AnimationSet(1);
 
@@ -42,8 +42,8 @@ _int CCartNPC::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
-	CollisionCheck(false);
-	TalkWithPlayer(3, 1);
+	CollisionCheck(false, false);
+	TalkWithPlayer(1, 1, 1, false, 0);
 
 	return _int();
 }
@@ -57,7 +57,7 @@ _int CCartNPC::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
-	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, 350.f))
+	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, m_fCulling))
 	{
 		if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
 			return -1;
@@ -127,10 +127,10 @@ HRESULT CCartNPC::Add_Component()
 		return E_FAIL;
 
 	// For.Com_Collider_CartNPC_Body
-	_float fBodyScale = 30.f;
+	_float fBodyScale = 50.f;
 	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_Sphere", L"Com_Collider_CartNPC_Body",
 		(CComponent**)&m_pColliderCom, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME,
-			m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Bip01-Spine")->CombinedTransformationMatrix)
+			m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Bip01-Pelvis01")->CombinedTransformationMatrix)
 			, _vec3(fBodyScale, fBodyScale, fBodyScale), _vec3(0.f, 0.f, 0.f)))))
 		return E_FAIL;
 

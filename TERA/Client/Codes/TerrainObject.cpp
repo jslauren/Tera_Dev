@@ -54,6 +54,8 @@ _int CTerrainObject::LateUpdate_GameObject(const _float & fTimeDelta)
 	//	return -1;
 
 	m_fTimeDelta = fTimeDelta;
+	
+
 
 	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, m_fCulling))
 	{

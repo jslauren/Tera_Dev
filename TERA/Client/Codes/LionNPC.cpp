@@ -26,9 +26,9 @@ HRESULT CLionNPC::Ready_GameObject(void * pArg)
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(0.8f, 0.8f, 0.8f);
-	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(180.f));
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(420.f, 0.f, 94.f));
+	m_pTransformCom->Set_Scaling(1.f, 1.f, 1.f);
+	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(270.f));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(470.f, 0.f, 95.f));
 
 	m_pMeshCom->SetUp_AnimationSet(1);
 
@@ -57,7 +57,7 @@ _int CLionNPC::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
-	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, 350.f))
+	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, m_fCulling))
 	{
 		if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
 			return -1;
@@ -70,8 +70,7 @@ HRESULT CLionNPC::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pTransformCom ||
-		nullptr == m_pMeshCom ||
-		nullptr == m_pColliderCom)
+		nullptr == m_pMeshCom)
 		return E_FAIL;
 
 	m_pMeshCom->Play_Animation(m_fTimeDelta);

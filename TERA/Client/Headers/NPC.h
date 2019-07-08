@@ -26,9 +26,9 @@ protected:
 	virtual HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);
 
 protected:
-	void			CollisionCheck(_bool _bIsPlayerInside = false);
+	void			CollisionCheck(_bool _bIsPlayerInside = false, _bool _bIsLookPlayer = true);
 	void			PlayerInside(const CCollider* _PlayerCollider);
-	void			TalkEvent(const CCollider* _PlayerCollider);
+	void			TalkEvent(const CCollider* _PlayerCollider, _bool _bIsLookPlayer);
 	void			LookAtPlayer();
 	void			TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum = 1, _uint _iInitAniNum = 1, _bool _bIsQuestNPC = false, _float fResetViewAngle = 180.f);
 	void			TalkEventFree(CUI_Dialog* _pUI_Dialog, _uint iAniNum, _float fResetViewAngle);
@@ -39,6 +39,7 @@ protected:
 	CCamera_Static*	m_pCameraStatic = nullptr;
 
 protected:
+	_float			m_fCulling = 5.f;
 	_bool			m_bIsPlayerInside = false;
 	_uint			m_iEventArgValue = 0;
 	_bool			m_bPlayerRenderingFirst = true;

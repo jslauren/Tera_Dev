@@ -86,7 +86,7 @@ HRESULT CNPC::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 	return NOERROR;
 }
 
-void CNPC::CollisionCheck(_bool _bIsPlayerInside)
+void CNPC::CollisionCheck(_bool _bIsPlayerInside, _bool _bIsLookPlayer)
 {
 	// 플레이어가 가지고있는 콜라이더 객체의 렌더가 돌지않아서,
 	// 해당 콜라이더의 월드 매트릭스 값이 쓰레기가 되버렸다..
@@ -105,7 +105,7 @@ void CNPC::CollisionCheck(_bool _bIsPlayerInside)
 		PlayerInside(pPlayerCollider);
 	}
 
-	TalkEvent(pPlayerCollider);
+	TalkEvent(pPlayerCollider, _bIsLookPlayer);
 }
 
 void CNPC::PlayerInside(const CCollider * _PlayerCollider)
@@ -129,7 +129,7 @@ void CNPC::PlayerInside(const CCollider * _PlayerCollider)
 	}
 }
 
-void CNPC::TalkEvent(const CCollider * _PlayerCollider)
+void CNPC::TalkEvent(const CCollider * _PlayerCollider, _bool _bIsLookPlayer)
 {
 	if (m_bIsEventCollisionFirst == true)
 	{
@@ -139,7 +139,10 @@ void CNPC::TalkEvent(const CCollider * _PlayerCollider)
 			{
 				m_pMeshCom->SetUp_AnimationSet(0.f);
 				m_pCameraStatic->Set_TalkingInfo(true);
-				LookAtPlayer();
+				
+				if(_bIsLookPlayer == true)
+					LookAtPlayer();
+
 				m_bIsTalking = true;
 				m_bIsTalkEnded = false;
 				m_bIsEventCollisionFirst = false;
@@ -184,6 +187,9 @@ void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum, _uint _iI
 {
 	if (m_bIsTalking == true)
 	{
+		if (m_pMeshCom->IsAnimationEnded(0.85f))
+			m_pMeshCom->SetUp_AnimationSet(1);
+
 		// Layer_UI에 SCENE_STATIC 2개랑 SCENE_STAGE가 2개 있기 때문에,
 		// 밑에 놈은 STAGE 1번째라 0을 넣어준다.
 		// 2 넣으면 안된다 -_-...
@@ -235,16 +241,6 @@ void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum, _uint _iI
 				--m_iScriptNumber;
 			}
 
-			//if (m_bIsQuestNPC != true)
-			//{
-			//	if (m_bIsTalkEnded == true)
-			//		return;
-			//}
-			//if (m_iScriptNumber > _iEndScriptNum)
-			//{
-			//	--m_iScriptNumber;
-			//	m_bIsTalkEnded = true;
-			//}
 		}
 
 		pUI_Dialog->MakeScript(CUI_Dialog::SCRIPT_TITLE, m_pTitleScript);
