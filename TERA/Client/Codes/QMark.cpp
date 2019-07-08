@@ -2,6 +2,7 @@
 #include "..\Headers\QMark.h"
 #include "Management.h"
 #include "Input_Device.h"
+#include "QuestNPC.h"
 
 #define QMARK_SCALING	0.7f
 
@@ -52,6 +53,8 @@ _int CQMark::LateUpdate_GameObject(const _float & fTimeDelta)
 
 	m_fTimeDelta = fTimeDelta;
 
+	m_eCurrentMark = (QMARK_KINDS)dynamic_cast<CQuestNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_NPC", 0))->GetCurrentQuestStateInfo();
+
 	if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_ALPHA, this)))
 		return -1;
 
@@ -61,52 +64,55 @@ _int CQMark::LateUpdate_GameObject(const _float & fTimeDelta)
 HRESULT CQMark::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
-		nullptr == m_pTransformCom ||
+		nullptr == m_pTransformCom/* ||
 		nullptr == m_pMeshQMarkCom[QMARK_START] ||
 		nullptr == m_pMeshQMarkCom[QMARK_ONGOING] ||
-		nullptr == m_pMeshQMarkCom[QMARK_REWARD])
+		nullptr == m_pMeshQMarkCom[QMARK_REWARD]*/)
 		return E_FAIL;
 
-	m_pMeshQMarkCom[m_eCurrentMark]->Play_Animation(m_fTimeDelta);
-
-	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
-	if (nullptr == pEffect)
-		return E_FAIL;
-
-	pEffect->AddRef();
-
-	if (FAILED(SetUp_ConstantTable(pEffect)))
-		return E_FAIL;
-
-	pEffect->Begin(nullptr, 0);
-
-	// 잘 바뀌는거 확인.
-	//if (CInput_Device::GetInstance()->GetDIKeyState(DIK_F) & 0x80)
-	//	m_eCurrentMark = QMARK_ONGOING;
-
-	for (size_t i = 0; i < 1; ++i)
+	if (m_eCurrentMark != QMARK_NONE)
 	{
-		if (FAILED(m_pMeshQMarkCom[m_eCurrentMark]->Update_SkinnedMesh(i)))
-			break;
+		m_pMeshQMarkCom[m_eCurrentMark]->Play_Animation(m_fTimeDelta);
 
-		for (size_t j = 0; j < m_pMeshQMarkCom[m_eCurrentMark]->Get_NumSubSet(i); ++j)
+		LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
+		if (nullptr == pEffect)
+			return E_FAIL;
+
+		pEffect->AddRef();
+
+		if (FAILED(SetUp_ConstantTable(pEffect)))
+			return E_FAIL;
+
+		pEffect->Begin(nullptr, 0);
+
+		// 잘 바뀌는거 확인.
+		//if (CInput_Device::GetInstance()->GetDIKeyState(DIK_F) & 0x80)
+		//	m_eCurrentMark = QMARK_ONGOING;
+
+		for (size_t i = 0; i < 1; ++i)
 		{
-			if (FAILED(m_pMeshQMarkCom[m_eCurrentMark]->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
-				return E_FAIL;
+			if (FAILED(m_pMeshQMarkCom[m_eCurrentMark]->Update_SkinnedMesh(i)))
+				break;
 
-			pEffect->CommitChanges();
+			for (size_t j = 0; j < m_pMeshQMarkCom[m_eCurrentMark]->Get_NumSubSet(i); ++j)
+			{
+				if (FAILED(m_pMeshQMarkCom[m_eCurrentMark]->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+					return E_FAIL;
 
-			pEffect->BeginPass(0);
+				pEffect->CommitChanges();
 
-			m_pMeshQMarkCom[m_eCurrentMark]->Render_Mesh(i, j);
+				pEffect->BeginPass(0);
 
-			pEffect->EndPass();
+				m_pMeshQMarkCom[m_eCurrentMark]->Render_Mesh(i, j);
+
+				pEffect->EndPass();
+			}
 		}
+
+		pEffect->End();
+
+		Safe_Release(pEffect);
 	}
-
-	pEffect->End();
-
-	Safe_Release(pEffect);
 
 	return NOERROR;
 }

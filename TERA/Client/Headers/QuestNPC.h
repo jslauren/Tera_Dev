@@ -16,7 +16,7 @@ public:
 	};
 	enum QUEST_STATE
 	{
-		QUEST_NONE, QUEST_START, QUEST_ONGOING, QUEST_REWARD, QUEST_END
+		QUEST_START, QUEST_ONGOING, QUEST_REWARD, QUEST_NONE, QUEST_END
 	};
 private:
 	explicit CQuestNPC(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -46,6 +46,7 @@ public:
 private:
 	QUEST_STATE		m_eCurrentQuestState = QUEST_START;
 	QUEST_KINDS		m_eCurrentQeustKinds = Q_ARKUS;
+	_bool			m_bChangeQuestStateFirst = true;
 
 public:
 	static CQuestNPC*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);

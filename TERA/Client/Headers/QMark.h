@@ -16,7 +16,7 @@ class CQMark final : public CGameObject
 public:
 	enum QMARK_KINDS
 	{
-		QMARK_START, QMARK_ONGOING, QMARK_REWARD, QMARK_END
+		QMARK_START, QMARK_ONGOING, QMARK_REWARD, QMARK_NONE, QMARK_END
 	};
 
 private:

@@ -357,9 +357,6 @@
     <ClInclude Include="..\Headers\PlayerState.h">
       <Filter>03. Unit\Player\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Headers\Player_Idle.h">
-      <Filter>03. Unit\Player\PlayerState\00. Idle</Filter>
-    </ClInclude>
     <ClInclude Include="..\Headers\Unit.h">
       <Filter>03. Unit</Filter>
     </ClInclude>
@@ -554,6 +551,9 @@
     </ClInclude>
     <ClInclude Include="..\Headers\PoporiKidC.h">
       <Filter>03. Unit\NPC\CitizenNPC\PoporiKids\PoporiKidC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\Player_Idle.h">
+      <Filter>03. Unit\Player\PlayerState\00. Idle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

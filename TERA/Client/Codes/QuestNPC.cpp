@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "..\Headers\QuestNPC.h"
 #include "Light_Manager.h"
+#include "Management.h"
+#include "QMark.h"
 
 _USING(Client)
 
@@ -46,11 +48,25 @@ _int CQuestNPC::Update_GameObject(const _float & fTimeDelta)
 	CUnit::Update_GameObject(fTimeDelta);
 
 	CollisionCheck(true);
-	TalkWithPlayer(3, 4, 1, true, 180.f);
+	TalkWithPlayer(m_iEndScriptNum, m_iLoopScriptNum, 1, true, 180.f);
 
 	if(m_iScriptNumber == 2)
 		m_eCurrentQuestState = QUEST_ONGOING;
+	else if(m_iScriptNumber == 4)
+		m_eCurrentQuestState = QUEST_NONE;
 
+	if (m_eCurrentQuestState == QUEST_REWARD)
+	{
+		if (m_bChangeQuestStateFirst == true)
+		{
+			m_pQMark->Set_CurrentMark(CQMark::QMARK_REWARD);
+			m_iScriptNumber = 3;
+			m_iEndScriptNum = 5;
+			m_iLoopScriptNum = 6;
+			m_bChangeQuestStateFirst = false;
+		}
+	}
+		
 	return _int();
 }
 
@@ -72,47 +88,50 @@ HRESULT CQuestNPC::Render_GameObject()
 		nullptr == m_pColliderCom)
 		return E_FAIL;
 
-	m_pMeshCom->Play_Animation(m_fTimeDelta);
-
-	LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
-	if (nullptr == pEffect)
-		return E_FAIL;
-
-	pEffect->AddRef();
-
-	if (FAILED(SetUp_ConstantTable(pEffect)))
-		return E_FAIL;
-
-	pEffect->Begin(nullptr, 0);
-
-
-	for (size_t i = 0; i < 1; ++i)
+	if (CManagement::GetInstance()->Get_CurrentScene() != SCENE_LOADING)
 	{
-		if (FAILED(m_pMeshCom->Update_SkinnedMesh(i)))
-			break;
+		m_pMeshCom->Play_Animation(m_fTimeDelta);
 
-		for (size_t j = 0; j < m_pMeshCom->Get_NumSubSet(i); ++j)
+		LPD3DXEFFECT pEffect = m_pShaderCom->Get_EffectHandle();
+		if (nullptr == pEffect)
+			return E_FAIL;
+
+		pEffect->AddRef();
+
+		if (FAILED(SetUp_ConstantTable(pEffect)))
+			return E_FAIL;
+
+		pEffect->Begin(nullptr, 0);
+
+
+		for (size_t i = 0; i < 1; ++i)
 		{
-			if (FAILED(m_pMeshCom->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
-				return E_FAIL;
+			if (FAILED(m_pMeshCom->Update_SkinnedMesh(i)))
+				break;
 
-			pEffect->CommitChanges();
+			for (size_t j = 0; j < m_pMeshCom->Get_NumSubSet(i); ++j)
+			{
+				if (FAILED(m_pMeshCom->SetTexture_OnShader(pEffect, i, j, "g_BaseTexture", MESHTEXTURE::TYPE_DIFFUSE)))
+					return E_FAIL;
 
-			pEffect->BeginPass(0);
+				pEffect->CommitChanges();
 
-			m_pMeshCom->Render_Mesh(i, j);
+				pEffect->BeginPass(0);
 
-			pEffect->EndPass();
+				m_pMeshCom->Render_Mesh(i, j);
+
+				pEffect->EndPass();
+			}
 		}
+
+		pEffect->End();
+
+		Safe_Release(pEffect);
+
+		// [콜라이더 렌더]
+		m_pColliderCom->Render_Collider();
+		m_pColliderEventCom->Render_Collider();
 	}
-
-	pEffect->End();
-
-	Safe_Release(pEffect);
-	
-	// [콜라이더 렌더]
-	m_pColliderCom->Render_Collider();
-	m_pColliderEventCom->Render_Collider();
 
 	return NOERROR;
 }
@@ -169,6 +188,14 @@ void CQuestNPC::ScriptInfo()
 	// Quest Ongoing //
 	m_pMainScript[3] = L"여기서 뭐하고 있는거지?\n\n네놈의 가치는 이것뿐인가?";
 	m_pReplyScript[3] = L"(...) 다녀오지.";
+
+	// Quest Reward //
+	m_pMainScript[4] = L"호오.. 이렇게 빨리?\n\n고생했군.";
+	m_pReplyScript[4] = L"간단한 일이다.";
+
+	// No Quest //
+	m_pMainScript[5] = L"너와는 할 말이 딱히 없군.";
+	m_pReplyScript[5] = L"(...)";
 }
 
 CQuestNPC * CQuestNPC::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

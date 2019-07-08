@@ -5,6 +5,7 @@
 
 _BEGIN(Client)
 
+class CQMark;
 class CUI_Dialog;
 class CCamera_Static;
 class CNPC : public CUnit
@@ -13,6 +14,16 @@ protected:
 	explicit CNPC(LPDIRECT3DDEVICE9 pGraphic_Device);
 	explicit CNPC(const CNPC& rhs);
 	virtual ~CNPC() = default;
+
+public:	// Getter
+	_int			Get_ScriptNumber() { return m_iScriptNumber; }
+	_int			Get_EndScriptNum() { return m_iEndScriptNum; }
+	_int			Get_LoopScriptNum() { return m_iLoopScriptNum; }
+
+public:	// Setter
+	void			Set_ScriptNumber(_int iNum) {m_iScriptNumber = iNum; }
+	void			Set_EndScriptNum(_int iNum) { m_iEndScriptNum = iNum; }
+	void			Set_LoopScriptNum(_int iNum) { m_iLoopScriptNum = iNum; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -37,6 +48,7 @@ protected:
 protected:
 	CCollider*		m_pColliderEventCom = nullptr;
 	CCamera_Static*	m_pCameraStatic = nullptr;
+	CQMark*			m_pQMark = nullptr;
 
 protected:
 	_float			m_fCulling = 5.f;
@@ -53,6 +65,8 @@ protected:
 	_bool			m_bIsArchitecture = false;
 	_bool			m_bIsQuestNPC = false;
 	_bool			m_bIsLoopOn = false;
+	_int			m_iEndScriptNum = 1;
+	_int			m_iLoopScriptNum = 1;
 
 public:
 	virtual CGameObject*	Clone(void* pArg = nullptr) = 0;

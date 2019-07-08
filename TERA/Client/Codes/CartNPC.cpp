@@ -49,7 +49,7 @@ _int CCartNPC::Update_GameObject(const _float & fTimeDelta)
 
 	CollisionCheck(false, false);
 
-	if (dynamic_cast<CQuestNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_NPC", 0))->GetCurrentQuestStateInfo() == CQuestNPC::QUEST_STATE::QUEST_ONGOING)
+	if (dynamic_cast<CQuestNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_NPC", 0))->GetCurrentQuestStateInfo() == CQuestNPC::QUEST_STATE::QUEST_ONGOING)
 	{
 		if (m_iEndScriptNum != 4)
 		{

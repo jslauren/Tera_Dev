@@ -108,7 +108,10 @@ HRESULT CArkus::Render_GameObject()
 		if (m_pMeshCom->IsAnimationEnded(0.95f))
 		{
 			if (m_fHP <= 0.f)
+			{
 				m_fTimeDelta = 0.f;
+				m_bIsSceneChangeAvailable = true;
+			}
 		}
 	}
 

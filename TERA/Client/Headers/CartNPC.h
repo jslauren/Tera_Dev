@@ -32,8 +32,6 @@ public:
 	void			ScriptInfo();
 
 private:
-	_int			m_iEndScriptNum = 1;
-	_int			m_iLoopScriptNum = 1;
 	_bool			m_bIsSceneChangeAvailable = false;
 
 public:

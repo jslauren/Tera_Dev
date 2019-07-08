@@ -20,8 +20,10 @@ CNPC::CNPC(LPDIRECT3DDEVICE9 pGraphic_Device)
 CNPC::CNPC(const CNPC & rhs)
 	: CUnit(rhs)
 	, m_pCameraStatic(dynamic_cast<CCamera_Static*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_Camera", 1)))
+	, m_pQMark(dynamic_cast<CQMark*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_UI", 0)))
 {
 	Safe_AddRef(m_pCameraStatic);
+	Safe_AddRef(m_pQMark);
 }
 
 HRESULT CNPC::Ready_GameObject_Prototype()
@@ -202,10 +204,6 @@ void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum, _uint _iI
 		if (m_pMeshCom->IsAnimationEnded(0.85f))
 			m_pMeshCom->SetUp_AnimationSet(1);
 
-		// Layer_UI에 SCENE_STATIC 2개랑 SCENE_STAGE가 2개 있기 때문에,
-		// 밑에 놈은 STAGE 1번째라 0을 넣어준다.
-		// 2 넣으면 안된다 -_-...
-		CQMark*		pQMark = dynamic_cast<CQMark*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_UI", 0));
 		CUI_Dialog* pUI_Dialog = dynamic_cast<CUI_Dialog*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_UI", 1));
 
 		if(_bIsQuestNPC == true)
@@ -217,7 +215,7 @@ void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum, _uint _iI
 			TalkEventFree(pUI_Dialog, _iInitAniNum, fResetViewAngle);
 
 			if (m_bIsQuestNPC == true)
-				pQMark->Set_CurrentMark(CQMark::QMARK_ONGOING);
+				m_pQMark->Set_CurrentMark(CQMark::QMARK_ONGOING);
 
 			else
 				m_iScriptNumber = -1;
@@ -295,6 +293,7 @@ void CNPC::ScriptInfo()
 
 void CNPC::Free()
 {
+	Safe_Release(m_pQMark);
 	Safe_Release(m_pCameraStatic);
 	Safe_Release(m_pColliderEventCom);
 

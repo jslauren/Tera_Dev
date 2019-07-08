@@ -7,6 +7,7 @@
 #include "Back_Logo.h"
 #include "UI_Loading.h"
 #include "Loading.h"
+#include "QuestNPC.h"
 
 _USING(Client)
 
@@ -72,6 +73,12 @@ _int CScene_Loading::LateUpdate_Scene(const _float & fTimeDelta)
 
 				dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(SCENE_STAGE);
 
+				CQuestNPC* pQuestNPC = dynamic_cast<CQuestNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_NPC", 0));
+				pQuestNPC->SetCurrentQuestStateInfo(CQuestNPC::QUEST_STATE::QUEST_START);
+				pQuestNPC->Set_ScriptNumber(-1);
+				pQuestNPC->Set_EndScriptNum(3);
+				pQuestNPC->Set_LoopScriptNum(4);
+
 				Safe_Release(pManagement);
 				return 0;
 			}
@@ -135,8 +142,12 @@ _int CScene_Loading::LateUpdate_Scene(const _float & fTimeDelta)
 			dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(SCENE_STAGE);
 			
 			// 현재 플레이어가 밟고있는 땅의 Index를 설정해주는 구문.
-			 pPlayer->Get_NaviMesh()->SetUp_CurrentIndex(pPlayer->Get_NaviMesh()->Get_CellIndex(_vec3(250.f, 0.f, 50.f)));
-	//		pPlayer->Get_NaviMesh()->SetUp_CurrentIndex(0);
+			pPlayer->Get_NaviMesh()->SetUp_CurrentIndex(pPlayer->Get_NaviMesh()->Get_CellIndex(_vec3(250.f, 0.f, 50.f)));
+			
+			CQuestNPC* pQuestNPC = dynamic_cast<CQuestNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_NPC", 0));
+			pQuestNPC->SetCurrentQuestStateInfo(CQuestNPC::QUEST_STATE::QUEST_REWARD);
+			pQuestNPC->Set_EndScriptNum(3);
+			pQuestNPC->Set_LoopScriptNum(4);
 
 			Safe_Release(pManagement);
 			return 0;

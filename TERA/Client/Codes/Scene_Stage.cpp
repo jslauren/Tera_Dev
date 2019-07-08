@@ -132,7 +132,7 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 
 	pManagement->AddRef();
 
-	_bool bSceneChangeStagetoDragon = dynamic_cast<CCartNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_NPC", 5))->Get_SceneChangeAvailableInfo();
+	_bool bSceneChangeStagetoDragon = dynamic_cast<CCartNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_NPC", 4))->Get_SceneChangeAvailableInfo();
 
 	if (GetKeyState('P') & 0x8000 ||
 		bSceneChangeStagetoDragon == true)
@@ -518,9 +518,12 @@ HRESULT CScene_Stage::Ready_Layer_UI(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage::Ready_Layer_NPC(const _tchar * pLayerTag)
 {
-	// For.GameObject_NPC_Quest
-	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Quest", SCENE_STAGE, pLayerTag)))
-		return E_FAIL;
+	if (m_bIsAlreadyLoaded != true)
+	{
+		// For.GameObject_NPC_Quest
+		if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Quest", SCENE_STATIC, pLayerTag)))
+			return E_FAIL;
+	}
 
 	// For.GameObject_NPC_Grocery
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Grocery", SCENE_STAGE, pLayerTag)))
