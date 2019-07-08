@@ -7,6 +7,7 @@
 #include "TerrainObject.h"
 #include "Scene_Dragon.h"
 #include "FontManager.h"
+#include "SoundManager.h"
 #include "Management.h"
 #include "Terrain.h"
 #include "SkyBox.h"
@@ -52,6 +53,8 @@ CScene_Stage::CScene_Stage(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CScene_Stage::Ready_Scene()
 {
+	CSoundManager::GetInstance()->Play_BGM("Accarume_Village.ogg");
+
 	m_bIsAlreadyLoaded = CManagement::GetInstance()->Get_PreventPrototypeLoadInfo();
 
 	// For.Terrain Data Load
@@ -352,6 +355,18 @@ HRESULT CScene_Stage::Ready_LightInfo()
 	LightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
 	LightInfo.Ambient = D3DXCOLOR(0.6f, 0.6f, 0.6f, 1.f);
 	LightInfo.Specular = D3DXCOLOR(0.f, 0.f, 0.f, 0.f);
+
+	if (FAILED(pLight_Manager->Add_Light(m_pGraphic_Device, &LightInfo)))
+		return E_FAIL;
+
+	ZeroMemory(&LightInfo, sizeof(D3DLIGHT9));
+
+	LightInfo.Type = D3DLIGHT_POINT;
+	LightInfo.Position = _vec3(480.f, 15.f, 321.f);
+	LightInfo.Range = 60.0f;
+	LightInfo.Diffuse = D3DXCOLOR(1.f, 1.f, 0.f, 1.f);
+	LightInfo.Ambient = D3DXCOLOR(0.5f, 0.1f, 0.1f, 1.f);
+	LightInfo.Specular = LightInfo.Diffuse;
 
 	if (FAILED(pLight_Manager->Add_Light(m_pGraphic_Device, &LightInfo)))
 		return E_FAIL;

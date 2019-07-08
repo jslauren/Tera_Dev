@@ -14,7 +14,9 @@
 #include "Scene_Stage.h"
 #include "UI_Loading.h"
 #include "FontManager.h"
+#include "SoundManager.h"
 #include "Player.h"
+
 #include "UI_DamageFont_Manager.h"
 
 _USING(Client)
@@ -120,6 +122,10 @@ HRESULT CMainApp::Ready_Default_Setting(CGraphic_Device::WINMODE eType, const _u
 
 	// For.FontManager
 	if (FAILED(CFontManager::GetInstance()->ReadyFont(m_pGraphic_Device)))
+		return E_FAIL;
+
+	// For.SoundManager
+	if (FAILED(CSoundManager::GetInstance()->ReadySound()))
 		return E_FAIL;
 
 	// For.Scene_Manager Initialize
@@ -301,6 +307,7 @@ void CMainApp::Free()
 	Safe_Release(m_pManagement);
 	Safe_Release(m_pGraphic_Device);
 
+	CSoundManager::GetInstance()->DestroyInstance();
 	CUI_DamageFont_Manager::GetInstance()->DestroyInstance();
 
  	if (FAILED(CManagement::Release_Engine()))

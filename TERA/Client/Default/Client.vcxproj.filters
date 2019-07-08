@@ -298,6 +298,12 @@
     <Filter Include="03. Unit\NPC\CitizenNPC\Animals\LionNPC">
       <UniqueIdentifier>{82cbfae6-db6f-48db-b4e7-e8bb31abb074}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Sound">
+      <UniqueIdentifier>{1d974839-f0a7-47ec-9818-8c363a7ab5c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Sound\SoundManager">
+      <UniqueIdentifier>{3222302d-87fc-4ece-a2c9-d5a56848e8f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -555,6 +561,9 @@
     <ClInclude Include="..\Headers\Player_Idle.h">
       <Filter>03. Unit\Player\PlayerState\00. Idle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\SoundManager.h">
+      <Filter>05. Sound\SoundManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -799,6 +808,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\PoporiKidC.cpp">
       <Filter>03. Unit\NPC\CitizenNPC\PoporiKids\PoporiKidC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\SoundManager.cpp">
+      <Filter>05. Sound\SoundManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
