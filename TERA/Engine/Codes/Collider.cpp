@@ -76,6 +76,15 @@ HRESULT CCollider::Ready_Collider(COLLIDERDESC * pArg)
 	return NOERROR;
 }
 
+HRESULT CCollider::Update_Collider()
+{
+	// Feat.슬기
+	if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_C))
+		m_bIsRendering = !m_bIsRendering;
+
+	return NOERROR;
+}
+
 HRESULT CCollider::Render_Collider()
 {
 	if (nullptr == m_pMesh ||
@@ -138,10 +147,6 @@ HRESULT CCollider::Render_Collider()
 
 	pEffect->Begin(nullptr, 0);
 	pEffect->BeginPass(0);
-
-	// Feat.슬기
-	if(CInput_Device::GetInstance()->Get_DIKeyDown(DIK_C))
-		m_bIsRendering = !m_bIsRendering;
 
 	if(m_bIsRendering == true)
 		m_pMesh->DrawSubset(0);

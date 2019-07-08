@@ -25,6 +25,9 @@ HRESULT CUnit::Ready_GameObject(void * pArg)
 
 _int CUnit::Update_GameObject(const _float & fTimeDelta)
 {
+	if(m_pColliderCom != nullptr)
+		m_pColliderCom->Update_Collider();
+
 	return _int();
 }
 

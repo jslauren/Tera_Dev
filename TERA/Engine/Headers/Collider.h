@@ -51,12 +51,13 @@ private:
 	explicit CCollider(const CCollider& rhs);
 	virtual ~CCollider() = default;
 public:	// Getter
-	const _vec3* Get_Min() const { return &m_vMin; }
-	const _vec3* Get_Max() const { return &m_vMax; }
-	const _matrix* Get_WorldMatrix() const { return &m_matWorld; }
-	const _float Get_Radius() const { return m_fRadius; }
-	const _vec3* Get_LookDistance() const { return &m_vLookDistance; }
-	const _vec3* Get_CollisionPos() const { return &m_vCollisionCheckPosition; }
+	const _vec3*	Get_Min() const { return &m_vMin; }
+	const _vec3*	Get_Max() const { return &m_vMax; }
+	const _matrix*	Get_WorldMatrix() const { return &m_matWorld; }
+	const _float	Get_Radius() const { return m_fRadius; }
+	const _vec3*	Get_LookDistance() const { return &m_vLookDistance; }
+	const _vec3*	Get_CollisionPos() const { return &m_vCollisionCheckPosition; }
+	const _bool		Get_ColliderRenderInfo() { return m_bIsRendering; }
 
 public:	// Setter
 	void	Set_ColliderRenderling(_bool bButton) { m_bIsRendering = bButton; }
@@ -64,6 +65,7 @@ public:	// Setter
 public:
 	HRESULT Ready_Collider_Prototype(CCollider::TYPE eType);
 	HRESULT Ready_Collider(COLLIDERDESC* pArg);
+	HRESULT	Update_Collider();
 	HRESULT Render_Collider();
 public:
 	_bool Collision_AABB(const CCollider* pTargetCollider);

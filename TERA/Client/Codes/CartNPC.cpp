@@ -45,6 +45,8 @@ _int CCartNPC::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
+	CUnit::Update_GameObject(fTimeDelta);
+
 	CollisionCheck(false, false);
 
 	if (dynamic_cast<CQuestNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_NPC", 0))->GetCurrentQuestStateInfo() == CQuestNPC::QUEST_STATE::QUEST_ONGOING)
@@ -69,15 +71,7 @@ _int CCartNPC::LateUpdate_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pRendererCom)
 		return -1;
 
-	Compute_ViewZ(m_pTransformCom);
-
-	m_fTimeDelta = fTimeDelta;
-
-	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, m_fCulling))
-	{
-		if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
-			return -1;
-	}
+	CNPC::LateUpdate_GameObject(fTimeDelta);
 
 	return _int();
 }

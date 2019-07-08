@@ -36,11 +36,23 @@ HRESULT CNPC::Ready_GameObject(void * pArg)
 
 _int CNPC::Update_GameObject(const _float & fTimeDelta)
 {
+	CUnit::Update_GameObject(fTimeDelta);
+	
 	return _int();
 }
 
 _int CNPC::LateUpdate_GameObject(const _float & fTimeDelta)
 {
+	Compute_ViewZ(m_pTransformCom);
+
+	m_fTimeDelta = fTimeDelta;
+
+	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, m_fCulling))
+	{
+		if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
+			return -1;
+	}
+
 	return _int();
 }
 

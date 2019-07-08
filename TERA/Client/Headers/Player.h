@@ -31,23 +31,23 @@ public:	// Getter
 	CTransform*			Get_TransformMove() { return m_pTransformMoveCom; }
 	const PLAYER_ANI&	Get_AniIndex() { return m_eAnimationIndex; }
 	const PLAYER_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
-	const _bool&		Get_DrawSwordBtnState() { return m_bIsDrawSwordPressed; }
+	const _bool			Get_DrawSwordBtnState() { return m_bIsDrawSwordPressed; }
 	const _int&			Get_Direction() { return m_iDirection; }
-	const _bool&		Get_CutSceneInfo() { return m_bIsCutSceneEvent; }
-	const _bool&		Get_CollisionCheckWhether() { return m_bCollisionCheck; }
-	const _bool&		Get_DamageEventEndInfo() { return m_bDamageEventEndInfo; }
+	const _bool			Get_CutSceneInfo() { return m_bIsCutSceneEvent; }
+	const _bool			Get_CollisionCheckWhether() { return m_bCollisionCheck; }
+	const _bool			Get_DamageEventEndInfo() { return m_bDamageEventEndInfo; }
 	const _float&		Get_HP() { return m_fHP; }
 	const _float&		Get_MP() { return m_fMP; }
-	const _bool&		Get_SkillAvailable(PLAYER_ANI eAttackAni);
-	const _uint&		Get_Requirement_SkillMP_Info(PLAYER_ANI eAttackAni);
+	const _bool			Get_SkillAvailable(PLAYER_ANI eAttackAni);
+	const _uint			Get_Requirement_SkillMP_Info(PLAYER_ANI eAttackAni);
 	const _uint&		Get_PlayerOffenceValue() { return m_iOffencePower; }
-	const _bool&		Get_LBtnClickedInfo() { return m_bLBtnClicked; }
+	const _bool			Get_LBtnClickedInfo() { return m_bLBtnClicked; }
 	const _uint&		Get_HitCount() { return m_iHitCount; }
-	const _float&		Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni);
-	const _float&		Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni);
-	const _bool&		Get_CoolTimeAvailable(PLAYER_ANI eAttackAni);
-	const _bool&		GetSkillAvailable(PLAYER_ANI eAttackAni);
-	const _bool&		Get_PreventPrototypeInfo() { return m_SceneChangePrototypePrevent; }
+	const _float		Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni);
+	const _float		Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni);
+	const _bool			Get_CoolTimeAvailable(PLAYER_ANI eAttackAni);
+	const _bool			GetSkillAvailable(PLAYER_ANI eAttackAni);
+	const _bool			Get_PreventPrototypeInfo() { return m_SceneChangePrototypePrevent; }
 
 public:	// Setter
 	HRESULT				Set_Navigation_Component(SCENEID eScene);

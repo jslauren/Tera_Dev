@@ -56,6 +56,8 @@ _int CArkus::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
+	CUnit::Update_GameObject(fTimeDelta);
+
 	m_fTimeDelta = fTimeDelta;
 
 	EnemyPositionCheck();

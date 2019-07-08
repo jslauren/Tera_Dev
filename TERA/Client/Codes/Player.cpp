@@ -28,7 +28,7 @@ CPlayer::CPlayer(const CPlayer & rhs)
 {
 }
 
-const _bool & CPlayer::Get_SkillAvailable(PLAYER_ANI eAttackAni)
+const _bool CPlayer::Get_SkillAvailable(PLAYER_ANI eAttackAni)
 {
 	_float fCurrentMP = Get_MP();
 
@@ -101,7 +101,7 @@ const _bool & CPlayer::Get_SkillAvailable(PLAYER_ANI eAttackAni)
 	return false;
 }
 
-const _uint & CPlayer::Get_Requirement_SkillMP_Info(PLAYER_ANI eAttackAni)
+const _uint CPlayer::Get_Requirement_SkillMP_Info(PLAYER_ANI eAttackAni)
 {
 	switch (eAttackAni)
 	{
@@ -145,7 +145,7 @@ const _uint & CPlayer::Get_Requirement_SkillMP_Info(PLAYER_ANI eAttackAni)
 	return 0;
 }
 
-const _float & CPlayer::Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni)
+const _float CPlayer::Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni)
 {
 	switch (eAttackAni)
 	{
@@ -189,7 +189,7 @@ const _float & CPlayer::Get_CurrentCoolTimeInfo(PLAYER_ANI eAttackAni)
 	return 0;
 }
 
-const _float & CPlayer::Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni)
+const _float CPlayer::Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni)
 {
 	switch (eAttackAni)
 	{
@@ -233,7 +233,7 @@ const _float & CPlayer::Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni)
 	return 0;
 }
 
-const _bool & CPlayer::Get_CoolTimeAvailable(PLAYER_ANI eAttackAni)
+const _bool CPlayer::Get_CoolTimeAvailable(PLAYER_ANI eAttackAni)
 {
 	switch (eAttackAni)
 	{
@@ -277,7 +277,7 @@ const _bool & CPlayer::Get_CoolTimeAvailable(PLAYER_ANI eAttackAni)
 	return 0;
 }
 
-const _bool & CPlayer::GetSkillAvailable(PLAYER_ANI eAttackAni)
+const _bool CPlayer::GetSkillAvailable(PLAYER_ANI eAttackAni)
 {
 	switch (eAttackAni)
 	{
@@ -521,6 +521,8 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
+
+	CUnit::Update_GameObject(fTimeDelta);
 
 	m_fTimeDelta = fTimeDelta;
 

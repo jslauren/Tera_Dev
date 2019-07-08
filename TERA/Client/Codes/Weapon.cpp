@@ -84,6 +84,11 @@ _int CWeapon::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
+	m_pColliderCom01->Update_Collider();
+	m_pColliderCom02->Update_Collider();
+	m_pColliderCom03->Update_Collider();
+	m_pColliderCom04->Update_Collider();
+
 	CollisionCheck();
 
 	return _int();

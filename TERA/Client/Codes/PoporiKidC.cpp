@@ -42,6 +42,8 @@ _int CPoporiKidC::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
+	CUnit::Update_GameObject(fTimeDelta);
+
 	CollisionCheck(false);
 	TalkWithPlayer(1, 1, 0, false, 135);
 
@@ -53,15 +55,7 @@ _int CPoporiKidC::LateUpdate_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pRendererCom)
 		return -1;
 
-	Compute_ViewZ(m_pTransformCom);
-
-	m_fTimeDelta = fTimeDelta;
-
-	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, m_fCulling))
-	{
-		if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
-			return -1;
-	}
+	CNPC::LateUpdate_GameObject(fTimeDelta);
 
 	return _int();
 }

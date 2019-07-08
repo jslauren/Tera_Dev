@@ -43,6 +43,8 @@ _int CQuestNPC::Update_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pTransformCom)
 		return -1;
 
+	CUnit::Update_GameObject(fTimeDelta);
+
 	CollisionCheck(true);
 	TalkWithPlayer(3, 4, 1, true, 180.f);
 
@@ -57,15 +59,7 @@ _int CQuestNPC::LateUpdate_GameObject(const _float & fTimeDelta)
 	if (nullptr == m_pRendererCom)
 		return -1;
 
-	Compute_ViewZ(m_pTransformCom);
-
-	m_fTimeDelta = fTimeDelta;
-
-	if (true == m_pFrustumCom->WorldPt_InFrustum(m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION), m_pTransformCom, m_fCulling))
-	{
-		if (FAILED(m_pRendererCom->Add_RenderGroup(CRenderer::RENDER_NONEALPHA, this)))
-			return -1;
-	}
+	CNPC::LateUpdate_GameObject(fTimeDelta);
 
 	return _int();
 }
