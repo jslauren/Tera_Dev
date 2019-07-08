@@ -2,6 +2,8 @@
 #include "..\Headers\Loading.h"
 #include "Component_Manager.h"
 #include "Management.h"
+#include "Object_Manager.h"
+#include "Player.h"
 
 _USING(Client)
 
@@ -14,8 +16,8 @@ CLoading::CLoading(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CLoading::Ready_Loading(SCENEID eSceneID)
 {
-	m_eSceneID = (SCENEID)CManagement::GetInstance()->Get_PreScene();
-	//m_eSceneID = eSceneID;
+//	m_eSceneID = (SCENEID)CManagement::GetInstance()->Get_PreScene();
+	m_eSceneID = eSceneID;
 
 	InitializeCriticalSection(&m_CS);
 
@@ -37,9 +39,10 @@ _uint CLoading::Thread_Main(void * pArg)
 	switch (pLoading->Get_SceneID())
 	{
 	case SCENE_LOGO:
+	case SCENE_STAGE:
 		hr = pLoading->Ready_Stage_Component();
 		break;
-	case SCENE_STAGE:
+	case SCENE_DRAGON:
 		hr = pLoading->Ready_Dragon_Component();
 		break;
 	}
@@ -57,7 +60,19 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 	
-	m_iTotalRsrcNum = 80;
+	// 씬 전환 시 컴포넌트 프로토타입에서 추가 형태가 SCENE_STATIC인 애들은 제거하기 위해,
+	// 아래와 같은 구문을 적용 함.
+	//CPlayer* pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player", 0));
+
+	//if (pPlayer != nullptr)
+	//	m_bIsAlreadyLoaded = pPlayer->Get_PreventPrototypeInfo();
+	m_bIsAlreadyLoaded = CManagement::GetInstance()->Get_PreventPrototypeLoadInfo();
+
+	if (m_bIsAlreadyLoaded == false)
+		m_iTotalRsrcNum = 80;
+	else
+		m_iTotalRsrcNum = 6;
+
 	m_iCurrentRsrcNum = 0;
 	m_iComplete = 0;
 
@@ -77,6 +92,12 @@ HRESULT CLoading::Ready_Stage_Component()
 		return E_FAIL;
 	CalculatedCompleteNumber();
 
+	// [Navigation]
+	// For.Component_Navigation_Stage
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Navigation_Stage", CNavigation::Create(m_pGraphic_Device, L"../../Data/Town.NaviDat"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
 	// [Buffer & Texture]
 	// For.Component_Buffer_CubeBox
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Buffer_CubeBox", CBuffer_CubeTex::Create(m_pGraphic_Device))))
@@ -87,6 +108,9 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
+
+	if (m_bIsAlreadyLoaded == true)
+		return NOERROR;
 
 	// For.Component_Buffer_UI_Point_Board
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Point_Board", CBuffer_RcTex::Create(m_pGraphic_Device))))
@@ -417,12 +441,6 @@ HRESULT CLoading::Ready_Stage_Component()
 
 	// For.Component_Collider_Sphere
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Collider_Sphere", CCollider::Create(m_pGraphic_Device, CCollider::TYPE_SPHERE))))
-		return E_FAIL;
-	CalculatedCompleteNumber();
-
-	// [Navigation]
-	// For.Component_Navigation_Stage
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STAGE, L"Component_Navigation_Stage", CNavigation::Create(m_pGraphic_Device, L"../../Data/Town.NaviDat"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 

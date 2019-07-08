@@ -512,7 +512,7 @@ HRESULT CPlayer::Ready_GameObject(void* pArg)
 	CEventManager::GetInstance()->Register_Object(L"Arkus_Attack", this);
 
 	m_pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
-	Safe_AddRef(m_pArkus);
+//	Safe_AddRef(m_pArkus);
 	
 	return NOERROR;
 }
@@ -980,14 +980,17 @@ void CPlayer::KeyInput()
 void CPlayer::Compute_HeightOnNavi()
 {
 	_vec3	pPlayerPos = *m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION);
-	
-	m_pNavigationCom->SetUp_CurrentIndexLoop(pPlayerPos);
-	
-	m_fNaviDistValue = m_pNavigationCom->Compute_HeightOnNavi(&pPlayerPos);
-	
-	pPlayerPos.y = m_fNaviDistValue;
 
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &pPlayerPos);
+	if (m_pNavigationCom != nullptr)
+	{
+		m_pNavigationCom->SetUp_CurrentIndexLoop(pPlayerPos);
+
+		m_fNaviDistValue = m_pNavigationCom->Compute_HeightOnNavi(&pPlayerPos);
+
+		pPlayerPos.y = m_fNaviDistValue;
+
+		m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &pPlayerPos);
+	}
 }
 
 void CPlayer::AutoHealing(const _float& fTimeDelta)
@@ -1285,7 +1288,7 @@ void CPlayer::Free()
 {
 	CEventManager::GetInstance()->Remove_Object(L"Arkus_Attack", this);
 
-	Safe_Release(m_pArkus);
+//	Safe_Release(m_pArkus);
 
 	Safe_Release(m_pTransformRotateCom);
 	Safe_Release(m_pTransformMoveCom);

@@ -154,17 +154,17 @@ void CCamera_Dynamic::TracingTarget()
 
 void CCamera_Dynamic::KeyInput()
 {
-	if (GetKeyState('I') & 0x8000)
-		m_pTransformCom->Move(0, 10.f, m_fTimeDelta);
+	//if (GetKeyState('I') & 0x8000)
+	//	m_pTransformCom->Move(0, 10.f, m_fTimeDelta);
 
-	if (GetKeyState('K') & 0x8000)
-		m_pTransformCom->Move(1, 10.f, m_fTimeDelta);
+	//if (GetKeyState('K') & 0x8000)
+	//	m_pTransformCom->Move(1, 10.f, m_fTimeDelta);
 
-	if (GetKeyState('J') & 0x8000)
-		m_pTransformCom->Move(2, 10.f, m_fTimeDelta);
+	//if (GetKeyState('J') & 0x8000)
+	//	m_pTransformCom->Move(2, 10.f, m_fTimeDelta);
 
-	if (GetKeyState('L') & 0x8000)
-		m_pTransformCom->Move(3, 10.f, m_fTimeDelta);
+	//if (GetKeyState('L') & 0x8000)
+	//	m_pTransformCom->Move(3, 10.f, m_fTimeDelta);
 
 	//_long			dwMouseMove = 0;
 

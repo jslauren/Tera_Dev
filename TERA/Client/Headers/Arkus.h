@@ -33,7 +33,8 @@ public:	// Getter
 	_bool				Get_TurnRightInfo() { return m_bIsTurnRight; }
 	_bool				Get_PlayerDamagedInfo() { return m_bIsPlayerDamaged; }
 	const _float&		Get_HP() { return m_fHP; }
-
+	_bool				Get_SceneChangeAvailableInfo() { return m_bIsSceneChangeAvailable; }
+	
 public:	// Setter
 	void			Set_AniIndex(const ARKUS_ANI& iIndex) { m_eAnimationIndex = iIndex; }
 	void			Set_OldAniIndex(const ARKUS_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
@@ -104,6 +105,8 @@ private:
 	_bool			m_bIsPlayerDamaged = false;
 
 	_float			m_fHP = 100000.f;
+
+	_bool			m_bIsSceneChangeAvailable = false;
 	
 public:
 	static CArkus*			Create(LPDIRECT3DDEVICE9 pGraphic_Device);

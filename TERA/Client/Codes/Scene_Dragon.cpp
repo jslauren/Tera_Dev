@@ -5,6 +5,8 @@
 #include "Light_Manager.h"
 #include "SkyBox_Dragon.h"
 #include "Terrain_Dragon.h"
+#include "Management.h"
+#include "Scene_Loading.h"
 #include "Player.h"
 #include "Weapon.h"
 #include "Monster.h"
@@ -101,6 +103,43 @@ _int CScene_Dragon::Update_Scene(const _float & fTimeDelta)
 
 _int CScene_Dragon::LateUpdate_Scene(const _float & fTimeDelta)
 {
+	CManagement*	pManagement = CManagement::GetInstance();
+	if (nullptr == pManagement)
+		return -1;
+
+	pManagement->AddRef();
+
+	_bool bSceneChangeDragonToStage = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster", 0))->Get_SceneChangeAvailableInfo();
+
+	if (GetKeyState('L') & 0x8000 ||
+		bSceneChangeDragonToStage == true)
+	{
+		// 씬 전환 시 로딩 쓰레드를 쓰는데,
+		// 이 때 기존 전환하면서 추가했던 Static 타입의 컴포넌트 프로토타입을
+		// 다시 로딩하지 않기 위해 처리하는 구문.
+		CManagement::GetInstance()->Set_PreventPrototypeLoadInfo(true);
+		dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_CutSceneInfo(false);
+
+	//	dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player", 0))->Set_PreventPrototypeInfo(true);
+
+		HRESULT		hr;
+		if (S_OK == (hr = (pManagement->SetUp_CurrentScene(CScene_Loading::Create(m_pGraphic_Device, SCENE_STAGE), SCENE_LOADING))))
+		{
+			Safe_Release(pManagement);
+			return 0;
+		}
+		if (FAILED(hr))
+		{
+			Safe_Release(pManagement);
+			return -1;
+		}
+
+		Safe_Release(pManagement);
+		return 0;
+	}
+
+	Safe_Release(pManagement);
+
 	return _int(CScene::LateUpdate_Scene(fTimeDelta));
 }
 
@@ -427,6 +466,9 @@ void CScene_Dragon::Free()
 		return;
 
 	if (FAILED(m_pComponent_Manager->Clear_Component_Prototype(SCENE_DRAGON)))
+		return;
+
+	if (FAILED(CLight_Manager::GetInstance()->DeleteLightAll()))
 		return;
 
 	CScene::Free();

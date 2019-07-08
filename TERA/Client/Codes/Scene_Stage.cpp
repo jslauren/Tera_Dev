@@ -52,6 +52,8 @@ CScene_Stage::CScene_Stage(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CScene_Stage::Ready_Scene()
 {
+	m_bIsAlreadyLoaded = CManagement::GetInstance()->Get_PreventPrototypeLoadInfo();
+
 	// For.Terrain Data Load
 	if (FAILED(Ready_TerrainLoad()))
 		return E_FAIL;
@@ -130,11 +132,13 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 
 	pManagement->AddRef();
 
-	_bool bSceneChangeInfo = dynamic_cast<CCartNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_NPC", 5))->Get_SceneChangeAvailableInfo();
+	_bool bSceneChangeStagetoDragon = dynamic_cast<CCartNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_NPC", 5))->Get_SceneChangeAvailableInfo();
 
 	if (GetKeyState('P') & 0x8000 ||
-		bSceneChangeInfo == true)
+		bSceneChangeStagetoDragon == true)
 	{
+		bSceneChangeStagetoDragon = false;
+
 		HRESULT		hr;
 		if (S_OK == (hr = (pManagement->SetUp_CurrentScene(CScene_Loading::Create(m_pGraphic_Device, SCENE_DRAGON), SCENE_LOADING))))
 		{
@@ -384,6 +388,9 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STAGE, L"GameObject_Terrain", CTerrain::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	if (m_bIsAlreadyLoaded == true)
+		return NOERROR;
+
 	// For.GameObject_Player
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Player", CPlayer::Create(m_pGraphic_Device))))
 		return E_FAIL;
@@ -482,6 +489,9 @@ HRESULT CScene_Stage::Ready_Layer_Camera(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage::Ready_Layer_Player(const _tchar * pLayerTag)
 {
+	if (m_bIsAlreadyLoaded == true)
+		return NOERROR;
+
 	// For.Player
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Player", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
@@ -569,6 +579,9 @@ HRESULT CScene_Stage::Ready_Layer_NPC(const _tchar * pLayerTag)
 
 HRESULT CScene_Stage::Ready_Layer_Weapon(const _tchar * pLayerTag)
 {
+	if (m_bIsAlreadyLoaded == true)
+		return NOERROR;
+
 	// For.Weapon
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_Weapon", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
@@ -619,7 +632,11 @@ void CScene_Stage::Free()
 	if (FAILED(m_pComponent_Manager->Clear_Component_Prototype(SCENE_STAGE)))
 		return;
 
+	if (FAILED(CLight_Manager::GetInstance()->DeleteLightAll()))
+		return;
+
 	CScene::Free();
 }
 
 
+ 

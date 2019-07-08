@@ -22,7 +22,7 @@ public:
 	static _uint APIENTRY Thread_Main(void* pArg);
 private:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;
-	SCENEID					m_eSceneID;
+	SCENEID					m_eSceneID = SCENE_LOGO;
 	HANDLE					m_hThread;
 	CRITICAL_SECTION		m_CS;
 	CComponent_Manager*		m_pComponent_Manager = nullptr;
@@ -36,6 +36,7 @@ private:
 	_uint	m_iTotalRsrcNum = 0;
 	_uint	m_iCurrentRsrcNum = 0;
 
+	_bool	m_bIsAlreadyLoaded = false;
 
 public:
 	static CLoading* Create(LPDIRECT3DDEVICE9 pGraphic_Device, SCENEID eSceneID);

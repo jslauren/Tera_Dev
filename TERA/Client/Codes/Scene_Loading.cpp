@@ -114,6 +114,33 @@ _int CScene_Loading::LateUpdate_Scene(const _float & fTimeDelta)
 			Safe_Release(pManagement);
 			return 0;
 		}
+		else if (m_eCurrentScene == SCENE_STAGE)
+		{
+			CPlayer*	pPlayer = dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"));
+
+			// 씬 전환 완료 후, 플레이어의 애니메이션을 지정해준는 구문.
+			pPlayer->Set_AniIndex(CPlayer::PLAYER_ANI::Idle);
+			// 씬 전환 완료 후, 플레이어의 포지션을 지정해주는 구문.
+			pPlayer->Get_TransformMove()->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(12.f, 0.f, 233.f));
+
+			// 씬 전환 완료 후, 무기의 위치를 지정해주는 구문.
+			dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon"))->Set_BoneMatrix(1);
+
+			if (FAILED(pManagement->SetUp_CurrentScene(CScene_Stage::Create(m_pGraphic_Device), SCENE_STAGE)))
+			{
+				Safe_Release(pManagement);
+				return -1;
+			}
+
+			dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Set_Navigation_Component(SCENE_STAGE);
+			
+			// 현재 플레이어가 밟고있는 땅의 Index를 설정해주는 구문.
+			 pPlayer->Get_NaviMesh()->SetUp_CurrentIndex(pPlayer->Get_NaviMesh()->Get_CellIndex(_vec3(250.f, 0.f, 50.f)));
+	//		pPlayer->Get_NaviMesh()->SetUp_CurrentIndex(0);
+
+			Safe_Release(pManagement);
+			return 0;
+		}
 	}
 
 	//if (CManagement::GetInstance()->Get_PreScene() == (_uint)(SCENE_LOADING))

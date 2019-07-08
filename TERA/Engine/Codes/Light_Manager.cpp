@@ -42,6 +42,16 @@ HRESULT CLight_Manager::Render_LightAcc(LPD3DXEFFECT pEffect)
 	return NOERROR;
 }
 
+HRESULT CLight_Manager::DeleteLightAll()
+{
+	for (auto Light : m_LightList)
+		Safe_Release(Light);
+
+	m_LightList.clear();
+
+	return NOERROR;
+}
+
 void CLight_Manager::Free()
 {
 	for (auto& pLight : m_LightList)

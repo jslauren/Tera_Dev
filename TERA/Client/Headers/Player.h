@@ -47,6 +47,7 @@ public:	// Getter
 	const _float&		Get_MaxCoolTimeInfo(PLAYER_ANI eAttackAni);
 	const _bool&		Get_CoolTimeAvailable(PLAYER_ANI eAttackAni);
 	const _bool&		GetSkillAvailable(PLAYER_ANI eAttackAni);
+	const _bool&		Get_PreventPrototypeInfo() { return m_SceneChangePrototypePrevent; }
 
 public:	// Setter
 	HRESULT				Set_Navigation_Component(SCENEID eScene);
@@ -69,6 +70,7 @@ public:	// Setter
 	void				Set_CoolTimeAvailable(PLAYER_ANI eAttackAni, _bool bButton);
 	void				Set_CoolTimeFree(PLAYER_ANI eAttackAni);
 	void				Set_SkillAvailable(PLAYER_ANI eAttackAni, _bool bButton);
+	void				Set_PreventPrototypeInfo(_bool bButton) { m_SceneChangePrototypePrevent = bButton; }
 
 public:
 	virtual HRESULT		Ready_GameObject_Prototype();
@@ -142,6 +144,8 @@ private:
 	_bool			m_bIsSkillAvailable[9] = { true, true, true, true, true, true, true, true, true };
 	_float			m_fMaxCoolTime[9] = { 5.f, 4.f, 7.f, 3.f, 5.f, 3.f, 9.f, 5.f, 3.f};
 	_float			m_fCurrentCoolTime[9] = { 5.f, 4.f, 7.f, 3.f, 5.f, 3.f, 9.f, 5.f, 3.f };
+
+	_bool			m_SceneChangePrototypePrevent = false;
 
 private:
 	virtual HRESULT Add_Component();

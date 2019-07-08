@@ -39,6 +39,7 @@ private:
 	_uint									m_iCurrentCellIdx = 0;
 	_float									m_fDetail = 1.f;
 	_tchar									m_szPlayerPos[128] = L"";
+	_bool									m_bIsAlreadyLoaded = false;
 
 public:
 	static CScene_Stage*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
