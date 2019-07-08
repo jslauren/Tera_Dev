@@ -14,6 +14,9 @@ private:
 	explicit CCartNPC(const CCartNPC& rhs);
 	virtual ~CCartNPC() = default;
 
+public:	// Getter
+	_bool			Get_SceneChangeAvailableInfo() { return m_bIsSceneChangeAvailable; }
+
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
 	virtual HRESULT Ready_GameObject(void* pArg);
@@ -27,6 +30,11 @@ public:
 
 public:
 	void			ScriptInfo();
+
+private:
+	_int			m_iEndScriptNum = 1;
+	_int			m_iLoopScriptNum = 1;
+	_bool			m_bIsSceneChangeAvailable = false;
 
 public:
 	static CCartNPC*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);

@@ -85,7 +85,7 @@ HRESULT CUI_Dialog::Render_GameObject()
 	D3DCOLORVALUE dwBlack = { 0, 0, 0, 1 };
 	CFontManager::GetInstance()->RenderFont(CFontManager::FONT_SCRIPT, _vec3((g_iWinCX * 0.02f), (g_iWinCY * 0.22f), 0.f), m_szMain, dwBlack);
 
-	CFontManager::GetInstance()->RenderFont(CFontManager::FONT_SCRIPT, _vec3((g_iWinCX * 0.03f), (g_iWinCY * 0.555f), 0.f), m_szReply);
+	CFontManager::GetInstance()->RenderFont(CFontManager::FONT_SCRIPT, _vec3((g_iWinCX * 0.02f), (g_iWinCY * 0.555f), 0.f), m_szReply);
 
 	return NOERROR;
 }

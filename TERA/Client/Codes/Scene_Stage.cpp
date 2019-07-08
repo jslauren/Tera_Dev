@@ -130,7 +130,10 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 
 	pManagement->AddRef();
 
-	if (GetKeyState('P') & 0x8000)
+	_bool bSceneChangeInfo = dynamic_cast<CCartNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_NPC", 5))->Get_SceneChangeAvailableInfo();
+
+	if (GetKeyState('P') & 0x8000 ||
+		bSceneChangeInfo == true)
 	{
 		HRESULT		hr;
 		if (S_OK == (hr = (pManagement->SetUp_CurrentScene(CScene_Loading::Create(m_pGraphic_Device, SCENE_DRAGON), SCENE_LOADING))))

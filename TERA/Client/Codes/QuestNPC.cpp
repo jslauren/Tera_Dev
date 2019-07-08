@@ -46,6 +46,9 @@ _int CQuestNPC::Update_GameObject(const _float & fTimeDelta)
 	CollisionCheck(true);
 	TalkWithPlayer(3, 4, 1, true, 180.f);
 
+	if(m_iScriptNumber == 2)
+		m_eCurrentQuestState = QUEST_ONGOING;
+
 	return _int();
 }
 

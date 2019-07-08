@@ -205,10 +205,8 @@ void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum, _uint _iI
 			TalkEventFree(pUI_Dialog, _iInitAniNum, fResetViewAngle);
 
 			if (m_bIsQuestNPC == true)
-			{
 				pQMark->Set_CurrentMark(CQMark::QMARK_ONGOING);
-			//	m_iScriptNumber -= 2;
-			}
+
 			else
 				m_iScriptNumber = -1;
 

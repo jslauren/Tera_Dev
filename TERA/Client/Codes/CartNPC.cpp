@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "..\Headers\CartNPC.h"
+#include "QuestNPC.h"
+#include "Management.h"
+#include "Scene_Loading.h"
 
 _USING(Client)
 
@@ -43,7 +46,20 @@ _int CCartNPC::Update_GameObject(const _float & fTimeDelta)
 		return -1;
 
 	CollisionCheck(false, false);
-	TalkWithPlayer(1, 1, 1, false, 0);
+
+	if (dynamic_cast<CQuestNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_NPC", 0))->GetCurrentQuestStateInfo() == CQuestNPC::QUEST_STATE::QUEST_ONGOING)
+	{
+		if (m_iEndScriptNum != 4)
+		{
+			m_iScriptNumber = 0;
+			m_iEndScriptNum = 4; 
+			m_iLoopScriptNum = 4;
+		}
+		if (m_iScriptNumber == 4)
+			m_bIsSceneChangeAvailable = true;
+	}
+
+	TalkWithPlayer(m_iEndScriptNum, m_iLoopScriptNum, 1, false, 0);
 
 	return _int();
 }
@@ -150,18 +166,18 @@ void CCartNPC::ScriptInfo()
 	m_pTitleScript = L"미스터리 마부 릭";
 
 	// Quest Start //
-	m_pMainScript[0] = L"못보던 놈인데...\n\n네놈은 누구지?";
-	m_pReplyScript[0] = L"취준생 빡정수다.";
+	m_pMainScript[0] = L"신속배달!! 빠른 이동 서비스!!\n\n릭일세.";
+	m_pReplyScript[0] = L"신기하군.";
 
-	m_pMainScript[1] = L"(......)\n\n그동안 고생이 많았겠군.\n\n그래 무슨일로 날 찾아왔지?";
-	m_pReplyScript[1] = L"나의 가치를 증명하러 왔다.";
+	m_pMainScript[1] = L"오오 빡정수..!\n\n가치를 증명하기 위하여\n\n천공의 섬으로 떠난다고?";
+	m_pReplyScript[1] = L"그래. 잘부탁하지.";
 
-	m_pMainScript[2] = L"가치의 증명이라..... 좋다.\n\n벨리카에는 천공의 경기장이라는\n\n곳이 있다.여기의 제왕으로 군림한\n\n아르커스를 죽여라.";
-	m_pReplyScript[2] = L"다녀오지.";
+	m_pMainScript[2] = L"좋은 결과가 나오도록 기원하지";
+	m_pReplyScript[2] = L"헌데.. 설마 마차를 타고 가나?";
 
-	// Quest Ongoing //
-	m_pMainScript[3] = L"여기서 뭐하고 있는거지?\n\n네놈의 가치는 이것뿐인가?";
-	m_pReplyScript[3] = L"(...) 다녀오지.";
+	m_pMainScript[3] = L"아니 자네 설마..\n\n이 녀석들의 날개가 보이지 않는가?\n\n인성이 좋은사람 눈에만 보인다는\n\n말이 사실이었나보군 ㅉㅉ";
+	m_pReplyScript[3] = L"(...)잘 보이네. 이제 그만 출발하지.";
+
 }
 
 CCartNPC * CCartNPC::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
