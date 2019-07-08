@@ -7,12 +7,12 @@ _BEGIN(Client)
 
 class CUI_Dialog;
 class CCamera_Static;
-class CQuestNPC : public CNPC
+class CGuardNPC : public CNPC
 {
 private:
-	explicit CQuestNPC(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CQuestNPC(const CQuestNPC& rhs);
-	virtual ~CQuestNPC() = default;
+	explicit CGuardNPC(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CGuardNPC(const CGuardNPC& rhs);
+	virtual ~CGuardNPC() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -29,9 +29,10 @@ public:
 	void			ScriptInfo();
 
 public:
-	static CQuestNPC*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CGuardNPC*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);
 	virtual void			Free();
+
 };
 
 _END

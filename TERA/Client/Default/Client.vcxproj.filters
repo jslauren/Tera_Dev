@@ -250,6 +250,54 @@
     <Filter Include="04. UI\UI\06. Dialog">
       <UniqueIdentifier>{67a294fe-ee93-4758-877d-039ab55e01af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03. Unit\NPC\GroceryNPC">
+      <UniqueIdentifier>{78389cd4-7f0e-4228-a003-2225ce63a89d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\WeaponNPC">
+      <UniqueIdentifier>{89760bc3-664a-47a8-a403-607e51f753e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\ContentsNPC">
+      <UniqueIdentifier>{72aa36ce-0fe2-4b4a-97fa-bce0b310abb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CGuardNPC">
+      <UniqueIdentifier>{d9f29ee1-9d3e-431c-9a13-5f230dd9ecc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CartNPC">
+      <UniqueIdentifier>{4cfd8edc-4bfd-45e9-a3c3-be34bc89d9cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CitizenNPC">
+      <UniqueIdentifier>{e9880929-300e-484f-843a-a4a3e0255bf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CitizenNPC\BoyNPC">
+      <UniqueIdentifier>{933ec808-faba-42e7-84b1-579a9394169d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CitizenNPC\GirlNPC">
+      <UniqueIdentifier>{48d07942-0b6b-451d-ab6d-8ace65281ffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CitizenNPC\PoporiKids">
+      <UniqueIdentifier>{65928a66-7244-4d29-aaa5-5847511ff806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CitizenNPC\PoporiKids\PoporiKidB">
+      <UniqueIdentifier>{18f1edf9-91f4-468b-a447-46cd2126980a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CitizenNPC\PoporiKids\PoporiKidC">
+      <UniqueIdentifier>{ce97a0ac-ecf5-4ea3-9649-d89e790de16c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CitizenNPC\PoporiKids\PoporiKidA">
+      <UniqueIdentifier>{fbe1ef79-21cf-4bc6-8c65-ea3aab5e1d68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CitizenNPC\Animals">
+      <UniqueIdentifier>{bd5e8dd0-c58c-4e8b-972e-1534862c37af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CitizenNPC\Animals\CatNPC">
+      <UniqueIdentifier>{a88cf1af-1d0f-4989-b930-abb5bcf47bdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CitizenNPC\Animals\DogNPC">
+      <UniqueIdentifier>{bfe2f3af-b628-4ff9-a454-f5d3d49c07bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Unit\NPC\CitizenNPC\Animals\LionNPC">
+      <UniqueIdentifier>{82cbfae6-db6f-48db-b4e7-e8bb31abb074}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -468,6 +516,45 @@
     <ClInclude Include="..\Headers\NPC.h">
       <Filter>03. Unit\NPC</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\GroceryNPC.h">
+      <Filter>03. Unit\NPC\GroceryNPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\WeaponNPC.h">
+      <Filter>03. Unit\NPC\WeaponNPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\ContentsNPC.h">
+      <Filter>03. Unit\NPC\ContentsNPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\GuardNPC.h">
+      <Filter>03. Unit\NPC\CGuardNPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\CartNPC.h">
+      <Filter>03. Unit\NPC\CartNPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\BoyNPC.h">
+      <Filter>03. Unit\NPC\CitizenNPC\BoyNPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\GirlNPC.h">
+      <Filter>03. Unit\NPC\CitizenNPC\GirlNPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\CatNPC.h">
+      <Filter>03. Unit\NPC\CitizenNPC\Animals\CatNPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\DogNPC.h">
+      <Filter>03. Unit\NPC\CitizenNPC\Animals\DogNPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\LionNPC.h">
+      <Filter>03. Unit\NPC\CitizenNPC\Animals\LionNPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\PoporiKidA.h">
+      <Filter>03. Unit\NPC\CitizenNPC\PoporiKids\PoporiKidA</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\PoporiKidB.h">
+      <Filter>03. Unit\NPC\CitizenNPC\PoporiKids\PoporiKidB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\PoporiKidC.h">
+      <Filter>03. Unit\NPC\CitizenNPC\PoporiKids\PoporiKidC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -673,6 +760,45 @@
     </ClCompile>
     <ClCompile Include="..\Codes\NPC.cpp">
       <Filter>03. Unit\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\GroceryNPC.cpp">
+      <Filter>03. Unit\NPC\GroceryNPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\WeaponNPC.cpp">
+      <Filter>03. Unit\NPC\WeaponNPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\ContentsNPC.cpp">
+      <Filter>03. Unit\NPC\ContentsNPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\GuardNPC.cpp">
+      <Filter>03. Unit\NPC\CGuardNPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\CartNPC.cpp">
+      <Filter>03. Unit\NPC\CartNPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\BoyNPC.cpp">
+      <Filter>03. Unit\NPC\CitizenNPC\BoyNPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\GirlNPC.cpp">
+      <Filter>03. Unit\NPC\CitizenNPC\GirlNPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\CatNPC.cpp">
+      <Filter>03. Unit\NPC\CitizenNPC\Animals\CatNPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\DogNPC.cpp">
+      <Filter>03. Unit\NPC\CitizenNPC\Animals\DogNPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\LionNPC.cpp">
+      <Filter>03. Unit\NPC\CitizenNPC\Animals\LionNPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\PoporiKidA.cpp">
+      <Filter>03. Unit\NPC\CitizenNPC\PoporiKids\PoporiKidA</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\PoporiKidB.cpp">
+      <Filter>03. Unit\NPC\CitizenNPC\PoporiKids\PoporiKidB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\PoporiKidC.cpp">
+      <Filter>03. Unit\NPC\CitizenNPC\PoporiKids\PoporiKidC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

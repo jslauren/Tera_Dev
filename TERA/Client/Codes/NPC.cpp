@@ -63,6 +63,10 @@ HRESULT CNPC::Add_Component()
 	if (FAILED(CGameObject::Add_Component(SCENE_STAGE, L"Component_Shader_Mesh", L"Com_Shader", (CComponent**)&m_pShaderCom)))
 		return E_FAIL;
 
+	// For.Com_Frustum
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Frustum", L"Com_Frustum", (CComponent**)&m_pFrustumCom)))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
@@ -95,8 +99,11 @@ void CNPC::CollisionCheck(_bool _bIsPlayerInside)
 		m_bPlayerRenderingFirst = false;
 	}
 
-	if (_bIsPlayerInside = true)
+	if (_bIsPlayerInside == true)
+	{
+		m_bIsArchitecture = true;
 		PlayerInside(pPlayerCollider);
+	}
 
 	TalkEvent(pPlayerCollider);
 }
@@ -173,7 +180,7 @@ void CNPC::LookAtPlayer()
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_LOOK, &(vDir * fLookScale));
 }
 
-void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iInitAniNum)
+void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum, _uint _iInitAniNum, _bool _bIsQuestNPC, _float fResetViewAngle)
 {
 	if (m_bIsTalking == true)
 	{
@@ -183,38 +190,70 @@ void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iInitAniNum)
 		CQMark*		pQMark = dynamic_cast<CQMark*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_UI", 0));
 		CUI_Dialog* pUI_Dialog = dynamic_cast<CUI_Dialog*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_UI", 1));
 
-		// 대화중에는 플레이어 키 조작을 못하게 하기 위한 bool 값 셋팅.
-		pUI_Dialog->Set_TalkEventAvaliable(true);
+		if(_bIsQuestNPC == true)
+			m_bIsQuestNPC = true;
 
-		pUI_Dialog->MakeScript(CUI_Dialog::SCRIPT_TITLE, m_pTitleScript);
+		if (m_bIsTalkEnded == true)
+		{
+			// 대화가 끝나면 초기값으로 셋팅해준다.
+			TalkEventFree(pUI_Dialog, _iInitAniNum, fResetViewAngle);
+
+			if (m_bIsQuestNPC == true)
+			{
+				pQMark->Set_CurrentMark(CQMark::QMARK_ONGOING);
+			//	m_iScriptNumber -= 2;
+			}
+			else
+				m_iScriptNumber = -1;
+
+			return;
+		}
+
+		// 대화중에는 플레이어 키 조작을 못하게 하기 위한 bool 값 셋팅.
+		pUI_Dialog->Set_TalkEventAvaliable(true);		
 
 		if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_F) && 0x80)
 		{
-			if (m_bIsTalkEnded == true)
+			if (m_bIsLoopOn == true)
 			{
-				// 대화가 끝나면 초기값으로 셋팅해준다.
-				TalkEventFree(pUI_Dialog, _iInitAniNum);
-				pQMark->Set_CurrentMark(CQMark::QMARK_ONGOING);
+				m_bIsTalkEnded = true;
+				m_bIsLoopOn = false;
+				return;
 			}
 
 			++m_iScriptNumber;
 
-			if (m_iScriptNumber > _iEndScriptNum)
+			if (m_iScriptNumber == _iEndScriptNum)
+			{
+				m_bIsTalkEnded = true;
+				return;
+			}
+
+			if (m_iScriptNumber == _iLoopScriptNum)
+			{
+				m_bIsLoopOn = true;
 				--m_iScriptNumber;
+			}
+
+			//if (m_bIsQuestNPC != true)
+			//{
+			//	if (m_bIsTalkEnded == true)
+			//		return;
+			//}
+			//if (m_iScriptNumber > _iEndScriptNum)
+			//{
+			//	--m_iScriptNumber;
+			//	m_bIsTalkEnded = true;
+			//}
 		}
 
+		pUI_Dialog->MakeScript(CUI_Dialog::SCRIPT_TITLE, m_pTitleScript);
 		pUI_Dialog->MakeScript(CUI_Dialog::SCRIPT_MAIN, m_pMainScript[m_iScriptNumber]);
 		pUI_Dialog->MakeScript(CUI_Dialog::SCRIPT_REPLY, m_pReplyScript[m_iScriptNumber]);
-
-		if (m_iScriptNumber == 2 ||
-			m_iScriptNumber == _iEndScriptNum)
-		{
-			m_bIsTalkEnded = true;
-		}
 	}
 }
 
-void CNPC::TalkEventFree(CUI_Dialog * _pUI_Dialog, _uint iAniNum)
+void CNPC::TalkEventFree(CUI_Dialog * _pUI_Dialog, _uint iAniNum, _float fResetViewAngle)
 {
 	m_pMeshCom->SetUp_AnimationSet(iAniNum);
 	m_pCameraStatic->Set_TalkingInfo(false);
@@ -222,7 +261,10 @@ void CNPC::TalkEventFree(CUI_Dialog * _pUI_Dialog, _uint iAniNum)
 	m_bIsTalkEnded = false;
 	m_bIsEventCollisionFirst = true;
 	_pUI_Dialog->Set_TalkEventAvaliable(false);
-	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(180.f));
+	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(fResetViewAngle));
+
+	if (m_bIsArchitecture != true)
+		m_pCameraStatic->Set_CameraRevertInfo(true);
 }
 
 void CNPC::ScriptInfo()

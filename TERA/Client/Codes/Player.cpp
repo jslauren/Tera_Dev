@@ -951,8 +951,11 @@ void CPlayer::KeyInput()
 	// NPC와 대화중일땐 아무고또 모타죠? //
 	CUI_Dialog* pUI_Dialog = dynamic_cast<CUI_Dialog*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_UI", 1));
 
-	if (pUI_Dialog->Get_TalkEventAvaliable() == true)
-		return;
+	if (pUI_Dialog != nullptr)
+	{
+		if (pUI_Dialog->Get_TalkEventAvaliable() == true)
+			return;
+	}
 	///////////////////////////////////////
 
 	CPlayerState* pState = m_pState->Input_Keyboard(*this, m_fTimeDelta, 0, m_pNavigationCom);

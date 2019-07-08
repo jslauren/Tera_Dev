@@ -7,12 +7,12 @@ _BEGIN(Client)
 
 class CUI_Dialog;
 class CCamera_Static;
-class CQuestNPC : public CNPC
+class CPoporiKidC : public CNPC
 {
 private:
-	explicit CQuestNPC(LPDIRECT3DDEVICE9 pGraphic_Device);
-	explicit CQuestNPC(const CQuestNPC& rhs);
-	virtual ~CQuestNPC() = default;
+	explicit CPoporiKidC(LPDIRECT3DDEVICE9 pGraphic_Device);
+	explicit CPoporiKidC(const CPoporiKidC& rhs);
+	virtual ~CPoporiKidC() = default;
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();
@@ -29,9 +29,10 @@ public:
 	void			ScriptInfo();
 
 public:
-	static CQuestNPC*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CPoporiKidC*		Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject*	Clone(void* pArg = nullptr);
 	virtual void			Free();
+
 };
 
 _END

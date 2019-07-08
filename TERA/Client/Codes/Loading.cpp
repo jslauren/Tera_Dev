@@ -57,7 +57,7 @@ HRESULT CLoading::Ready_Stage_Component()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 	
-	m_iTotalRsrcNum = 67;
+	m_iTotalRsrcNum = 80;
 	m_iCurrentRsrcNum = 0;
 	m_iComplete = 0;
 
@@ -327,6 +327,58 @@ HRESULT CLoading::Ready_Stage_Component()
 	// [NPC Mesh]
 	// For.Component_Mesh_QuestNPC
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_QuestNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/QuestNPC/", L"QuestNPC_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_GroceryNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/StoreNPC/", L"StoreNPC_Grocery_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_WeaponNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/StoreNPC/", L"StoreNPC_Weapon_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_ContentsNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/ContentsNPC/", L"ContentsNPC_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_GuardNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/GuardNPC/", L"GuardNPC_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_CartNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/Cart/", L"Cart_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_BoyNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/Boy/", L"Boy_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_GirlNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/Girl/", L"Girl_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_CatNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/Cat/", L"Cat_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_DogNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/Dog/", L"Dog_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_LionNPC", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/Lion/", L"Lion_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_PoporiNPC_A", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/Popori/", L"PoporiA_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_PoporiNPC_B", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/Popori/", L"PoporiB_B.X"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Mesh_PoporiNPC_C", CMesh_Dynamic::Create(m_pGraphic_Device, L"../Bin/Resources/Meshes/DynamicMesh/NPC/Popori/", L"PoporiC_B.X"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 

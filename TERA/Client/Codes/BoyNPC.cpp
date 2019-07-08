@@ -1,20 +1,19 @@
 #include "stdafx.h"
-#include "..\Headers\QuestNPC.h"
-#include "Light_Manager.h"
+#include "..\Headers\BoyNPC.h"
 
 _USING(Client)
 
-CQuestNPC::CQuestNPC(LPDIRECT3DDEVICE9 pGraphic_Device)
+CBoyNPC::CBoyNPC(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CNPC(pGraphic_Device)
 {
 }
 
-CQuestNPC::CQuestNPC(const CQuestNPC & rhs)
+CBoyNPC::CBoyNPC(const CBoyNPC & rhs)
 	: CNPC(rhs)
 {
 }
 
-HRESULT CQuestNPC::Ready_GameObject_Prototype()
+HRESULT CBoyNPC::Ready_GameObject_Prototype()
 {
 	if (FAILED(CGameObject::Ready_GameObject_Prototype()))
 		return E_FAIL;
@@ -22,14 +21,14 @@ HRESULT CQuestNPC::Ready_GameObject_Prototype()
 	return NOERROR;
 }
 
-HRESULT CQuestNPC::Ready_GameObject(void * pArg)
+HRESULT CBoyNPC::Ready_GameObject(void * pArg)
 {
 	if (FAILED(Add_Component()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_Scaling(0.19f, 0.19f, 0.19f);
+	m_pTransformCom->Set_Scaling(0.8f, 0.8f, 0.8f);
 	m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(180.f));
-	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(364.f, 0.f, 364.f));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(503.f, 0.f, 34.f));
 
 	m_pMeshCom->SetUp_AnimationSet(1);
 
@@ -38,18 +37,18 @@ HRESULT CQuestNPC::Ready_GameObject(void * pArg)
 	return NOERROR;
 }
 
-_int CQuestNPC::Update_GameObject(const _float & fTimeDelta)
+_int CBoyNPC::Update_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pTransformCom)
 		return -1;
 
-	CollisionCheck(true);
-	TalkWithPlayer(3, 4, 1, true, 180.f);
+	CollisionCheck(false);
+	TalkWithPlayer(3, 1);
 
 	return _int();
 }
 
-_int CQuestNPC::LateUpdate_GameObject(const _float & fTimeDelta)
+_int CBoyNPC::LateUpdate_GameObject(const _float & fTimeDelta)
 {
 	if (nullptr == m_pRendererCom)
 		return -1;
@@ -67,7 +66,7 @@ _int CQuestNPC::LateUpdate_GameObject(const _float & fTimeDelta)
 	return _int();
 }
 
-HRESULT CQuestNPC::Render_GameObject()
+HRESULT CBoyNPC::Render_GameObject()
 {
 	if (nullptr == m_pShaderCom ||
 		nullptr == m_pTransformCom ||
@@ -112,52 +111,43 @@ HRESULT CQuestNPC::Render_GameObject()
 	pEffect->End();
 
 	Safe_Release(pEffect);
-	
+
 	// [콜라이더 렌더]
 	m_pColliderCom->Render_Collider();
-	m_pColliderEventCom->Render_Collider();
 
 	return NOERROR;
 }
 
-HRESULT CQuestNPC::Add_Component()
+HRESULT CBoyNPC::Add_Component()
 {
 	CNPC::Add_Component();
 
-	// For.Component_Mesh_QuestNPC
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_QuestNPC", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
-		return E_FAIL;
-	
-	// For.Com_Collider_QuestNPC_Event
-	_float fEventSphereScale = 100.f;
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_Sphere", L"Com_Collider_QuestNPC_Event",
-		(CComponent**)&m_pColliderEventCom, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME,
-		m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Bip01-Spine")->CombinedTransformationMatrix)
-		, _vec3(fEventSphereScale, fEventSphereScale, fEventSphereScale), _vec3(0.f, 0.f, 0.f)))))
+	// For.Component_Mesh_BoyNPC
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Mesh_BoyNPC", L"Com_Mesh", (CComponent**)&m_pMeshCom)))
 		return E_FAIL;
 
-	// For.Com_Collider_QuestNPC_Body
-	_float fBodyScale = 40.f;
-	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_Sphere", L"Com_Collider_QuestNPC_Body",
+	// For.Com_Collider_BoyNPC_Body
+	_float fBodyScale = 30.f;
+	if (FAILED(CGameObject::Add_Component(SCENE_STATIC, L"Component_Collider_Sphere", L"Com_Collider_BoyNPC_Body",
 		(CComponent**)&m_pColliderCom, &CCollider::COLLIDERDESC(CCollider::COLLIDERDESC::TYPE_FRAME,
 			m_pTransformCom->Get_WorldMatrixPointer(), &(m_pMeshCom->Get_FrameDesc("Bip01-Spine")->CombinedTransformationMatrix)
 			, _vec3(fBodyScale, fBodyScale, fBodyScale), _vec3(0.f, 0.f, 0.f)))))
 		return E_FAIL;
-		
+
 	return NOERROR;
 }
 
-HRESULT CQuestNPC::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
+HRESULT CBoyNPC::SetUp_ConstantTable(LPD3DXEFFECT pEffect)
 {
 	CNPC::SetUp_ConstantTable(pEffect);
 
 	return NOERROR;
 }
 
-void CQuestNPC::ScriptInfo()
+void CBoyNPC::ScriptInfo()
 {
 	// NPC Title //
-	m_pTitleScript = L"대주교 벨라";
+	m_pTitleScript = L"마을 청년";
 
 	// Quest Start //
 	m_pMainScript[0] = L"못보던 놈인데...\n\n네놈은 누구지?";
@@ -174,35 +164,32 @@ void CQuestNPC::ScriptInfo()
 	m_pReplyScript[3] = L"(...) 다녀오지.";
 }
 
-CQuestNPC * CQuestNPC::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CBoyNPC * CBoyNPC::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-	CQuestNPC* pInstance = new CQuestNPC(pGraphic_Device);
+	CBoyNPC* pInstance = new CBoyNPC(pGraphic_Device);
 
 	if (FAILED(pInstance->Ready_GameObject_Prototype()))
 	{
-		_MSGBOX("CQuestNPC Created Failed");
+		_MSGBOX("CBoyNPC Created Failed");
 		Safe_Release(pInstance);
 	}
 	return pInstance;
 }
 
-CGameObject * CQuestNPC::Clone(void * pArg)
+CGameObject * CBoyNPC::Clone(void * pArg)
 {
-	CQuestNPC* pInstance = new CQuestNPC(*this);
+	CBoyNPC* pInstance = new CBoyNPC(*this);
 
 	if (FAILED(pInstance->Ready_GameObject(pArg)))
 	{
-		_MSGBOX("CQuestNPC Cloned Failed");
+		_MSGBOX("CBoyNPC Cloned Failed");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CQuestNPC::Free()
+void CBoyNPC::Free()
 {
-	//Safe_Release(m_pCameraStatic);
-	//Safe_Release(m_pColliderEventCom);
-
 	CNPC::Free();
 }

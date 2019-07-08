@@ -178,9 +178,18 @@
     <ClInclude Include="..\Headers\Arkus_Run.h" />
     <ClInclude Include="..\Headers\Arkus_Rush.h" />
     <ClInclude Include="..\Headers\Back_Logo.h" />
+    <ClInclude Include="..\Headers\BoyNPC.h" />
     <ClInclude Include="..\Headers\Camera_Dynamic.h" />
     <ClInclude Include="..\Headers\Camera_Static.h" />
+    <ClInclude Include="..\Headers\CartNPC.h" />
+    <ClInclude Include="..\Headers\CatNPC.h" />
+    <ClInclude Include="..\Headers\ContentsNPC.h" />
     <ClInclude Include="..\Headers\Defines.h" />
+    <ClInclude Include="..\Headers\DogNPC.h" />
+    <ClInclude Include="..\Headers\GirlNPC.h" />
+    <ClInclude Include="..\Headers\GroceryNPC.h" />
+    <ClInclude Include="..\Headers\GuardNPC.h" />
+    <ClInclude Include="..\Headers\LionNPC.h" />
     <ClInclude Include="..\Headers\Loading.h" />
     <ClInclude Include="..\Headers\MainApp.h" />
     <ClInclude Include="..\Headers\Monster.h" />
@@ -211,6 +220,9 @@
     <ClInclude Include="..\Headers\Player_Skill_Tumbling.h" />
     <ClInclude Include="..\Headers\Player_Wake.h" />
     <ClInclude Include="..\Headers\Player_WeaponState.h" />
+    <ClInclude Include="..\Headers\PoporiKidA.h" />
+    <ClInclude Include="..\Headers\PoporiKidB.h" />
+    <ClInclude Include="..\Headers\PoporiKidC.h" />
     <ClInclude Include="..\Headers\QMark.h" />
     <ClInclude Include="..\Headers\QuestNPC.h" />
     <ClInclude Include="..\Headers\Scene_Dragon.h" />
@@ -232,6 +244,7 @@
     <ClInclude Include="..\Headers\UI_SkillBoard.h" />
     <ClInclude Include="..\Headers\Unit.h" />
     <ClInclude Include="..\Headers\Weapon.h" />
+    <ClInclude Include="..\Headers\WeaponNPC.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -251,8 +264,17 @@
     <ClCompile Include="..\Codes\Arkus_Run.cpp" />
     <ClCompile Include="..\Codes\Arkus_Rush.cpp" />
     <ClCompile Include="..\Codes\Back_Logo.cpp" />
+    <ClCompile Include="..\Codes\BoyNPC.cpp" />
     <ClCompile Include="..\Codes\Camera_Dynamic.cpp" />
     <ClCompile Include="..\Codes\Camera_Static.cpp" />
+    <ClCompile Include="..\Codes\CartNPC.cpp" />
+    <ClCompile Include="..\Codes\CatNPC.cpp" />
+    <ClCompile Include="..\Codes\ContentsNPC.cpp" />
+    <ClCompile Include="..\Codes\DogNPC.cpp" />
+    <ClCompile Include="..\Codes\GirlNPC.cpp" />
+    <ClCompile Include="..\Codes\GroceryNPC.cpp" />
+    <ClCompile Include="..\Codes\GuardNPC.cpp" />
+    <ClCompile Include="..\Codes\LionNPC.cpp" />
     <ClCompile Include="..\Codes\Loading.cpp" />
     <ClCompile Include="..\Codes\MainApp.cpp" />
     <ClCompile Include="..\Codes\Monster.cpp" />
@@ -283,6 +305,9 @@
     <ClCompile Include="..\Codes\Player_Skill_Tumbling.cpp" />
     <ClCompile Include="..\Codes\Player_Wake.cpp" />
     <ClCompile Include="..\Codes\Player_WeaponState.cpp" />
+    <ClCompile Include="..\Codes\PoporiKidA.cpp" />
+    <ClCompile Include="..\Codes\PoporiKidB.cpp" />
+    <ClCompile Include="..\Codes\PoporiKidC.cpp" />
     <ClCompile Include="..\Codes\QMark.cpp" />
     <ClCompile Include="..\Codes\QuestNPC.cpp" />
     <ClCompile Include="..\Codes\Scene_Dragon.cpp" />
@@ -304,6 +329,7 @@
     <ClCompile Include="..\Codes\UI_SkillBoard.cpp" />
     <ClCompile Include="..\Codes\Unit.cpp" />
     <ClCompile Include="..\Codes\Weapon.cpp" />
+    <ClCompile Include="..\Codes\WeaponNPC.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

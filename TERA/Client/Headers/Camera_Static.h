@@ -25,6 +25,7 @@ public:	// Getter
 	_bool			Get_CameraBackTimeInfo() { return m_bCameraBackTime; }
 	_bool			Get_CameraCtrlAvaliableInfo() { return m_bIsCameraCtrlAvailable; }
 	_bool			Get_TalkingInfo() { return m_bIsTalking; }
+	_bool			Get_CameraRevertInfo() { return m_bIsCameraReverting; }
 
 public:	// Setter
 	void			Set_TurnOnStaticCam(_bool bButton) { m_bIsStaticCamOnAir = bButton; }
@@ -34,6 +35,7 @@ public:	// Setter
 	void			Set_CameraBackTimeInfo(_bool bButton) { m_bCameraBackTime = bButton; }
 	void			Set_CameraCtrlAvaliableInfo(_bool bButton) { m_bIsCameraCtrlAvailable = bButton; }
 	void			Set_TalkingInfo(_bool bButton) { m_bIsTalking = bButton; }
+	void			Set_CameraRevertInfo(_bool bButton) { m_bIsCameraReverting = bButton; }
 
 public:
 	virtual HRESULT Ready_GameObject_Prototype();

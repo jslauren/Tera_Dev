@@ -161,8 +161,11 @@ void CCamera_Static::ChangeView()
 	// NPC와 대화중일땐 아무고또 모타죠? //
 	CUI_Dialog* pUI_Dialog = dynamic_cast<CUI_Dialog*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_UI", 1));
 
-	if (pUI_Dialog->Get_TalkEventAvaliable() == true)
-		return;
+	if (pUI_Dialog != nullptr)
+	{
+		if (pUI_Dialog->Get_TalkEventAvaliable() == true)
+			return;
+	}
 	///////////////////////////////////////
 
 	if (m_bIsStaticCamOnAir == true)
@@ -288,8 +291,8 @@ void CCamera_Static::RevertInitValue()
 		if (m_fCameraDistance < m_fOriginCameraDistance ||
 			m_fCameraHeightValue < m_fOriginCameraHeightValue)
 		{
-			m_fCameraDistance += (m_fTimeDelta * 15.f);
-			m_fCameraHeightValue += (m_fTimeDelta * 10.f);
+			m_fCameraDistance += (m_fTimeDelta * 30.f);
+			m_fCameraHeightValue += (m_fTimeDelta * 26.f);
 
 			if (m_fCameraDistance > m_fOriginCameraDistance)
 				m_fCameraDistance = m_fOriginCameraDistance;
@@ -300,8 +303,8 @@ void CCamera_Static::RevertInitValue()
 		else if (m_fCameraDistance > m_fOriginCameraDistance ||
 				m_fCameraHeightValue > m_fOriginCameraHeightValue)
 		{
-			m_fCameraDistance -= (m_fTimeDelta * 15.f);
-			m_fCameraHeightValue -= (m_fTimeDelta * 10.f);
+			m_fCameraDistance -= (m_fTimeDelta * 30.f);
+			m_fCameraHeightValue -= (m_fTimeDelta * 25.f);
 
 			if (m_fCameraDistance < m_fOriginCameraDistance)
 				m_fCameraDistance = m_fOriginCameraDistance;
@@ -349,7 +352,7 @@ void CCamera_Static::TalkEvent()
 	{
 		if (m_fCameraDistance > 20.f)
 		{
-			m_fCameraDistance -= (m_fTimeDelta * 15.f);
+			m_fCameraDistance -= (m_fTimeDelta * 30.f);
 
 			if (m_fCameraDistance < 20.f)
 				m_fCameraDistance = 20.f;
@@ -357,7 +360,7 @@ void CCamera_Static::TalkEvent()
 
 		if (m_fCameraHeightValue < 16.f)
 		{
-			m_fCameraHeightValue += (m_fTimeDelta * 10.f);
+			m_fCameraHeightValue += (m_fTimeDelta * 25.f);
 
 			if (m_fCameraHeightValue > 16.f)
 				m_fCameraHeightValue = 16.f;

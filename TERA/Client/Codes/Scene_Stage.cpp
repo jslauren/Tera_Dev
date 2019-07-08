@@ -1,25 +1,40 @@
 #include "stdafx.h"
 #include "..\Headers\Scene_Stage.h"
-#include "Scene_Dragon.h"
-#include "Management.h"
 #include "Camera_Dynamic.h"
 #include "Camera_Static.h"
 #include "Light_Manager.h"
-#include "FontManager.h"
-#include "SkyBox.h"
-#include "Terrain.h"
-#include "Player.h"
-#include "Arkus.h"
-#include "Weapon.h"
-#include "Monster.h"
+#include "Scene_Loading.h"
 #include "TerrainObject.h"
+#include "Scene_Dragon.h"
+#include "FontManager.h"
+#include "Management.h"
+#include "Terrain.h"
+#include "SkyBox.h"
+#include "Player.h"
+#include "Weapon.h"
+#include "Arkus.h"
+
 #include "UI_PlayerPoint.h"
 #include "UI_SkillBoard.h"
 #include "UI_Loading.h"
-#include "Scene_Loading.h"
-#include "QuestNPC.h"
-#include "QMark.h"
 #include "UI_Dialog.h"
+
+#include "ContentsNPC.h"
+#include "PoporiKidA.h"
+#include "PoporiKidB.h"
+#include "PoporiKidC.h"
+#include "GroceryNPC.h"
+#include "WeaponNPC.h"
+#include "GuardNPC.h"
+#include "QuestNPC.h"
+#include "CartNPC.h"
+#include "GirlNPC.h"
+#include "LionNPC.h"
+#include "BoyNPC.h"
+#include "CatNPC.h"
+#include "DogNPC.h"
+#include "QMark.h"
+
 
 #define	NEAR			0.2f
 #define FAR				1000.f
@@ -374,8 +389,60 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_Weapon", CWeapon::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	// For.GameObject_NPC
+	// For.GameObject_NPC_Quest
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Quest", CQuestNPC::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Grocery
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Grocery", CGroceryNPC::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Weapon
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Weapon", CWeaponNPC::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Contents
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Contents", CContentsNPC::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Guard
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Guard", CGuardNPC::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Cart
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Cart", CCartNPC::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Boy
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Boy", CBoyNPC::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Girl
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Girl", CGirlNPC::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Cat
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Cat", CCatNPC::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Dog
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Dog", CDogNPC::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Lion
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Lion", CLionNPC::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Popori_A
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Popori_A", CPoporiKidA::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Popori_B
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Popori_B", CPoporiKidB::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Popori_C
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_NPC_Popori_C", CPoporiKidC::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	// For.GameObject_UI_PlayerPoint
@@ -440,6 +507,58 @@ HRESULT CScene_Stage::Ready_Layer_NPC(const _tchar * pLayerTag)
 {
 	// For.GameObject_NPC_Quest
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Quest", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Grocery
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Grocery", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Weapon
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Weapon", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Contents
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Contents", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Guard
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Guard", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Cart
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Cart", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Boy
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Boy", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Girl
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Girl", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Cat
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Cat", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Dog
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Dog", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Lion
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Lion", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Popori_A
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Popori_A", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Popori_B
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Popori_B", SCENE_STAGE, pLayerTag)))
+		return E_FAIL;
+
+	// For.GameObject_NPC_Popori_C
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_NPC_Popori_C", SCENE_STAGE, pLayerTag)))
 		return E_FAIL;
 
 	return NOERROR;

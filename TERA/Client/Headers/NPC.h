@@ -30,8 +30,8 @@ protected:
 	void			PlayerInside(const CCollider* _PlayerCollider);
 	void			TalkEvent(const CCollider* _PlayerCollider);
 	void			LookAtPlayer();
-	void			TalkWithPlayer(_uint _iEndScriptNum, _uint _iInitAniNum = 1);
-	void			TalkEventFree(CUI_Dialog* _pUI_Dialog, _uint iAniNum);
+	void			TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum = 1, _uint _iInitAniNum = 1, _bool _bIsQuestNPC = false, _float fResetViewAngle = 180.f);
+	void			TalkEventFree(CUI_Dialog* _pUI_Dialog, _uint iAniNum, _float fResetViewAngle);
 	virtual void	ScriptInfo();
 
 protected:
@@ -49,6 +49,9 @@ protected:
 	_tchar*			m_pReplyScript[10];
 	_int			m_iScriptNumber = -1;
 	_bool			m_bIsTalkEnded = true;
+	_bool			m_bIsArchitecture = false;
+	_bool			m_bIsQuestNPC = false;
+	_bool			m_bIsLoopOn = false;
 
 public:
 	virtual CGameObject*	Clone(void* pArg = nullptr) = 0;
