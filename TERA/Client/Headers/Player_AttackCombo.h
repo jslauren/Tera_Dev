@@ -17,6 +17,7 @@ public:
 
 private:
 	void						MovePlayerPosition(CPlayer & Player, _float fPointTime, _float fPlayerSpeed, const float& fTimeDelta, void * pArg);
+	void						SoundPlay(CPlayer& Player);
 
 public:
 	static CPlayer_AttackCombo*	Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer& Player, void* pArg = nullptr);

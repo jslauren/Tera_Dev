@@ -17,6 +17,7 @@ public:
 
 private:
 	void							MovePlayerPosition(CPlayer & Player, _float fPlayerSpeed, const float& fTimeDelta, void * pArg, _int iMoveDir = 0);
+	void							SoundPlay(CPlayer& Player);
 
 public:
 	static CPlayer_Skill_CutHead*	Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer& Player, void* pArg = nullptr);

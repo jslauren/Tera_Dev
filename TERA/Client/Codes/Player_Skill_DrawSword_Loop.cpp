@@ -15,6 +15,7 @@ CPlayer_Skill_DrawSword_Loop::CPlayer_Skill_DrawSword_Loop(LPDIRECT3DDEVICE9 pGr
 
 HRESULT CPlayer_Skill_DrawSword_Loop::Initialize_State(CPlayer & Player)
 {
+	Player.Set_SoundCheckInfo(true);
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DrawSwordLoop);
 
 	return NOERROR;
@@ -26,6 +27,9 @@ CPlayerState * CPlayer_Skill_DrawSword_Loop::Input_Keyboard(CPlayer & Player, co
 	{
 		if (CInput_Device::GetInstance()->GetDIMouseState(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 		{
+			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.0001f))
+				SoundPlay(Player);
+
 			if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_W) ||
 				CInput_Device::GetInstance()->Get_DIKeyDown(DIK_S) ||
 				CInput_Device::GetInstance()->Get_DIKeyDown(DIK_A) ||
@@ -39,6 +43,8 @@ CPlayerState * CPlayer_Skill_DrawSword_Loop::Input_Keyboard(CPlayer & Player, co
 
 		else if (CInput_Device::GetInstance()->Get_DIMouseUp(CInput_Device::MOUSEBUTTON::DIM_LBUTTON))
 		{
+			CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_SKILL);
+
 			if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.75f))
 				return CPlayer_Skill_DrawSword::Create(m_pGraphic_Device, Player, &m_iAniState);
 		}
@@ -59,6 +65,17 @@ void CPlayer_Skill_DrawSword_Loop::MovePlayerPosition(CPlayer & Player, _float f
 
 		/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
 		((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
+	}
+}
+
+void CPlayer_Skill_DrawSword_Loop::SoundPlay(CPlayer & Player)
+{
+	if (Player.Get_SoundCheckInfo() == true)
+	{
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_SKILL);
+		CSoundManager::GetInstance()->Play_SoundChannel("Slayer_Tenacity_Casting.ogg", CSoundManager::Channel_ID::CH_SKILL, true);
+
+		Player.Set_SoundCheckInfo(false);
 	}
 }
 

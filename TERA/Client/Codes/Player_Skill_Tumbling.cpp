@@ -16,6 +16,7 @@ CPlayer_Skill_Tumbling::CPlayer_Skill_Tumbling(LPDIRECT3DDEVICE9 pGraphic_Device
 
 HRESULT CPlayer_Skill_Tumbling::Initialize_State(CPlayer & Player)
 {
+	Player.Set_SoundCheckInfo(true);
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::Tumbling);
 
 	return NOERROR;
@@ -25,6 +26,8 @@ CPlayerState * CPlayer_Skill_Tumbling::Input_Keyboard(CPlayer & Player, const fl
 {
 	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Tumbling)
 	{
+		SoundPlay(Player);
+
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.75f))
 		{
 			m_iAniState = 2;
@@ -56,6 +59,17 @@ void CPlayer_Skill_Tumbling::MovePlayerPosition(CPlayer & Player, _float fPlayer
 	//	/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
 	//	((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
 	//}
+}
+
+void CPlayer_Skill_Tumbling::SoundPlay(CPlayer & Player)
+{
+	if (Player.Get_SoundCheckInfo() == true)
+	{
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_SKILL);
+		CSoundManager::GetInstance()->Play_SoundChannel("Popori_M_Slayer.ogg", CSoundManager::Channel_ID::CH_SKILL, false);
+
+		Player.Set_SoundCheckInfo(false);
+	}
 }
 
 CPlayer_Skill_Tumbling * CPlayer_Skill_Tumbling::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer & Player, void * pArg)

@@ -17,6 +17,7 @@ public:
 
 private:
 	void							MovePlayerPosition(CPlayer & Player, _float fPlayerSpeed, const float& fTimeDelta, void * pArg, _int iMoveDir);
+	void							SoundPlay(CPlayer& Player);
 
 private:
 	_bool							m_bisActivate = true;

@@ -53,6 +53,7 @@ CScene_Stage::CScene_Stage(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CScene_Stage::Ready_Scene()
 {
+	CSoundManager::GetInstance()->Stop_AllSound();
 	CSoundManager::GetInstance()->Play_BGM("Accarume_Village.ogg");
 
 	m_bIsAlreadyLoaded = CManagement::GetInstance()->Get_PreventPrototypeLoadInfo();

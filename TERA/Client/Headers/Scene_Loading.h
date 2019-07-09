@@ -29,6 +29,8 @@ private:
 	HRESULT Ready_GameObject_Prototype();
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
 
+	void	SoundSetting();
+
 public:
 	static CScene_Loading*	Create(LPDIRECT3DDEVICE9 pGraphic_Device, SCENEID eID);
 	virtual void			Free();

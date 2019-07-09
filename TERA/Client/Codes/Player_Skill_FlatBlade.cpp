@@ -16,6 +16,7 @@ Player_Skill_FlatBlade::Player_Skill_FlatBlade(LPDIRECT3DDEVICE9 pGraphic_Device
 
 HRESULT Player_Skill_FlatBlade::Initialize_State(CPlayer & Player)
 {
+	Player.Set_SoundCheckInfo(true);
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::FlatBlade);
 
 	return NOERROR;
@@ -29,7 +30,10 @@ CPlayerState * Player_Skill_FlatBlade::Input_Keyboard(CPlayer & Player, const fl
 		AttackAvailableCheck(pArkus, &Player);
 
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.05f))
+		{
+			SoundPlay(Player);
 			MovePlayerPosition(Player, 40.f, fTimeDelta, pArg, 0);
+		}
 
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.18f))
 			AttackEvent(pArkus, &Player, 1);
@@ -81,6 +85,17 @@ void Player_Skill_FlatBlade::MovePlayerPosition(CPlayer & Player, _float fPlayer
 			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
 			((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
 		}
+	}
+}
+
+void Player_Skill_FlatBlade::SoundPlay(CPlayer & Player)
+{
+	if (Player.Get_SoundCheckInfo() == true)
+	{
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_SKILL);
+		CSoundManager::GetInstance()->Play_SoundChannel("Slayer_FlatBlade_Explosion.ogg", CSoundManager::Channel_ID::CH_SKILL, false);
+
+		Player.Set_SoundCheckInfo(false);
 	}
 }
 

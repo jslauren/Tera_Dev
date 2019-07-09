@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "Arkus.h"
 #include "Base.h"
+#include "Time.h"
+#include "SoundManager.h"
 
 _BEGIN(Client)
 

@@ -13,6 +13,7 @@
 #include "Arkus.h"
 #include "TerrainObject.h"
 #include "FontManager.h"
+#include "SoundManager.h" 
 
 #include "UI_PlayerPoint.h"
 #include "UI_BossPoint.h"
@@ -36,6 +37,9 @@ CScene_Dragon::CScene_Dragon(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CScene_Dragon::Ready_Scene()
 {
+	CSoundManager::GetInstance()->Stop_AllSound();
+	CSoundManager::GetInstance()->Play_BGM("Colosseum_02_6.ogg");
+
 	// For.Terrain Data Load
 	if (FAILED(Ready_TerrainLoad()))
 		return E_FAIL;

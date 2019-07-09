@@ -17,6 +17,7 @@ public:
 
 private:
 	void								MovePlayerPosition(CPlayer & Player, _float fPlayerSpeed, const float& fTimeDelta, void * pArg, _int iMoveDir);
+	void								SoundPlay(CPlayer& Player, _uint iSountNum);
 
 public:
 	static CPlayer_Skill_CuttingSlash*	Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer& Player, void* pArg = nullptr);

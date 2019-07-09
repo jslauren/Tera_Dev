@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Input_Device.h"
 #include "Time.h"
+#include "SoundManager.h"
 
 #include "Player_Hit.h"
 #include "Player_Idle.h"
@@ -18,6 +19,9 @@ CPlayer_AttackCombo::CPlayer_AttackCombo(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CPlayer_AttackCombo::Initialize_State(CPlayer & Player)
 {
+	Player.Set_SoundCheckInfo(true);
+	Player.Set_SoundCheckInfo2(true);
+
 	return NOERROR;
 }
 
@@ -36,6 +40,9 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 
 			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
 			{
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.25f))
+					SoundPlay(Player);
+
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
 					AttackEvent(pArkus, &Player, 1);
 
@@ -64,12 +71,15 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
 			{
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.318f))
+					SoundPlay(Player);
+
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 					AttackEvent(pArkus, &Player, 1);
 
-				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 				{
 					if (Player.CollisionCheck() == true)
 					{
@@ -94,6 +104,9 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
 			{
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.25f))
+					SoundPlay(Player);
+
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.55f))
@@ -124,6 +137,9 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo4)
 			{
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.35f))
+					SoundPlay(Player);
+
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
@@ -160,6 +176,9 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 
 			if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
 			{
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.25f))
+					SoundPlay(Player);
+
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
 					AttackEvent(pArkus, &Player, 1);
 
@@ -187,12 +206,15 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
 			{
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.318f))
+					SoundPlay(Player);
+
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.65f))
 					AttackEvent(pArkus, &Player, 1);
 
-				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.8f))
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.85f))
 				{
 					if (Player.CollisionCheck() == true)
 					{
@@ -216,6 +238,9 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
 			{
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.25f))
+					SoundPlay(Player);
+
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.55f))
@@ -245,6 +270,9 @@ CPlayerState * CPlayer_AttackCombo::Input_Keyboard(CPlayer & Player, const float
 			}
 			else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo4)
 			{
+				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.35f))
+					SoundPlay(Player);
+
 				MovePlayerPosition(Player, 0.1f, 15.f, fTimeDelta, pAgr);
 
 				if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.45f))
@@ -294,6 +322,42 @@ void CPlayer_AttackCombo::MovePlayerPosition(CPlayer & Player, _float fPointTime
 			/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
 			((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
 		}
+	}
+}
+
+void CPlayer_AttackCombo::SoundPlay(CPlayer& Player)
+{
+	if (Player.Get_SoundCheckInfo() == true)
+	{
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_ATTACK);
+
+		srand((unsigned)time(NULL));
+
+		int iRandMusic = rand() % 4;
+
+		if (iRandMusic == 0)
+			CSoundManager::GetInstance()->Play_SoundChannel("Weapon_Sword_L_00.ogg", CSoundManager::Channel_ID::CH_ATTACK, false);
+		else if (iRandMusic == 1)
+			CSoundManager::GetInstance()->Play_SoundChannel("Weapon_Sword_L_01.ogg", CSoundManager::Channel_ID::CH_ATTACK, false);
+		else if (iRandMusic == 2)
+			CSoundManager::GetInstance()->Play_SoundChannel("Weapon_Sword_L_02.ogg", CSoundManager::Channel_ID::CH_ATTACK, false);
+		else if (iRandMusic == 3)
+			CSoundManager::GetInstance()->Play_SoundChannel("Weapon_Sword_L_06.ogg", CSoundManager::Channel_ID::CH_ATTACK, false);
+
+		Player.Set_SoundCheckInfo(false);
+	}
+	if (Player.Get_SoundCheckInfo2() == true)
+	{
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_PLAYER_VOICE);
+		
+		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo1)
+			CSoundManager::GetInstance()->Play_SoundChannel("Popori_M_Fighter.ogg", CSoundManager::Channel_ID::CH_PLAYER_VOICE, false);
+		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo2)
+			CSoundManager::GetInstance()->Play_SoundChannel("Popori_M_Sorcerer.ogg", CSoundManager::Channel_ID::CH_PLAYER_VOICE, false);
+		else if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Combo3)
+			CSoundManager::GetInstance()->Play_SoundChannel("Popori_M_Berserker.ogg", CSoundManager::Channel_ID::CH_PLAYER_VOICE, false);
+		
+		Player.Set_SoundCheckInfo2(false);
 	}
 }
 

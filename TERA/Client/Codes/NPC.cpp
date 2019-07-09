@@ -2,6 +2,7 @@
 #include "..\Headers\NPC.h"
 #include "Object_Manager.h"
 #include "EventManager.h"
+#include "SoundManager.h"
 #include "Input_Device.h"
 #include "Camera_Static.h"
 #include "UI_Dialog.h"
@@ -21,9 +22,11 @@ CNPC::CNPC(const CNPC & rhs)
 	: CUnit(rhs)
 	, m_pCameraStatic(dynamic_cast<CCamera_Static*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_Camera", 1)))
 	, m_pQMark(dynamic_cast<CQMark*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_UI", 0)))
+	, m_pPlayer(dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player")))
 {
 	Safe_AddRef(m_pCameraStatic);
 	Safe_AddRef(m_pQMark);
+	Safe_AddRef(m_pPlayer);
 }
 
 HRESULT CNPC::Ready_GameObject_Prototype()
@@ -243,6 +246,9 @@ void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum, _uint _iI
 				return;
 			}
 
+			m_pPlayer->Set_NPCSoundCheckInfo(true);
+			//	SoundPlay(m_pSoundKey);
+
 			if (m_iScriptNumber == _iLoopScriptNum)
 			{
 				m_bIsLoopOn = true;
@@ -259,6 +265,7 @@ void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum, _uint _iI
 
 void CNPC::TalkEventFree(CUI_Dialog * _pUI_Dialog, _uint iAniNum, _float fResetViewAngle)
 {
+	m_pPlayer->Set_NPCSoundCheckInfo(false);
 	m_pMeshCom->SetUp_AnimationSet(iAniNum);
 	m_pCameraStatic->Set_TalkingInfo(false);
 	m_bIsTalking = false;
@@ -291,8 +298,23 @@ void CNPC::ScriptInfo()
 	//m_pReplyScript[3] = L"(...) ´Ù³à¿ÀÁö.";
 }
 
+void CNPC::SoundPlay(const string& pSoundKey, CSoundManager::Channel_ID eID, bool bLoop)
+{
+	if (m_pPlayer == nullptr)
+		return;
+
+	if (m_pPlayer->Get_NPCSoundCheckInfo() == true)
+	{
+		CSoundManager::GetInstance()->Stop_Sound(eID);
+		CSoundManager::GetInstance()->Play_SoundChannel(pSoundKey, eID, bLoop);
+
+		m_pPlayer->Set_NPCSoundCheckInfo(false);
+	}
+}
+
 void CNPC::Free()
 {
+	Safe_Release(m_pPlayer);
 	Safe_Release(m_pQMark);
 	Safe_Release(m_pCameraStatic);
 	Safe_Release(m_pColliderEventCom);

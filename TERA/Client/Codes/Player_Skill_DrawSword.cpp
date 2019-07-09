@@ -14,6 +14,7 @@ CPlayer_Skill_DrawSword::CPlayer_Skill_DrawSword(LPDIRECT3DDEVICE9 pGraphic_Devi
 
 HRESULT CPlayer_Skill_DrawSword::Initialize_State(CPlayer & Player)
 {
+	Player.Set_SoundCheckInfo(true);
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::DrawSword);
 
 	return NOERROR;
@@ -23,6 +24,9 @@ CPlayerState * CPlayer_Skill_DrawSword::Input_Keyboard(CPlayer & Player, const f
 {
 	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::DrawSword)
 	{
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.001f))
+			SoundPlay(Player);
+
 		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
 		AttackAvailableCheck(pArkus, &Player);
 
@@ -55,6 +59,17 @@ void CPlayer_Skill_DrawSword::MovePlayerPosition(CPlayer & Player, _float fPlaye
 
 		/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
 		((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
+	}
+}
+
+void CPlayer_Skill_DrawSword::SoundPlay(CPlayer & Player)
+{
+	if (Player.Get_SoundCheckInfo() == true)
+	{
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_SKILL);
+		CSoundManager::GetInstance()->Play_SoundChannel("Slayer_ShinySlash_Shot_01.ogg", CSoundManager::Channel_ID::CH_SKILL, false);
+
+		Player.Set_SoundCheckInfo(false);
 	}
 }
 

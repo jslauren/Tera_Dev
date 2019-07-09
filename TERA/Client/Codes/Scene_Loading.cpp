@@ -8,6 +8,8 @@
 #include "UI_Loading.h"
 #include "Loading.h"
 #include "QuestNPC.h"
+#include "SoundManager.h"
+#include "Time.h"
 
 _USING(Client)
 
@@ -18,6 +20,8 @@ CScene_Loading::CScene_Loading(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CScene_Loading::Ready_Scene(SCENEID eID)
 {
+	SoundSetting();
+
 	m_eCurrentScene = eID;
 
 	// 로고씬에서 사용할 원형컴포넌트들의 생성.
@@ -204,6 +208,21 @@ HRESULT CScene_Loading::Ready_Layer_BackGround(const _tchar * pLayerTag)
 		return E_FAIL;
 
 	return NOERROR;
+}
+
+void CScene_Loading::SoundSetting()
+{
+	CSoundManager::GetInstance()->Stop_AllSound();
+
+	srand((unsigned)time(NULL));
+
+	int iRandMusic = rand() % 2;
+
+	if (iRandMusic == 0)
+		CSoundManager::GetInstance()->Play_BGM("Flower_Garden.ogg");
+	else if(iRandMusic == 1)
+		CSoundManager::GetInstance()->Play_BGM("WarriorAcademy_Vellica.ogg");
+
 }
 
 CScene_Loading * CScene_Loading::Create(LPDIRECT3DDEVICE9 pGraphic_Device, SCENEID eID)

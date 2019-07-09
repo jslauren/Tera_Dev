@@ -16,6 +16,7 @@ CPlayer_Skill_JawBreaker::CPlayer_Skill_JawBreaker(LPDIRECT3DDEVICE9 pGraphic_De
 
 HRESULT CPlayer_Skill_JawBreaker::Initialize_State(CPlayer & Player)
 {
+	Player.Set_SoundCheckInfo(true);
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::JawBreaker);
 
 	return NOERROR;
@@ -27,6 +28,9 @@ CPlayerState * CPlayer_Skill_JawBreaker::Input_Keyboard(CPlayer & Player, const 
 	{
 		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
 		AttackAvailableCheck(pArkus, &Player);
+
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.05f))
+			SoundPlay(Player);
 
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.2f))
 			MovePlayerPosition(Player, 40.f, fTimeDelta, pArg, 0);
@@ -78,6 +82,17 @@ void CPlayer_Skill_JawBreaker::MovePlayerPosition(CPlayer & Player, _float fPlay
 
 		/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
 		((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
+	}
+}
+
+void CPlayer_Skill_JawBreaker::SoundPlay(CPlayer & Player)
+{
+	if (Player.Get_SoundCheckInfo() == true)
+	{
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_SKILL);
+		CSoundManager::GetInstance()->Play_SoundChannel("Slayer_JawBreaker_Long.ogg", CSoundManager::Channel_ID::CH_SKILL, false);
+
+		Player.Set_SoundCheckInfo(false);
 	}
 }
 

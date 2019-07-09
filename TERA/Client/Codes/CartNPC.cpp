@@ -3,6 +3,7 @@
 #include "QuestNPC.h"
 #include "Management.h"
 #include "Scene_Loading.h"
+#include "Player.h"
 
 _USING(Client)
 
@@ -62,6 +63,7 @@ _int CCartNPC::Update_GameObject(const _float & fTimeDelta)
 	}
 
 	TalkWithPlayer(m_iEndScriptNum, m_iLoopScriptNum, 1, false, 0);
+	SoundPlay("Horse_Idle01.ogg");
 
 	return _int();
 }

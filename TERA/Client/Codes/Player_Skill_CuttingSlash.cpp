@@ -16,6 +16,7 @@ CPlayer_Skill_CuttingSlash::CPlayer_Skill_CuttingSlash(LPDIRECT3DDEVICE9 pGraphi
 
 HRESULT CPlayer_Skill_CuttingSlash::Initialize_State(CPlayer & Player)
 {
+	Player.Set_SoundCheckInfo(true);
 	Player.Set_AniIndex(CPlayer::PLAYER_ANI::CuttingSlash);
 
 	return NOERROR;
@@ -28,8 +29,14 @@ CPlayerState * CPlayer_Skill_CuttingSlash::Input_Keyboard(CPlayer & Player, cons
 		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
 		AttackAvailableCheck(pArkus, &Player);
 
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.08f))
+			SoundPlay(Player, 0);
+
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.2f))
 			MovePlayerPosition(Player, 40.f, fTimeDelta, pArg, 0);
+
+		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.25f))
+			SoundPlay(Player, 1);
 
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.43f))
 			MovePlayerPosition(Player, -38.f, fTimeDelta, pArg, 0);
@@ -78,6 +85,21 @@ void CPlayer_Skill_CuttingSlash::MovePlayerPosition(CPlayer & Player, _float fPl
 
 		/* ※※※※※※※진짜 이동하면 꼭 호출해야합니다※※※※※※.*/
 		((CNavigation*)(pArg))->SetUp_CurrentIndex(iCellIndx);
+	}
+}
+
+void CPlayer_Skill_CuttingSlash::SoundPlay(CPlayer & Player, _uint iSountNum)
+{
+	if (Player.Get_SoundCheckInfo() == true)
+	{
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_SKILL);
+
+		if(iSountNum == 0)
+			CSoundManager::GetInstance()->Play_SoundChannel("Slayer_CuttingSlash_Casting_00.ogg", CSoundManager::Channel_ID::CH_SKILL, false);
+		else if(iSountNum == 1)
+			CSoundManager::GetInstance()->Play_SoundChannel("Slayer_CuttingSlash_Casting_01.ogg", CSoundManager::Channel_ID::CH_SKILL, false);
+
+		Player.Set_SoundCheckInfo(false);
 	}
 }
 

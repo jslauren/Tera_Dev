@@ -2,11 +2,14 @@
 #include "Unit.h"
 #include "Defines.h"
 #include "GameObject.h"
+#include "SoundManager.h"
 
 _BEGIN(Client)
 
 class CQMark;
+class CPlayer;
 class CUI_Dialog;
+class CSoundManager;
 class CCamera_Static;
 class CNPC : public CUnit
 {
@@ -45,10 +48,13 @@ protected:
 	void			TalkEventFree(CUI_Dialog* _pUI_Dialog, _uint iAniNum, _float fResetViewAngle);
 	virtual void	ScriptInfo();
 
+	void			SoundPlay(const string& pSoundKey, CSoundManager::Channel_ID eID = CSoundManager::Channel_ID::CH_TOWN_NPC, bool bLoop = false);
+
 protected:
 	CCollider*		m_pColliderEventCom = nullptr;
 	CCamera_Static*	m_pCameraStatic = nullptr;
 	CQMark*			m_pQMark = nullptr;
+	CPlayer*		m_pPlayer = nullptr;
 
 protected:
 	_float			m_fCulling = 5.f;
@@ -67,6 +73,9 @@ protected:
 	_bool			m_bIsLoopOn = false;
 	_int			m_iEndScriptNum = 1;
 	_int			m_iLoopScriptNum = 1;
+
+	string						m_pSoundKey = "";
+	CSoundManager::Channel_ID	m_eSoundID = CSoundManager::Channel_ID::CH_TOWN_NPC;
 
 public:
 	virtual CGameObject*	Clone(void* pArg = nullptr) = 0;
