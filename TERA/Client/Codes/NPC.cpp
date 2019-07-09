@@ -246,7 +246,7 @@ void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum, _uint _iI
 				return;
 			}
 
-			m_pPlayer->Set_NPCSoundCheckInfo(true);
+			//m_pPlayer->Set_NPCSoundCheckInfo(true);
 			//	SoundPlay(m_pSoundKey);
 
 			if (m_iScriptNumber == _iLoopScriptNum)
@@ -265,7 +265,7 @@ void CNPC::TalkWithPlayer(_uint _iEndScriptNum, _uint _iLoopScriptNum, _uint _iI
 
 void CNPC::TalkEventFree(CUI_Dialog * _pUI_Dialog, _uint iAniNum, _float fResetViewAngle)
 {
-	m_pPlayer->Set_NPCSoundCheckInfo(false);
+//	m_pPlayer->Set_NPCSoundCheckInfo(false);
 	m_pMeshCom->SetUp_AnimationSet(iAniNum);
 	m_pCameraStatic->Set_TalkingInfo(false);
 	m_bIsTalking = false;
