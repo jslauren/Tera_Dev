@@ -94,6 +94,21 @@ HRESULT CScene_Dragon::Ready_Scene()
 
 _int CScene_Dragon::Update_Scene(const _float & fTimeDelta)
 {
+	CCamera_Dynamic* pCameraDynamic = dynamic_cast<CCamera_Dynamic*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera"));
+
+	if (pCameraDynamic != nullptr)
+	{
+		if (pCameraDynamic->Get_PlayDynamicCamInfo() == false)
+		{
+			if (m_bIsSoundChanged == false)
+			{
+				CSoundManager::GetInstance()->Stop_AllSound();
+				CSoundManager::GetInstance()->Play_BGM("Boss_Battle_7.ogg");
+				m_bIsSoundChanged = true;
+			}
+		}
+	}
+
 	if (m_bIsSceneFirstPlay == true)
 	{
 		dynamic_cast<CCamera_Dynamic*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Camera", 0))->Set_CurrentScene(SCENE_DRAGON);

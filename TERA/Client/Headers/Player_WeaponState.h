@@ -15,6 +15,10 @@ public:
 	virtual CPlayerState*		Input_Keyboard(CPlayer& Player, const float& fTimeDelta, BYTE KeyID, void* pArg);
 	virtual void				Update_State(CPlayer& Player, const float& fTimeDelta);
 
+private:
+	void						SoundPlay(CPlayer& Player, _uint iSoundNum);
+
+
 public:
 	static CPlayer_WeaponState*	Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer& Player, void* pArg = nullptr);
 	virtual void				Free();

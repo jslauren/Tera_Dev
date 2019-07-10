@@ -17,7 +17,7 @@ public:
 
 private:
 	void								MovePlayerPosition(CPlayer & Player, _float fPlayerSpeed, const float& fTimeDelta, void * pArg, _int iMoveDir);
-	void								SoundPlay(CPlayer& Player, _uint iSountNum);
+	void								SoundPlay(CPlayer& Player, _uint iSoundNum);
 
 public:
 	static CPlayer_Skill_StingerBlade*	Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer& Player, void* pArg = nullptr);

@@ -63,7 +63,7 @@ _int CCartNPC::Update_GameObject(const _float & fTimeDelta)
 	}
 
 	TalkWithPlayer(m_iEndScriptNum, m_iLoopScriptNum, 1, false, 0);
-	SoundPlay("Horse_Idle01.ogg");
+//	SoundPlay("Horse_Idle01.ogg", CSoundManager::Channel_ID::CH_NPC_HORSE);
 
 	return _int();
 }

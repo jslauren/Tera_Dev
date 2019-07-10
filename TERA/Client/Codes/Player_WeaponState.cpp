@@ -15,6 +15,8 @@ CPlayer_WeaponState::CPlayer_WeaponState(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CPlayer_WeaponState::Initialize_State(CPlayer & Player)
 {
+	Player.Set_SoundCheckInfo(true);
+	Player.Set_SoundCheckInfo2(true);
 	//Player.Set_AniIndex(CPlayer::PLAYER_STATE::OUTWEAPON);
 
 	return NOERROR;
@@ -24,6 +26,8 @@ CPlayerState * CPlayer_WeaponState::Input_Keyboard(CPlayer & Player, const float
 {
 	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::OutWeapon)
 	{
+		SoundPlay(Player, 0);
+
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.41f))
 			dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", -1))->Set_BoneMatrix(2);
 
@@ -36,6 +40,8 @@ CPlayerState * CPlayer_WeaponState::Input_Keyboard(CPlayer & Player, const float
 	}
 	else if(Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::InWeapon)
 	{
+		SoundPlay(Player, 1);
+
 		if (Player.Get_Mesh_Bone()->IsAnimationEnded(0.6f))
 			dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", -1))->Set_BoneMatrix(1);
 
@@ -52,6 +58,28 @@ CPlayerState * CPlayer_WeaponState::Input_Keyboard(CPlayer & Player, const float
 
 void CPlayer_WeaponState::Update_State(CPlayer & Player, const float & fTimeDelta)
 {
+}
+
+void CPlayer_WeaponState::SoundPlay(CPlayer& Player, _uint iSoundNum)
+{
+	if (Player.Get_SoundCheckInfo() == true &&
+		iSoundNum == 0)
+	{
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_WEAPON_STATE);
+
+		CSoundManager::GetInstance()->Play_SoundChannel("OutWeapon_TwohandSword.ogg", CSoundManager::Channel_ID::CH_WEAPON_STATE, false);
+
+		Player.Set_SoundCheckInfo(false);
+	}
+	if (Player.Get_SoundCheckInfo2() == true &&
+		iSoundNum == 1)
+	{
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_WEAPON_STATE);
+
+		CSoundManager::GetInstance()->Play_SoundChannel("Sword_InWeapon_00.ogg", CSoundManager::Channel_ID::CH_WEAPON_STATE, false);
+
+		Player.Set_SoundCheckInfo2(false);
+	}
 }
 
 CPlayer_WeaponState * CPlayer_WeaponState::Create(LPDIRECT3DDEVICE9 pGraphicDevice, CPlayer & Player, void* pArg)

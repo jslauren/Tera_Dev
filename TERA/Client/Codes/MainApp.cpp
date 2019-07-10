@@ -90,7 +90,7 @@ HRESULT CMainApp::Render_MainApp()
 
 	//// MainApp 출력 부분 ////
 	{
-		m_pGraphic_Device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, D3DXCOLOR(0.f, 0.f, 1.f, 1.f), 1.f, 0);
+		m_pGraphic_Device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL, D3DXCOLOR(0.f, 0.f, 0.f, 1.f), 1.f, 0);
 		m_pGraphic_Device->BeginScene();
 
 		m_pRenderer->Render_RenderGroup();

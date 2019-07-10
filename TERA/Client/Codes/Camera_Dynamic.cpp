@@ -5,6 +5,7 @@
 #include "Scene_Dragon.h"
 #include "Camera_Static.h"
 #include "SkyBox_Dragon.h"
+#include "SoundManager.h"
 #include "Layer.h"
 #include "Arkus.h"
 #include "Player.h"

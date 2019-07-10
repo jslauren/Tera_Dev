@@ -35,6 +35,7 @@ private:
 private:
 	_float	m_fDetail = 1.f;
 	_bool	m_bIsSceneFirstPlay = true;
+	_bool	m_bIsSoundChanged = false;
 
 private:
 	map<int, TERRAINDATA*>					m_MapTerrainData;

@@ -89,23 +89,23 @@ void CPlayer_Skill_StingerBlade::MovePlayerPosition(CPlayer & Player, _float fPl
 	}
 }
 
-void CPlayer_Skill_StingerBlade::SoundPlay(CPlayer & Player, _uint iSountNum)
+void CPlayer_Skill_StingerBlade::SoundPlay(CPlayer & Player, _uint iSoundNum)
 {
 	if (Player.Get_SoundCheckInfo() == true && 
-		iSountNum == 0)
+		iSoundNum == 0)
 	{
-		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_SKILL);
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_WEAPON_STATE);
 		
-		CSoundManager::GetInstance()->Play_SoundChannel("Slayer_StingerBlade_Casting.ogg", CSoundManager::Channel_ID::CH_SKILL, false);
+		CSoundManager::GetInstance()->Play_SoundChannel("Slayer_StingerBlade_Casting.ogg", CSoundManager::Channel_ID::CH_WEAPON_STATE, false);
 
 		Player.Set_SoundCheckInfo(false);
 	}
 	if (Player.Get_SoundCheckInfo2() == true &&
-		iSountNum == 1)
+		iSoundNum == 1)
 	{
-		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_SKILL);
+		CSoundManager::GetInstance()->Stop_Sound(CSoundManager::Channel_ID::CH_WEAPON_STATE);
 
-		CSoundManager::GetInstance()->Play_SoundChannel("Slayer_StingerBlade_Shot.ogg", CSoundManager::Channel_ID::CH_SKILL, false);
+		CSoundManager::GetInstance()->Play_SoundChannel("Slayer_StingerBlade_Shot.ogg", CSoundManager::Channel_ID::CH_WEAPON_STATE, false);
 
 		Player.Set_SoundCheckInfo2(false);
 	}

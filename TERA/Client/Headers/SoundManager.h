@@ -11,7 +11,7 @@ class CSoundManager final : public CBase
 public:
 	enum Channel_ID 
 	{
-		CH_BGM, CH_ATTACK, CH_SKILL, CH_PLAYER_VOICE, CH_TOWN_NPC, CH_END
+		CH_BGM, CH_ATTACK, CH_SKILL, CH_PLAYER_VOICE, CH_TOWN_NPC, CH_WEAPON_STATE, CH_NPC_HORSE, CH_END
 	};
 
 private:
