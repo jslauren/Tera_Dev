@@ -304,6 +304,12 @@
     <Filter Include="05. Sound\SoundManager">
       <UniqueIdentifier>{3222302d-87fc-4ece-a2c9-d5a56848e8f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06. Effect">
+      <UniqueIdentifier>{87bfd20d-7051-4871-8438-be58921c0865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Effect\HitEffect">
+      <UniqueIdentifier>{bde83589-02f4-4d40-a482-134f2222f62f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -564,6 +570,12 @@
     <ClInclude Include="..\Headers\SoundManager.h">
       <Filter>05. Sound\SoundManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\Effect.h">
+      <Filter>06. Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\HitEffect.h">
+      <Filter>06. Effect\HitEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -811,6 +823,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\SoundManager.cpp">
       <Filter>05. Sound\SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\Effect.cpp">
+      <Filter>06. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\HitEffect.cpp">
+      <Filter>06. Effect\HitEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

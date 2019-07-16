@@ -69,7 +69,7 @@ HRESULT CLoading::Ready_Stage_Component()
 	m_bIsAlreadyLoaded = CManagement::GetInstance()->Get_PreventPrototypeLoadInfo();
 
 	if (m_bIsAlreadyLoaded == false)
-		m_iTotalRsrcNum = 80;
+		m_iTotalRsrcNum = 81;
 	else
 		m_iTotalRsrcNum = 6;
 
@@ -111,6 +111,11 @@ HRESULT CLoading::Ready_Stage_Component()
 
 	if (m_bIsAlreadyLoaded == true)
 		return NOERROR;
+
+	// For.Com_Buffer
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_RcTex", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
 
 	// For.Component_Buffer_UI_Point_Board
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Point_Board", CBuffer_RcTex::Create(m_pGraphic_Device))))
@@ -458,7 +463,7 @@ HRESULT CLoading::Ready_Dragon_Component()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
-	m_iTotalRsrcNum = 15;
+	m_iTotalRsrcNum = 17;
 	m_iCurrentRsrcNum = 0;
 	m_iComplete = 0;
 
@@ -478,6 +483,11 @@ HRESULT CLoading::Ready_Dragon_Component()
 		return E_FAIL;
 	CalculatedCompleteNumber();
 
+	// For.Component_Shader_Effect
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Shader_Effect", CShader::Create(m_pGraphic_Device, L"../Bin/ShaderFiles/Shader_Effect.fx"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
 	// [Buffer & Texture]
 	// For.Component_Buffer_CubeBox
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Buffer_CubeBox", CBuffer_CubeTex::Create(m_pGraphic_Device))))
@@ -486,6 +496,11 @@ HRESULT CLoading::Ready_Dragon_Component()
 
 	// For.Component_Texture_SkyBox
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_DRAGON, L"Component_Texture_SkyBox", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_CUBE, L"../Bin/Resources/Textures/SkyBox/Burger%d.dds", 4))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Texture_HitEffect
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_HitEffect", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect/Explosion/Explosion%d.png", 90))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 

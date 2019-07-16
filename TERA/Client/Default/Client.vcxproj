@@ -186,9 +186,11 @@
     <ClInclude Include="..\Headers\ContentsNPC.h" />
     <ClInclude Include="..\Headers\Defines.h" />
     <ClInclude Include="..\Headers\DogNPC.h" />
+    <ClInclude Include="..\Headers\Effect.h" />
     <ClInclude Include="..\Headers\GirlNPC.h" />
     <ClInclude Include="..\Headers\GroceryNPC.h" />
     <ClInclude Include="..\Headers\GuardNPC.h" />
+    <ClInclude Include="..\Headers\HitEffect.h" />
     <ClInclude Include="..\Headers\LionNPC.h" />
     <ClInclude Include="..\Headers\Loading.h" />
     <ClInclude Include="..\Headers\MainApp.h" />
@@ -272,9 +274,11 @@
     <ClCompile Include="..\Codes\CatNPC.cpp" />
     <ClCompile Include="..\Codes\ContentsNPC.cpp" />
     <ClCompile Include="..\Codes\DogNPC.cpp" />
+    <ClCompile Include="..\Codes\Effect.cpp" />
     <ClCompile Include="..\Codes\GirlNPC.cpp" />
     <ClCompile Include="..\Codes\GroceryNPC.cpp" />
     <ClCompile Include="..\Codes\GuardNPC.cpp" />
+    <ClCompile Include="..\Codes\HitEffect.cpp" />
     <ClCompile Include="..\Codes\LionNPC.cpp" />
     <ClCompile Include="..\Codes\Loading.cpp" />
     <ClCompile Include="..\Codes\MainApp.cpp" />

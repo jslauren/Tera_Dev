@@ -88,7 +88,7 @@ HRESULT CQuestNPC::Render_GameObject()
 		nullptr == m_pColliderCom)
 		return E_FAIL;
 
-	if (CManagement::GetInstance()->Get_CurrentScene() != SCENE_LOADING)
+	if (CManagement::GetInstance()->Get_CurrentScene() == SCENE_STAGE)
 	{
 		m_pMeshCom->Play_Animation(m_fTimeDelta);
 

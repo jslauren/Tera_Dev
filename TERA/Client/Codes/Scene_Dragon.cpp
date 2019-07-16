@@ -14,6 +14,7 @@
 #include "TerrainObject.h"
 #include "FontManager.h"
 #include "SoundManager.h" 
+#include "HitEffect.h"
 
 #include "UI_PlayerPoint.h"
 #include "UI_BossPoint.h"
@@ -82,6 +83,10 @@ HRESULT CScene_Dragon::Ready_Scene()
 
 	// For.Layer_BackGround
 	if (FAILED(Ready_Layer_BackGround(L"Layer_BackGround")))
+		return E_FAIL;
+
+	// For.Layer_BackGround
+	if (FAILED(Ready_Layer_Effect(L"Layer_Effect")))
 		return E_FAIL;
 	
 	SetCutSceneEvent();
@@ -397,6 +402,10 @@ HRESULT CScene_Dragon::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_DRAGON, L"GameObject_Arkus", CArkus::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_Effect
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_HitEffect", CHitEffect::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
@@ -449,6 +458,15 @@ HRESULT CScene_Dragon::Ready_Layer_BackGround(const _tchar* pLayerTag)
 	// For.Terrain
 	if (FAILED(Add_Object(SCENE_DRAGON, L"GameObject_Terrain", SCENE_DRAGON, pLayerTag, (void*)&m_fDetail)))
 		return E_FAIL;
+
+	return NOERROR;
+}
+
+HRESULT CScene_Dragon::Ready_Layer_Effect(const _tchar * pLayerTag)
+{
+	//// For.Effect
+	//if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_HitEffect", SCENE_STATIC, pLayerTag)))
+	//	return E_FAIL;
 
 	return NOERROR;
 }

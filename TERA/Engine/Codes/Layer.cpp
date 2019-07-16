@@ -37,15 +37,17 @@ _int CLayer::Update_Layer(const _float & fTimeDelta)
 {
 	_int		iExitCode = 0;
 
-	for (auto& pGameObject : m_ObjectList)
+	for (auto& iter = m_ObjectList.begin(); iter != m_ObjectList.end(); )
 	{
-		if (nullptr != pGameObject)
+		if ((*iter)->Update_GameObject(fTimeDelta) == -1)
 		{
-			iExitCode = pGameObject->Update_GameObject(fTimeDelta);
-			if (iExitCode & 0x80000000)
-				return iExitCode;
+			Safe_Release(*iter);
+			iter = m_ObjectList.erase(iter);
 		}
+		else
+			++iter;
 	}
+
 	return _int(iExitCode);
 }
 
@@ -53,15 +55,17 @@ _int CLayer::LateUpdate_Layer(const _float & fTimeDelta)
 {
 	_int		iExitCode = 0;
 
-	for (auto& pGameObject : m_ObjectList)
+	for (auto& iter = m_ObjectList.begin(); iter != m_ObjectList.end(); )
 	{
-		if (nullptr != pGameObject)
+		if ((*iter)->LateUpdate_GameObject(fTimeDelta) == -1)
 		{
-			iExitCode = pGameObject->LateUpdate_GameObject(fTimeDelta);
-			if (iExitCode & 0x80000000)
-				return iExitCode;
+			Safe_Release(*iter);
+			iter = m_ObjectList.erase(iter);
 		}
+		else
+			++iter;
 	}
+
 	return _int(iExitCode);
 }
 

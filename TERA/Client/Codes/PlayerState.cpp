@@ -69,6 +69,10 @@ void CPlayerState::AttackEvent(CArkus* pArkus, CPlayer* Player, _uint iAvailable
 			CUI_DamageFont_Manager::GetInstance()->Create_DamageFont(m_pGraphic_Device, *Player->Get_Collider()->Get_CollisionPos(), (_float)Player->Get_PlayerOffenceValue());
 			m_iHitCount++;
 
+			_vec3 vColliderPos = *Player->Get_Collider()->Get_CollisionPos();
+
+			CObject_Manager::GetInstance()->Add_Object(SCENE_STATIC, L"GameObject_HitEffect", SCENE_STATIC, L"Layer_Effect", &vColliderPos);
+
 			m_bIsDamageAvailable = false;
 		}
 	}
