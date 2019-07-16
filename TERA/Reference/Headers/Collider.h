@@ -57,6 +57,7 @@ public:	// Getter
 	const _float	Get_Radius() const { return m_fRadius; }
 	const _vec3*	Get_LookDistance() const { return &m_vLookDistance; }
 	const _vec3*	Get_CollisionPos() const { return &m_vCollisionCheckPosition; }
+
 	const _bool		Get_ColliderRenderInfo() { return m_bIsRendering; }
 
 public:	// Setter
@@ -71,6 +72,7 @@ public:
 	_bool Collision_AABB(const CCollider* pTargetCollider);
 	_bool Collision_OBB(const CCollider* pTargetCollider);
 	_bool Collision_Sphere(const CCollider* pTargetCollider);
+	_vec3 CalculateCollisionPos(const CCollider* pTargetCollider);
 
 private:
 	LPD3DXMESH		m_pMesh = nullptr;

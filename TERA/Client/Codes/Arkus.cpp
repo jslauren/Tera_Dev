@@ -58,6 +58,8 @@ _int CArkus::Update_GameObject(const _float & fTimeDelta)
 
 	CUnit::Update_GameObject(fTimeDelta);
 
+	ColliderUpdate();
+
 	m_fTimeDelta = fTimeDelta;
 
 	EnemyPositionCheck();
@@ -426,6 +428,7 @@ _bool CArkus::CollisionCheck()
 			if (m_bCollisionPart[i] == true)
 			{
 				m_bCollisionCheck = true;
+				m_eCurrentCollisionPart = ARKUS_COLLISION(i);
 				break;
 			}
 			else
@@ -593,6 +596,41 @@ void CArkus::LookChangeToPlayer(_bool bPtoM)
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_UP, &(vArkusUp * fUpScale));
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_LOOK, &(vDir * fLookScale));
 
+}
+
+CCollider * CArkus::Check_ColliderParts(ARKUS_COLLISION eParts)
+{
+	// 맨 처음 맞은 부위에 피격 이펙트를 띄우기 위해 구현한 함수.
+
+	if (eParts == CArkus::COLL_BOOY)
+		return m_pColliderCom;
+	else if (eParts == CArkus::COLL_HEAD)
+		return m_pColliderHeadCom;
+	else if (eParts == CArkus::COLL_NECK)
+		return m_pColliderNeckCom;
+	else if (eParts == CArkus::COLL_TAIL01)
+		return m_pColliderTail01Com;
+	else if (eParts == CArkus::COLL_TAIL02)
+		return m_pColliderTail02Com;
+
+	return nullptr;
+}
+
+void CArkus::ColliderUpdate()
+{
+	// Arkus의 모든 부위의 콜라이더를 렌더하기 위한 함수.
+
+	if (m_pColliderHeadCom != nullptr)
+		m_pColliderHeadCom->Update_Collider();
+
+	if (m_pColliderNeckCom != nullptr)
+		m_pColliderNeckCom->Update_Collider();
+
+	if (m_pColliderTail01Com != nullptr)
+		m_pColliderTail01Com->Update_Collider();
+
+	if (m_pColliderTail02Com != nullptr)
+		m_pColliderTail02Com->Update_Collider();
 }
 
 CArkus * CArkus::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

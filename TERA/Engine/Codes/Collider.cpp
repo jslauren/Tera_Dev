@@ -298,6 +298,17 @@ _bool CCollider::Collision_Sphere(const CCollider * pTargetCollider)
 	}
 }
 
+_vec3 CCollider::CalculateCollisionPos(const CCollider * pTargetCollider)
+{
+	_float	fDistance = 0.f;
+	_vec3	vSourPos, vDestPos;
+
+	memcpy(&vSourPos, &m_matWorld.m[3][0], sizeof(_vec3));
+	memcpy(&vDestPos, &pTargetCollider->m_matWorld.m[3][0], sizeof(_vec3));
+	
+	return (vSourPos + vDestPos) / 2;
+}
+
 HRESULT CCollider::Make_Collider_BoundingBox()
 {
 	if (FAILED(D3DXCreateBox(m_pGraphic_Device, 1.f, 1.f, 1.f, &m_pMesh, nullptr)))

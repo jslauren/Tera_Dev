@@ -20,6 +20,7 @@ private:
 
 public:	// Getter
 	CTransform*	Get_TransformCom() { return m_pTransformCom; }
+	CCollider*	Get_ColliderTop() { return m_pColliderCom01; }
 
 public: // Setter
 	HRESULT			Set_BoneMatrix(_int iIndex);

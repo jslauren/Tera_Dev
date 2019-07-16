@@ -28,7 +28,7 @@ HRESULT CHitEffect::Ready_GameObject(void * pArg)
 
 	_vec3 vColliderPos = (*(_vec3*)(pArg));
 
-	m_pTransformCom->Set_Scaling(100.f, 100.f, 1.f);
+	m_pTransformCom->Set_Scaling(10.f, 10.f, 1.f);
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_POSITION, &_vec3(vColliderPos.x, vColliderPos.y, vColliderPos.z));
 
 	return NOERROR;
@@ -41,9 +41,9 @@ _int CHitEffect::Update_GameObject(const _float & fTimeDelta)
 
 	SetUp_BillBoard();
 
-	m_fFrame += 90.0f * fTimeDelta;
+	m_fFrame += 32.f * fTimeDelta;
 
-	if (90.0f < m_fFrame)
+	if (16.f < m_fFrame)
 	{
 		m_fFrame = 0.f;
 		return -1;
@@ -61,8 +61,10 @@ _int CHitEffect::LateUpdate_GameObject(const _float & fTimeDelta)
 
 HRESULT CHitEffect::Render_GameObject()
 {
-	// 빌보드 때문에
-	m_pTransformCom->Set_Scaling(100.f, 100.f, 1.f);
+	// 렌더함수에서 돌리고 있는 SetUp_BillBoard 함수에서,
+	// Set_StateInfo 함수를 써서 트랜스폼 컴포넌트 값이 초기화 되나봐...
+	// 다시 잡아주기 용도.
+	m_pTransformCom->Set_Scaling(30.f, 30.f, 1.f);
 
 	CEffect::Render_GameObject();
 

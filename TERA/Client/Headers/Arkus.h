@@ -24,17 +24,18 @@ public:
 	};
 
 public:	// Getter
-	const ARKUS_ANI&	Get_AniIndex() { return m_eAnimationIndex; }
-	const ARKUS_ANI&	Get_OldAniIndex() { return m_eOldAnimationIndex; }
-	CMesh_Dynamic*		Get_Mesh() { return m_pMeshCom; }
-	_bool				Get_CollisionCheck() { return m_bCollisionCheck; }
-	_bool				Get_CollisionPartCheck(ARKUS_COLLISION eCollisionPart) { return m_bCollisionPart[eCollisionPart]; }
-	_bool				Get_PlayerFrontInfo() { return m_bIsPlayerFront; }
-	_bool				Get_TurnRightInfo() { return m_bIsTurnRight; }
-	_bool				Get_PlayerDamagedInfo() { return m_bIsPlayerDamaged; }
-	const _float&		Get_HP() { return m_fHP; }
-	_bool				Get_SceneChangeAvailableInfo() { return m_bIsSceneChangeAvailable; }
-	
+	const ARKUS_ANI&		Get_AniIndex() { return m_eAnimationIndex; }
+	const ARKUS_ANI&		Get_OldAniIndex() { return m_eOldAnimationIndex; }
+	CMesh_Dynamic*			Get_Mesh() { return m_pMeshCom; }
+	_bool					Get_CollisionCheck() { return m_bCollisionCheck; }
+	_bool					Get_CollisionPartCheck(ARKUS_COLLISION eCollisionPart) { return m_bCollisionPart[eCollisionPart]; }
+	_bool					Get_PlayerFrontInfo() { return m_bIsPlayerFront; }
+	_bool					Get_TurnRightInfo() { return m_bIsTurnRight; }
+	_bool					Get_PlayerDamagedInfo() { return m_bIsPlayerDamaged; }
+	const _float&			Get_HP() { return m_fHP; }
+	_bool					Get_SceneChangeAvailableInfo() { return m_bIsSceneChangeAvailable; }
+	const ARKUS_COLLISION&	Get_CurrentCollisionPart() { return m_eCurrentCollisionPart; }
+
 public:	// Setter
 	void			Set_AniIndex(const ARKUS_ANI& iIndex) { m_eAnimationIndex = iIndex; }
 	void			Set_OldAniIndex(const ARKUS_ANI& iIndex) { m_eOldAnimationIndex = iIndex; }
@@ -68,6 +69,10 @@ public:
 	void			AI();
 	_bool			EnemyPositionCheck();
 	void			LookChangeToPlayer(_bool bPtoM);
+	CCollider*		Check_ColliderParts(ARKUS_COLLISION eParts);
+
+private:
+	void			ColliderUpdate();
 
 private:
 	CCollider*		m_pColliderHeadCom = nullptr;
@@ -83,6 +88,7 @@ private:
 private:
 	ARKUS_ANI		m_eAnimationIndex = Idle;
 	ARKUS_ANI		m_eOldAnimationIndex = Idle;
+	ARKUS_COLLISION	m_eCurrentCollisionPart = COLL_END;
 
 private:
 	_vec3			m_vPlayerDir;

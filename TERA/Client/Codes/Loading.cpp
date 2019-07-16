@@ -500,7 +500,7 @@ HRESULT CLoading::Ready_Dragon_Component()
 	CalculatedCompleteNumber();
 
 	// For.Component_Texture_HitEffect
-	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_HitEffect", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect/Explosion/Explosion%d.png", 90))))
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_HitEffect", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect/Hit/Hit%d.png", 16))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 

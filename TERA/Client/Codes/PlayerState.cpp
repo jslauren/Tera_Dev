@@ -66,12 +66,10 @@ void CPlayerState::AttackEvent(CArkus* pArkus, CPlayer* Player, _uint iAvailable
 		{
 			pArkus->Set_HP_Sub((_float)Player->Get_PlayerOffenceValue());
 			
+			CheckCollisionPart(pArkus);
+
 			CUI_DamageFont_Manager::GetInstance()->Create_DamageFont(m_pGraphic_Device, *Player->Get_Collider()->Get_CollisionPos(), (_float)Player->Get_PlayerOffenceValue());
 			m_iHitCount++;
-
-			_vec3 vColliderPos = *Player->Get_Collider()->Get_CollisionPos();
-
-			CObject_Manager::GetInstance()->Add_Object(SCENE_STATIC, L"GameObject_HitEffect", SCENE_STATIC, L"Layer_Effect", &vColliderPos);
 
 			m_bIsDamageAvailable = false;
 		}
@@ -86,6 +84,21 @@ void CPlayerState::AttackEventFree(CPlayer* Player, CPlayer::PLAYER_ANI ePlayerA
 	Player->Set_LBtnClickedInfo(false);
 	m_bIsDamageAvailable = false;
 	m_iHitCount = 0;
+}
+
+void CPlayerState::CheckCollisionPart(CArkus * pArkus)
+{
+	CArkus::ARKUS_COLLISION eArkusCollisionPart = pArkus->Get_CurrentCollisionPart();
+
+	CCollider* pCollider = dynamic_cast<CWeapon*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Weapon", 0))->Get_ColliderTop();
+
+	Safe_AddRef(pCollider);
+
+	_vec3 vColliderPos = pCollider->CalculateCollisionPos(pArkus->Check_ColliderParts(pArkus->Get_CurrentCollisionPart()));
+
+	CObject_Manager::GetInstance()->Add_Object(SCENE_STATIC, L"GameObject_HitEffect", SCENE_STATIC, L"Layer_Effect", &vColliderPos);
+
+	Safe_Release(pCollider);
 }
 
 void CPlayerState::Free()
