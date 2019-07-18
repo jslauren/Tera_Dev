@@ -64,7 +64,7 @@ HRESULT CHitEffect::Render_GameObject()
 	// 렌더함수에서 돌리고 있는 SetUp_BillBoard 함수에서,
 	// Set_StateInfo 함수를 써서 트랜스폼 컴포넌트 값이 초기화 되나봐...
 	// 다시 잡아주기 용도.
-	m_pTransformCom->Set_Scaling(30.f, 30.f, 1.f);
+	m_pTransformCom->Set_Scaling(30.f, 30.f, 0.f);
 
 	CEffect::Render_GameObject();
 

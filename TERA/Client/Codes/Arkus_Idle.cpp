@@ -58,8 +58,8 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 			}
 			if (Arkus.CollisionCheck() == true)
 			{
-				if (Arkus.Get_Mesh()->IsAnimationEnded(0.15f))
-					return CArkus_Hit::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+				//if (Arkus.Get_Mesh()->IsAnimationEnded(0.15f))
+				//	return CArkus_Hit::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 			}
 
 			if (Arkus.Get_CollisionPartCheck(Arkus.COLL_ATTACK_AREA) == false)
@@ -75,14 +75,14 @@ CArkusState * CArkus_Idle::Input_State(CArkus & Arkus, const float & fTimeDelta,
 
 					m_iAniState = rand() % 5 + 4;
 
-					if (m_iAniState == 8)
-					{
-						if (Arkus.Get_PlayerFrontInfo() == false)
-							m_iAniState = rand() % 5 + 4;
-					}
-					//m_iAniState = 3;
-					////return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
-					return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+					//if (m_iAniState == 8)
+					//{
+					//	if (Arkus.Get_PlayerFrontInfo() == false)
+					//		m_iAniState = rand() % 5 + 4;
+					//}
+					m_iAniState = 1;
+					return CArkus_Idle::Create(m_pGraphic_Device, Arkus, &m_iAniState);
+				//	return CArkus_Attack::Create(m_pGraphic_Device, Arkus, &m_iAniState);
 				}
 			}
 			else
@@ -98,7 +98,7 @@ void CArkus_Idle::Update_State(CArkus & Arkus, const float & fTimeDelta)
 	//if (Arkus.Get_PlayerFrontInfo() == true)
 	//	Arkus.ViewChanage();
 	
-	Arkus.ViewChanage();
+//	Arkus.ViewChanage();
 	Arkus.EnemyPositionCheck();
 
 }

@@ -76,6 +76,10 @@ private:
 	_bool			m_bIsCameraReverting = false;
 	_bool			m_bIsPlayerInside = false;
 	_bool			m_bIsTalking = false;
+	_float			m_fCameraAngleX = 0.f;
+	_float			m_fCameraAngleY = 0.f;
+	_float			m_fMouseValueAccX = 0.f;
+	_float			m_fMouseValueAccY = 0.f;
 
 public:
 	static CCamera_Static*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);

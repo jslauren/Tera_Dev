@@ -28,7 +28,9 @@ protected:
 	void					AttackAvailableCheck(CArkus* pArkus, CPlayer* Player);
 	void					AttackEvent(CArkus* pArkus, CPlayer* Player, _uint iAvailableHitNumber);
 	void					AttackEventFree(CPlayer* Player, CPlayer::PLAYER_ANI ePlayerAni = CPlayer::PLAYER_ANI::END);
+	void					DamageFontUI(CArkus* pArkus, CPlayer* Player);
 	void					CheckCollisionPart(CArkus* pArkus);
+	void					SwordScarEffect(CArkus* pArkus, CPlayer* Player);
 
 protected:
 	LPDIRECT3DDEVICE9		m_pGraphic_Device = nullptr;

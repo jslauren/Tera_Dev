@@ -64,7 +64,7 @@ HRESULT CEffect::Render_GameObject()
 
 	pEffect->Begin(nullptr, 0);
 
-	pEffect->BeginPass(0);
+	pEffect->BeginPass(2);
 
 	m_pBufferCom->Render_Buffer();
 
@@ -114,6 +114,7 @@ HRESULT CEffect::SetUp_BillBoard()
 
 	// 카메라의 월드행렬 == 뷰스페이스 변환행렬 역행렬
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_RIGHT, pCamTransformCom->Get_StateInfo(CTransform::STATE_RIGHT));
+	m_pTransformCom->Set_StateInfo(CTransform::STATE_UP, pCamTransformCom->Get_StateInfo(CTransform::STATE_UP));
 	m_pTransformCom->Set_StateInfo(CTransform::STATE_LOOK, pCamTransformCom->Get_StateInfo(CTransform::STATE_LOOK));
 
 	Safe_Release(pCamTransformCom);

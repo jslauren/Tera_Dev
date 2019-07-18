@@ -189,27 +189,37 @@ void CCamera_Static::ChangeView()
 
 		if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_Y))
 		{
-			// 마우스 커서를 위로 올릴 때.
-			// 더 많이 올리고 싶으면 밑에 0.3f 값을 더 크게 주면 된다.
-			if (dwMouseMove < 0 && fDotValue < 0.3f)
-			{
-				//// 마우스 커서를 일정영역 밑으로 내리면 카메라 줌아웃 하는 구문.
-				//if (fDotValue < 0.1f && fDotValue > m_fDotValuePri)
-				//	m_fCameraDistance -= 0.01f;
+			m_fMouseValueAccY += (dwMouseMove * 0.1f);
 
-				m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
-			}
-			else if (dwMouseMove > 0 && fDotValue > -0.1f)
-			{
-				//// 카메라 줌인 구문.
-				//if (fDotValue < -0.5f && fDotValue < m_fDotValuePri)
-				//	m_fCameraDistance += 0.03f;
-
-				m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
-			}
+			//// 마우스 커서를 위로 올릴 때.
+			//// 더 많이 올리고 싶으면 밑에 0.3f 값을 더 크게 주면 된다.
+			//if (dwMouseMove < 0 && fDotValue < 0.3f)
+			//{
+			//	m_fMouseValueAccY += (dwMouseMove * 0.1f);
+			//	//m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
+			//}
+			//else if (dwMouseMove > 0 && fDotValue > -0.1f)
+			//{
+			//	m_fMouseValueAccY += (dwMouseMove * 0.1f);
+			//	//m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(dwMouseMove) * 7.f, m_fTimeDelta);
+			//}
 		}
 		if (dwMouseMove = m_pInput_Device->GetDIMouseMove(CInput_Device::DIMM_X))
-			m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(dwMouseMove) * 10.f, m_fTimeDelta);
+			m_fMouseValueAccX += (dwMouseMove * 0.1f);
+
+		// 이게 D3DXVec3Lerp 랑 같은 기능을 하게 만든 함수.
+		Lerp(&m_fCameraAngleX, m_fCameraAngleX, m_fMouseValueAccX, m_fTimeDelta * 2.f);
+		Lerp(&m_fCameraAngleY, m_fCameraAngleY, m_fMouseValueAccY, m_fTimeDelta * 1.f);
+
+		m_pTransformCom->Set_Angle_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(0));
+		m_pTransformCom->Rotation_Axis(_vec3(0.f, 1.f, 0.f), D3DXToRadian(m_fCameraAngleX), 1.f);
+
+		if (m_fCameraAngleY <= -4.5f)
+			m_fCameraAngleY = -4.5f;
+		else if (m_fCameraAngleY >= 35.f)
+			m_fCameraAngleY = 35.f;
+
+		m_pTransformCom->Rotation_Axis(*m_pTransformCom->Get_StateInfo(CTransform::STATE_RIGHT), D3DXToRadian(m_fCameraAngleY), 1.f);
 
 		// Arkus 공중공격 시, 카메라 제어를 수동으로 하기 때문에
 		// 그 타이밍에 수동 제어를 막으려고 만들어 놓은 불 변수.

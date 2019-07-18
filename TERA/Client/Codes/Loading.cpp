@@ -463,7 +463,7 @@ HRESULT CLoading::Ready_Dragon_Component()
 	if (nullptr == m_pComponent_Manager)
 		return E_FAIL;
 
-	m_iTotalRsrcNum = 17;
+	m_iTotalRsrcNum = 18;
 	m_iCurrentRsrcNum = 0;
 	m_iComplete = 0;
 
@@ -501,6 +501,11 @@ HRESULT CLoading::Ready_Dragon_Component()
 
 	// For.Component_Texture_HitEffect
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_HitEffect", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect/Hit/Hit%d.png", 16))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Texture_SwordScarEffect
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_SwordScarEffect", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/Effect/SwordScar/SwordScar.png"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 

@@ -15,6 +15,7 @@
 #include "FontManager.h"
 #include "SoundManager.h" 
 #include "HitEffect.h"
+#include "SwordScarEffect.h"
 
 #include "UI_PlayerPoint.h"
 #include "UI_BossPoint.h"
@@ -406,6 +407,10 @@ HRESULT CScene_Dragon::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_HitEffect", CHitEffect::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_Effect
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_SwordScarEffect", CSwordScarEffect::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	
 	return NOERROR;
 }
 

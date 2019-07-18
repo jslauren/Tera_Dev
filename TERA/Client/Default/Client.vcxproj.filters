@@ -310,6 +310,9 @@
     <Filter Include="06. Effect\HitEffect">
       <UniqueIdentifier>{bde83589-02f4-4d40-a482-134f2222f62f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06. Effect\SwordScarEffect">
+      <UniqueIdentifier>{37682869-cf6d-477c-b9d3-f8862a71a2a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -576,6 +579,9 @@
     <ClInclude Include="..\Headers\HitEffect.h">
       <Filter>06. Effect\HitEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\SwordScarEffect.h">
+      <Filter>06. Effect\SwordScarEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -829,6 +835,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\HitEffect.cpp">
       <Filter>06. Effect\HitEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\SwordScarEffect.cpp">
+      <Filter>06. Effect\SwordScarEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

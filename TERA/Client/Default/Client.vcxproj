@@ -234,6 +234,7 @@
     <ClInclude Include="..\Headers\SkyBox.h" />
     <ClInclude Include="..\Headers\SkyBox_Dragon.h" />
     <ClInclude Include="..\Headers\SoundManager.h" />
+    <ClInclude Include="..\Headers\SwordScarEffect.h" />
     <ClInclude Include="..\Headers\Terrain.h" />
     <ClInclude Include="..\Headers\TerrainObject.h" />
     <ClInclude Include="..\Headers\Terrain_Dragon.h" />
@@ -322,6 +323,7 @@
     <ClCompile Include="..\Codes\SkyBox.cpp" />
     <ClCompile Include="..\Codes\SkyBox_Dragon.cpp" />
     <ClCompile Include="..\Codes\SoundManager.cpp" />
+    <ClCompile Include="..\Codes\SwordScarEffect.cpp" />
     <ClCompile Include="..\Codes\Terrain.cpp" />
     <ClCompile Include="..\Codes\TerrainObject.cpp" />
     <ClCompile Include="..\Codes\Terrain_Dragon.cpp" />
