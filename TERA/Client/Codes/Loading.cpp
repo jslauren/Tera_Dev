@@ -69,7 +69,7 @@ HRESULT CLoading::Ready_Stage_Component()
 	m_bIsAlreadyLoaded = CManagement::GetInstance()->Get_PreventPrototypeLoadInfo();
 
 	if (m_bIsAlreadyLoaded == false)
-		m_iTotalRsrcNum = 81;
+		m_iTotalRsrcNum = 86;
 	else
 		m_iTotalRsrcNum = 6;
 
@@ -129,6 +129,11 @@ HRESULT CLoading::Ready_Stage_Component()
 
 	// For.Component_Buffer_UI_Mp
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Mp", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Buffer_UI_Mp
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Test", CBuffer_RcCol::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 
@@ -194,6 +199,26 @@ HRESULT CLoading::Ready_Stage_Component()
 
 	// For.Component_Texture_UI_Dialog
 	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_Dialog", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/Quest/Dialog.png"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+	
+	// For.Component_Buffer_UI_Inventory
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Inventory", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+	
+	// For.Component_Texture_UI_Inventory
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_Inventory", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/Inventory/Inventory.png"))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Buffer_UI_Inventory
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Buffer_UI_Mouse", CBuffer_RcTex::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	CalculatedCompleteNumber();
+
+	// For.Component_Texture_UI_Inventory
+	if (FAILED(m_pComponent_Manager->Add_Component_Prototype(SCENE_STATIC, L"Component_Texture_UI_Mouse", CTexture::Create(m_pGraphic_Device, CTexture::TYPE_GENERAL, L"../Bin/Resources/Textures/UI/Mouse/Mouse.png"))))
 		return E_FAIL;
 	CalculatedCompleteNumber();
 

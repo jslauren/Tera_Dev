@@ -2,6 +2,7 @@
 #include "..\Headers\Camera_Static.h"
 #include "Input_Device.h"
 #include "EventManager.h"
+#include "UI_Inventory.h"
 #include "UI_Dialog.h"
 #include "Layer.h"
 #include "Player.h"
@@ -155,8 +156,16 @@ void CCamera_Static::ChangeView()
 {
 	POINT	ptMouse = { g_iWinCX >> 1, g_iWinCY >> 1 };
 
+	CUI_Inventory* pUI_Inventory = dynamic_cast<CUI_Inventory*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_UI", 2));
+
 	ClientToScreen(g_hWnd, &ptMouse);
-	SetCursorPos(ptMouse.x, ptMouse.y);
+
+	// 인벤토리가 활성화 되어 있다면, 화면을 못움직인다 //
+	if (pUI_Inventory->Get_InventoryRenderInfo() == false)
+		SetCursorPos(ptMouse.x, ptMouse.y);
+	else if (pUI_Inventory->Get_InventoryRenderInfo() == true)
+		return;
+	//////////////////////////////////////////////////////
 
 	// NPC와 대화중일땐 아무고또 모타죠? //
 	CUI_Dialog* pUI_Dialog = dynamic_cast<CUI_Dialog*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_UI", 1));

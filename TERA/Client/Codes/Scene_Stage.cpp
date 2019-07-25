@@ -8,6 +8,7 @@
 #include "Scene_Dragon.h"
 #include "FontManager.h"
 #include "SoundManager.h"
+#include "Input_Device.h"
 #include "Management.h"
 #include "Terrain.h"
 #include "SkyBox.h"
@@ -16,7 +17,9 @@
 #include "Arkus.h"
 
 #include "UI_PlayerPoint.h"
+#include "UI_MouseCursor.h"
 #include "UI_SkillBoard.h"
+#include "UI_Inventory.h"
 #include "UI_Loading.h"
 #include "UI_Dialog.h"
 
@@ -138,7 +141,7 @@ _int CScene_Stage::LateUpdate_Scene(const _float & fTimeDelta)
 
 	_bool bSceneChangeStagetoDragon = dynamic_cast<CCartNPC*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STAGE, L"Layer_NPC", 4))->Get_SceneChangeAvailableInfo();
 
-	if (GetKeyState('P') & 0x8000 ||
+	if ((CInput_Device::GetInstance()->GetDIKeyState(DIK_F11) & 0x80) ||
 		bSceneChangeStagetoDragon == true)
 	{
 		bSceneChangeStagetoDragon = false;
@@ -168,7 +171,12 @@ HRESULT CScene_Stage::Render_Scene()
 {
 	_vec3 vPlayerPos = *m_pPlayer->Get_Transform()->Get_StateInfo(CTransform::STATE_POSITION);
 	
-	wsprintf(m_szPlayerPos, L"%d, %d, %d", (_int)vPlayerPos.x, (_int)vPlayerPos.y, (_int)vPlayerPos.z);
+//	wsprintf(m_szPlayerPos, L"%d, %d, %d", (_int)vPlayerPos.x, (_int)vPlayerPos.y, (_int)vPlayerPos.z);
+
+	POINT ptMousePos;
+	GetCursorPos(&ptMousePos);		
+	ScreenToClient(g_hWnd, &ptMousePos);
+	wsprintf(m_szPlayerPos, L"%d, %d", (_int)ptMousePos.x, (_int)ptMousePos.y);
 	CFontManager::GetInstance()->RenderFont(CFontManager::FONT_NAME, _vec3((g_iWinCX * 0.5) - 50.f, g_iWinCY - 30.f, 0.f), m_szPlayerPos);
 
 	return CScene::Render_Scene();
@@ -487,6 +495,14 @@ HRESULT CScene_Stage::Ready_GameObject_Prototype()
 	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_Dialog", CUI_Dialog::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// For.GameObject_UI_Inventory
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_Inventory", CUI_Inventory::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// For.GameObject_UI_Mouse
+	if (FAILED(Add_Object_Prototype(SCENE_STATIC, L"GameObject_UI_Mouse", CUI_MouseCursor::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	return NOERROR;
 }
 
@@ -521,6 +537,12 @@ HRESULT CScene_Stage::Ready_Layer_UI(const _tchar * pLayerTag)
 		return E_FAIL;
 
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_SkillBoard", SCENE_STATIC, pLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_Inventory", SCENE_STATIC, pLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_UI_Mouse", SCENE_STATIC, pLayerTag)))
 		return E_FAIL;
 
 	if (FAILED(Add_Object(SCENE_STATIC, L"GameObject_QMark", SCENE_STAGE, pLayerTag)))

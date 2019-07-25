@@ -19,6 +19,8 @@
 #include "Player_Skill_StingerBlade.h"
 #include "Player_Skill_DrawSword_Charge.h"
 
+#include "UI_Inventory.h"
+
 #define PLAYER_SCALING	0.33f
 
 _USING(Client)
@@ -35,6 +37,11 @@ HRESULT CPlayer_Idle::Initialize_State(CPlayer & Player)
 
 CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTimeDelta, BYTE KeyID, void* pAgr)
 {
+	CUI_Inventory* pUI_Inventory = dynamic_cast<CUI_Inventory*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_UI", 2));
+
+	if (pUI_Inventory->Get_InventoryRenderInfo() == true)
+		return nullptr;
+
 	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 	{
 		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));
@@ -56,11 +63,11 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	if (dynamic_cast<CPlayer*>(CObject_Manager::GetInstance()->Get_Object(SCENE_STATIC, L"Layer_Player"))->Get_CutSceneInfo() == true)
 		return nullptr;
 
-	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_Q) & 0x80)
-	{
-		if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
-			Player.Set_DrawSwordBtn(true);
-	}
+	//if (CInput_Device::GetInstance()->GetDIKeyState(DIK_Q) & 0x80)
+	//{
+	//	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
+	//		Player.Set_DrawSwordBtn(true);
+	//}
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_W) & 0x80)
 	{
 		_matrix matView;
@@ -285,17 +292,17 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 		}
 	}
 	// [테스트]
-	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_T) & 0x80)
-	{
-		Player.Set_HP_Add(1000);
-		//if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
-		//{
-		//	if (Player.Get_Mesh_Bone()->IsAnimationEnded())
-		//		return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
-		//}
-	}
-	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_Y) & 0x80)
-		Player.Set_HP_Sub(100);
+	//if (CInput_Device::GetInstance()->GetDIKeyState(DIK_T) & 0x80)
+	//{
+	//	Player.Set_HP_Add(1000);
+	//	//if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
+	//	//{
+	//	//	if (Player.Get_Mesh_Bone()->IsAnimationEnded())
+	//	//		return CPlayer_KnockDown::Create(m_pGraphic_Device, Player, &m_iAniState);
+	//	//}
+	//}
+	//if (CInput_Device::GetInstance()->GetDIKeyState(DIK_Y) & 0x80)
+	//	Player.Set_HP_Sub(100);
 
 	// [스킬 넘버]
 	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_1) & 0x80)
@@ -420,15 +427,16 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 			}
 		}
 	}
+
 	// [ 시연을 위한 플레이어 HP, MP 치트 ] //
-	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_MINUS) & 0x80)
-	{
-		Player.Set_HP_Add(2000);
-	}
-	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_EQUALS) & 0x80)
-	{
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_F3) & 0x80)
+		Player.Set_HP_Add(1000);
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_F4) & 0x80)
+		Player.Set_HP_Sub(100);
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_F5) & 0x80)
 		Player.Set_MP_Add(300);
-	}
+	if (CInput_Device::GetInstance()->GetDIKeyState(DIK_F6) & 0x80)
+		Player.Set_MP_Sub(10);
 
 	return nullptr;
 }

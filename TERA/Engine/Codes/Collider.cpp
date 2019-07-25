@@ -79,7 +79,7 @@ HRESULT CCollider::Ready_Collider(COLLIDERDESC * pArg)
 HRESULT CCollider::Update_Collider()
 {
 	// Feat.½½±â
-	if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_C))
+	if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_F1))
 		m_bIsRendering = !m_bIsRendering;
 
 	return NOERROR;

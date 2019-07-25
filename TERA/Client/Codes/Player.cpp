@@ -531,7 +531,7 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	CollisionCheck();
 	DecreaseSkillCoolTime();
 
-	if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_N))
+	if (CInput_Device::GetInstance()->Get_DIKeyDown(DIK_F2))
 		m_bIsNavigationRender = !m_bIsNavigationRender;
 
 	m_fPlayerPosY = m_pTransformCom->Get_StateInfo(CTransform::STATE_POSITION)->y;

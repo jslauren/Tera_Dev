@@ -313,6 +313,12 @@
     <Filter Include="06. Effect\SwordScarEffect">
       <UniqueIdentifier>{37682869-cf6d-477c-b9d3-f8862a71a2a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. UI\UI\07. Inventory">
+      <UniqueIdentifier>{6903f800-80e4-455a-ac68-b9904a7bd600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. UI\UI\08. MouseCursor">
+      <UniqueIdentifier>{51d1e8e9-5ca8-4f76-8fe9-663c0a3777b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -582,6 +588,12 @@
     <ClInclude Include="..\Headers\SwordScarEffect.h">
       <Filter>06. Effect\SwordScarEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\UI_Inventory.h">
+      <Filter>04. UI\UI\07. Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Headers\UI_MouseCursor.h">
+      <Filter>04. UI\UI\08. MouseCursor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -838,6 +850,12 @@
     </ClCompile>
     <ClCompile Include="..\Codes\SwordScarEffect.cpp">
       <Filter>06. Effect\SwordScarEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UI_Inventory.cpp">
+      <Filter>04. UI\UI\07. Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UI_MouseCursor.cpp">
+      <Filter>04. UI\UI\08. MouseCursor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

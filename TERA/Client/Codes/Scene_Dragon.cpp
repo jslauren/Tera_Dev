@@ -5,6 +5,7 @@
 #include "Light_Manager.h"
 #include "SkyBox_Dragon.h"
 #include "Terrain_Dragon.h"
+#include "Input_Device.h"
 #include "Management.h"
 #include "Scene_Loading.h"
 #include "Player.h"
@@ -136,7 +137,7 @@ _int CScene_Dragon::LateUpdate_Scene(const _float & fTimeDelta)
 
 	_bool bSceneChangeDragonToStage = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster", 0))->Get_SceneChangeAvailableInfo();
 
-	if (GetKeyState('L') & 0x8000 ||
+	if ((CInput_Device::GetInstance()->GetDIKeyState(DIK_F12) & 0x80) ||
 		bSceneChangeDragonToStage == true)
 	{
 		// 씬 전환 시 로딩 쓰레드를 쓰는데,
