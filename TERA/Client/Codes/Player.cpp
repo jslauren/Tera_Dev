@@ -547,13 +547,13 @@ _int CPlayer::Update_GameObject(const _float & fTimeDelta)
 	//	if (m_bTest == false)
 	//	{
 	//		Safe_Release(m_pMeshCom_Body);
-	//		m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Body2");
+	//		m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Body15");
 	//		m_pMeshCom_Bone->Set_BodyFrame(m_pMeshCom_Body->GetRootFrame());
 	//	}
 	//	else
 	//	{
 	//		Safe_Release(m_pMeshCom_Body);
-	//		m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_Body");
+	//		m_pMeshCom_Body = (CMesh_Dynamic_Parts*)m_pComponent_Manager->Clone_Component(SCENE_STATIC, L"Component_Mesh_Player_BodyR29");
 	//		m_pMeshCom_Bone->Set_BodyFrame(m_pMeshCom_Body->GetRootFrame());
 	//	}
 	//	m_bTest = !m_bTest;
