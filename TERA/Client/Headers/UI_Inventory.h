@@ -44,6 +44,8 @@ private:
 	POINT				m_ptCurrentMousePos;
 	RECT				m_rcFrame = { 580, 222, 750, 250 };
 	RECT				m_rcExitBtn = {777, 226, 794, 244};
+	RECT				m_rcInven = { 500, 325, 530, 355 };
+
 
 	_vec2				m_vCurrentPos = { 0, 0 };
 	_vec2				m_vMovedPos = { 0, 0 };

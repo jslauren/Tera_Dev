@@ -152,13 +152,24 @@ HRESULT CUI_Inventory::SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTa
 
 HRESULT CUI_Inventory::InventorySetting()
 {
-	RECT	rcTemp = { 500, 325, 530, 355 };
+	for (int i = 0; i < 5; ++i)
+	{
+		RECT	rcTemp = { 500, 325, 530, 355 };
 
-	CUI_Item*	pItem = CUI_Item::Create(m_pGraphic_Device, &rcTemp);
-	if (nullptr == pItem)
-		return E_FAIL;
+		for (int j = 0; j < 8; ++j)
+		{
+			rcTemp.left = 500 + (37 * j);
+			rcTemp.top = 325 + (37 * i);
+			rcTemp.right = 530 + (37 * j);
+			rcTemp.bottom = 355 + (37 * i);
 
-	m_ItemList.push_back(pItem);
+			CUI_Item*	pItem = CUI_Item::Create(m_pGraphic_Device, &rcTemp);
+			if (nullptr == pItem)
+				return E_FAIL;
+
+			m_ItemList.push_back(pItem);
+		}
+	}
 
 	return NOERROR;
 }
