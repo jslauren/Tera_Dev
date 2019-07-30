@@ -42,6 +42,12 @@ CPlayerState * CPlayer_Idle::Input_Keyboard(CPlayer & Player, const float & fTim
 	if (pUI_Inventory->Get_InventoryRenderInfo() == true)
 		return nullptr;
 
+	if (Player.Get_HideInventoryInfo() == true)
+	{
+		Player.Set_HideInventoryInfo(false);
+		return nullptr;
+	}
+
 	if (Player.Get_Mesh_Bone()->Get_NowPlayAniIndex() == CPlayer::PLAYER_ANI::Idle_Battle)
 	{
 		CArkus*	pArkus = dynamic_cast<CArkus*>(CObject_Manager::GetInstance()->Get_Object(SCENE_DRAGON, L"Layer_Monster"));

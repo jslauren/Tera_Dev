@@ -319,6 +319,9 @@
     <Filter Include="04. UI\UI\08. MouseCursor">
       <UniqueIdentifier>{51d1e8e9-5ca8-4f76-8fe9-663c0a3777b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. UI\UI\09. Item">
+      <UniqueIdentifier>{8d65d85e-9b5a-4e80-8daf-a338c7775806}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -594,6 +597,9 @@
     <ClInclude Include="..\Headers\UI_MouseCursor.h">
       <Filter>04. UI\UI\08. MouseCursor</Filter>
     </ClInclude>
+    <ClInclude Include="..\Headers\UI_Item.h">
+      <Filter>04. UI\UI\09. Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -856,6 +862,9 @@
     </ClCompile>
     <ClCompile Include="..\Codes\UI_MouseCursor.cpp">
       <Filter>04. UI\UI\08. MouseCursor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Codes\UI_Item.cpp">
+      <Filter>04. UI\UI\09. Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

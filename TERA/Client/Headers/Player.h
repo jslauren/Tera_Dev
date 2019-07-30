@@ -51,6 +51,7 @@ public:	// Getter
 	const _bool			Get_SoundCheckInfo() { return m_bSoundFirstCheck; }
 	const _bool			Get_SoundCheckInfo2() { return m_bSoundFirstCheck2; }
 	const _bool			Get_NPCSoundCheckInfo() { return m_bNPCSoundFirstCheck; }
+	const _bool			Get_HideInventoryInfo() { return m_bHideInventory; }
 
 public:	// Setter
 	HRESULT				Set_Navigation_Component(SCENEID eScene);
@@ -77,6 +78,8 @@ public:	// Setter
 	void				Set_SoundCheckInfo(_bool bButton) { m_bSoundFirstCheck = bButton; }
 	void				Set_SoundCheckInfo2(_bool bButton) { m_bSoundFirstCheck2 = bButton; }
 	void				Set_NPCSoundCheckInfo(_bool bButton) { m_bNPCSoundFirstCheck = bButton; }
+	
+	void				Set_HideInventoryInfo(_bool bButton) { m_bHideInventory = bButton; }
 
 public:
 	virtual HRESULT		Ready_GameObject_Prototype();
@@ -157,6 +160,8 @@ private:
 	_bool			m_bSoundFirstCheck2 = false;
 	_bool			m_bNPCSoundFirstCheck = false;
 
+	_bool			m_bHideInventory = false;
+	
 private:
 	virtual HRESULT Add_Component();
 	virtual HRESULT SetUp_ConstantTable(LPD3DXEFFECT pEffect);

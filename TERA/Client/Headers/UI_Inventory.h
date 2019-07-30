@@ -1,5 +1,6 @@
 #pragma once
 #include "UI.h"
+#include "UI_Item.h"
 
 _BEGIN(Client)
 
@@ -24,22 +25,29 @@ private:
 	virtual HRESULT	Add_Component();
 	virtual HRESULT	SetUp_ConstantTable(LPD3DXEFFECT pEffect, const _uint iTargetTextureIdx = 1);
 
+	HRESULT			InventorySetting();
+	void			UpdateInventory();
+	void			HideInventory();
 	void			ClickedEvent();
+	void			MoveInventory();
 	void			ValueFree();
 
 private:
 	CBuffer_RcTex*		m_pBufferCom = nullptr;
 
+	list<CUI_Item*>		m_ItemList;
+
 private:
+	_float				m_fTimeDelta = 0.f;
 	_bool				m_bIsRender = false;
 	POINT				m_ptFirstMousePos;
 	POINT				m_ptCurrentMousePos;
 	RECT				m_rcFrame = { 580, 222, 750, 250 };
+	RECT				m_rcExitBtn = {777, 226, 794, 244};
 
 	_vec2				m_vCurrentPos = { 0, 0 };
 	_vec2				m_vMovedPos = { 0, 0 };
 	_bool				m_bIsClicked = false;
-	_bool				m_bIsAcc = false;
 
 public:
 	static CUI_Inventory*	Create(LPDIRECT3DDEVICE9 pGraphic_Device);
